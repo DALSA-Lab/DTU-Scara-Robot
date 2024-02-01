@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 from sympy import pi, Matrix, symbols, cos, sin
-
+#test
 
 def scara_FK(theta_1, d_1, theta_3, theta_4):
 
