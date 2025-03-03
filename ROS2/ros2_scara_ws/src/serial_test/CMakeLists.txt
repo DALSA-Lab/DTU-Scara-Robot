@@ -11,7 +11,7 @@ find_package(ament_cmake REQUIRED)
 # further dependencies manually.
 find_package(rclcpp REQUIRED) # <----custom
 
-add_executable(serial_node src/serial_node.cpp src/uSerialJoint.cpp)
+add_executable(serial_node src/serial_node.cpp src/uSerial.cpp src/mJoint.cpp src/mJointCom.cpp)
 ament_target_dependencies(serial_node rclcpp) # <----custom
 
 target_include_directories(serial_node PUBLIC
