@@ -30,6 +30,12 @@ int Joint::init(int fd)
     return checkCom();
 }
 
+int Joint::printInfo(void)
+{
+    std::cout << "Name: " << this->name << " address: " << this->address << " fd: " << this->fd << std::endl;
+    return 0;
+}
+
 int Joint::getAngle(float &angle)
 {
     u_int8_t buf[4];
@@ -55,13 +61,14 @@ int Joint::checkCom(void)
     return -1;
 }
 
+
 int Joint::read(const stp_reg_t reg, u_int8_t *data, const size_t data_length)
 {
     // Header contains: Slave Adress, Number of following bytes on read only one more byte is transmitted: the command byte.
-    std::cout << "DEBUG: Sending header" << std::endl;
+    // std::cout << "DEBUG: Sending header" << std::endl;
     u_int8_t header_buf[3] = {this->address, 1, reg};
     tcflush(this->fd, TCIOFLUSH);
-    if (writeToSerialPort(this->fd, header_buf, sizeof(header_buf)) < 0)
+    if (writeToSerialPort(this->fd, header_buf, 3) < 0)
     {
         std::cerr << "Error writing to serial port: " << strerror(errno) << std::endl;
     }
@@ -73,9 +80,9 @@ int Joint::read(const stp_reg_t reg, u_int8_t *data, const size_t data_length)
         std::cerr << "Error reading from serial port: " << strerror(errno) << std::endl;
         return -1;
     }
-    std::cout << "DEBUG: Received header" << std::endl;
+    // std::cout << "DEBUG: Received header" << std::endl;
 
-    std::cout << "Read from serial port: " << std::string((char *)&ack_buf, n) << std::endl;
+    // std::cout << "Read from serial port: " << std::string((char *)&ack_buf, n) << std::endl;
 
     // Add one byte for checksum
     u_int8_t *rx_buf = new u_int8_t[data_length + 1];
@@ -85,10 +92,14 @@ int Joint::read(const stp_reg_t reg, u_int8_t *data, const size_t data_length)
         std::cerr << "Error reading from serial port: " << strerror(errno) << std::endl;
         return -1;
     }
-    std::cout << "Read from serial port: " << std::string((char *)rx_buf, n) << std::endl;
+    // std::cout << "Read from serial port: " << std::string((char *)rx_buf, n) << std::endl;
 
-    // check checksum
+    // TODO: check checksum HERE
+
+
     memcpy(data, rx_buf, data_length);
+
+    delete[] rx_buf;
 
     return n;
 }

@@ -43,11 +43,19 @@ enum stp_reg_t
 class Joint_comms
 {
 public:
+
+  /**
+   * Constructor to create a join communication object
+   * @param n number of joints to connect to.
+   * @param addresses n-sized array of 1-byte device adresses
+   * @param names n-sized array of string device names
+   * @return Joint_comms object.
+   */
   Joint_comms(size_t n, u_int8_t addresses[], std::string names[]);
   ~Joint_comms();
 
   int init(const char *portname, unsigned int baudrate);
-  // int getAngles();
+  int getAngles(std::vector<float> &angle_v);
   // int setAngles();
   // int home();
 

@@ -58,12 +58,32 @@ int Joint_comms::init(const char *portname, unsigned int baudrate)
     }
 
     // Init each joint and test connection to each joint by pinging
-    for(Joint joint : this->joints){
-        if(joint.init(this->fd) < 0){
-            std::cerr << "Failed to connect to :" << joint.name << std::endl;
+    for(size_t  i = 0; i < this->joints.size(); i++){
+        if(this->joints[i].init(this->fd) < 0){
+            std::cerr << "Failed to connect to: " << this->joints[i].name << std::endl;
             return -1;
         }
     }
 
+    std::cout << "Joint Initialization successfull" << std::endl;
+
+    return 0;
+}
+
+int Joint_comms::getAngles(std::vector<float> &angle_v)
+{
+    if(angle_v.size() != this->joints.size()){
+        std::cerr << "vector size mismatch" << std::endl;
+        return -2;
+    }
+
+    for(size_t  i = 0; i < this->joints.size(); i++){
+        float a;
+        if(this->joints[i].getAngle(a) < 0){
+            std::cerr << "Failed to get angle from: " << this->joints[i].name << std::endl;
+            return -1;
+        }
+        angle_v[i] = a;
+    }
     return 0;
 }

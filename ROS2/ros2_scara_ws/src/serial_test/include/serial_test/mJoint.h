@@ -8,8 +8,10 @@ public:
   // ~Joint();
 
   int init(int fd);
+  int printInfo(void);
   int getAngle(float &angle);
   int checkCom(void);
+
   // int setAngle();
   // int home();
 

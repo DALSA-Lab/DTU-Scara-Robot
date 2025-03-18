@@ -1,7 +1,6 @@
 #include <unistd.h>
 #include "serial_test/mJointCom.h"
 
-
 using namespace std;
 
 int main(int argc, char **argv)
@@ -12,18 +11,31 @@ int main(int argc, char **argv)
   u_int8_t addresses[] = {0xa1}; // Create an array of u_int8_t
   std::string names[] = {"j1"};  // Create an array of std::string
 
-  Joint_comms Joints(1, addresses, names); // Pass the arrays to the constructor
-  if(Joints.init("/dev/ttyS0",115200)){
+  Joint_comms Joints(1, addresses, names);
+  if (Joints.init("/dev/ttyS0", 115200))
+  {
     cerr << "Could not establish connection to joints" << endl;
     return -1;
   }
 
-  float angle = 0;
+  // float angle = 0;
+  vector<float> q = {0.0};
   while (1)
   {
-    Joints.joints[0].getAngle(angle);
-    cout << angle << endl;
-    usleep(500*1000);
+    if (Joints.getAngles(q) == 0)
+    {
+      for (float n : q)
+      {
+        cout << n << ' ' << endl;
+      }
+    }
+
+    // if (Joints.joints[0].getAngle(angle) == 0)
+    // {
+    //   cout << angle << endl;
+    // }
+
+    usleep(100 * 1000);
   }
 
   // Replace with your serial port name
