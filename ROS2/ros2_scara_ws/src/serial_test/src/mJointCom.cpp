@@ -87,3 +87,22 @@ int Joint_comms::getAngles(std::vector<float> &angle_v)
     }
     return 0;
 }
+
+int Joint_comms::setAngles(std::vector<float> angle_v)
+{
+    if(angle_v.size() != this->joints.size()){
+        std::cerr << "vector size mismatch" << std::endl;
+        return -2;
+    }
+
+    for(size_t  i = 0; i < this->joints.size(); i++){
+        int err = this->joints[i].setAngle(angle_v[i]);
+        if(err < 0){
+            std::cerr << "Failed to set angle for: " << this->joints[i].name << " - error: " << err << std::endl;
+            return err;
+        }
+    }
+    return 0;
+}
+
+

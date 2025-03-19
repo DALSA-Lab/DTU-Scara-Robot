@@ -56,7 +56,8 @@ public:
 
   int init(const char *portname, unsigned int baudrate);
   int getAngles(std::vector<float> &angle_v);
-  // int setAngles();
+  int setAngles(std::vector<float> angle_v);
+
   // int home();
 
   std::vector<Joint> joints;

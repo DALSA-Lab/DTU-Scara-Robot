@@ -36,7 +36,7 @@ bool configureSerialPort(int fd, int speed)
 
     tty.c_oflag = 0;     // no remapping, no delays
     tty.c_cc[VMIN] = 1;  // waits for 1 bytes
-    tty.c_cc[VTIME] = 5; // 0.5 seconds read timeout
+    tty.c_cc[VTIME] = 1; // 0.5 seconds read timeout
 
     tty.c_iflag &= ~(IXON | IXOFF | IXANY); // shut off xon/xoff ctrl
 
@@ -53,7 +53,6 @@ bool configureSerialPort(int fd, int speed)
     }
     return true;
 }
-
 
 int readFromSerialPort(int fd, u_int8_t *buffer, size_t size, int timeout_ms)
 {
@@ -90,7 +89,7 @@ int readFromSerialPort(int fd, u_int8_t *buffer, size_t size, int timeout_ms)
                 // No data read, possibly due to timeout
                 break;
             }
-            
+
             // if (byte == '\n')
             // {
             //     break; // Stop reading if newline is received
@@ -100,7 +99,6 @@ int readFromSerialPort(int fd, u_int8_t *buffer, size_t size, int timeout_ms)
             buffer[totalBytesRead++] = byte;
 
             // Check for newline character
-            
         }
     }
 
@@ -122,3 +120,18 @@ int writeToSerialPort(int fd, const u_int8_t *buffer, size_t size)
 
 // Function to close the serial port
 void closeSerialPort(int fd) { close(fd); }
+
+
+u_int8_t generateChecksum(const u_int8_t *buffer, size_t length)
+{
+    u_int32_t sum = 0; // Use a larger type to avoid overflow
+
+    // Sum all bytes in the buffer
+    for (size_t i = 0; i < length; ++i)
+    {
+        sum += buffer[i];
+    }
+
+    // Calculate the two's complement
+    return static_cast<u_int8_t>(~sum + 1);
+}

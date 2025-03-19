@@ -7,6 +7,9 @@
 #include <termios.h>
 #include <unistd.h>
 
+#define ACK 'O'
+#define NACK 'N'
+
 // Function to open the serial port
 int openSerialPort(const char* portname);
 
@@ -28,5 +31,13 @@ int writeToSerialPort(int fd, const u_int8_t* buffer, size_t size);
 
 // Function to close the serial port
 void closeSerialPort(int fd);
+
+/**
+ * Compute the two' complement checksum of the `buffer` according to SAE J1708
+ * @param buffer Pointer to buffer to compute checksum off
+ * @param length Length of the buffer
+ * @return Two's complement checksum.
+ */
+u_int8_t generateChecksum(const u_int8_t *buffer, size_t length);
 
 #endif

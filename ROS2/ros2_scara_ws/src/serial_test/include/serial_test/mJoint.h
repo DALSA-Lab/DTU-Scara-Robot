@@ -10,6 +10,8 @@ public:
   int init(int fd);
   int printInfo(void);
   int getAngle(float &angle);
+  int setAngle(float angle);
+  int moveSteps(int32_t steps);
   int checkCom(void);
 
   // int setAngle();
@@ -53,7 +55,7 @@ private:
   };
 
   int read(const stp_reg_t reg, u_int8_t *data, const size_t data_length);
-  int write(void);
+  int write(const stp_reg_t reg, u_int8_t *data, const size_t data_length);
 
   
   u_int8_t address;
