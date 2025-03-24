@@ -9,12 +9,14 @@ public:
 
   int init(int fd);
   int printInfo(void);
-  int getAngle(float &angle);
-  int setAngle(float angle);
+  int getPosition(float &angle);
+  int setPosition(float angle);
+  int getVelocity(float &degps);
+  int setVelocity(float degps);
   int moveSteps(int32_t steps);
   int checkCom(void);
 
-  // int setAngle();
+  // int setPosition();
   // int home();
 
   std::string name;
@@ -51,7 +53,8 @@ private:
     MOVETOEND = 0x28,
     STOP = 0x29,
     GETPIDERROR = 0x2A,
-    CHECKORIENTATION = 0x2B
+    CHECKORIENTATION = 0x2B,
+    GETENCODERRPM = 0x2C    
   };
 
   int read(const stp_reg_t reg, u_int8_t *data, const size_t data_length);

@@ -70,7 +70,7 @@ int Joint_comms::init(const char *portname, unsigned int baudrate)
     return 0;
 }
 
-int Joint_comms::getAngles(std::vector<float> &angle_v)
+int Joint_comms::getPositions(std::vector<float> &angle_v)
 {
     if(angle_v.size() != this->joints.size()){
         std::cerr << "vector size mismatch" << std::endl;
@@ -79,7 +79,7 @@ int Joint_comms::getAngles(std::vector<float> &angle_v)
 
     for(size_t  i = 0; i < this->joints.size(); i++){
         float a;
-        if(this->joints[i].getAngle(a) < 0){
+        if(this->joints[i].getPosition(a) < 0){
             std::cerr << "Failed to get angle from: " << this->joints[i].name << std::endl;
             return -1;
         }
@@ -88,7 +88,7 @@ int Joint_comms::getAngles(std::vector<float> &angle_v)
     return 0;
 }
 
-int Joint_comms::setAngles(std::vector<float> angle_v)
+int Joint_comms::setPositions(std::vector<float> angle_v)
 {
     if(angle_v.size() != this->joints.size()){
         std::cerr << "vector size mismatch" << std::endl;
@@ -96,7 +96,7 @@ int Joint_comms::setAngles(std::vector<float> angle_v)
     }
 
     for(size_t  i = 0; i < this->joints.size(); i++){
-        int err = this->joints[i].setAngle(angle_v[i]);
+        int err = this->joints[i].setPosition(angle_v[i]);
         if(err < 0){
             std::cerr << "Failed to set angle for: " << this->joints[i].name << " - error: " << err << std::endl;
             return err;
@@ -105,4 +105,37 @@ int Joint_comms::setAngles(std::vector<float> angle_v)
     return 0;
 }
 
+int Joint_comms::getVelocities(std::vector<float> &degps_v)
+{
+    if(degps_v.size() != this->joints.size()){
+        std::cerr << "vector size mismatch" << std::endl;
+        return -2;
+    }
 
+    for(size_t  i = 0; i < this->joints.size(); i++){
+        float a;
+        if(this->joints[i].getVelocity(a) < 0){
+            std::cerr << "Failed to get speed from: " << this->joints[i].name << std::endl;
+            return -1;
+        }
+        degps_v[i] = a;
+    }
+    return 0;
+}
+
+int Joint_comms::setVelocities(std::vector<float> degps_v)
+{
+    if(degps_v.size() != this->joints.size()){
+        std::cerr << "vector size mismatch" << std::endl;
+        return -2;
+    }
+
+    for(size_t  i = 0; i < this->joints.size(); i++){
+        int err = this->joints[i].setVelocity(degps_v[i]);
+        if(err < 0){
+            std::cerr << "Failed to set speed for: " << this->joints[i].name << " - error: " << err << std::endl;
+            return err;
+        }
+    }
+    return 0;
+}

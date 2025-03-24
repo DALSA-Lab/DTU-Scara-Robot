@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include "serial_test/mJointCom.h"
+#include <cmath>
 
 using namespace std;
 
@@ -19,17 +20,39 @@ int main(int argc, char **argv)
   }
 
   vector<float> q = {0.0};
+  vector<float> qd = {0.0};
   vector<float> q_set = {0.0};
+  vector<float> qd_set = {0.0};
+  float t = 0;
+  int period_ms = 10;
   while (1)
   {
-    // Joints.joints[0].moveSteps(5000);
-    Joints.setAngles(q_set);
-    q_set[0]+=90;
+    qd_set[0] = (float)sin(0.2 * 2 * M_PI * t)*1000;
+    // cout << qd_set[0] << endl;
+    // cout << t << endl;
+
+    Joints.setVelocities(qd_set);
+
+    usleep(period_ms * 1000);
+    t += period_ms*1.0/1000;
     
-    usleep(1000 * 1000);
-    if (Joints.getAngles(q) == 0)
+    // Joints.joints[0].moveSteps(5000);
+    // Joints.setPositions(q_set);
+    // q_set[0]+=90;
+    
+    // usleep(1000 * 1000);
+    if (Joints.getPositions(q) == 0)
     {
+      cout << "Positions: ";
       for (float n : q)
+      {
+        cout << n << ' ' << endl;
+      }
+    }
+    if (Joints.getVelocities(qd) == 0)
+    {
+      cout << "Velocities: ";
+      for (float n : qd)
       {
         cout << n << ' ' << endl;
       }

@@ -55,8 +55,10 @@ public:
   ~Joint_comms();
 
   int init(const char *portname, unsigned int baudrate);
-  int getAngles(std::vector<float> &angle_v);
-  int setAngles(std::vector<float> angle_v);
+  int getPositions(std::vector<float> &angle_v);
+  int setPositions(std::vector<float> angle_v);
+  int getVelocities(std::vector<float> &degps_v);
+  int setVelocities(std::vector<float> degps_v);
 
   // int home();
 

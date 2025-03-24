@@ -2,21 +2,6 @@
 #include "serial_test/mJoint.h"
 
 
-// int write(u_int8_t address, u_int8_t register, const u_int8_t *data)
-// {
-//     // send adr + register
-//     // await ACK
-//     // send data
-//     // await ACK
-// }
-
-// int read(u_int8_t address, u_int8_t register, const u_int8_t *data)
-// {
-//     // send adr + register
-//     // await ACK
-//     // await data
-//     // send NACK
-// }
 Joint::Joint(u_int8_t address, std::string name)
 {
     this->address = address;
@@ -36,7 +21,7 @@ int Joint::printInfo(void)
     return 0;
 }
 
-int Joint::getAngle(float &angle)
+int Joint::getPosition(float &angle)
 {
     u_int8_t buf[4];
     int32_t int_angle;
@@ -51,7 +36,7 @@ int Joint::getAngle(float &angle)
     return 0;
 }
 
-int Joint::setAngle(float angle)
+int Joint::setPosition(float angle)
 {
     u_int8_t buf[4];
     int32_t int_angle = angle*100;
@@ -64,6 +49,29 @@ int Joint::moveSteps(int32_t steps)
     u_int8_t buf[4];
     memcpy(buf, &steps, 4);
     return write(MOVESTEPS, buf, 4);
+}
+
+int Joint::getVelocity(float &degps)
+{
+    u_int8_t buf[4];
+    int32_t int_rpm;
+    if (read(GETENCODERRPM, buf, 4) < 4)
+    {
+        return -1;
+    }
+
+    memcpy(&int_rpm, buf, 4);
+    degps = 6.0 * int_rpm / 100;
+
+    return 0;
+}
+
+int Joint::setVelocity(float degps)
+{
+    u_int8_t buf[4];
+    int32_t int_rpm = degps*100/6;
+    memcpy(buf, &int_rpm, 4);
+    return write(SETRPM, buf, 4);
 }
 
 int Joint::checkCom(void)
