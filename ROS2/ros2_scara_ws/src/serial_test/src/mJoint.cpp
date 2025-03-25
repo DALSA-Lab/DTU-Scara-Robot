@@ -133,12 +133,13 @@ int Joint::checkCom(void)
 
 int Joint::read(const stp_reg_t reg, u_int8_t *data, const size_t data_length, const unsigned int timeout_ms)
 {
-    // std::cout << "DEBUG: Sending header" << std::endl;
+
     u_int8_t header_buf[3] = {this->address, reg, 0};
     tcflush(this->fd, TCIOFLUSH);
     if (writeToSerialPort(this->fd, header_buf, 3) < 0)
     {
         std::cerr << "Error writing to serial port: " << strerror(errno) << std::endl;
+        return -1;
     }
 
     u_int8_t ack_buf;
@@ -164,12 +165,18 @@ int Joint::read(const stp_reg_t reg, u_int8_t *data, const size_t data_length, c
     n = readFromSerialPort(this->fd, rx_buf, data_length + 1, timeout_ms);
     if (n <= 0)
     {
-        std::cerr << "Error reading from serial port: " << strerror(errno) << std::endl;
+        std::cerr << "ERROR: reading from serial port: " << strerror(errno) << std::endl;
+        delete[] rx_buf;
         return -1;
     }
     // std::cout << "Read from serial port: " << std::string((char *)rx_buf, n) << std::endl;
 
-    // TODO: check checksum HERE
+    if (rx_buf[data_length] != generateChecksum(rx_buf, data_length))
+    {
+        std::cerr << "ERROR: CHK failed" << std::endl;
+        delete[] rx_buf;
+        return -3; // CHK Error
+    }
 
     memcpy(data, rx_buf, data_length);
 
@@ -216,6 +223,7 @@ int Joint::write(const stp_reg_t reg, u_int8_t *data, const size_t data_length, 
     if (writeToSerialPort(this->fd, tx_buf, data_length + 1) < 0)
     {
         std::cerr << "Error writing to serial port: " << strerror(errno) << std::endl;
+        delete[] tx_buf;
         return -1; // R/W-error
     }
     // std::cout << "Read from serial port: " << std::string((char *)tx_buf, n) << std::endl;
@@ -224,11 +232,13 @@ int Joint::write(const stp_reg_t reg, u_int8_t *data, const size_t data_length, 
     if (n <= 0)
     {
         std::cerr << "Error reading from serial port: " << strerror(errno) << std::endl;
+        delete[] tx_buf;
         return -1; // R/W-error
     }
 
     if (ack_buf != ACK)
     {
+        delete[] tx_buf;
         return -2; // NACK
     }
 
