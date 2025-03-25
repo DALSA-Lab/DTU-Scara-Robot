@@ -42,11 +42,13 @@ int main(int argc, char **argv)
   int period_ms = 10;
   while (1)
   {
-    qd_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 1000;
+    // qd_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 1000;
+    q_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 360;
     // cout << qd_set[0] << endl;
     // cout << t << endl;
 
-    Joints.setVelocities(qd_set);
+    // Joints.setVelocities(qd_set);
+    // Joints.setPositions(q_set);
 
     usleep(period_ms * 1000);
     t += period_ms * 1.0 / 1000;
@@ -63,6 +65,8 @@ int main(int argc, char **argv)
       {
         cout << n << ' ' << endl;
       }
+    }else{
+      break;
     }
     if (Joints.getVelocities(qd) == 0)
     {
@@ -71,12 +75,15 @@ int main(int argc, char **argv)
       {
         cout << n << ' ' << endl;
       }
-    }
-    if (t > 2)
-    {
-      Joints.deinit();
+    }else{
+      cout << "Velocities: ";
       break;
     }
+    // if (t > 2)
+    // {
+    //   Joints.deinit();
+    //   break;
+    // }
   }
 
   return 0;

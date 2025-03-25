@@ -170,7 +170,7 @@ int Joint::read(const stp_reg_t reg, u_int8_t *data, const size_t data_length, c
         return -1;
     }
     // std::cout << "Read from serial port: " << std::string((char *)rx_buf, n) << std::endl;
-
+    DUMP_BUFFER(rx_buf,data_length+1);
     if (rx_buf[data_length] != generateChecksum(rx_buf, data_length))
     {
         std::cerr << "ERROR: CHK failed" << std::endl;

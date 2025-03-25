@@ -1,6 +1,18 @@
 #ifndef MJOINT_H
 #define MJOINT_H
 
+// #include <stdio.h>
+
+#define DUMP_BUFFER(buffer, size)                 \
+  {                                               \
+    std::cout << "Buffer dump: "; \
+    for (size_t i = 0; i < size; i++)             \
+    {                                             \
+      printf("%#x ", buffer[i]);                    \
+    }                                             \
+    std::cout << std::endl;                       \
+  }
+
 class Joint
 {
 public:
@@ -15,7 +27,7 @@ public:
   int getVelocity(float &degps);
   int setVelocity(float degps);
   int checkOrientation(const unsigned int timeout_ms, float angle = 10);
-  
+
   /**
    * Stops the motor
    * @param mode Hard: 0, Soft: 1
@@ -27,7 +39,7 @@ public:
    * @return error code.
    */
   int disableCL(void);
-  
+
   /**
    * Set the Drive Current
    * @param current 0% - 100% of driver current
