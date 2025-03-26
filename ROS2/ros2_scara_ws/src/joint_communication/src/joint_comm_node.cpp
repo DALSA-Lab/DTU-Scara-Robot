@@ -1,10 +1,8 @@
 #include <signal.h>
 #include <unistd.h>
-#include "serial_test/mJointCom.h"
+#include "joint_communication/mJointCom.h"
 #include <cmath>
 #include <lgpio.h>
-
-#include <string.h>
 
 using namespace std;
 
@@ -21,24 +19,32 @@ int main(int argc, char **argv)
   (void)argc;
   (void)argv;
 
-  int i2chandle = lgI2cOpen(1,0x8,0);
-  char txBuf[sizeof(float)];
-  float fl = 1.0;
-  memcpy(txBuf, &fl, sizeof(float));
-  cout << lgI2cWriteBlockData(i2chandle,0x02,txBuf,sizeof(float));
+  int i2chandle = lgI2cOpen(1,0x10,0);
+
+  char txBuf[] = {19,12,23,33};
+  // char rxBuf[4] = {0};
+  cout << lgI2cReadI2CBlockData(i2chandle,0x18,txBuf,4) << endl;
+  float f = 5.5;
+  // memcpy(txBuf, &f, sizeof(float));
+  memcpy(&f,txBuf, sizeof(float));
+  // cout << lguErrorText(lgI2cWriteI2CBlockData(i2chandle,0x11,txBuf,sizeof(float))) << endl;
+  cout << txBuf << endl;
+  cout << f << endl;
+
+  lgI2cClose(i2chandle);
   return 0; 
 
-  u_int8_t addresses[] = {0xa1}; // Create an array of u_int8_t
+  int addresses[] = {0x10}; // Create an array of u_int8_t
   std::string names[] = {"j1"};  // Create an array of std::string
 
   Joint_comms Joints(1, addresses, names);
-  if (Joints.init("/dev/ttyS0", 115200))
+  if (Joints.init())
   {
     cerr << "Could not establish connection to joints" << endl;
     return -1;
   }
 
-  if (Joints.checkOrientations(500))
+  if (Joints.checkOrientations())
   {
     cerr << "Could not check orientation of joints" << endl;
     return -1;

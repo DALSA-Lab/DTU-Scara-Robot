@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(serial_test)
+project(joint_communication)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -13,17 +13,17 @@ find_package(rclcpp REQUIRED) # <----custom
 find_library(LGPIO_LIBRARY lgpio) # <----custom
 
 
-add_executable(serial_node src/serial_node.cpp src/uSerial.cpp src/mJoint.cpp src/mJointCom.cpp)
-ament_target_dependencies(serial_node rclcpp) # <----custom
+add_executable(joint_comm_node src/joint_comm_node.cpp src/uI2C.cpp src/mJoint.cpp src/mJointCom.cpp)
+ament_target_dependencies(joint_comm_node rclcpp) # <----custom
 
-target_link_libraries(serial_node ${LGPIO_LIBRARY}) # <----custom
+target_link_libraries(joint_comm_node ${LGPIO_LIBRARY}) # <----custom
 
-target_include_directories(serial_node PUBLIC
+target_include_directories(joint_comm_node PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
-target_compile_features(serial_node PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+target_compile_features(joint_comm_node PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 
-install(TARGETS serial_node
+install(TARGETS joint_comm_node
   DESTINATION lib/${PROJECT_NAME})
 
 if(BUILD_TESTING)
