@@ -37,7 +37,7 @@
 #include <Wire.h>
 #include "uSerial.h"
 
-#define ADR 0x10
+#define ADR 0x11
 #define MAX_BUFFER 4  // Bytes
 
 
