@@ -1,15 +1,6 @@
 #ifndef MJOINT_H
 #define MJOINT_H
 
-#define DUMP_BUFFER(buffer, size)     \
-  {                                   \
-    std::cout << "Buffer dump: ";     \
-    for (size_t i = 0; i < size; i++) \
-    {                                 \
-      printf("%#x ", buffer[i]);      \
-    }                                 \
-    std::cout << std::endl;           \
-  }
 
 class Joint
 {
@@ -24,7 +15,7 @@ public:
   int setPosition(float angle);
   int getVelocity(float &degps);
   int setVelocity(float degps);
-  int checkOrientation(float angle = 10);
+  int checkOrientation(float angle = 10.0);
 
   /**
    * Stops the motor

@@ -1,4 +1,6 @@
 #include "joint_communication/uI2C.h"
+#include "joint_communication/common.h"
+
 #include <lgpio.h>
 
 
@@ -24,7 +26,7 @@ int readFromI2CDev(const int dev_handle, const int reg, char *buffer, const int 
 
 int writeToI2CDev(const int dev_handle, const int reg, char *buffer, const int data_length)
 {
-    int rc = lgI2cWriteBlockData(dev_handle, reg, buffer, data_length);
+    int rc = lgI2cWriteI2CBlockData(dev_handle, reg, buffer, data_length);
     if (rc < 0) {
         std::cerr << "I2C WRITE ERROR: \'" << lguErrorText(rc) << "\'" << std::endl;
     }
