@@ -270,8 +270,6 @@ void stepper_reg_handler(uint8_t reg) {
         float v;
         readValue<float>(v, rx_buf, rx_length);
         stepper.checkOrientation(v);
-        delay(1000);
-        stepper.moveToAngle(90);
         break;
       }
     case GETENCODERRPM:
@@ -306,7 +304,6 @@ void setup(void) {
   stepper.setControlThreshold(15);  //Adjust the control threshold - here set to 15 microsteps before making corrective action
   stepper.setCurrent(10);
   stepper.setHoldCurrent(10);
-  // stepper.disableStallguard();
   // stepper.enableStallguard(10, true, 2);
   stepper.disableStallguard();
   Serial.begin(9600);
@@ -318,11 +315,6 @@ void setup(void) {
 }
 
 void loop(void) {
-  // stepper.moveToAngle(0);
-  // delay(1000);
-  // stepper.moveToAngle(90);
-  // delay(1000);
-  // stepper.moveToAngle(0);
   if (stepper.isStalled(10)) {
     Serial.println("STALLED");
   }
