@@ -1,60 +1,38 @@
-/********************************************************************************************
-* 	    File:  closedLoop.ino                                              		            *
-*		Version:    2.3.0                                          						    *
-*      	Date: 		October 7th, 2023  	                                    				*
-*       Author:  Thomas Hørring Olsen                                                       *
-*  Description:  Example sketch for closed loop position control!                           *                           *
-*                This example demonstrates how easy closed loop position control can be     *
-*                achieved using the uStepper S32 !                                          *
-*                The only thing needed to activate closed loop control, is in the           *
-*                stepper.setup() function, where the object is initiated with the keyword   *
-*                "CLOSEDLOOP", followed by the number of steps per revolution setting.      *
-*                                                                                           *
-*                                                                                           *
-* For more information, check out the documentation:                                        *
-*    http://ustepper.com/docs/usteppers/html/index.html                                     *
-*                                                                                           *
-*                                                                                           *
-*********************************************************************************************
-*	(C) 2023                                                                                *
-*                                                                                           *
-*	uStepper ApS                                                                            *
-*	www.ustepper.com                                                                        *
-*	administration@ustepper.com                                                             *
-*                                                                                           *
-*	The code contained in this file is released under the following open source license:    *
-*                                                                                           *
-*			Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International         *
-*                                                                                           *
-* 	The code in this file is provided without warranty of any kind - use at own risk!       *
-* 	neither uStepper ApS nor the author, can be held responsible for any damage             *
-* 	caused by the use of the code contained in this file !                                  *
-*                                                                                           *
-*                                                                                           *
-********************************************************************************************/
-
 #include <UstepperS32.h>
 #include <Wire.h>
 #include "uSerial.h"
 
-#define ADR 0x11
+#define ADR 0x10
 #define MAX_BUFFER 4  // Bytes
 
 
 UstepperS32 stepper;
 
+uint8_t reg = 0;
 uint8_t rx_buf[MAX_BUFFER] = { 0 };
 uint8_t tx_buf[MAX_BUFFER] = { 0 };
 bool tx_data_ready = 0;
+bool rx_data_ready = 0;
+
 size_t tx_length = 0;
 size_t rx_length = 0;
 
-void stepper_reg_handler(uint8_t reg);
+/**
+ * Handles commands, is called from the main loop since it contains blocking function calls which can not be called from the I2C ISR.
+ * @param reg command code
+ */
+void stepper_receive_handler(uint8_t reg);
+
+/**
+ * Handles read request, is called from the I2C ISR since reads from the stepper are non-blocking. Also Handling reads and the subsequent wire.write(), did not work from the main loop.
+ * @param reg command code
+ */void stepper_request_handler(uint8_t reg);
 
 void receiveEvent(int n) {
-  Serial.println("receive");
+  Serial.println("receive"); 
 
-  uint8_t reg = Wire.read();
+  reg = Wire.read();
+  rx_data_ready = 1;
   Serial.println(reg);
   int i = 0;
   while (Wire.available()) {
@@ -64,32 +42,18 @@ void receiveEvent(int n) {
   }
   rx_length = i;
   if (i) { DUMP_BUFFER(rx_buf, rx_length); }
-  stepper_reg_handler(reg);
 }
 
 void requestEvent() {
   Serial.println("request");
-  if (tx_data_ready) {
-    Serial.println("DEBUG: TX Data Ready, Sending Data:");
-    DUMP_BUFFER(tx_buf, tx_length);
-    tx_data_ready = 0;
-  } else {
-    Serial.println("DEBUG: TX Data not ready yet");
-    memset(tx_buf, 0, MAX_BUFFER);
-  }
+  stepper_request_handler(reg);
+  DUMP_BUFFER(tx_buf, tx_length);
   Wire.write(tx_buf, tx_length);
+  // TODO: consider checking for rx_ready flag
 }
 
-void stepper_reg_handler(uint8_t reg) {
+void stepper_receive_handler(uint8_t reg) {
   switch (reg) {
-    case PING:
-      {
-        Serial.print("Executing PING\n");
-        writeValue<char>(ACK, tx_buf, tx_length);
-        tx_data_ready = true;
-        break;
-      }
-
     case SETUP:
       Serial.print("Executing SETUP\n");
       break;
@@ -102,10 +66,6 @@ void stepper_reg_handler(uint8_t reg) {
         stepper.setRPM(v);
         break;
       }
-
-    case GETDRIVERRPM:
-      Serial.print("Executing GETDRIVERRPM\n");
-      break;
 
       // case MOVESTEPS:
       //   {
@@ -141,21 +101,13 @@ void stepper_reg_handler(uint8_t reg) {
         break;
       }
 
-    // case GETMOTORSTATE:
-    //   Serial.print("Executing GETMOTORSTATE\n");
-    //   break;
+
 
     // case RUNCOTINOUS:
     //   Serial.print("Executing RUNCOTINOUS\n");
     //   break;
 
-    case ANGLEMOVED:
-      {
-        Serial.print("Executing ANGLEMOVED\n");
-        writeValue<float>(stepper.angleMoved(), tx_buf, tx_length);
-        tx_data_ready = 1;
-        break;
-      }
+
 
     // case SETCURRENT:
     //   {
@@ -199,9 +151,7 @@ void stepper_reg_handler(uint8_t reg) {
     //   Serial.print("Executing CLEARSTALL\n");
     //   break;
 
-    // case ISSTALLED:
-    //   Serial.print("Executing ISSTALLED\n");
-    //   break;
+
 
     // case SETBRAKEMODE:
     //   {
@@ -260,9 +210,7 @@ void stepper_reg_handler(uint8_t reg) {
     //     }
     //     break;
     //   }
-    // case GETPIDERROR:
-    //   Serial.print("Executing GETPIDERROR\n");
-    //   break;
+
 
     case CHECKORIENTATION:
       {
@@ -272,6 +220,50 @@ void stepper_reg_handler(uint8_t reg) {
         stepper.checkOrientation(v);
         break;
       }
+
+
+    default:
+      Serial.print("Unknown command\n");
+      break;
+  }
+}
+
+void stepper_request_handler(uint8_t reg) {
+  switch (reg) {
+    case PING:
+      {
+        Serial.print("Executing PING\n");
+        writeValue<char>(ACK, tx_buf, tx_length);
+        tx_data_ready = true;
+        break;
+      }
+
+    case GETDRIVERRPM:
+      Serial.print("Executing GETDRIVERRPM\n");
+      break;
+
+
+    // case GETMOTORSTATE:
+    //   Serial.print("Executing GETMOTORSTATE\n");
+    //   break;
+
+
+    case ANGLEMOVED:
+      {
+        Serial.print("Executing ANGLEMOVED\n");
+        writeValue<float>(stepper.angleMoved(), tx_buf, tx_length);
+        tx_data_ready = 1;
+        break;
+      }
+
+    // case ISSTALLED:
+    //   Serial.print("Executing ISSTALLED\n");
+    //   break;
+
+    // case GETPIDERROR:
+    //   Serial.print("Executing GETPIDERROR\n");
+    //   break;
+
     case GETENCODERRPM:
       {
         Serial.print("Executing GETENCODERRPM\n");
@@ -282,7 +274,7 @@ void stepper_reg_handler(uint8_t reg) {
 
     default:
       Serial.print("Unknown function\n");
-      Serial2.write(NACK);
+      writeValue<uint32_t>(0, tx_buf, tx_length);
       break;
   }
 }
@@ -315,6 +307,12 @@ void setup(void) {
 }
 
 void loop(void) {
+
+  if(rx_data_ready){
+    rx_data_ready = 0;
+    stepper_receive_handler(reg);
+  }
+
   if (stepper.isStalled(10)) {
     Serial.println("STALLED");
   }
