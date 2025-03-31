@@ -1,16 +1,6 @@
 #ifndef MJOINT_H
 #define MJOINT_H
 
-#define DUMP_BUFFER(buffer, size)     \
-  {                                   \
-    std::cout << "Buffer dump: ";     \
-    for (size_t i = 0; i < size; i++) \
-    {                                 \
-      printf("%#x ", buffer[i]);      \
-    }                                 \
-    std::cout << std::endl;           \
-  }
-
 class Joint
 {
 public:
@@ -24,7 +14,7 @@ public:
   int setPosition(float angle);
   int getVelocity(float &degps);
   int setVelocity(float degps);
-  int checkOrientation(float angle = 10);
+  int checkOrientation(float angle = 10.0);
 
   /**
    * Stops the motor
@@ -58,6 +48,21 @@ public:
    * @return error code.
    */
   int setBrakeMode(u_int8_t mode);
+
+  /**
+   * checks if the motor is stalled
+   * @param stall not stalled: 0, stalled: 1
+   * @return error code.
+   */
+  int getStall(u_int8_t &stall);
+
+  /**
+   * @brief Enable TMC5130 StallGuard
+   * This function enables the builtin stallguard offered from TMC5130 stepper driver.
+   * The threshold should be tuned as to trigger stallguard before a step is lost.
+   * @param threshold stall sensitivity. A value between -64 and +63
+   */
+  int enableStallguard(int8_t threshold);
 
   int moveSteps(int32_t steps);
   int checkCom(void);

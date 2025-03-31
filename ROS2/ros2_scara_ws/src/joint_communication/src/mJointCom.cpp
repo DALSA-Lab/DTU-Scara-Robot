@@ -274,3 +274,17 @@ int Joint_comms::setBrakeModes(u_int8_t mode)
     }
     return 0;
 }
+
+int Joint_comms::enableStallguards(std::vector<int8_t> thresholds)
+{
+    for (size_t i = 0; i < this->joints.size(); i++)
+    {
+        int err = this->joints[i].enableStallguard(thresholds[i]);
+        if (err < 0)
+        {
+            std::cerr << "Failed to enable stallguard for motor: " << this->joints[i].name << " - error: " << err << std::endl;
+            return err;
+        }
+    }
+    return 0;
+}

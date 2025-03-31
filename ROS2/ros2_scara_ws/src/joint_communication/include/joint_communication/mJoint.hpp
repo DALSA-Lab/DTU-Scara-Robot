@@ -23,7 +23,8 @@ int Joint::write(const stp_reg_t reg, T data)
     size_t size = sizeof(T);
     char *buf = new char[size];
     memcpy(buf, &data, size);
+    int rc = writeToI2CDev(this->handle, reg, buf, size);
     delete[] buf;
-    return !writeToI2CDev(this->handle, reg, buf, size) ? 0 : -1;
+    return rc;
 }
 
