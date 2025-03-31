@@ -1,4 +1,5 @@
 #include <UstepperS32.h>
+
 #include <Wire.h>
 #include "uSerial.h"
 
@@ -26,10 +27,11 @@ void stepper_receive_handler(uint8_t reg);
 /**
  * Handles read request, is called from the I2C ISR since reads from the stepper are non-blocking. Also Handling reads and the subsequent wire.write(), did not work from the main loop.
  * @param reg command code
- */void stepper_request_handler(uint8_t reg);
+ */
+void stepper_request_handler(uint8_t reg);
 
 void receiveEvent(int n) {
-  Serial.println("receive"); 
+  Serial.println("receive");
 
   reg = Wire.read();
   rx_data_ready = 1;
@@ -103,64 +105,69 @@ void stepper_receive_handler(uint8_t reg) {
 
 
 
-    // case RUNCOTINOUS:
-    //   Serial.print("Executing RUNCOTINOUS\n");
-    //   break;
+      // case RUNCOTINOUS:
+      //   Serial.print("Executing RUNCOTINOUS\n");
+      //   break;
 
 
 
-    // case SETCURRENT:
-    //   {
-    //     Serial.print("Executing SETCURRENT\n");
-    //     uint8_t v;
-    //     readValue<uint8_t>(v, rx_buf, rx_length);
-    //     stepper.setCurrent(v);
-    //     break;
-    //   }
+    case SETCURRENT:
+      {
+        Serial.print("Executing SETCURRENT\n");
+        uint8_t v;
+        readValue<uint8_t>(v, rx_buf, rx_length);
+        stepper.setCurrent(v);
+        break;
+      }
 
-    // case SETHOLDCURRENT:
-    //   {
-    //     Serial.print("Executing SETHOLDCURRENT\n");
-    //     uint8_t v;
-    //     readValue<uint8_t>(v, rx_buf, rx_length);
-    //     stepper.setHoldCurrent(v);
-    //     break;
-    //   }
+    case SETHOLDCURRENT:
+      {
+        Serial.print("Executing SETHOLDCURRENT\n");
+        uint8_t v;
+        readValue<uint8_t>(v, rx_buf, rx_length);
+        stepper.setHoldCurrent(v);
+        break;
+      }
 
-    // case SETMAXACCELERATION:
-    //   Serial.print("Executing SETMAXACCELERATION\n");
-    //   break;
+      // case SETMAXACCELERATION:
+      //   Serial.print("Executing SETMAXACCELERATION\n");
+      //   break;
 
-    // case SETMAXDECELERATION:
-    //   Serial.print("Executing SETMAXDECELERATION\n");
-    //   break;
+      // case SETMAXDECELERATION:
+      //   Serial.print("Executing SETMAXDECELERATION\n");
+      //   break;
 
-    // case SETMAXVELOCITY:
-    //   Serial.print("Executing SETMAXVELOCITY\n");
-    //   break;
+      // case SETMAXVELOCITY:
+      //   Serial.print("Executing SETMAXVELOCITY\n");
+      //   break;
 
-    // case ENABLESTALLGUARD:
-    //   Serial.print("Executing ENABLESTALLGUARD\n");
-    //   break;
+    case ENABLESTALLGUARD:
+      {
+        Serial.print("Executing ENABLESTALLGUARD\n");
+        int8_t v;
+        readValue<int8_t>(v, rx_buf, rx_length);
+        stepper.enableStallguard(v, true, 2);
+        break;
+      }
 
-    // case DISABLESTALLGUARD:
-    //   Serial.print("Executing DISABLESTALLGUARD\n");
-    //   break;
+      // case DISABLESTALLGUARD:
+      //   Serial.print("Executing DISABLESTALLGUARD\n");
+      //   break;
 
-    // case CLEARSTALL:
-    //   Serial.print("Executing CLEARSTALL\n");
-    //   break;
+      // case CLEARSTALL:
+      //   Serial.print("Executing CLEARSTALL\n");
+      //   break;
 
 
 
-    // case SETBRAKEMODE:
-    //   {
-    //     Serial.print("Executing SETBRAKEMODE\n");
-    //     uint8_t v;
-    //     readValue<uint8_t>(v, rx_buf, rx_length);
-    //     stepper.setBrakeMode(v);
-    //     break;
-    //   }
+    case SETBRAKEMODE:
+      {
+        Serial.print("Executing SETBRAKEMODE\n");
+        uint8_t v;
+        readValue<uint8_t>(v, rx_buf, rx_length);
+        stepper.setBrakeMode(v);
+        break;
+      }
 
     case ENABLEPID:
       Serial.print("Executing ENABLEPID\n");
@@ -174,43 +181,29 @@ void stepper_receive_handler(uint8_t reg) {
       Serial.print("Executing ENABLECLOSEDLOOP\n");
       break;
 
-    // case DISABLECLOSEDLOOP:
-    //   {
-    //     Serial.print("Executing DISABLECLOSEDLOOP\n");
-    //     Serial2.write(ACK);  // send ACK to show that command was understood, then execute, then send
-    //     int8_t v;
-    //     if (readValue<int8_t>(v, rx_buf, rx_length) == 0) {
-    //       stepper.disableClosedLoop();
-    //       Serial2.write(ACK);
-    //     } else {
-    //       // Send NACK
-    //       Serial2.write(NACK);
-    //     }
-    //     break;
-    //   }
+      case DISABLECLOSEDLOOP:
+      {
+        Serial.print("Executing DISABLECLOSEDLOOP\n");
+        uint8_t v;
+        readValue<uint8_t>(v, rx_buf, rx_length);
+        stepper.disableClosedLoop();
+        break;
+      }
+      // case SETCONTROLTHRESHOLD:
+      //   Serial.print("Executing SETCONTROLTHRESHOLD\n");
+      //   break;
+      // case MOVETOEND:
+      //   Serial.print("Executing MOVETOEND\n");
+      //   break;
 
-    // case SETCONTROLTHRESHOLD:
-    //   Serial.print("Executing SETCONTROLTHRESHOLD\n");
-    //   break;
-    // case MOVETOEND:
-    //   Serial.print("Executing MOVETOEND\n");
-    //   break;
-
-    // case STOP:
-    //   {
-    //     Serial.print("Executing STOP\n");
-    //     Serial2.write(ACK);  // send ACK to show that command was understood, then execute, then send
-    //     int8_t v;
-    //     if (readValue<int8_t>(v, rx_buf, rx_length) == 0) {
-    //       stepper.stop(v);
-    //       Serial2.write(ACK);
-    //     } else {
-    //       // Send NACK
-    //       Serial2.write(NACK);
-    //     }
-    //     break;
-    //   }
-
+      case STOP:
+      {
+        Serial.print("Executing STOP\n");
+        uint8_t v;
+        readValue<uint8_t>(v, rx_buf, rx_length);
+        stepper.stop(v);
+        break;
+      }
 
     case CHECKORIENTATION:
       {
@@ -243,9 +236,13 @@ void stepper_request_handler(uint8_t reg) {
       break;
 
 
-    // case GETMOTORSTATE:
-    //   Serial.print("Executing GETMOTORSTATE\n");
-    //   break;
+      // case GETMOTORSTATE:
+      //   {
+      //     Serial.print("Executing GETMOTORSTATE\n");
+      //     writeValue<uint8_t>(stepper.driver.readMotorStatus(), tx_buf, tx_length);
+      //     tx_data_ready = 1;
+      //     break;
+      //   }
 
 
     case ANGLEMOVED:
@@ -256,13 +253,21 @@ void stepper_request_handler(uint8_t reg) {
         break;
       }
 
-    // case ISSTALLED:
-    //   Serial.print("Executing ISSTALLED\n");
-    //   break;
+    case ISSTALLED:
+      {
+        Serial.print("Executing ISSTALLED\n");
+        writeValue<uint8_t>(stepper.isStalled(), tx_buf, tx_length);
+        // writeValue<uint8_t>(!stepper.getMotorState(STALLGUARD2), tx_buf, tx_length);
+        // writeValue<uint8_t>(stepper.driver.readRegister(DRV_STATUS) & (1 << 24) ? 1 : 0, tx_buf, tx_length);
 
-    // case GETPIDERROR:
-    //   Serial.print("Executing GETPIDERROR\n");
-    //   break;
+        // Serial.println(stepper.driver.readRegister(DRV_STATUS) & (1 << 24), HEX);
+        tx_data_ready = 1;
+        break;
+      }
+
+      // case GETPIDERROR:
+      //   Serial.print("Executing GETPIDERROR\n");
+      //   break;
 
     case GETENCODERRPM:
       {
@@ -296,24 +301,28 @@ void setup(void) {
   stepper.setControlThreshold(15);  //Adjust the control threshold - here set to 15 microsteps before making corrective action
   stepper.setCurrent(10);
   stepper.setHoldCurrent(10);
-  // stepper.enableStallguard(10, true, 2);
-  stepper.disableStallguard();
+  // stepper.enableStallguard(10, true, 60);
+  // stepper.disableStallguard();
+
+  // stepper.encoder.encoderStallDetectSensitivity = 1;  //Encoder stalldetect sensitivity - From -10 to 1 where lower number is less sensitive and higher is more sensitive. -0.25 works for most.
+  // stepper.encoder.encoderStallDetectEnable = 1;           //Enable the encoder stall detect
+
   Serial.begin(9600);
 
   Wire.onReceive(receiveEvent);
   Wire.onRequest(requestEvent);
-  
-  // stepper.checkOrientation(30.0);
 }
 
 void loop(void) {
 
-  if(rx_data_ready){
+  if (rx_data_ready) {
     rx_data_ready = 0;
     stepper_receive_handler(reg);
   }
 
-  if (stepper.isStalled(10)) {
-    Serial.println("STALLED");
-  }
+
+  // if (!stepper.getMotorState(STALLGUARD2)) {
+  //   Serial.println("STALLED");
+  // }
+  delay(1);
 }
