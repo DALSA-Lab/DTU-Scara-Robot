@@ -2,12 +2,8 @@
 #define MJOINTCOM_H
 
 #include <vector>
-// #include <errno.h>
 #include <iostream>
-// #include <unistd.h>
-#include "serial_test/mJoint.h"
-
-
+#include "joint_communication/mJoint.h"
 
 class Joint_comms
 {
@@ -19,10 +15,10 @@ public:
    * @param names n-sized array of string device names
    * @return Joint_comms object.
    */
-  Joint_comms(size_t n, u_int8_t addresses[], std::string names[]);
+  Joint_comms(size_t n, const int addresses[], std::string names[]);
   ~Joint_comms();
 
-  int init(const char *portname, unsigned int baudrate);
+  int init(void);
   int deinit(void);
   int getPositions(std::vector<float> &angle_v);
   int setPositions(std::vector<float> angle_v);
@@ -32,19 +28,15 @@ public:
   /**
    * Sequentially checks the orientations of each joint.
    * @param angle_v vector of degrees to rotate to check the orientation.
-   * @param timeout_ms a per joint (!) timeout, since the orientation check is
-   * blocking on the joint controller one has to wait min. 500ms to receive a ACK indicating successfull execution.
    * @return error code.
    */
-  int checkOrientations(std::vector<float> angle_v, const unsigned int timeout_ms = 500);
+  int checkOrientations(std::vector<float> angle_v);
 
   /**
    * Overload to use standard angle of 10 degrees
-   * @param timeout_ms a per joint (!) timeout, since the orientation check is
-   * blocking on the joint controller one has to wait min. 500ms to receive a ACK indicating successfull execution.
    * @return error code.
    */
-  int checkOrientations(const unsigned int timeout_ms = 500);
+  int checkOrientations(float angle = 10.0);
 
   /**
    * Stops the motors
@@ -93,13 +85,19 @@ public:
    */
   int setBrakeModes(u_int8_t mode);
 
+  /**
+   * @brief Enable TMC5130 StallGuards for each driver
+   * The threshold should be tuned as to trigger stallguard before a step is lost.
+   * @param threshold stall sensitivity. A value between -64 and +63
+   */
+  int enableStallguards(std::vector<int8_t> thresholds);
+
   // int home();
 
   std::vector<Joint> joints;
 
 protected:
 private:
-  int fd;
 };
 
 #endif

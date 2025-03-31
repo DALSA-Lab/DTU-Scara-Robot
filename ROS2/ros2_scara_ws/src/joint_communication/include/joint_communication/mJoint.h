@@ -1,32 +1,20 @@
 #ifndef MJOINT_H
 #define MJOINT_H
 
-// #include <stdio.h>
-
-#define DUMP_BUFFER(buffer, size)                 \
-  {                                               \
-    std::cout << "Buffer dump: "; \
-    for (size_t i = 0; i < size; i++)             \
-    {                                             \
-      printf("%#x ", buffer[i]);                    \
-    }                                             \
-    std::cout << std::endl;                       \
-  }
-
 class Joint
 {
 public:
-  Joint(u_int8_t address, std::string name);
+  Joint(const int address, std::string name);
   // ~Joint();
 
-  int init(int fd);
+  int init(void);
   int deinit(void);
   int printInfo(void);
   int getPosition(float &angle);
   int setPosition(float angle);
   int getVelocity(float &degps);
   int setVelocity(float degps);
-  int checkOrientation(const unsigned int timeout_ms, float angle = 10);
+  int checkOrientation(float angle = 10.0);
 
   /**
    * Stops the motor
@@ -60,6 +48,21 @@ public:
    * @return error code.
    */
   int setBrakeMode(u_int8_t mode);
+
+  /**
+   * checks if the motor is stalled
+   * @param stall not stalled: 0, stalled: 1
+   * @return error code.
+   */
+  int getStall(u_int8_t &stall);
+
+  /**
+   * @brief Enable TMC5130 StallGuard
+   * This function enables the builtin stallguard offered from TMC5130 stepper driver.
+   * The threshold should be tuned as to trigger stallguard before a step is lost.
+   * @param threshold stall sensitivity. A value between -64 and +63
+   */
+  int enableStallguard(int8_t threshold);
 
   int moveSteps(int32_t steps);
   int checkCom(void);
@@ -105,15 +108,20 @@ private:
     GETENCODERRPM = 0x2C
   };
 
-  int read(const stp_reg_t reg, u_int8_t *data, const size_t data_length, const unsigned int timeout_ms = 100);
-  int write(const stp_reg_t reg, u_int8_t *data, const size_t data_length, const unsigned int timeout_ms = 100);
+  template <typename T>
+  int read(const stp_reg_t reg, T &data, u_int8_t &flags);
 
-  u_int8_t address;
+  template <typename T>
+  int write(const stp_reg_t reg, T data, u_int8_t &flags);
+
+  int address;
   int multiplier = 1;
   int offset = 0;
   int range[2] = {0, 0};
 
-  int fd;
+  int handle = -1;
 };
+
+#include "joint_communication/mJoint.hpp"
 
 #endif
