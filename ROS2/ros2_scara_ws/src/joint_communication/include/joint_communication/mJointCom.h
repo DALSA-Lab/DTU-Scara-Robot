@@ -85,6 +85,13 @@ public:
    */
   int setBrakeModes(u_int8_t mode);
 
+  /**
+   * @brief Enable TMC5130 StallGuards for each driver
+   * The threshold should be tuned as to trigger stallguard before a step is lost.
+   * @param threshold stall sensitivity. A value between -64 and +63
+   */
+  int enableStallguards(std::vector<int8_t> thresholds);
+
   // int home();
 
   std::vector<Joint> joints;

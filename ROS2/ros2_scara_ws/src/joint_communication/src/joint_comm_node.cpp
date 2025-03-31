@@ -22,13 +22,13 @@ int main(int argc, char **argv)
   // int i2chandle = lgI2cOpen(1,0x10,0);
   // char txBuf[] = {19,12,23,33};
   // // char rxBuf[4] = {0};
-  // cout << lgI2cReadI2CBlockData(i2chandle,0x18,txBuf,4) << endl;
-  // float f = 10.0;
-  // memcpy(txBuf, &f, sizeof(float));
-  // memcpy(&f,txBuf, sizeof(float));
-  // cout << lguErrorText(lgI2cWriteI2CBlockData(i2chandle,0x2b,txBuf,sizeof(float))) << endl;
+  // cout << lgI2cReadI2CBlockData(i2chandle,0x0f,txBuf,1) << endl;
+  // // float f = 10.0;
+  // // memcpy(txBuf, &f, sizeof(float));
+  // // memcpy(&f,txBuf, sizeof(float));
+  // // cout << lguErrorText(lgI2cWriteI2CBlockData(i2chandle,0x2b,txBuf,sizeof(float))) << endl;
   // cout << txBuf << endl;
-  // cout << f << endl;
+  // // cout << f << endl;
 
   // lgI2cClose(i2chandle);
   // return 0; 
@@ -43,11 +43,17 @@ int main(int argc, char **argv)
     return -1;
   }
 
-  // if (Joints.checkOrientations())
-  // {
-  //   cerr << "Could not check orientation of joints" << endl;
-  //   return -1;
-  // }
+  if (Joints.checkOrientations(10))
+  {
+    cerr << "Could not check orientation of joints" << endl;
+    return -1;
+  }
+
+  if (Joints.enableStallguards({10,10}))
+  {
+    cerr << "Could not enable stallguards of joints" << endl;
+    return -1;
+  }
 
   usleep(1000 * 1000);
 
@@ -62,12 +68,21 @@ int main(int argc, char **argv)
   {
     // qd_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 1000;
     q_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 360;
-    q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 360;
+    q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 3600;
     // cout << qd_set[0] << endl;
     // cout << t << endl;
 
     // Joints.setVelocities(qd_set);
     Joints.setPositions(q_set);
+    usleep(10 * 1000);
+
+    uint8_t stalled;
+    Joints.joints[0].getStall(stalled);
+    if(stalled){
+      cout << "STALLED" << endl;
+      break;
+    }
+
 
     usleep(period_ms * 1000);
     t += period_ms * 1.0 / 1000;
@@ -86,7 +101,7 @@ int main(int argc, char **argv)
       }
       cout << endl;
     }else{
-      // break;
+      break;
     }
     if (Joints.getVelocities(qd) == 0)
     {
@@ -97,15 +112,14 @@ int main(int argc, char **argv)
       }
       cout << endl;
     }else{
-      // break;
+      break;
     }
-    // if (t > 2)
+    // if (t > 0.5)
     // {
-    //   Joints.deinit();
+    //   // Joints.deinit();
     //   break;
     // }
-    // return 0;
   }
-
+  Joints.deinit();
   return 0;
 }

@@ -91,6 +91,16 @@ int Joint::setBrakeMode(u_int8_t mode)
     return this->write(SETBRAKEMODE,mode);
 }
 
+int Joint::getStall(u_int8_t &stall)
+{
+    return this->read(ISSTALLED,stall);
+}
+
+int Joint::enableStallguard(int8_t threshold)
+{
+    return this->write(ENABLESTALLGUARD,threshold);
+}
+
 int Joint::checkCom(void)
 {
     u_int8_t buf;
