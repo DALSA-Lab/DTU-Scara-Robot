@@ -80,7 +80,7 @@ int Joint_comms::setPositions(std::vector<float> angle_v)
     for (size_t i = 0; i < this->joints.size(); i++)
     {
         int err = this->joints[i].setPosition(angle_v[i]);
-        if (err < 0)
+        if (err != 0)
         {
             std::cerr << "Failed to set angle for: " << this->joints[i].name << " - error: " << err << std::endl;
             return err;
@@ -269,6 +269,20 @@ int Joint_comms::setBrakeModes(u_int8_t mode)
         if (err < 0)
         {
             std::cerr << "Failed to set brake mode for motor: " << this->joints[i].name << " - error: " << err << std::endl;
+            return err;
+        }
+    }
+    return 0;
+}
+
+int Joint_comms::enableStallguards(std::vector<int8_t> thresholds)
+{
+    for (size_t i = 0; i < this->joints.size(); i++)
+    {
+        int err = this->joints[i].enableStallguard(thresholds[i]);
+        if (err < 0)
+        {
+            std::cerr << "Failed to enable stallguard for motor: " << this->joints[i].name << " - error: " << err << std::endl;
             return err;
         }
     }

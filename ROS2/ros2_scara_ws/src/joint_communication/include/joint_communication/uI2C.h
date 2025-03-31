@@ -9,6 +9,9 @@
 
 #define ACK 'O'
 #define NACK 'N'
+#define RFLAGS_SIZE 1
+#define MAX_BUFFER 4  // Bytes
+
 
 /**
  * Initiates an I2C device on the bus
@@ -31,11 +34,12 @@ int readFromI2CDev(const int dev_handle, const int reg, char *buffer, const int 
  * writes block of bytes from buffer to device
  * @param dev_handle device handle obtained from `openI2CDevHandle`
  * @param reg the command/data register
- * @param buffer pointer to data buffer holding the data to send
+ * @param tx_buffer pointer to data buffer holding the data to send
  * @param data_length number of bytes to send
+ * @param RFLAGS_buffer buffer to hold returned flags
  * @return 0 on OK, negative on error.
  */
-int writeToI2CDev(const int dev_handle, const int reg, char *buffer, const int data_length);
+int writeToI2CDev(const int dev_handle, const int reg, char *tx_buffer, const int data_length, char *RFLAGS_buffer);
 
 /**
  * close an I2C device on the bus
