@@ -3,11 +3,11 @@
 
 #include <lgpio.h>
 
-
 int openI2CDevHandle(const int dev_addr)
 {
     int rc = lgI2cOpen(1, dev_addr, 0);
-    if (rc < 0) {
+    if (rc < 0)
+    {
         std::cerr << "I2C OPEN ERROR: \'" << lguErrorText(rc) << "\'" << std::endl;
     }
     return rc;
@@ -15,19 +15,33 @@ int openI2CDevHandle(const int dev_addr)
 
 int readFromI2CDev(const int dev_handle, const int reg, char *buffer, const int data_length)
 {
-    // char cmnd[] = {5, 1, reg, 4, 4,0};
-    // int rc = lgI2cZip(dev_handle,cmnd,8,txBuf,5);
     int rc = lgI2cReadI2CBlockData(dev_handle, reg, buffer, data_length);
-    if (rc < 0) {
+    // DUMP_BUFFER(buffer, data_length);
+    if (rc < 0)
+    {
         std::cerr << "I2C READ ERROR: \'" << lguErrorText(rc) << "\'" << std::endl;
     }
     return rc;
 }
 
-int writeToI2CDev(const int dev_handle, const int reg, char *buffer, const int data_length)
+int writeToI2CDev(const int dev_handle, const int reg, char *tx_buffer, const int data_length, char *RFLAGS_buffer)
 {
-    int rc = lgI2cWriteI2CBlockData(dev_handle, reg, buffer, data_length);
-    if (rc < 0) {
+
+    char cmnd[MAX_BUFFER + 6];
+    cmnd[0] = 5;                                  // CMD: Write
+    cmnd[1] = 1 + static_cast<char>(data_length); // N Bytes: 1 (reg) + data_length
+    cmnd[2] = reg;                                // Data: register
+    memcpy(&cmnd[3], tx_buffer, data_length);
+    cmnd[3 + data_length] = 4;           // CMD: Read
+    cmnd[4 + data_length] = RFLAGS_SIZE; // N Bytes: RFLAGS_SIZE
+    cmnd[5 + data_length] = 0;           // Terminate Buffer
+    // {5, 1 + static_cast<char>(data_length), static_cast<char>(reg), 4, RFLAGS_SIZE,0};
+
+    /* There is a bug in the lgpio library that requires `rxCount` to be set n+1 higher*/
+    int rc = lgI2cZip(dev_handle, cmnd, 6 + data_length, RFLAGS_buffer, RFLAGS_SIZE + 1);
+    // DUMP_BUFFER(RFLAGS_buffer, RFLAGS_SIZE);
+    if (rc < 0)
+    {
         std::cerr << "I2C WRITE ERROR: \'" << lguErrorText(rc) << "\'" << std::endl;
     }
     return rc;
@@ -36,7 +50,8 @@ int writeToI2CDev(const int dev_handle, const int reg, char *buffer, const int d
 int closeI2CDevHandle(const int dev_handle)
 {
     int rc = lgI2cClose(dev_handle);
-    if (rc < 0) {
+    if (rc < 0)
+    {
         std::cerr << "I2C CLOSE ERROR: \'" << lguErrorText(rc) << "\'" << std::endl;
     }
     return rc;

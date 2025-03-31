@@ -109,10 +109,10 @@ private:
   };
 
   template <typename T>
-  int read(const stp_reg_t reg, T &data);
+  int read(const stp_reg_t reg, T &data, u_int8_t &flags);
 
   template <typename T>
-  int write(const stp_reg_t reg, T data);
+  int write(const stp_reg_t reg, T data, u_int8_t &flags);
 
   int address;
   int multiplier = 1;

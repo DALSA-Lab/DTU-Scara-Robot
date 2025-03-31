@@ -36,75 +36,98 @@ int Joint::printInfo(void)
 
 int Joint::getPosition(float &angle)
 {
-    return this->read(ANGLEMOVED,angle);
+    u_int8_t flags;
+    return this->read(ANGLEMOVED,angle, flags);
 }
 
 int Joint::setPosition(float angle)
 {
-    return this->write(MOVETOANGLE,angle);
+    int rc;
+    u_int8_t flags;
+    rc = this->write(MOVETOANGLE,angle, flags);
+    printf("Flags: %#x\n",flags);
+    if(rc < 0){
+        return rc;
+    }
+    if(flags & (1 << 0)){
+        return 1; // STALLED
+    }
+    return 0;
 }
 
 int Joint::moveSteps(int32_t steps)
 {
-    return this->write(MOVESTEPS,steps);
+    u_int8_t flags;
+    return this->write(MOVESTEPS,steps, flags);
 }
 
 int Joint::getVelocity(float &degps)
 {
-    return this->read(GETENCODERRPM,degps);
+    u_int8_t flags;
+    return this->read(GETENCODERRPM,degps, flags);
     degps *= 6.0;
 }
 
 int Joint::setVelocity(float degps)
 {
-    return this->write(SETRPM,degps/6);
+    u_int8_t flags;
+    return this->write(SETRPM,degps/6, flags);
 }
 
 int Joint::checkOrientation(float angle)
 {
-    return this->write(CHECKORIENTATION,angle);
+    u_int8_t flags;
+    return this->write(CHECKORIENTATION,angle, flags);
 }
 
 int Joint::stop(bool mode)
 {
-    return this->write(STOP,mode);
+    u_int8_t flags;
+    return this->write(STOP,mode, flags);
 }
 
 int Joint::disableCL(void)
 {
+    u_int8_t flags;
     u_int8_t buf = 0;
-    return this->write(DISABLECLOSEDLOOP,buf);
+    return this->write(DISABLECLOSEDLOOP,buf, flags);
 }
 
 int Joint::setDriveCurrent(u_int8_t current)
 {
-    return this->write(SETCURRENT,current);
+    u_int8_t flags;
+    return this->write(SETCURRENT,current, flags);
 }
 
 int Joint::setHoldCurrent(u_int8_t current)
 {
-    return this->write(SETHOLDCURRENT,current);
+    u_int8_t flags;
+    return this->write(SETHOLDCURRENT,current, flags);
 }
 
 int Joint::setBrakeMode(u_int8_t mode)
 {
-    return this->write(SETBRAKEMODE,mode);
+    u_int8_t flags;
+    return this->write(SETBRAKEMODE,mode, flags);
 }
 
 int Joint::getStall(u_int8_t &stall)
 {
-    return this->read(ISSTALLED,stall);
+    u_int8_t flags;
+    return this->read(ISSTALLED,stall, flags);
 }
 
 int Joint::enableStallguard(int8_t threshold)
 {
-    return this->write(ENABLESTALLGUARD,threshold);
+    u_int8_t flags;
+    return this->write(ENABLESTALLGUARD,threshold, flags);
 }
 
 int Joint::checkCom(void)
 {
+    u_int8_t flags;
     u_int8_t buf;
-    int rc = this->read(PING,buf);
+    int rc = this->read(PING, buf, flags);
 
     if (buf == 'O' && rc == 0)
     {

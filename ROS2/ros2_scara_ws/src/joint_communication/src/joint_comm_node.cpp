@@ -55,6 +55,7 @@ int main(int argc, char **argv)
     return -1;
   }
 
+
   usleep(1000 * 1000);
 
 
@@ -73,15 +74,16 @@ int main(int argc, char **argv)
     // cout << t << endl;
 
     // Joints.setVelocities(qd_set);
-    Joints.setPositions(q_set);
-    usleep(10 * 1000);
-
-    uint8_t stalled;
-    Joints.joints[0].getStall(stalled);
-    if(stalled){
-      cout << "STALLED" << endl;
+    if(Joints.setPositions(q_set) != 0){
       break;
     }
+
+    // uint8_t stalled;
+    // Joints.joints[0].getStall(stalled);
+    // if(stalled){
+    //   cout << "STALLED" << endl;
+    //   break;
+    // }
 
 
     usleep(period_ms * 1000);
