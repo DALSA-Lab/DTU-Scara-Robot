@@ -5,13 +5,16 @@
 
 #define ADR 0x10
 #define MAX_BUFFER 4  // Bytes
+#define RFLAGS_SIZE 1
+
 
 
 UstepperS32 stepper;
+static uint8_t state = 0x00;
 
 uint8_t reg = 0;
 uint8_t rx_buf[MAX_BUFFER] = { 0 };
-uint8_t tx_buf[MAX_BUFFER] = { 0 };
+uint8_t tx_buf[MAX_BUFFER + RFLAGS_SIZE] = { 0 };
 bool tx_data_ready = 0;
 bool rx_data_ready = 0;
 
@@ -39,7 +42,7 @@ void receiveEvent(int n) {
   int i = 0;
   while (Wire.available()) {
     rx_buf[i] = Wire.read();
-    Serial.println(rx_buf[i]);
+    // Serial.println(rx_buf[i]);
     i++;
   }
   rx_length = i;
@@ -49,6 +52,7 @@ void receiveEvent(int n) {
 void requestEvent() {
   Serial.println("request");
   stepper_request_handler(reg);
+  tx_buf[tx_length++] = state;
   DUMP_BUFFER(tx_buf, tx_length);
   Wire.write(tx_buf, tx_length);
   // TODO: consider checking for rx_ready flag
@@ -279,17 +283,21 @@ void stepper_request_handler(uint8_t reg) {
 
     default:
       Serial.print("Unknown function\n");
-      writeValue<uint32_t>(0, tx_buf, tx_length);
+
+      // Instead of sendinf a zero buffer, set the tx_length to 0 to only send return flags
+      // writeValue<uint32_t>(0, tx_buf, tx_length); 
+      tx_length = 0;
       break;
   }
 }
 
-void setup(void) {
+uint8_t stepper_state_flags(){
+  state = stepper.isStalled();
+}
 
+void setup(void) {
   // Join I2C bus as follower
   Wire.begin(ADR);
-
-
 
   stepper.setup(CLOSEDLOOP, 200);  //Initialize uStepper S32 to use closed loop control with 200 steps per revolution motor - i.e. 1.8 deg stepper
   // stepper.checkOrientation(30.0);  //Check orientation of motor connector with +/- 30 microsteps movement
@@ -314,6 +322,8 @@ void setup(void) {
 }
 
 void loop(void) {
+
+  state |= stepper.isStalled() << 0 ;
 
   if (rx_data_ready) {
     rx_data_ready = 0;
