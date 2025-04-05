@@ -89,11 +89,7 @@ int main(int argc, char **argv)
     usleep(period_ms * 1000);
     t += period_ms * 1.0 / 1000;
 
-    // Joints.joints[0].moveSteps(5000);
-    // Joints.setPositions(q_set);
-    // q_set[0]+=90;
 
-    // usleep(1000 * 1000);
     if (Joints.getPositions(q) == 0)
     {
       cout << "Positions: ";
