@@ -61,8 +61,20 @@ void requestEvent() {
 void stepper_receive_handler(uint8_t reg) {
   switch (reg) {
     case SETUP:
-      Serial.print("Executing SETUP\n");
-      break;
+      {
+        Serial.print("Executing SETUP\n");
+        uint8_t driveCurrent, holdCurrent;
+        memcpy(&driveCurrent, rx_buf, 1);
+        memcpy(&holdCurrent, rx_buf + 1, 1);
+        stepper.setup(CLOSEDLOOP, 200);
+        stepper.setMaxAcceleration(10000);  //use an acceleration of 2000 fullsteps/s^2
+        stepper.setMaxDeceleration(10000);
+        stepper.setMaxVelocity(2000);     //Max velocity of 800 fullsteps/s
+        stepper.setControlThreshold(15);  //Adjust the control threshold - here set to 15 microsteps before making corrective action
+        stepper.setCurrent(driveCurrent);
+        stepper.setHoldCurrent(holdCurrent);
+        break;
+      }
 
     case SETRPM:
       {
@@ -150,7 +162,8 @@ void stepper_receive_handler(uint8_t reg) {
         Serial.print("Executing ENABLESTALLGUARD\n");
         int8_t v;
         readValue<int8_t>(v, rx_buf, rx_length);
-        stepper.enableStallguard(v, true, 2);
+        stepper.enableStallguard(v, false, 2);
+        state &= ~(1 << 0);  // Clear STALL bit since enableStallguard clears the stall internally.
         break;
       }
 
@@ -185,7 +198,7 @@ void stepper_receive_handler(uint8_t reg) {
       Serial.print("Executing ENABLECLOSEDLOOP\n");
       break;
 
-      case DISABLECLOSEDLOOP:
+    case DISABLECLOSEDLOOP:
       {
         Serial.print("Executing DISABLECLOSEDLOOP\n");
         uint8_t v;
@@ -200,7 +213,7 @@ void stepper_receive_handler(uint8_t reg) {
       //   Serial.print("Executing MOVETOEND\n");
       //   break;
 
-      case STOP:
+    case STOP:
       {
         Serial.print("Executing STOP\n");
         uint8_t v;
@@ -218,6 +231,15 @@ void stepper_receive_handler(uint8_t reg) {
         break;
       }
 
+    case HOME:
+      {
+        Serial.print("Executing HOME\n");
+        uint8_t v;
+        readValue<uint8_t>(v, rx_buf, rx_length);
+        stepper.moveToEnd(v, 40, 10, 10000);
+        stepper.encoder.setHome();
+        break;
+      }
 
     default:
       Serial.print("Unknown command\n");
@@ -285,30 +307,27 @@ void stepper_request_handler(uint8_t reg) {
       Serial.print("Unknown function\n");
 
       // Instead of sendinf a zero buffer, set the tx_length to 0 to only send return flags
-      // writeValue<uint32_t>(0, tx_buf, tx_length); 
+      // writeValue<uint32_t>(0, tx_buf, tx_length);
       tx_length = 0;
       break;
   }
 }
 
-uint8_t stepper_state_flags(){
-  state = stepper.isStalled();
-}
 
 void setup(void) {
   // Join I2C bus as follower
   Wire.begin(ADR);
 
-  stepper.setup(CLOSEDLOOP, 200);  //Initialize uStepper S32 to use closed loop control with 200 steps per revolution motor - i.e. 1.8 deg stepper
+  // stepper.setup(CLOSEDLOOP, 200);  //Initialize uStepper S32 to use closed loop control with 200 steps per revolution motor - i.e. 1.8 deg stepper
   // stepper.checkOrientation(30.0);  //Check orientation of motor connector with +/- 30 microsteps movement
 
   // For the closed loop position control the acceleration and velocity parameters define the response of the control:
-  stepper.setMaxAcceleration(10000);  //use an acceleration of 2000 fullsteps/s^2
-  stepper.setMaxDeceleration(10000);
-  stepper.setMaxVelocity(2000);     //Max velocity of 800 fullsteps/s
-  stepper.setControlThreshold(15);  //Adjust the control threshold - here set to 15 microsteps before making corrective action
-  stepper.setCurrent(10);
-  stepper.setHoldCurrent(10);
+  // stepper.setMaxAcceleration(10000);  //use an acceleration of 2000 fullsteps/s^2
+  // stepper.setMaxDeceleration(10000);
+  // stepper.setMaxVelocity(2000);     //Max velocity of 800 fullsteps/s
+  // stepper.setControlThreshold(15);  //Adjust the control threshold - here set to 15 microsteps before making corrective action
+  // stepper.setCurrent(10);
+  // stepper.setHoldCurrent(10);
   // stepper.enableStallguard(10, true, 60);
   // stepper.disableStallguard();
 
@@ -323,7 +342,8 @@ void setup(void) {
 
 void loop(void) {
 
-  state |= stepper.isStalled() << 0 ;
+  state |= stepper.isStalled() << 0;
+  // Serial.println(state);
 
   if (rx_data_ready) {
     rx_data_ready = 0;

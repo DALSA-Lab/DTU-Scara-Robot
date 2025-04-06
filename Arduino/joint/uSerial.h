@@ -45,7 +45,8 @@ enum stp_reg_t {
   STOP = 0x29,
   GETPIDERROR = 0x2A,
   CHECKORIENTATION = 0x2B,
-  GETENCODERRPM = 0x2C
+  GETENCODERRPM = 0x2C,
+  HOME = 0x2D
 };
 
 /**
