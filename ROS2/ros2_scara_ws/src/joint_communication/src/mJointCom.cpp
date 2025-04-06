@@ -11,7 +11,6 @@ Joint_comms::Joint_comms(size_t n, const int addresses[], std::string names[])
 
 Joint_comms::~Joint_comms()
 {
-  
 }
 
 int Joint_comms::init(void)
@@ -33,7 +32,7 @@ int Joint_comms::init(void)
 
 int Joint_comms::deinit()
 {
-    
+
     for (size_t i = 0; i < this->joints.size(); i++)
     {
         if (this->joints[i].deinit() < 0)
@@ -46,6 +45,59 @@ int Joint_comms::deinit()
     std::cout << "Joint Deinitialization successfull" << std::endl;
 
     return 0;
+}
+
+int Joint_comms::setups(std::vector<u_int8_t> driveCurrent_v, std::vector<u_int8_t> holdCurrent_v)
+{
+    if (driveCurrent_v.size() != this->joints.size())
+    {
+        std::cerr << "vector size mismatch" << std::endl;
+        return -2;
+    }
+
+    if (holdCurrent_v.size() != this->joints.size())
+    {
+        std::cerr << "vector size mismatch" << std::endl;
+        return -2;
+    }
+
+    for (size_t i = 0; i < this->joints.size(); i++)
+    {
+        int err = this->joints[i].setup(driveCurrent_v[i], holdCurrent_v[i]);
+        if (err != 0)
+        {
+            std::cerr << "Failed to setup: " << this->joints[i].name << " - error: " << err << std::endl;
+            return err;
+        }
+    }
+    return 0;
+}
+
+int Joint_comms::setups(u_int8_t driveCurrent, u_int8_t holdCurrent)
+{
+    for (size_t i = 0; i < this->joints.size(); i++)
+    {
+        int err = this->joints[i].setup(driveCurrent, holdCurrent);
+        if (err <= 0)
+        {
+            std::cerr << "Failed to setup: " << this->joints[i].name << " - error: " << err << std::endl;
+            return err;
+        }
+    }
+    return 0;
+}
+
+int Joint_comms::home(std::string name, u_int8_t direction)
+{
+    for (size_t i = 0; i < this->joints.size(); i++)
+    {
+        if(this->joints[i].name == name){
+            int err = this->joints[i].home(direction);
+            return err;
+        }
+    }
+    std::cerr << "No joint with the name '" << name << "' initialized" << std::endl;
+    return -1;
 }
 
 int Joint_comms::getPositions(std::vector<float> &angle_v)
@@ -130,7 +182,6 @@ int Joint_comms::setVelocities(std::vector<float> degps_v)
     return 0;
 }
 
-
 int Joint_comms::checkOrientations(std::vector<float> angle_v)
 {
     if (angle_v.size() != this->joints.size())
@@ -151,7 +202,6 @@ int Joint_comms::checkOrientations(std::vector<float> angle_v)
     return 0;
 }
 
-
 int Joint_comms::checkOrientations(float angle)
 {
     for (size_t i = 0; i < this->joints.size(); i++)
@@ -166,7 +216,8 @@ int Joint_comms::checkOrientations(float angle)
     return 0;
 }
 
-int Joint_comms::stops(bool mode){
+int Joint_comms::stops(bool mode)
+{
     for (size_t i = 0; i < this->joints.size(); i++)
     {
         int err = this->joints[i].stop(mode);
