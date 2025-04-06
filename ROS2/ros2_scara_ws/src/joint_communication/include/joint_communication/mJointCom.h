@@ -20,6 +20,32 @@ public:
 
   int init(void);
   int deinit(void);
+
+  /**
+ * Initializes the drivers
+ * @param driveCurrent_v vector of drive currents 0-100.
+ * @param holdCurrent_v vector of hold currents 0-100.
+
+ * @return error code.
+ */
+  int setups(std::vector<u_int8_t> driveCurrent_v, std::vector<u_int8_t> holdCurrent_v);
+
+  /**
+   * Initializes the drivers, with the same current settings for all
+   * @param driveCurrent drive current 0-100.
+   * @param holdCurrent hold current 0-100.
+   * @return error code.
+   */
+  int setups(u_int8_t driveCurrent, u_int8_t holdCurrent);
+
+/**
+* Homes a joint.
+* @param name joint name.
+* @param direction  CCW: 0, CW: 1.
+* @return error code.
+*/
+  int home(std::string name, u_int8_t direction = 0);
+
   int getPositions(std::vector<float> &angle_v);
   int setPositions(std::vector<float> angle_v);
   int getVelocities(std::vector<float> &degps_v);

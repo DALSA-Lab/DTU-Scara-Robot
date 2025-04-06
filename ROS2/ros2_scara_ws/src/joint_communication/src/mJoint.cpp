@@ -11,11 +11,13 @@ int Joint::init(void)
 {
     std::cout << "INFO: Initializing " << this->name << std::endl;
     this->handle = openI2CDevHandle(this->address);
-    if(this->handle < 0){
+    if (this->handle < 0)
+    {
         return this->handle;
     }
     return checkCom();
 }
+
 
 int Joint::deinit(void)
 {
@@ -28,6 +30,22 @@ int Joint::deinit(void)
     return rc;
 }
 
+int Joint::setup(u_int8_t driveCurrent, u_int8_t holdCurrent)
+{
+    u_int32_t buf = 0; // Initialize buf to 0
+    buf |= (driveCurrent & 0xFF); // Copy driveCurrent to the least significant byte
+    buf |= ((holdCurrent & 0xFF) << 8); // Copy holdCurrent to the next byte
+
+    u_int8_t flags; // Initialize flags if needed
+    return this->write(SETUP, buf, flags);
+}
+
+int Joint::home(u_int8_t direction)
+{
+    u_int8_t flags; 
+    return this->write(HOME, direction, flags);
+}
+
 int Joint::printInfo(void)
 {
     std::cout << "Name: " << this->name << " address: " << this->address << " handle: " << this->handle << std::endl;
@@ -37,19 +55,22 @@ int Joint::printInfo(void)
 int Joint::getPosition(float &angle)
 {
     u_int8_t flags;
-    return this->read(ANGLEMOVED,angle, flags);
+    return this->read(ANGLEMOVED, angle, flags);
 }
 
 int Joint::setPosition(float angle)
 {
     int rc;
     u_int8_t flags;
-    rc = this->write(MOVETOANGLE,angle, flags);
-    printf("Flags: %#x\n",flags);
-    if(rc < 0){
+    rc = this->write(MOVETOANGLE, angle, flags);
+    if (rc < 0)
+    {
         return rc;
     }
-    if(flags & (1 << 0)){
+
+    printf("Flags: %#x\n", flags);
+    if (flags & (1 << 0))
+    {
         return 1; // STALLED
     }
     return 0;
@@ -57,70 +78,93 @@ int Joint::setPosition(float angle)
 
 int Joint::moveSteps(int32_t steps)
 {
+    int rc;
     u_int8_t flags;
-    return this->write(MOVESTEPS,steps, flags);
+    rc = this->write(MOVESTEPS, steps, flags);
+    if (rc < 0)
+    {
+        return rc;
+    }
+
+    printf("Flags: %#x\n", flags);
+    if (flags & (1 << 0))
+    {
+        return 1; // STALLED
+    }
+    return 0;
 }
 
 int Joint::getVelocity(float &degps)
 {
     u_int8_t flags;
-    return this->read(GETENCODERRPM,degps, flags);
+    return this->read(GETENCODERRPM, degps, flags);
     degps *= 6.0;
 }
 
 int Joint::setVelocity(float degps)
 {
+    int rc;
     u_int8_t flags;
-    return this->write(SETRPM,degps/6, flags);
+    rc = this->write(SETRPM, degps / 6, flags);
+    if (rc < 0)
+    {
+        return rc;
+    }
+    printf("Flags: %#x\n", flags);
+    if (flags & (1 << 0))
+    {
+        return 1; // STALLED
+    }
+    return 0;
 }
 
 int Joint::checkOrientation(float angle)
 {
     u_int8_t flags;
-    return this->write(CHECKORIENTATION,angle, flags);
+    return this->write(CHECKORIENTATION, angle, flags);
 }
 
 int Joint::stop(bool mode)
 {
     u_int8_t flags;
-    return this->write(STOP,mode, flags);
+    return this->write(STOP, mode, flags);
 }
 
 int Joint::disableCL(void)
 {
     u_int8_t flags;
     u_int8_t buf = 0;
-    return this->write(DISABLECLOSEDLOOP,buf, flags);
+    return this->write(DISABLECLOSEDLOOP, buf, flags);
 }
 
 int Joint::setDriveCurrent(u_int8_t current)
 {
     u_int8_t flags;
-    return this->write(SETCURRENT,current, flags);
+    return this->write(SETCURRENT, current, flags);
 }
 
 int Joint::setHoldCurrent(u_int8_t current)
 {
     u_int8_t flags;
-    return this->write(SETHOLDCURRENT,current, flags);
+    return this->write(SETHOLDCURRENT, current, flags);
 }
 
 int Joint::setBrakeMode(u_int8_t mode)
 {
     u_int8_t flags;
-    return this->write(SETBRAKEMODE,mode, flags);
+    return this->write(SETBRAKEMODE, mode, flags);
 }
 
 int Joint::getStall(u_int8_t &stall)
 {
     u_int8_t flags;
-    return this->read(ISSTALLED,stall, flags);
+    return this->read(ISSTALLED, stall, flags);
 }
 
 int Joint::enableStallguard(int8_t threshold)
 {
     u_int8_t flags;
-    return this->write(ENABLESTALLGUARD,threshold, flags);
+    return this->write(ENABLESTALLGUARD, threshold, flags);
 }
 
 int Joint::checkCom(void)
@@ -135,4 +179,3 @@ int Joint::checkCom(void)
     }
     return -1;
 }
-
