@@ -93,6 +93,13 @@ int Joint_comms::home(std::string name, u_int8_t direction)
     {
         if(this->joints[i].name == name){
             int err = this->joints[i].home(direction);
+            usleep(1000 * 1000);
+
+            while (this->joints[i].getFlags() & (1 << 1))
+            {
+                usleep(10 * 1000);
+            }
+            
             return err;
         }
     }

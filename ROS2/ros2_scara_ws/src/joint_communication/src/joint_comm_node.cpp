@@ -49,8 +49,6 @@ int main(int argc, char **argv)
     return -1;
   }
 
-
-
   // if (Joints.setDriveCurrents(70))
   // {
   //   cerr << "Could not set drive currents of joints" << endl;
@@ -71,8 +69,7 @@ int main(int argc, char **argv)
     return -1;
   }
 
-  Joints.home("j1", 0);
-  sleep(10);
+  Joints.home("j2", 1);
 
   if (Joints.enableStallguards({20, 20}))
   {

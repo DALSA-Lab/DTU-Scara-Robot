@@ -81,8 +81,11 @@ public:
   int moveSteps(int32_t steps);
   int checkCom(void);
 
-  // int setPosition();
-  // int home();
+  /**
+   * get driver state flags
+   * @return flags.
+   */
+  u_int8_t getFlags(void);
 
   std::string name;
 
@@ -128,6 +131,8 @@ private:
 
   template <typename T>
   int write(const stp_reg_t reg, T data, u_int8_t &flags);
+
+  u_int8_t flags = 0x00;
 
   int address;
   int multiplier = 1;
