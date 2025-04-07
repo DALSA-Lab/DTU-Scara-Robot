@@ -33,10 +33,12 @@ int main(int argc, char **argv)
   // lgI2cClose(i2chandle);
   // return 0;
 
-  int addresses[] = {0x10, 0x11};     // Create an array of u_int8_t
-  std::string names[] = {"j1", "j2"}; // Create an array of std::string
+  Joint_comms Joints;
 
-  Joint_comms Joints(2, addresses, names);
+  Joints.addJoint(0x10,"j1",1,0);
+  Joints.addJoint(0x11,"j2",5,0);
+
+
   if (Joints.init())
   {
     cerr << "Could not establish connection to joints" << endl;

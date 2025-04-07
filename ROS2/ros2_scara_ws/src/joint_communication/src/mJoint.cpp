@@ -1,10 +1,12 @@
 #include "joint_communication/uI2C.h"
 #include "joint_communication/mJoint.h"
 
-Joint::Joint(const int address, std::string name)
+Joint::Joint(const int address, const std::string name, const int gearRatio, const int offset)
 {
     this->address = address;
     this->name = name;
+    this->gearRatio = gearRatio;
+    this->offset = offset;
 }
 
 int Joint::init(void)
@@ -52,13 +54,15 @@ int Joint::printInfo(void)
 
 int Joint::getPosition(float &angle)
 {
-    return this->read(ANGLEMOVED, angle, this->flags);
+    int rc = this->read(ANGLEMOVED, angle, this->flags);
+    angle = ENCODER2JOINTANGLE(angle,this->gearRatio,this->offset);
+    return rc;
 }
 
 int Joint::setPosition(float angle)
 {
     int rc;
-    rc = this->write(MOVETOANGLE, angle, this->flags);
+    rc = this->write(MOVETOANGLE, JOINT2ENCODERANGLE(angle,this->gearRatio,this->offset), this->flags);
     if (rc < 0)
     {
         return rc;
@@ -91,14 +95,16 @@ int Joint::moveSteps(int32_t steps)
 
 int Joint::getVelocity(float &degps)
 {
-    return this->read(GETENCODERRPM, degps, this->flags);
+    int rc = this->read(GETENCODERRPM, degps, this->flags);
+    degps = ENCODER2JOINTANGLE(degps,this->gearRatio,0);
     degps *= 6.0;
+    return rc;
 }
 
 int Joint::setVelocity(float degps)
 {
     int rc;
-    rc = this->write(SETRPM, degps / 6, this->flags);
+    rc = this->write(SETRPM, JOINT2ENCODERANGLE(degps,this->gearRatio, 0) / 6, this->flags);
     if (rc < 0)
     {
         return rc;

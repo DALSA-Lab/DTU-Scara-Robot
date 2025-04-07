@@ -1,17 +1,20 @@
 #include "joint_communication/uI2C.h"
 #include "joint_communication/mJointCom.h"
 
-Joint_comms::Joint_comms(size_t n, const int addresses[], std::string names[])
+Joint_comms::Joint_comms(void)
 {
-    for (size_t i = 0; i < n; i++)
-    {
-        this->joints.push_back(Joint(addresses[i], names[i]));
-    }
 }
 
 Joint_comms::~Joint_comms()
 {
 }
+
+
+void Joint_comms::addJoint(const int address, const std::string name, const int gearRatio, const int offset)
+{
+    this->joints.push_back(Joint(address,name,gearRatio,offset));
+}
+
 
 int Joint_comms::init(void)
 {
@@ -99,7 +102,7 @@ int Joint_comms::home(std::string name, u_int8_t direction)
             {
                 usleep(10 * 1000);
             }
-            
+
             return err;
         }
     }

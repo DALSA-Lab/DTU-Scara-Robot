@@ -8,18 +8,22 @@
 class Joint_comms
 {
 public:
-  /**
-   * Constructor to create a join communication object
-   * @param n number of joints to connect to.
-   * @param addresses n-sized array of 1-byte device adresses
-   * @param names n-sized array of string device names
-   * @return Joint_comms object.
-   */
-  Joint_comms(size_t n, const int addresses[], std::string names[]);
+
+  Joint_comms(void);
   ~Joint_comms();
 
   int init(void);
   int deinit(void);
+
+    /**
+   * add joints to internal vector
+   * @param addresses 1-byte device adress
+   * @param names string device name
+   * @param gearRatio gear ratio of joint
+   * @param offset offset between encoder zero and joint zero (in joint units)
+
+   */
+  void addJoint(const int address, const std::string name, const int gearRatio, const int offset);
 
   /**
  * Initializes the drivers
