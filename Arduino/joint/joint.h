@@ -1,9 +1,12 @@
-#ifndef USERIAL_H
-#define USERIAL_H
+#ifndef JOINT_H
+#define JOINT_H
 #include <Arduino.h>
 
 #define ACK 'O'
 #define NACK 'N'
+
+#define MAX_BUFFER 4  // Bytes
+#define RFLAGS_SIZE 1
 
 #define DUMP_BUFFER(buffer, size) \
   { \

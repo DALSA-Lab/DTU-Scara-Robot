@@ -1,16 +1,15 @@
 #include <UstepperS32.h>
 
 #include <Wire.h>
-#include "uSerial.h"
+#include "joint.h"
 
-#define ADR 0x10
-#define MAX_BUFFER 4  // Bytes
-#define RFLAGS_SIZE 1
-
+#define J1
+#include "configuration.h"
 
 
 UstepperS32 stepper;
 static uint8_t state = 0x00;
+static uint8_t driveCurrent, holdCurrent;
 
 uint8_t reg = 0;
 uint8_t rx_buf[MAX_BUFFER] = { 0 };
@@ -20,6 +19,10 @@ bool rx_data_ready = 0;
 
 size_t tx_length = 0;
 size_t rx_length = 0;
+
+
+
+
 
 /**
  * Handles commands, is called from the main loop since it contains blocking function calls which can not be called from the I2C ISR.
@@ -63,7 +66,7 @@ void stepper_receive_handler(uint8_t reg) {
     case SETUP:
       {
         Serial.print("Executing SETUP\n");
-        uint8_t driveCurrent, holdCurrent;
+        // uint8_t driveCurrent, holdCurrent;
         memcpy(&driveCurrent, rx_buf, 1);
         memcpy(&holdCurrent, rx_buf + 1, 1);
         stepper.setup(CLOSEDLOOP, 200);
@@ -236,8 +239,10 @@ void stepper_receive_handler(uint8_t reg) {
         Serial.print("Executing HOME\n");
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
-        stepper.moveToEnd(v, 40, 10, 10000);
+        stepper.setCurrent(HOMEINGCURRENT);
+        stepper.moveToEnd(v, HOMEINGRPM, HOMEINGSENSITIVITY, HOMEINGTIMEOUT*1000);
         stepper.encoder.setHome();
+        stepper.setCurrent(driveCurrent);
         break;
       }
 
@@ -347,7 +352,9 @@ void loop(void) {
 
   if (rx_data_ready) {
     rx_data_ready = 0;
+    state |= 1 << 1;
     stepper_receive_handler(reg);
+    state &= ~(1 << 1);
   }
 
 
