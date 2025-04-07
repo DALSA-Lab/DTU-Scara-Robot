@@ -1,10 +1,13 @@
 #ifndef MJOINT_H
 #define MJOINT_H
 
+#define JOINT2ENCODERANGLE(jointAngle, gearRatio, offset) (gearRatio * (jointAngle + offset))
+#define ENCODER2JOINTANGLE(encoderAngle, gearRatio, offset) (encoderAngle / gearRatio - offset)
+
 class Joint
 {
 public:
-  Joint(const int address, std::string name);
+  Joint(const int address, const std::string name, const int gearRatio, const int offset);
   // ~Joint();
 
   int init(void);
@@ -23,7 +26,7 @@ public:
    */
   int setup(u_int8_t driveCurrent, u_int8_t holdCurrent);
 
-    /**
+  /**
    * mke motor move to end stop
    * @param direction CCW: 0, CW: 1
    * @return error code.
@@ -81,8 +84,11 @@ public:
   int moveSteps(int32_t steps);
   int checkCom(void);
 
-  // int setPosition();
-  // int home();
+  /**
+   * get driver state flags
+   * @return flags.
+   */
+  u_int8_t getFlags(void);
 
   std::string name;
 
@@ -129,10 +135,11 @@ private:
   template <typename T>
   int write(const stp_reg_t reg, T data, u_int8_t &flags);
 
+  u_int8_t flags = 0x00;
+
   int address;
-  int multiplier = 1;
+  int gearRatio = 1;
   int offset = 0;
-  int range[2] = {0, 0};
 
   int handle = -1;
 };
