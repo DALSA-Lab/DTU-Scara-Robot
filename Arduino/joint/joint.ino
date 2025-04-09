@@ -239,8 +239,14 @@ void stepper_receive_handler(uint8_t reg) {
         Serial.print("Executing HOME\n");
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
+        uint8_t speed;
+        int8_t sensitivity;
+        memcpy(&speed, rx_buf + 1, 1);
+        memcpy(&sensitivity, rx_buf + 2, 1);
+
         stepper.setCurrent(HOMEINGCURRENT);
-        stepper.moveToEnd(v, HOMEINGRPM, HOMEINGSENSITIVITY, HOMEINGTIMEOUT*1000);
+        // stepper.moveToEnd(v, HOMEINGRPM, HOMEINGSENSITIVITY, HOMEINGTIMEOUT * 1000);
+        stepper.moveToEnd(v, speed*1.0, sensitivity, HOMEINGTIMEOUT * 1000);
         stepper.encoder.setHome();
         stepper.setCurrent(driveCurrent);
         break;

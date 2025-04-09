@@ -4,7 +4,7 @@
 
 #ifdef J1
 #define ADR 0x10
-#define HOMEINGRPM 40  // > 10
+#define HOMEINGRPM 15  // > 10
 #define HOMEINGTIMEOUT 30
 #define HOMEINGSENSITIVITY 10
 #define HOMEINGCURRENT 50
