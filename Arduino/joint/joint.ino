@@ -3,7 +3,7 @@
 #include <Wire.h>
 #include "joint.h"
 
-#define J1
+#define J3
 #include "configuration.h"
 
 
@@ -19,9 +19,6 @@ bool rx_data_ready = 0;
 
 size_t tx_length = 0;
 size_t rx_length = 0;
-
-
-
 
 
 /**
@@ -237,17 +234,42 @@ void stepper_receive_handler(uint8_t reg) {
     case HOME:
       {
         Serial.print("Executing HOME\n");
-        uint8_t v;
-        readValue<uint8_t>(v, rx_buf, rx_length);
+        uint8_t dir;
+        readValue<uint8_t>(dir, rx_buf, rx_length);
         uint8_t speed;
         int8_t sensitivity;
+        uint8_t current;
         memcpy(&speed, rx_buf + 1, 1);
         memcpy(&sensitivity, rx_buf + 2, 1);
+        memcpy(&current, rx_buf + 3, 1);
 
-        stepper.setCurrent(HOMEINGCURRENT);
-        // stepper.moveToEnd(v, HOMEINGRPM, HOMEINGSENSITIVITY, HOMEINGTIMEOUT * 1000);
-        stepper.moveToEnd(v, speed*1.0, sensitivity, HOMEINGTIMEOUT * 1000);
+        // stepper.setCurrent(HOMEINGCURRENT);
+        // stepper.moveToEnd(dir, HOMEINGRPM, HOMEINGSENSITIVITY, HOMEINGTIMEOUT * 1000);
+        // stepper.moveToEnd(dir, speed*1.0, sensitivity, HOMEINGTIMEOUT * 1000);
+
+        Serial.println(dir);
+        Serial.println(speed);
+        Serial.println(current);
+        Serial.println(sensitivity*1.0/10);
+
+
+        stepper.setRPM(dir ? speed : -speed);
+        stepper.setCurrent(current);
+        stepper.encoder.encoderStallDetectSensitivity = sensitivity*1.0/10;
+        // stepper.setCurrent(10);
+        // stepper.encoder.encoderStallDetectSensitivity = -0.1;  //Encoder stalldetect sensitivity - From -10 to 1 where lower number is less sensitive and higher is more sensitive. -0.25 works for most.
+        stepper.encoder.encoderStallDetectEnable = 1;          //Enable the encoder stall detect
+        bool stall;
+        do  // Add timeout
+        {
+          stall = stepper.encoder.encoderStallDetect;
+          delay(10);
+
+        } while (!stall);
         stepper.encoder.setHome();
+        stepper.stop();  // Stop motor !
+        stepper.encoder.encoderStallDetectEnable = 0;
+
         stepper.setCurrent(driveCurrent);
         break;
       }
