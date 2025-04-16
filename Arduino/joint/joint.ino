@@ -256,16 +256,15 @@ void stepper_receive_handler(uint8_t reg) {
         stepper.setRPM(dir ? speed : -speed);
         stepper.setCurrent(current);
         stepper.encoder.encoderStallDetectSensitivity = sensitivity*1.0/10;
+
         // stepper.setCurrent(10);
         // stepper.encoder.encoderStallDetectSensitivity = -0.1;  //Encoder stalldetect sensitivity - From -10 to 1 where lower number is less sensitive and higher is more sensitive. -0.25 works for most.
-        stepper.encoder.encoderStallDetectEnable = 1;          //Enable the encoder stall detect
-        bool stall;
-        do  // Add timeout
-        {
-          stall = stepper.encoder.encoderStallDetect;
-          delay(10);
+        // stepper.encoder.encoderStallDetectEnable = 1;          //Enable the encoder stall detect
 
-        } while (!stall);
+        while(!stepper.encoder.encoderStallDetect){
+          delay(5);
+        }
+        
         stepper.encoder.setHome();
         stepper.stop();  // Stop motor !
         stepper.encoder.encoderStallDetectEnable = 0;
