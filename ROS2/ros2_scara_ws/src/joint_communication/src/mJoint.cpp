@@ -20,7 +20,6 @@ int Joint::init(void)
     return checkCom();
 }
 
-
 int Joint::deinit(void)
 {
 
@@ -34,16 +33,22 @@ int Joint::deinit(void)
 
 int Joint::setup(u_int8_t driveCurrent, u_int8_t holdCurrent)
 {
-    u_int32_t buf = 0; // Initialize buf to 0
-    buf |= (driveCurrent & 0xFF); // Copy driveCurrent to the least significant byte
+    u_int32_t buf = 0;                  // Initialize buf to 0
+    buf |= (driveCurrent & 0xFF);       // Copy driveCurrent to the least significant byte
     buf |= ((holdCurrent & 0xFF) << 8); // Copy holdCurrent to the next byte
 
     return this->write(SETUP, buf, this->flags);
 }
 
-int Joint::home(u_int8_t direction)
-{ 
-    return this->write(HOME, direction, this->flags);
+int Joint::home(u_int8_t direction, u_int8_t rpm, int8_t sensitivity, u_int8_t current)
+{
+    u_int32_t buf = 0;
+    buf |= (direction & 0xFF);
+    buf |= ((rpm & 0xFF) << 8);
+    buf |= ((sensitivity & 0xFF) << 16);
+    buf |= ((current & 0xFF) << 24);
+
+    return this->write(HOME, buf, this->flags);
 }
 
 int Joint::printInfo(void)
@@ -55,14 +60,14 @@ int Joint::printInfo(void)
 int Joint::getPosition(float &angle)
 {
     int rc = this->read(ANGLEMOVED, angle, this->flags);
-    angle = ENCODER2JOINTANGLE(angle,this->gearRatio,this->offset);
+    angle = ENCODER2JOINTANGLE(angle, this->gearRatio, this->offset);
     return rc;
 }
 
 int Joint::setPosition(float angle)
 {
     int rc;
-    rc = this->write(MOVETOANGLE, JOINT2ENCODERANGLE(angle,this->gearRatio,this->offset), this->flags);
+    rc = this->write(MOVETOANGLE, JOINT2ENCODERANGLE(angle, this->gearRatio, this->offset), this->flags);
     if (rc < 0)
     {
         return rc;
@@ -96,7 +101,7 @@ int Joint::moveSteps(int32_t steps)
 int Joint::getVelocity(float &degps)
 {
     int rc = this->read(GETENCODERRPM, degps, this->flags);
-    degps = ENCODER2JOINTANGLE(degps,this->gearRatio,0);
+    degps = ENCODER2JOINTANGLE(degps, this->gearRatio, 0);
     degps *= 6.0;
     return rc;
 }
@@ -104,7 +109,7 @@ int Joint::getVelocity(float &degps)
 int Joint::setVelocity(float degps)
 {
     int rc;
-    rc = this->write(SETRPM, JOINT2ENCODERANGLE(degps,this->gearRatio, 0) / 6, this->flags);
+    rc = this->write(SETRPM, JOINT2ENCODERANGLE(degps, this->gearRatio, 0) / 6, this->flags);
     if (rc < 0)
     {
         return rc;
@@ -170,7 +175,8 @@ int Joint::checkCom(void)
     return -1;
 }
 
-u_int8_t Joint::getFlags(void){
+u_int8_t Joint::getFlags(void)
+{
     u_int8_t buf;
     this->read(PING, buf, this->flags);
     return this->flags;

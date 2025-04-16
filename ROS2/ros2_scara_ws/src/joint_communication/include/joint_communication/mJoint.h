@@ -28,10 +28,14 @@ public:
 
   /**
    * mke motor move to end stop
-   * @param direction CCW: 0, CW: 1
+   * @param direction  CCW: 0, CW: 1.
+   * @param rpm  speed of motor in rpm > 10
+   * @param sensitivity Encoder stalldetect sensitivity - From -100 to 10 where lower number is less sensitive and higher is more sensitive
+   * @param current homeing current, determines how easy it is to stop the motor and thereby provoke a stall
+
    * @return error code.
    */
-  int home(u_int8_t direction);
+  int home(u_int8_t direction, u_int8_t rpm, int8_t sensitivity, u_int8_t current);
 
   /**
    * Stops the motor
