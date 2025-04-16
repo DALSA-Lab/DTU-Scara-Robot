@@ -1,10 +1,15 @@
 .vscode/
 devel/
+ROS2/ros2_scara_ws/logs/
+ROS2/ros2_scara_ws/log/
+ROS2/ros2_scara_ws/build/
+ROS2/ros2_scara_ws/bin/
 logs/
 log/
 build/
 bin/
 lib/
+install/
 msg_gen/
 srv_gen/
 msg/*Action.msg

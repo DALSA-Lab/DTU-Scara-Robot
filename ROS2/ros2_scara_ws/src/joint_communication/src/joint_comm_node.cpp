@@ -35,9 +35,8 @@ int main(int argc, char **argv)
 
   Joint_comms Joints;
 
-  Joints.addJoint(0x10,"j1",1,0);
-  Joints.addJoint(0x11,"j2",5,0);
-
+  Joints.addJoint(0x13, "j3", 24, 0);
+  Joints.addJoint(0x11,"j2",35,0);
 
   if (Joints.init())
   {
@@ -65,13 +64,14 @@ int main(int argc, char **argv)
 
   sleep(1);
 
-  if (Joints.checkOrientations(10))
+  if (Joints.checkOrientations(5))
   {
     cerr << "Could not check orientation of joints" << endl;
     return -1;
   }
 
-  Joints.home("j2", 1);
+  Joints.home("j3", 0, 10, -5, 10);
+  // Joints.home("j1", 0, 10, -1, 10);
 
   if (Joints.enableStallguards({20, 20}))
   {
@@ -81,20 +81,25 @@ int main(int argc, char **argv)
 
   usleep(1000 * 1000);
 
+  Joints.deinit();
+  return 0;
+
   vector<float> q = {0.0, 0.0};
   vector<float> qd = {0.0, 0.0};
   vector<float> q_set = {0.0, 0.0};
   vector<float> qd_set = {0.0, 0.0};
+  // vector<float> q = {0.0};
+  // vector<float> qd = {0.0};
+  // vector<float> q_set = {0.0};
+  // vector<float> qd_set = {0.0};
   float t = 0;
   int period_ms = 10;
   while (1)
   {
     // qd_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 1000;
-    q_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 360;
-    q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 360;
-    // cout << qd_set[0] << endl;
-    // cout << t << endl;
-
+    q_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 10;
+    // q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 360;
+    
     // Joints.setVelocities(qd_set);
     if (Joints.setPositions(q_set) != 0)
     {

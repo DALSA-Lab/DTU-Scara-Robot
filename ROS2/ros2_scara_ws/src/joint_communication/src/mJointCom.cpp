@@ -90,12 +90,12 @@ int Joint_comms::setups(u_int8_t driveCurrent, u_int8_t holdCurrent)
     return 0;
 }
 
-int Joint_comms::home(std::string name, u_int8_t direction)
+int Joint_comms::home(std::string name, u_int8_t direction, u_int8_t rpm, int8_t sensitivity, u_int8_t current)
 {
     for (size_t i = 0; i < this->joints.size(); i++)
     {
         if(this->joints[i].name == name){
-            int err = this->joints[i].home(direction);
+            int err = this->joints[i].home(direction,rpm,sensitivity,current);
             usleep(1000 * 1000);
 
             while (this->joints[i].getFlags() & (1 << 1))
