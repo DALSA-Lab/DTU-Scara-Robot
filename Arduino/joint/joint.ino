@@ -10,6 +10,7 @@
 UstepperS32 stepper;
 static uint8_t state = 0x00;
 static uint8_t driveCurrent, holdCurrent;
+static bool isHomed = 0;
 
 uint8_t reg = 0;
 uint8_t rx_buf[MAX_BUFFER] = { 0 };
@@ -234,42 +235,34 @@ void stepper_receive_handler(uint8_t reg) {
     case HOME:
       {
         Serial.print("Executing HOME\n");
+        stepper.stop();
+        stepper.encoder = TLE5012B(); // Reset Enocoder to clear stall
+
         uint8_t dir;
-        readValue<uint8_t>(dir, rx_buf, rx_length);
         uint8_t speed;
         int8_t sensitivity;
         uint8_t current;
+        memcpy(&dir, rx_buf, 1);
         memcpy(&speed, rx_buf + 1, 1);
         memcpy(&sensitivity, rx_buf + 2, 1);
         memcpy(&current, rx_buf + 3, 1);
 
-        // stepper.setCurrent(HOMEINGCURRENT);
-        // stepper.moveToEnd(dir, HOMEINGRPM, HOMEINGSENSITIVITY, HOMEINGTIMEOUT * 1000);
-        // stepper.moveToEnd(dir, speed*1.0, sensitivity, HOMEINGTIMEOUT * 1000);
-
-        Serial.println(dir);
-        Serial.println(speed);
-        Serial.println(current);
-        Serial.println(sensitivity*1.0/10);
-
 
         stepper.setRPM(dir ? speed : -speed);
         stepper.setCurrent(current);
-        stepper.encoder.encoderStallDetectSensitivity = sensitivity*1.0/10;
+        stepper.encoder.encoderStallDetectSensitivity = sensitivity * 1.0 / 10;
 
-        // stepper.setCurrent(10);
-        // stepper.encoder.encoderStallDetectSensitivity = -0.1;  //Encoder stalldetect sensitivity - From -10 to 1 where lower number is less sensitive and higher is more sensitive. -0.25 works for most.
-        // stepper.encoder.encoderStallDetectEnable = 1;          //Enable the encoder stall detect
-
-        while(!stepper.encoder.encoderStallDetect){
+        while (!stepper.encoder.encoderStallDetect) {
           delay(5);
         }
-        
+
         stepper.encoder.setHome();
         stepper.stop();  // Stop motor !
         stepper.encoder.encoderStallDetectEnable = 0;
 
         stepper.setCurrent(driveCurrent);
+
+        isHomed = 1;
         break;
       }
 
@@ -379,9 +372,9 @@ void loop(void) {
 
   if (rx_data_ready) {
     rx_data_ready = 0;
-    state |= 1 << 1;
+    state |= 1 << 1; // set is busy flag
     stepper_receive_handler(reg);
-    state &= ~(1 << 1);
+    state &= ~(1 << 1); // reset is busy flag
   }
 
 
