@@ -49,7 +49,8 @@ enum stp_reg_t {
   GETPIDERROR = 0x2A,
   CHECKORIENTATION = 0x2B,
   GETENCODERRPM = 0x2C,
-  HOME = 0x2D
+  HOME = 0x2D,
+  ISHOMED = 0x2E
 };
 
 /**

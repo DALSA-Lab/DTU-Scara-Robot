@@ -22,7 +22,6 @@ int Joint::init(void)
 
 int Joint::deinit(void)
 {
-
     int rc = 0;
     rc |= this->stop(1);
     rc |= this->disableCL();
@@ -37,6 +36,7 @@ int Joint::setup(u_int8_t driveCurrent, u_int8_t holdCurrent)
     buf |= (driveCurrent & 0xFF);       // Copy driveCurrent to the least significant byte
     buf |= ((holdCurrent & 0xFF) << 8); // Copy holdCurrent to the next byte
 
+    this->getIsHomed();
     return this->write(SETUP, buf, this->flags);
 }
 
@@ -66,6 +66,9 @@ int Joint::getPosition(float &angle)
 
 int Joint::setPosition(float angle)
 {
+    if(!isHomed){
+        return 2; // not homed
+    }
     int rc;
     rc = this->write(MOVETOANGLE, JOINT2ENCODERANGLE(angle, this->gearRatio, this->offset), this->flags);
     if (rc < 0)
@@ -108,6 +111,9 @@ int Joint::getVelocity(float &degps)
 
 int Joint::setVelocity(float degps)
 {
+    if(!isHomed){
+        return 2; // not homed
+    }
     int rc;
     rc = this->write(SETRPM, JOINT2ENCODERANGLE(degps, this->gearRatio, 0) / 6, this->flags);
     if (rc < 0)
@@ -161,6 +167,20 @@ int Joint::getStall(u_int8_t &stall)
 int Joint::enableStallguard(int8_t threshold)
 {
     return this->write(ENABLESTALLGUARD, threshold, this->flags);
+}
+
+int Joint::getIsHomed(u_int8_t &homed){
+    int rc = this->read(ISHOMED, homed, this->flags);
+    return rc;
+}
+
+int Joint::getIsHomed(void){
+    int rc = this->read(ISHOMED, this->isHomed, this->flags);
+    return rc;
+}
+
+bool Joint::isHomed(void){
+    return this->isHomed;
 }
 
 int Joint::checkCom(void)

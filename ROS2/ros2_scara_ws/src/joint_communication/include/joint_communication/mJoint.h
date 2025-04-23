@@ -85,6 +85,24 @@ public:
    */
   int enableStallguard(int8_t threshold);
 
+  /**
+   * checks if the joint is homed from the joint
+   * @param homed not homed: 0, homed: 1
+   * @return error code.
+   */
+   int getIsHomed(u_int8_t &homed);
+
+  /**
+   * checks if the joint is homed from the joint
+   * @return error code.
+   */
+   int getIsHomed(void);
+
+  /**
+   * @return the isHomed state variable.
+   */
+   bool Joint::isHomed(void);
+
   int moveSteps(int32_t steps);
   int checkCom(void);
 
@@ -130,7 +148,8 @@ private:
     GETPIDERROR = 0x2A,
     CHECKORIENTATION = 0x2B,
     GETENCODERRPM = 0x2C,
-    HOME = 0x2D
+    HOME = 0x2D,
+    ISHOMED = 0x2E
   };
 
   template <typename T>
@@ -140,6 +159,8 @@ private:
   int write(const stp_reg_t reg, T data, u_int8_t &flags);
 
   u_int8_t flags = 0x00;
+
+  u_int8_t isHomed = 0;
 
   int address;
   int gearRatio = 1;

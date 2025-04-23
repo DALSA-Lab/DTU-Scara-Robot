@@ -10,7 +10,7 @@
 UstepperS32 stepper;
 static uint8_t state = 0x00;
 static uint8_t driveCurrent, holdCurrent;
-static bool isHomed = 0;
+static uint8_t isHomed = 0;
 
 uint8_t reg = 0;
 uint8_t rx_buf[MAX_BUFFER] = { 0 };
@@ -64,7 +64,6 @@ void stepper_receive_handler(uint8_t reg) {
     case SETUP:
       {
         Serial.print("Executing SETUP\n");
-        // uint8_t driveCurrent, holdCurrent;
         memcpy(&driveCurrent, rx_buf, 1);
         memcpy(&holdCurrent, rx_buf + 1, 1);
         stepper.setup(CLOSEDLOOP, 200);
@@ -86,22 +85,15 @@ void stepper_receive_handler(uint8_t reg) {
         break;
       }
 
-      // case MOVESTEPS:
-      //   {
-      //     Serial.print("Executing MOVESTEPS\n");
-      //     Serial2.write(ACK);  // send ACK to show that command was understood, then execute, then send
-      //     int32_t v;
-      //     if (readValue<int32_t>(v, rx_buf, rx_length) == 0) {
-      //       stepper.moveSteps(v);
-      //       Serial.println(v);
-      //       Serial2.write(ACK);
-      //     } else {
-      //       // Send NACK
-      //       Serial2.write(NACK);
-      //     }
+    case MOVESTEPS:
+      {
+        Serial.print("Executing MOVESTEPS\n");
+        int32_t v;
+        readValue<int32_t>(v, rx_buf, rx_length);
+        stepper.moveSteps(v);
 
-      //     break;
-      //   }
+        break;
+      }
 
       // case MOVEANGLE:
       //   {
@@ -115,7 +107,6 @@ void stepper_receive_handler(uint8_t reg) {
         Serial.print("Executing MOVETOANGLE\n");
         float v;
         readValue<float>(v, rx_buf, rx_length);
-        Serial.println(v);
         stepper.moveToAngle(v);
         break;
       }
@@ -236,7 +227,7 @@ void stepper_receive_handler(uint8_t reg) {
       {
         Serial.print("Executing HOME\n");
         stepper.stop();
-        stepper.encoder = TLE5012B(); // Reset Enocoder to clear stall
+        stepper.encoder = TLE5012B();  // Reset Enocoder to clear stall
 
         uint8_t dir;
         uint8_t speed;
@@ -287,13 +278,13 @@ void stepper_request_handler(uint8_t reg) {
       break;
 
 
-      // case GETMOTORSTATE:
-      //   {
-      //     Serial.print("Executing GETMOTORSTATE\n");
-      //     writeValue<uint8_t>(stepper.driver.readMotorStatus(), tx_buf, tx_length);
-      //     tx_data_ready = 1;
-      //     break;
-      //   }
+    case GETMOTORSTATE:
+      {
+        Serial.print("Executing GETMOTORSTATE\n");
+        writeValue<uint8_t>(stepper.driver.readMotorStatus(), tx_buf, tx_length);
+        tx_data_ready = 1;
+        break;
+      }
 
 
     case ANGLEMOVED:
@@ -308,10 +299,14 @@ void stepper_request_handler(uint8_t reg) {
       {
         Serial.print("Executing ISSTALLED\n");
         writeValue<uint8_t>(stepper.isStalled(), tx_buf, tx_length);
-        // writeValue<uint8_t>(!stepper.getMotorState(STALLGUARD2), tx_buf, tx_length);
-        // writeValue<uint8_t>(stepper.driver.readRegister(DRV_STATUS) & (1 << 24) ? 1 : 0, tx_buf, tx_length);
 
-        // Serial.println(stepper.driver.readRegister(DRV_STATUS) & (1 << 24), HEX);
+        tx_data_ready = 1;
+        break;
+      }
+    case ISHOMED:
+      {
+        Serial.print("Executing ISHOMED\n");
+        writeValue<uint8_t>(isHomed, tx_buf, tx_length);
         tx_data_ready = 1;
         break;
       }
@@ -330,9 +325,7 @@ void stepper_request_handler(uint8_t reg) {
 
     default:
       Serial.print("Unknown function\n");
-
-      // Instead of sendinf a zero buffer, set the tx_length to 0 to only send return flags
-      // writeValue<uint32_t>(0, tx_buf, tx_length);
+      // Instead of sending a zero buffer, set the tx_length to 0 to only send return flags
       tx_length = 0;
       break;
   }
@@ -372,9 +365,9 @@ void loop(void) {
 
   if (rx_data_ready) {
     rx_data_ready = 0;
-    state |= 1 << 1; // set is busy flag
+    state |= 1 << 1;  // set is busy flag
     stepper_receive_handler(reg);
-    state &= ~(1 << 1); // reset is busy flag
+    state &= ~(1 << 1);  // reset is busy flag
   }
 
 
