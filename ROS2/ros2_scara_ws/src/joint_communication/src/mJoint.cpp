@@ -1,7 +1,7 @@
 #include "joint_communication/uI2C.h"
 #include "joint_communication/mJoint.h"
 
-Joint::Joint(const int address, const std::string name, const int gearRatio, const int offset)
+Joint::Joint(const int address, const std::string name, const float gearRatio, const int offset)
 {
     this->address = address;
     this->name = name;
@@ -66,7 +66,7 @@ int Joint::getPosition(float &angle)
 
 int Joint::setPosition(float angle)
 {
-    if(!isHomed){
+    if(!this->homed){
         return 2; // not homed
     }
     int rc;
@@ -111,7 +111,7 @@ int Joint::getVelocity(float &degps)
 
 int Joint::setVelocity(float degps)
 {
-    if(!isHomed){
+    if(!homed){
         return 2; // not homed
     }
     int rc;
@@ -175,12 +175,12 @@ int Joint::getIsHomed(u_int8_t &homed){
 }
 
 int Joint::getIsHomed(void){
-    int rc = this->read(ISHOMED, this->isHomed, this->flags);
+    int rc = this->read(ISHOMED, this->homed, this->flags);
     return rc;
 }
 
 bool Joint::isHomed(void){
-    return this->isHomed;
+    return this->homed;
 }
 
 int Joint::checkCom(void)
