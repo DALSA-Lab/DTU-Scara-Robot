@@ -11,6 +11,7 @@ UstepperS32 stepper;
 static uint8_t state = 0x00;
 static uint8_t driveCurrent, holdCurrent;
 static uint8_t isHomed = 0;
+static uint8_t isStallguardEnabled = 0;
 
 uint8_t reg = 0;
 uint8_t rx_buf[MAX_BUFFER] = { 0 };
@@ -67,12 +68,15 @@ void stepper_receive_handler(uint8_t reg) {
         memcpy(&driveCurrent, rx_buf, 1);
         memcpy(&holdCurrent, rx_buf + 1, 1);
         stepper.setup(CLOSEDLOOP, 200);
-        stepper.setMaxAcceleration(10000);  //use an acceleration of 2000 fullsteps/s^2
-        stepper.setMaxDeceleration(10000);
-        stepper.setMaxVelocity(2000);     //Max velocity of 800 fullsteps/s
+        stepper.enableClosedLoop();
+        stepper.setMaxAcceleration(MAXACCEL);  //use an acceleration of 2000 fullsteps/s^2
+        stepper.setMaxDeceleration(MAXACCEL);
+        stepper.setMaxVelocity(MAXVEL);     //Max velocity of 800 fullsteps/s
         stepper.setControlThreshold(15);  //Adjust the control threshold - here set to 15 microsteps before making corrective action
         stepper.setCurrent(driveCurrent);
         stepper.setHoldCurrent(holdCurrent);
+
+        isStallguardEnabled = 0;
         break;
       }
 
@@ -107,7 +111,11 @@ void stepper_receive_handler(uint8_t reg) {
         Serial.print("Executing MOVETOANGLE\n");
         float v;
         readValue<float>(v, rx_buf, rx_length);
-        stepper.moveToAngle(v);
+        Serial.println(v);
+        // if(!(state & (1 << 0))){
+          stepper.moveToAngle(v);
+        // }
+        
         break;
       }
 
@@ -156,6 +164,7 @@ void stepper_receive_handler(uint8_t reg) {
         readValue<int8_t>(v, rx_buf, rx_length);
         stepper.enableStallguard(v, false, 2);
         state &= ~(1 << 0);  // Clear STALL bit since enableStallguard clears the stall internally.
+        isStallguardEnabled = 1;
         break;
       }
 
@@ -186,9 +195,6 @@ void stepper_receive_handler(uint8_t reg) {
       Serial.print("Executing DISABLEPID\n");
       break;
 
-    case ENABLECLOSEDLOOP:
-      Serial.print("Executing ENABLECLOSEDLOOP\n");
-      break;
 
     case DISABLECLOSEDLOOP:
       {
@@ -226,8 +232,6 @@ void stepper_receive_handler(uint8_t reg) {
     case HOME:
       {
         Serial.print("Executing HOME\n");
-        stepper.stop();
-        stepper.encoder = TLE5012B();  // Reset Enocoder to clear stall
 
         uint8_t dir;
         uint8_t speed;
@@ -238,15 +242,18 @@ void stepper_receive_handler(uint8_t reg) {
         memcpy(&sensitivity, rx_buf + 2, 1);
         memcpy(&current, rx_buf + 3, 1);
 
+        stepper.stop();
+        stepper.encoder = TLE5012B();  // Reset Enocoder to clear stall
+        stepper.encoder.encoderStallDetect = 0;
 
         stepper.setRPM(dir ? speed : -speed);
         stepper.setCurrent(current);
         stepper.encoder.encoderStallDetectSensitivity = sensitivity * 1.0 / 10;
+        stepper.encoder.encoderStallDetectEnable = 1;
 
         while (!stepper.encoder.encoderStallDetect) {
           delay(5);
         }
-
         stepper.encoder.setHome();
         stepper.stop();  // Stop motor !
         stepper.encoder.encoderStallDetectEnable = 0;
@@ -258,7 +265,7 @@ void stepper_receive_handler(uint8_t reg) {
       }
 
     default:
-      Serial.print("Unknown command\n");
+      Serial.println("Unknown command");
       break;
   }
 }
@@ -277,14 +284,6 @@ void stepper_request_handler(uint8_t reg) {
       Serial.print("Executing GETDRIVERRPM\n");
       break;
 
-
-    case GETMOTORSTATE:
-      {
-        Serial.print("Executing GETMOTORSTATE\n");
-        writeValue<uint8_t>(stepper.driver.readMotorStatus(), tx_buf, tx_length);
-        tx_data_ready = 1;
-        break;
-      }
 
 
     case ANGLEMOVED:
@@ -324,7 +323,7 @@ void stepper_request_handler(uint8_t reg) {
       }
 
     default:
-      Serial.print("Unknown function\n");
+      Serial.println("Unknown function");
       // Instead of sending a zero buffer, set the tx_length to 0 to only send return flags
       tx_length = 0;
       break;
@@ -337,15 +336,11 @@ void setup(void) {
   Wire.begin(ADR);
 
   // stepper.setup(CLOSEDLOOP, 200);  //Initialize uStepper S32 to use closed loop control with 200 steps per revolution motor - i.e. 1.8 deg stepper
-  // stepper.checkOrientation(30.0);  //Check orientation of motor connector with +/- 30 microsteps movement
 
   // For the closed loop position control the acceleration and velocity parameters define the response of the control:
-  // stepper.setMaxAcceleration(10000);  //use an acceleration of 2000 fullsteps/s^2
-  // stepper.setMaxDeceleration(10000);
-  // stepper.setMaxVelocity(2000);     //Max velocity of 800 fullsteps/s
+
   // stepper.setControlThreshold(15);  //Adjust the control threshold - here set to 15 microsteps before making corrective action
-  // stepper.setCurrent(10);
-  // stepper.setHoldCurrent(10);
+
   // stepper.enableStallguard(10, true, 60);
   // stepper.disableStallguard();
 
@@ -360,8 +355,7 @@ void setup(void) {
 
 void loop(void) {
 
-  state |= stepper.isStalled() << 0;
-  // Serial.println(state);
+  state |= isStallguardEnabled ? stepper.isStalled() << 0 : 0 << 0;
 
   if (rx_data_ready) {
     rx_data_ready = 0;
@@ -370,9 +364,5 @@ void loop(void) {
     state &= ~(1 << 1);  // reset is busy flag
   }
 
-
-  // if (!stepper.getMotorState(STALLGUARD2)) {
-  //   Serial.println("STALLED");
-  // }
   delay(1);
 }
