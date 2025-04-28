@@ -7,7 +7,7 @@
 class Joint
 {
 public:
-  Joint(const int address, const std::string name, const int gearRatio, const int offset);
+  Joint(const int address, const std::string name, const float gearRatio, const int offset);
   // ~Joint();
 
   int init(void);
@@ -90,18 +90,18 @@ public:
    * @param homed not homed: 0, homed: 1
    * @return error code.
    */
-   int getIsHomed(u_int8_t &homed);
+  int getIsHomed(u_int8_t &homed);
 
   /**
    * checks if the joint is homed from the joint
    * @return error code.
    */
-   int getIsHomed(void);
+  int getIsHomed(void);
 
   /**
    * @return the isHomed state variable.
    */
-   bool Joint::isHomed(void);
+  bool isHomed(void);
 
   int moveSteps(int32_t steps);
   int checkCom(void);
@@ -160,10 +160,10 @@ private:
 
   u_int8_t flags = 0x00;
 
-  u_int8_t isHomed = 0;
+  u_int8_t homed = 0;
 
   int address;
-  int gearRatio = 1;
+  float gearRatio = 1;
   int offset = 0;
 
   int handle = -1;

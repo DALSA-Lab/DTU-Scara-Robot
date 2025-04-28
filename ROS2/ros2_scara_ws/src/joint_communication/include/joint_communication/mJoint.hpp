@@ -27,6 +27,7 @@ int Joint::write(const stp_reg_t reg, T data, u_int8_t &flags)
     char *buf = new char[size];
     memcpy(buf, &data, size - RFLAGS_SIZE);
     int rc = writeToI2CDev(this->handle, reg, buf, size - RFLAGS_SIZE, buf + size - RFLAGS_SIZE);
+    rc = rc > 0 ? 0 : rc;
 
     memcpy(&flags, buf + size - RFLAGS_SIZE, RFLAGS_SIZE);
     delete[] buf;

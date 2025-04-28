@@ -4,6 +4,7 @@ ROS2/ros2_scara_ws/logs/
 ROS2/ros2_scara_ws/log/
 ROS2/ros2_scara_ws/build/
 ROS2/ros2_scara_ws/bin/
+ROS2/ros2_scara_ws/install/
 logs/
 log/
 build/

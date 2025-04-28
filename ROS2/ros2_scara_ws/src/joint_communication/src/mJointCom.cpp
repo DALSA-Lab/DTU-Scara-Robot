@@ -10,7 +10,7 @@ Joint_comms::~Joint_comms()
 }
 
 
-void Joint_comms::addJoint(const int address, const std::string name, const int gearRatio, const int offset)
+void Joint_comms::addJoint(const int address, const std::string name, const float gearRatio, const int offset)
 {
     this->joints.push_back(Joint(address,name,gearRatio,offset));
 }
@@ -81,7 +81,7 @@ int Joint_comms::setups(u_int8_t driveCurrent, u_int8_t holdCurrent)
     for (size_t i = 0; i < this->joints.size(); i++)
     {
         int err = this->joints[i].setup(driveCurrent, holdCurrent);
-        if (err <= 0)
+        if (err != 0)
         {
             std::cerr << "Failed to setup: " << this->joints[i].name << " - error: " << err << std::endl;
             return err;
@@ -103,10 +103,12 @@ int Joint_comms::home(std::string name, u_int8_t direction, u_int8_t rpm, int8_t
                 usleep(10 * 1000);
             }
 
+            this->joints[i].getIsHomed();
+
             return err;
         }
     }
-    std::cerr << "No joint with the name '" << name << "' initialized" << std::endl;
+    std::cerr << "No joint with the name '" << name << "'" << std::endl;
     return -1;
 }
 
@@ -209,6 +211,7 @@ int Joint_comms::checkOrientations(std::vector<float> angle_v)
             return err;
         }
     }
+    sleep(1);
     return 0;
 }
 
@@ -223,6 +226,7 @@ int Joint_comms::checkOrientations(float angle)
             return err;
         }
     }
+    sleep(1);
     return 0;
 }
 
