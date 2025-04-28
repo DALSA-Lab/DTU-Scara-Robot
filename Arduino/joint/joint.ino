@@ -11,7 +11,9 @@ UstepperS32 stepper;
 static uint8_t state = 0x00;
 static uint8_t driveCurrent, holdCurrent;
 static uint8_t isHomed = 0;
+static uint8_t isSetup = 0;
 static uint8_t isStallguardEnabled = 0;
+static int stallguardThreshold = 100;
 
 uint8_t reg = 0;
 uint8_t rx_buf[MAX_BUFFER] = { 0 };
@@ -36,26 +38,25 @@ void stepper_receive_handler(uint8_t reg);
 void stepper_request_handler(uint8_t reg);
 
 void receiveEvent(int n) {
-  Serial.println("receive");
-
+  // Serial.println("receive");
   reg = Wire.read();
-  rx_data_ready = 1;
-  Serial.println(reg);
+
+  // Serial.println(reg);
   int i = 0;
   while (Wire.available()) {
     rx_buf[i] = Wire.read();
-    // Serial.println(rx_buf[i]);
     i++;
   }
   rx_length = i;
-  if (i) { DUMP_BUFFER(rx_buf, rx_length); }
+  rx_data_ready = 1;
+  // if (i) { DUMP_BUFFER(rx_buf, rx_length); }
 }
 
 void requestEvent() {
-  Serial.println("request");
+  // Serial.println("request");
   stepper_request_handler(reg);
   tx_buf[tx_length++] = state;
-  DUMP_BUFFER(tx_buf, tx_length);
+  // DUMP_BUFFER(tx_buf, tx_length);
   Wire.write(tx_buf, tx_length);
   // TODO: consider checking for rx_ready flag
 }
@@ -67,16 +68,26 @@ void stepper_receive_handler(uint8_t reg) {
         Serial.print("Executing SETUP\n");
         memcpy(&driveCurrent, rx_buf, 1);
         memcpy(&holdCurrent, rx_buf + 1, 1);
-        stepper.setup(CLOSEDLOOP, 200);
+        if (!isSetup) {
+          stepper.setup(CLOSEDLOOP, 200);
+        }
+        stepper.stop();
+        // stepper.driver.reset();
         stepper.enableClosedLoop();
-        stepper.setMaxAcceleration(MAXACCEL);  //use an acceleration of 2000 fullsteps/s^2
+
+        Serial.println(stepper.getPidError());
+
+
+        stepper.setMaxAcceleration(MAXACCEL);
         stepper.setMaxDeceleration(MAXACCEL);
-        stepper.setMaxVelocity(MAXVEL);   //Max velocity of 800 fullsteps/s
+        stepper.setMaxVelocity(MAXVEL);
         stepper.setControlThreshold(15);  //Adjust the control threshold - here set to 15 microsteps before making corrective action
         stepper.setCurrent(driveCurrent);
         stepper.setHoldCurrent(holdCurrent);
 
         isStallguardEnabled = 0;
+        isSetup = 1;
+        isHomed = 0;
         break;
       }
 
@@ -101,7 +112,7 @@ void stepper_receive_handler(uint8_t reg) {
 
       // case MOVEANGLE:
       //   {
-      //     Serial.print("Executing MOVEANGLE\n");
+      Serial.print("Executing MOVEANGLE\n");
       //     Serial2.write(ACK);  // send ACK to show that command was understood, then execute, then send
       //     break;
       //   }
@@ -111,20 +122,13 @@ void stepper_receive_handler(uint8_t reg) {
         Serial.print("Executing MOVETOANGLE\n");
         float v;
         readValue<float>(v, rx_buf, rx_length);
-        Serial.println(v);
+        // Serial.println(v);
         if (!(state & (1 << 0))) {
           stepper.moveToAngle(v);
         }
 
         break;
       }
-
-
-
-      // case RUNCOTINOUS:
-      //   Serial.print("Executing RUNCOTINOUS\n");
-      //   break;
-
 
 
     case SETCURRENT:
@@ -146,25 +150,29 @@ void stepper_receive_handler(uint8_t reg) {
       }
 
       // case SETMAXACCELERATION:
-      //   Serial.print("Executing SETMAXACCELERATION\n");
+      // Serial.print("Executing SETMAXACCELERATION\n");
       //   break;
 
       // case SETMAXDECELERATION:
-      //   Serial.print("Executing SETMAXDECELERATION\n");
+      // Serial.print("Executing SETMAXDECELERATION\n");
       //   break;
 
       // case SETMAXVELOCITY:
-      //   Serial.print("Executing SETMAXVELOCITY\n");
+      // Serial.print("Executing SETMAXVELOCITY\n");
       //   break;
 
     case ENABLESTALLGUARD:
       {
         Serial.print("Executing ENABLESTALLGUARD\n");
-        int8_t sensitivity;
-        readValue<int8_t>(sensitivity, rx_buf, rx_length);
-        stepper.encoder.encoderStallDetectSensitivity = sensitivity * 1.0 / 10;
-        stepper.encoder.encoderStallDetectEnable = 1;
-        stepper.encoder.encoderStallDetect = 0;
+
+        // Very simple workaround for stall detection, since the built-in encoder stall-detection is tricky to work with in particular in combination with homeing since it can not be reset.
+        uint8_t sensitivity;
+        readValue<uint8_t>(sensitivity, rx_buf, rx_length);
+        stallguardThreshold = sensitivity * 10;
+        // // Serial.println(sensitivity*1.0/10);
+        // stepper.encoder.encoderStallDetectSensitivity = sensitivity * 1.0/10 ;
+        // stepper.encoder.encoderStallDetectEnable = 1;
+        // stepper.encoder.encoderStallDetect = 0;
         state &= ~(1 << 0);  // Clear STALL bit
         isStallguardEnabled = 1;
 
@@ -172,11 +180,11 @@ void stepper_receive_handler(uint8_t reg) {
       }
 
       // case DISABLESTALLGUARD:
-      //   Serial.print("Executing DISABLESTALLGUARD\n");
+      // Serial.print("Executing DISABLESTALLGUARD\n");
       //   break;
 
       // case CLEARSTALL:
-      //   Serial.print("Executing CLEARSTALL\n");
+      // Serial.print("Executing CLEARSTALL\n");
       //   break;
 
 
@@ -191,11 +199,11 @@ void stepper_receive_handler(uint8_t reg) {
       }
 
     case ENABLEPID:
-      Serial.print("Executing ENABLEPID\n");
+      // Serial.print("Executing ENABLEPID\n");
       break;
 
     case DISABLEPID:
-      Serial.print("Executing DISABLEPID\n");
+      // Serial.print("Executing DISABLEPID\n");
       break;
 
 
@@ -207,12 +215,7 @@ void stepper_receive_handler(uint8_t reg) {
         stepper.disableClosedLoop();
         break;
       }
-      // case SETCONTROLTHRESHOLD:
-      //   Serial.print("Executing SETCONTROLTHRESHOLD\n");
-      //   break;
-      // case MOVETOEND:
-      //   Serial.print("Executing MOVETOEND\n");
-      //   break;
+
 
     case STOP:
       {
@@ -247,6 +250,7 @@ void stepper_receive_handler(uint8_t reg) {
 
         stepper.stop();
         stepper.encoder = TLE5012B();  // Reset Enocoder to clear stall
+        // stepper.encoder.init();
         stepper.encoder.encoderStallDetect = 0;
 
         stepper.setRPM(dir ? speed : -speed);
@@ -258,7 +262,12 @@ void stepper_receive_handler(uint8_t reg) {
           delay(5);
         }
         stepper.encoder.setHome();
+        stepper.driver.setHome();
         stepper.stop();  // Stop motor !
+
+        // stepper.encoder = TLE5012B();  // Reset Enocoder to clear stall
+        // stepper.encoder.encoderStallDetect = 0;
+        // stepper.encoder.setHome();
         stepper.encoder.encoderStallDetectEnable = 0;
 
         stepper.setCurrent(driveCurrent);
@@ -284,7 +293,7 @@ void stepper_request_handler(uint8_t reg) {
       }
 
     case GETDRIVERRPM:
-      Serial.print("Executing GETDRIVERRPM\n");
+      // Serial.print("Executing GETDRIVERRPM\n");
       break;
 
 
@@ -300,7 +309,7 @@ void stepper_request_handler(uint8_t reg) {
     case ISSTALLED:
       {
         Serial.print("Executing ISSTALLED\n");
-        writeValue<uint8_t>(stepper.isStalled(), tx_buf, tx_length);
+        writeValue<uint8_t>(state & 0x01, tx_buf, tx_length);
 
         tx_data_ready = 1;
         break;
@@ -308,14 +317,18 @@ void stepper_request_handler(uint8_t reg) {
     case ISHOMED:
       {
         Serial.print("Executing ISHOMED\n");
-        writeValue<uint8_t>(isHomed, tx_buf, tx_length);
+        writeValue<uint8_t>(isHomed ? 1 : 0, tx_buf, tx_length);
         tx_data_ready = 1;
         break;
       }
 
-      // case GETPIDERROR:
-      //   Serial.print("Executing GETPIDERROR\n");
-      //   break;
+    case ISSETUP:
+      {
+        Serial.print("Executing ISSETUP\n");
+        writeValue<uint8_t>(isSetup ? 1 : 0, tx_buf, tx_length);
+        tx_data_ready = 1;
+        break;
+      }
 
     case GETENCODERRPM:
       {
@@ -337,19 +350,6 @@ void stepper_request_handler(uint8_t reg) {
 void setup(void) {
   // Join I2C bus as follower
   Wire.begin(ADR);
-
-  // stepper.setup(CLOSEDLOOP, 200);  //Initialize uStepper S32 to use closed loop control with 200 steps per revolution motor - i.e. 1.8 deg stepper
-
-  // For the closed loop position control the acceleration and velocity parameters define the response of the control:
-
-  // stepper.setControlThreshold(15);  //Adjust the control threshold - here set to 15 microsteps before making corrective action
-
-  // stepper.enableStallguard(10, true, 60);
-  // stepper.disableStallguard();
-
-  // stepper.encoder.encoderStallDetectSensitivity = 1;  //Encoder stalldetect sensitivity - From -10 to 1 where lower number is less sensitive and higher is more sensitive. -0.25 works for most.
-  // stepper.encoder.encoderStallDetectEnable = 1;           //Enable the encoder stall detect
-
   Serial.begin(9600);
 
   Wire.onReceive(receiveEvent);
@@ -358,7 +358,14 @@ void setup(void) {
 
 void loop(void) {
 
-  state |= isStallguardEnabled ? stepper.encoder.encoderStallDetect << 0 : 0 << 0;
+  if (isStallguardEnabled) {
+    float err = stepper.getPidError();
+    state |= (abs(err) > stallguardThreshold) ? 0x01 : 0x00;
+    // Serial.print(abs(err));
+    // Serial.print("\t");
+    // Serial.println(state);
+  }
+
 
   if (rx_data_ready) {
     rx_data_ready = 0;
@@ -367,5 +374,5 @@ void loop(void) {
     state &= ~(1 << 1);  // reset is busy flag
   }
 
-  delay(1);
+  delay(10);
 }
