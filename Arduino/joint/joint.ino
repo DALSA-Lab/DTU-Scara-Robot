@@ -71,7 +71,7 @@ void stepper_receive_handler(uint8_t reg) {
         stepper.enableClosedLoop();
         stepper.setMaxAcceleration(MAXACCEL);  //use an acceleration of 2000 fullsteps/s^2
         stepper.setMaxDeceleration(MAXACCEL);
-        stepper.setMaxVelocity(MAXVEL);     //Max velocity of 800 fullsteps/s
+        stepper.setMaxVelocity(MAXVEL);   //Max velocity of 800 fullsteps/s
         stepper.setControlThreshold(15);  //Adjust the control threshold - here set to 15 microsteps before making corrective action
         stepper.setCurrent(driveCurrent);
         stepper.setHoldCurrent(holdCurrent);
@@ -112,10 +112,10 @@ void stepper_receive_handler(uint8_t reg) {
         float v;
         readValue<float>(v, rx_buf, rx_length);
         Serial.println(v);
-        // if(!(state & (1 << 0))){
+        if (!(state & (1 << 0))) {
           stepper.moveToAngle(v);
-        // }
-        
+        }
+
         break;
       }
 
@@ -160,11 +160,14 @@ void stepper_receive_handler(uint8_t reg) {
     case ENABLESTALLGUARD:
       {
         Serial.print("Executing ENABLESTALLGUARD\n");
-        int8_t v;
-        readValue<int8_t>(v, rx_buf, rx_length);
-        stepper.enableStallguard(v, false, 2);
-        state &= ~(1 << 0);  // Clear STALL bit since enableStallguard clears the stall internally.
+        int8_t sensitivity;
+        readValue<int8_t>(sensitivity, rx_buf, rx_length);
+        stepper.encoder.encoderStallDetectSensitivity = sensitivity * 1.0 / 10;
+        stepper.encoder.encoderStallDetectEnable = 1;
+        stepper.encoder.encoderStallDetect = 0;
+        state &= ~(1 << 0);  // Clear STALL bit
         isStallguardEnabled = 1;
+
         break;
       }
 
@@ -355,7 +358,7 @@ void setup(void) {
 
 void loop(void) {
 
-  state |= isStallguardEnabled ? stepper.isStalled() << 0 : 0 << 0;
+  state |= isStallguardEnabled ? stepper.encoder.encoderStallDetect << 0 : 0 << 0;
 
   if (rx_data_ready) {
     rx_data_ready = 0;
