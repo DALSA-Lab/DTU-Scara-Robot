@@ -70,24 +70,21 @@ void stepper_receive_handler(uint8_t reg) {
         memcpy(&holdCurrent, rx_buf + 1, 1);
         if (!isSetup) {
           stepper.setup(CLOSEDLOOP, 200);
+          isHomed = 0;
         }
-        stepper.stop();
-        // stepper.driver.reset();
-        stepper.enableClosedLoop();
-
-        Serial.println(stepper.getPidError());
-
-
         stepper.setMaxAcceleration(MAXACCEL);
         stepper.setMaxDeceleration(MAXACCEL);
         stepper.setMaxVelocity(MAXVEL);
         stepper.setControlThreshold(15);  //Adjust the control threshold - here set to 15 microsteps before making corrective action
         stepper.setCurrent(driveCurrent);
         stepper.setHoldCurrent(holdCurrent);
+        stepper.moveToAngle(stepper.angleMoved());
+        stepper.enableClosedLoop();
+        stepper.stop();
 
         isStallguardEnabled = 0;
         isSetup = 1;
-        isHomed = 0;
+        // isHomed = 0;
         break;
       }
 
@@ -365,6 +362,9 @@ void loop(void) {
     // Serial.print("\t");
     // Serial.println(state);
   }
+  state |= isHomed << 2;
+  state |= ISSETUP << 3;
+
 
 
   if (rx_data_ready) {
