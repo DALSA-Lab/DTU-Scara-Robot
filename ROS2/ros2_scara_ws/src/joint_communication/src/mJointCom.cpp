@@ -50,7 +50,7 @@ int Joint_comms::deinit()
     return 0;
 }
 
-int Joint_comms::setups(std::vector<u_int8_t> driveCurrent_v, std::vector<u_int8_t> holdCurrent_v)
+int Joint_comms::enables(std::vector<u_int8_t> driveCurrent_v, std::vector<u_int8_t> holdCurrent_v)
 {
     if (driveCurrent_v.size() != this->joints.size())
     {
@@ -66,24 +66,38 @@ int Joint_comms::setups(std::vector<u_int8_t> driveCurrent_v, std::vector<u_int8
 
     for (size_t i = 0; i < this->joints.size(); i++)
     {
-        int err = this->joints[i].setup(driveCurrent_v[i], holdCurrent_v[i]);
+        int err = this->joints[i].enable(driveCurrent_v[i], holdCurrent_v[i]);
         if (err != 0)
         {
-            std::cerr << "Failed to setup: " << this->joints[i].name << " - error: " << err << std::endl;
+            std::cerr << "Failed to enable: " << this->joints[i].name << " - error: " << err << std::endl;
             return err;
         }
     }
     return 0;
 }
 
-int Joint_comms::setups(u_int8_t driveCurrent, u_int8_t holdCurrent)
+int Joint_comms::enables(u_int8_t driveCurrent, u_int8_t holdCurrent)
 {
     for (size_t i = 0; i < this->joints.size(); i++)
     {
-        int err = this->joints[i].setup(driveCurrent, holdCurrent);
+        int err = this->joints[i].enable(driveCurrent, holdCurrent);
         if (err != 0)
         {
-            std::cerr << "Failed to setup: " << this->joints[i].name << " - error: " << err << std::endl;
+            std::cerr << "Failed to enable: " << this->joints[i].name << " - error: " << err << std::endl;
+            return err;
+        }
+    }
+    return 0;
+}
+
+int Joint_comms::disables(void)
+{
+    for (size_t i = 0; i < this->joints.size(); i++)
+    {
+        int err = this->joints[i].disable();
+        if (err != 0)
+        {
+            std::cerr << "Failed to disable: " << this->joints[i].name << " - error: " << err << std::endl;
             return err;
         }
     }
@@ -96,12 +110,12 @@ int Joint_comms::home(std::string name, u_int8_t direction, u_int8_t rpm, int8_t
     {
         if(this->joints[i].name == name){
             int err = this->joints[i].home(direction,rpm,sensitivity,current);
-            usleep(1000 * 1000);
+            // usleep(1000 * 1000);
 
-            while (this->joints[i].getFlags() & (1 << 1))
-            {
-                usleep(10 * 1000);
-            }
+            // while (this->joints[i].getFlags() & (1 << 1))
+            // {
+            //     usleep(10 * 1000);
+            // }
 
             this->joints[i].getIsHomed();
 
@@ -340,7 +354,7 @@ int Joint_comms::setBrakeModes(u_int8_t mode)
     return 0;
 }
 
-int Joint_comms::enableStallguards(std::vector<int8_t> thresholds)
+int Joint_comms::enableStallguards(std::vector<u_int8_t> thresholds)
 {
     for (size_t i = 0; i < this->joints.size(); i++)
     {

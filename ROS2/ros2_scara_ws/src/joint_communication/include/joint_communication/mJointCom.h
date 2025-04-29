@@ -31,7 +31,7 @@ public:
 
  * @return error code.
  */
-  int setups(std::vector<u_int8_t> driveCurrent_v, std::vector<u_int8_t> holdCurrent_v);
+  int enables(std::vector<u_int8_t> driveCurrent_v, std::vector<u_int8_t> holdCurrent_v);
 
   /**
    * Initializes the drivers, with the same current settings for all
@@ -39,7 +39,13 @@ public:
    * @param holdCurrent hold current 0-100.
    * @return error code.
    */
-  int setups(u_int8_t driveCurrent, u_int8_t holdCurrent);
+  int enables(u_int8_t driveCurrent, u_int8_t holdCurrent);
+
+  /**
+   * disenganges the joint motors without closing i2c handle
+   * @return error code.
+   */
+  int disables(void);
 
   /**
    * Homes a joint.
@@ -118,11 +124,10 @@ public:
   int setBrakeModes(u_int8_t mode);
 
   /**
-   * @brief Enable TMC5130 StallGuards for each driver
-   * The threshold should be tuned as to trigger stallguard before a step is lost.
-   * @param threshold stall sensitivity. A value between -64 and +63, low is more sensitive
+   * @brief Enable encoder stall detection. A detected stall can be reset by homeing.
+   * @param sensitivity Encoder stalldetect sensitivity - From -100 to 10 where lower number is less sensitive and higher is more sensitive
    */
-  int enableStallguards(std::vector<int8_t> thresholds);
+  int enableStallguards(std::vector<u_int8_t> thresholds);
 
   // int home();
 

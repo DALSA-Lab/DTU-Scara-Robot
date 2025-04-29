@@ -6,9 +6,12 @@
 
 using namespace std;
 
+Joint_comms Joints;
+
 void INT_handler(int s)
 {
   printf("Caught signal %d\n", s);
+  // Joints.disables();
   exit(1);
 }
 
@@ -19,11 +22,12 @@ int main(int argc, char **argv)
   (void)argc;
   (void)argv;
 
-  Joint_comms Joints;
+  
 
   // Joints.addJoint(0x11, "j1", 35, 0);
   // Joints.addJoint(0x12, "j2", -360 / 4, -50);
-  Joints.addJoint(0x13, "j3", 24, +150);
+  // Joints.addJoint(0x13, "j3", 24, +150);
+  Joints.addJoint(0x13, "j3", 24, 0);
 
   if (Joints.init())
   {
@@ -31,23 +35,12 @@ int main(int argc, char **argv)
     return -1;
   }
 
-  if (Joints.setups(20, 20))
+
+  if (Joints.enables(20, 20))
   {
-    cerr << "Could not setup joints" << endl;
+    cerr << "did not enable joints" << endl;
     return -1;
   }
-
-  // if (Joints.setDriveCurrents(70))
-  // {
-  //   cerr << "Could not set drive currents of joints" << endl;
-  //   return -1;
-  // }
-
-  // if (Joints.setHoldCurrents(70))
-  // {
-  //   cerr << "Could not set hold currents of joints" << endl;
-  //   return -1;
-  // }
 
   sleep(1);
 
@@ -57,6 +50,8 @@ int main(int argc, char **argv)
     return -1;
   }
 
+  sleep(1);
+
 
   Joints.home("j3", 0, 10, -2, 10);
   sleep(1);
@@ -64,15 +59,15 @@ int main(int argc, char **argv)
   // sleep(1);
   // Joints.home("j2", 0, 20, -3, 30);
 
-  // if (Joints.enableStallguards({20, 30, 10}))
-  // {
-  //   cerr << "Could not enable stallguards of joints" << endl;
-  //   return -1;
-  // }
+  if (Joints.enableStallguards({15, 30, 10}))
+  {
+    cerr << "Could not enable stallguards of joints" << endl;
+    return -1;
+  }
 
   usleep(1000 * 1000);
 
-  // Joints.deinit();
+  // Joints.disables();
   // return 0;
 
   // vector<float> q = {0.0, 0.0, 0.0};
@@ -89,7 +84,7 @@ int main(int argc, char **argv)
   {
   
     // qd_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 1000;
-    q_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 10;
+    q_set[0] = (float)sin(2 * 2 * M_PI * t) * 1;
     // q_set[2] = (float)sin(0.2 * 2 * M_PI * t) * 10;
     // q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 10+10;
 
@@ -135,6 +130,6 @@ int main(int argc, char **argv)
     //   break;
     // }
   }
-  Joints.deinit();
+  Joints.disables();
   return 0;
 }

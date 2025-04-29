@@ -21,13 +21,20 @@ public:
 
   /**
    * Initialize the driver
-   * @param mode Hard: 0, Soft: 1
+   * @param driveCurrent drive current in 0-100 % of 2.5A output (check uStepper doc.)
+   * @param holdCurrent hold current in 0-100 % of 2.5A output (check uStepper doc.)
    * @return error code.
    */
-  int setup(u_int8_t driveCurrent, u_int8_t holdCurrent);
+  int enable(u_int8_t driveCurrent, u_int8_t holdCurrent);
 
   /**
-   * mke motor move to end stop
+   * disenganges the joint motor without closing i2c handle
+   * @return error code.
+   */
+  int disable(void);
+
+  /**
+   * make motor move to end stop
    * @param direction  CCW: 0, CW: 1.
    * @param rpm  speed of motor in rpm > 10
    * @param sensitivity Encoder stalldetect sensitivity - From -100 to 10 where lower number is less sensitive and higher is more sensitive
@@ -39,6 +46,9 @@ public:
 
   /**
    * Stops the motor
+   * @note When stopping the motor in soft mode, wait sufficiently long until the motor has stopped.
+   * Since the stop() function in the motor controller is blocking.
+   * Continously checking the busy flag also might interfere with the stop() function on the controller side.
    * @param mode Hard: 0, Soft: 1
    * @return error code.
    */
@@ -78,12 +88,10 @@ public:
   int getStall(u_int8_t &stall);
 
   /**
-   * @brief Enable TMC5130 StallGuard
-   * This function enables the builtin stallguard offered from TMC5130 stepper driver.
-   * The threshold should be tuned as to trigger stallguard before a step is lost.
-   * @param threshold stall sensitivity. A value between -64 and +63
+   * @brief Enable encoder stall detection. A detected stall can be reset by homeing.
+   * @param sensitivity Encoder stalldetect sensitivity - From -100 to 10 where lower number is less sensitive and higher is more sensitive
    */
-  int enableStallguard(int8_t threshold);
+  int enableStallguard(u_int8_t sensitivity);
 
   /**
    * checks if the joint is homed from the joint
@@ -102,6 +110,24 @@ public:
    * @return the isHomed state variable.
    */
   bool isHomed(void);
+
+  /**
+   * checks if the joint is setup from the joint
+   * @param setup not setup: 0, setup: 1
+   * @return error code.
+   */
+  int getIsSetup(u_int8_t &setup);
+
+  /**
+   * checks if the joint is setup from the joint
+   * @return error code.
+   */
+  int getIsSetup(void);
+
+  /**
+   * @return the isSetup state variable.
+   */
+  bool isSetup(void);
 
   int moveSteps(int32_t steps);
   int checkCom(void);
@@ -149,7 +175,8 @@ private:
     CHECKORIENTATION = 0x2B,
     GETENCODERRPM = 0x2C,
     HOME = 0x2D,
-    ISHOMED = 0x2E
+    ISHOMED = 0x2E,
+    ISSETUP = 0x2F
   };
 
   template <typename T>
@@ -160,7 +187,8 @@ private:
 
   u_int8_t flags = 0x00;
 
-  u_int8_t homed = 0;
+  u_int8_t ishomed = 0;
+  u_int8_t issetup = 0;
 
   int address;
   float gearRatio = 1;
