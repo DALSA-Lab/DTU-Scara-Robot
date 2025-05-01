@@ -1,6 +1,8 @@
 #include <signal.h>
 #include <unistd.h>
 #include "joint_communication/mJointCom.h"
+#include "joint_communication/mPWM.h"
+
 #include <cmath>
 #include <lgpio.h>
 
@@ -11,7 +13,7 @@ Joint_comms Joints;
 void INT_handler(int s)
 {
   printf("Caught signal %d\n", s);
-  // Joints.disables();
+  Joints.disables();
   exit(1);
 }
 
@@ -22,12 +24,22 @@ int main(int argc, char **argv)
   (void)argc;
   (void)argv;
 
-  
+  // RPI_PWM pwm;
 
-  // Joints.addJoint(0x11, "j1", 35, 0);
-  // Joints.addJoint(0x12, "j2", -360 / 4, -50);
-  // Joints.addJoint(0x13, "j3", 24, +150);
-  Joints.addJoint(0x13, "j3", 24, 0);
+  // cout << pwm.start(0,10000,50,0) << endl;
+
+  // float time = 0;
+  // int p = 10;
+  // while (1)
+  // {  
+  //   pwm.setDutyCycle((float)sin(0.1 * 2 * M_PI * time) * 50+50);
+  //   usleep(p * 1000);
+  //   time += p * 1.0 / 1000;
+  // }
+
+  Joints.addJoint(0x11, "j1", 35, 0);
+  Joints.addJoint(0x12, "j2", -360 / 4, -50);
+  Joints.addJoint(0x13, "j3", 24, +150);
 
   if (Joints.init())
   {
@@ -36,7 +48,7 @@ int main(int argc, char **argv)
   }
 
 
-  if (Joints.enables(20, 20))
+  if (Joints.enables({30,40,40}, {30,40,40}))
   {
     cerr << "did not enable joints" << endl;
     return -1;
@@ -53,13 +65,22 @@ int main(int argc, char **argv)
   sleep(1);
 
 
-  Joints.home("j3", 0, 10, -2, 10);
+  if(!Joints.joints[0].isHomed()){
+    Joints.home("j1", 0, 20, -3, 15);
+  }
+  if(!Joints.joints[1].isHomed()){
+    Joints.home("j2", 0, 20, -3, 30);
+  }
+  if(!Joints.joints[2].isHomed()){
+    Joints.home("j3", 0, 10, -2, 10);
+  }
+  
   sleep(1);
   // Joints.home("j1", 0, 20, -3, 15);
   // sleep(1);
   // Joints.home("j2", 0, 20, -3, 30);
 
-  if (Joints.enableStallguards({15, 30, 10}))
+  if (Joints.enableStallguards({15, 15, 15}))
   {
     cerr << "Could not enable stallguards of joints" << endl;
     return -1;
@@ -70,23 +91,23 @@ int main(int argc, char **argv)
   // Joints.disables();
   // return 0;
 
-  // vector<float> q = {0.0, 0.0, 0.0};
-  // vector<float> qd = {0.0, 0.0, 0.0};
-  // vector<float> q_set = {0.0, 50.0, 0.0};
-  // vector<float> qd_set = {0.0, 0.0, 0.0};
-  vector<float> q = {0.0};
-  vector<float> qd = {0.0};
-  vector<float> q_set = {0.0};
-  vector<float> qd_set = {0.0};
+  vector<float> q = {0.0, 0.0, 0.0};
+  vector<float> qd = {0.0, 0.0, 0.0};
+  vector<float> q_set = {0.0, 50.0, 0.0};
+  vector<float> qd_set = {0.0, 0.0, 0.0};
+  // vector<float> q = {0.0};
+  // vector<float> qd = {0.0};
+  // vector<float> q_set = {0.0};
+  // vector<float> qd_set = {0.0};
   float t = 0;
   int period_ms = 10;
   while (1)
   {
   
     // qd_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 1000;
-    q_set[0] = (float)sin(2 * 2 * M_PI * t) * 1;
+    q_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 10;
     // q_set[2] = (float)sin(0.2 * 2 * M_PI * t) * 10;
-    // q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 10+10;
+    q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 10+15;
 
     // q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 360;
 
