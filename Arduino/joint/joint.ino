@@ -3,7 +3,7 @@
 #include <Wire.h>
 #include "joint.h"
 
-#define J3
+#define J1
 #include "configuration.h"
 
 
@@ -11,6 +11,7 @@ UstepperS32 stepper;
 static uint8_t state = 0x00;
 static uint8_t driveCurrent, holdCurrent;
 static uint8_t isHomed = 0;
+static uint8_t isStalled = 0;
 static uint8_t isSetup = 0;
 static uint8_t isStallguardEnabled = 0;
 static int stallguardThreshold = 100;
@@ -84,7 +85,7 @@ void stepper_receive_handler(uint8_t reg) {
 
         isStallguardEnabled = 0;
         isSetup = 1;
-        // isHomed = 0;
+        isStalled = 0;
         break;
       }
 
@@ -93,7 +94,9 @@ void stepper_receive_handler(uint8_t reg) {
         Serial.print("Executing SETRPM\n");
         float v;
         readValue<float>(v, rx_buf, rx_length);
+        if (!isStalled) {
         stepper.setRPM(v);
+        }
         break;
       }
 
@@ -120,7 +123,7 @@ void stepper_receive_handler(uint8_t reg) {
         float v;
         readValue<float>(v, rx_buf, rx_length);
         // Serial.println(v);
-        if (!(state & (1 << 0))) {
+        if (!isStalled) {
           stepper.moveToAngle(v);
         }
 
@@ -172,6 +175,7 @@ void stepper_receive_handler(uint8_t reg) {
         // stepper.encoder.encoderStallDetect = 0;
         state &= ~(1 << 0);  // Clear STALL bit
         isStallguardEnabled = 1;
+        isStalled = 0;
 
         break;
       }
@@ -270,6 +274,7 @@ void stepper_receive_handler(uint8_t reg) {
         stepper.setCurrent(driveCurrent);
 
         isHomed = 1;
+        isStalled = 0;
         break;
       }
 
@@ -357,15 +362,22 @@ void loop(void) {
 
   if (isStallguardEnabled) {
     float err = stepper.getPidError();
-    state |= (abs(err) > stallguardThreshold) ? 0x01 : 0x00;
-    // Serial.print(abs(err));
-    // Serial.print("\t");
-    // Serial.println(state);
+    if(abs(err) > stallguardThreshold){
+      isStalled = 1;
+      state |= (1 << 0);
+    }else if(!isStalled){
+      state &= ~(1 << 0);
+    }
+    // state |= (abs(err) > stallguardThreshold) ? 0x01 : 0x00;
+    Serial.print(abs(err));
+    Serial.print("\t");
+    Serial.println(state);
   }
-  state |= isHomed << 2;
-  state |= ISSETUP << 3;
+  // state |= isHomed << 2;
+  // state |= ISSETUP << 3;
 
-
+  isHomed ? state |= (1 << 2) : state &= ~(1<<2);
+  isSetup ? state |= (1 << 2) : state &= ~(1<<3);
 
   if (rx_data_ready) {
     rx_data_ready = 0;
