@@ -13,7 +13,7 @@ find_package(rclcpp REQUIRED) # <----custom
 find_library(LGPIO_LIBRARY lgpio) # <----custom
 
 
-add_executable(joint_comm_node src/joint_comm_node.cpp src/uI2C.cpp src/mJoint.cpp src/mJointCom.cpp)
+add_executable(joint_comm_node src/joint_comm_node.cpp src/uI2C.cpp src/mJoint.cpp src/mJointCom.cpp src/mGripper.cpp)
 ament_target_dependencies(joint_comm_node rclcpp) # <----custom
 
 target_link_libraries(joint_comm_node ${LGPIO_LIBRARY}) # <----custom

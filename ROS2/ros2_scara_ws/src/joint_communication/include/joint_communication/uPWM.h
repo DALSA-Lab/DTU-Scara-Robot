@@ -1,5 +1,5 @@
 /* I copied this from: https://github.com/berndporr/rpi_pwm/blob/main/rpi_pwm.h 
-and slightly modified*/
+and slightly modified it*/
 
 #ifndef __RPIPWM
 #define __RPIPWM

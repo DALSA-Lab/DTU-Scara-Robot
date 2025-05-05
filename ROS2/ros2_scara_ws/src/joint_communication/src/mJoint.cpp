@@ -25,7 +25,6 @@ int Joint::deinit(void)
     int rc = closeI2CDevHandle(this->handle);
     return rc;
 }
-
 int Joint::disable(void)
 {
     int rc = 0;
@@ -39,7 +38,6 @@ int Joint::disable(void)
     usleep(10000);
     return rc;
 }
-
 
 int Joint::enable(u_int8_t driveCurrent, u_int8_t holdCurrent)
 {
