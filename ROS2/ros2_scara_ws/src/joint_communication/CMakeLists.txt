@@ -12,19 +12,79 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED) # <----custom
 find_library(LGPIO_LIBRARY lgpio) # <----custom
 
+include_directories(include)
 
-add_executable(joint_comm_node src/joint_comm_node.cpp src/uI2C.cpp src/mJoint.cpp src/mJointCom.cpp src/mGripper.cpp)
-ament_target_dependencies(joint_comm_node rclcpp) # <----custom
+add_library(${PROJECT_NAME} SHARED src/uI2C.cpp src/mJoint.cpp src/mJointCom.cpp src/mGripper.cpp)
+ament_export_targets(${PROJECT_NAME} HAS_LIBRARY_TARGET)
 
-target_link_libraries(joint_comm_node ${LGPIO_LIBRARY}) # <----custom
+ament_target_dependencies(${PROJECT_NAME} rclcpp)
 
-target_include_directories(joint_comm_node PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include/${PROJECT_NAME}>)
-target_compile_features(joint_comm_node PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+# ament_export_dependencies(rclcpp)
 
-install(TARGETS joint_comm_node
-  DESTINATION lib/${PROJECT_NAME})
+target_link_libraries(${PROJECT_NAME} ${LGPIO_LIBRARY})
+
+
+
+# ament_target_dependencies(${PROJECT_NAME} rclcpp) # <----custom
+
+target_compile_features(${PROJECT_NAME} PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
+
+
+install(
+  DIRECTORY include/${PROJECT_NAME}
+  DESTINATION include
+)
+
+
+install(
+    TARGETS ${PROJECT_NAME}
+    EXPORT ${PROJECT_NAME}
+    # EXPORT export_${PROJECT_NAME}
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    RUNTIME DESTINATION bin
+    INCLUDES DESTINATION include
+    )
+
+set(RCLCPP_LOCAL_BINARY_NAME joint_communication_node)
+
+
+add_executable(${RCLCPP_LOCAL_BINARY_NAME} src/joint_comm_node.cpp src/uI2C.cpp src/mJoint.cpp src/mJointCom.cpp src/mGripper.cpp)
+
+
+ament_target_dependencies(${RCLCPP_LOCAL_BINARY_NAME}
+
+    rclcpp
+
+
+    )
+
+
+target_link_libraries(${RCLCPP_LOCAL_BINARY_NAME}
+
+    ${PROJECT_NAME}
+
+
+    )
+
+
+target_include_directories(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC
+
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+
+    $<INSTALL_INTERFACE:include>)
+
+
+target_compile_features(${RCLCPP_LOCAL_BINARY_NAME} PUBLIC c_std_99 cxx_std_17)
+
+
+install(TARGETS ${RCLCPP_LOCAL_BINARY_NAME}
+
+    DESTINATION lib/${PROJECT_NAME})
+
+
+unset(RCLCPP_LOCAL_BINARY_NAME)
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

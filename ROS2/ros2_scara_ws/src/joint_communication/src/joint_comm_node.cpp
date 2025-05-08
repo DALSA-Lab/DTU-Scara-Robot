@@ -99,7 +99,8 @@ int main(int argc, char **argv)
 
   usleep(1000 * 1000);
 
-  // _Joints.disables();
+
+  _Joints.disables();
   // return 0;
 
   vector<float> q = {0.0, 0.0, 0.0};
@@ -123,10 +124,10 @@ int main(int argc, char **argv)
     // q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 360;
 
     // _Joints.setVelocities(qd_set);
-    if (_Joints.setPositions(q_set) != 0)
-    {
-      break;
-    }
+    // if (_Joints.setPositions(q_set) != 0)
+    // {
+    //   break;
+    // }
 
     usleep(period_ms * 1000);
     t += period_ms * 1.0 / 1000;
