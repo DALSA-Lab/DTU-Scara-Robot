@@ -1,0 +1,22 @@
+<map id="/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mJoint.h" name="/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mJoint.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="248,5,469,75"/>
+<area shape="rect" id="Node000002" href="$mJoint_8hpp.html" title=" " alt="" coords="279,123,438,163"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="353,75,353,108,347,108,347,75"/>
+<area shape="poly" id="edge2_Node000002_Node000001" title=" " alt="" coords="363,122,365,89,370,89,369,122"/>
+<area shape="rect" id="Node000003" href="$uI2C_8h.html" title=" " alt="" coords="189,211,347,251"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="340,165,300,203,296,199,337,161"/>
+<area shape="rect" id="Node000010" href="$common_8h.html" title="A file containing utility macros and functions." alt="" coords="371,211,530,251"/>
+<area shape="poly" id="edge10_Node000002_Node000010" title=" " alt="" coords="381,161,422,199,419,203,377,165"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,299,72,324"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="214,253,86,297,84,292,212,248"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="97,299,165,324"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="236,253,164,294,162,289,234,248"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="189,299,251,324"/>
+<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="259,252,237,288,232,285,254,249"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="276,299,356,324"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="282,249,304,285,299,288,277,252"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="381,299,465,324"/>
+<area shape="poly" id="edge8_Node000003_Node000008" title=" " alt="" coords="306,248,389,290,387,295,304,253"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="489,299,564,324"/>
+<area shape="poly" id="edge9_Node000003_Node000009" title=" " alt="" coords="331,248,477,292,476,297,329,253"/>
+</map>

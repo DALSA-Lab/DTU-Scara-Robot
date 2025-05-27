@@ -1,0 +1,20 @@
+<map id="/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/uI2C.h" name="/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/uI2C.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="274,5,489,75"/>
+<area shape="rect" id="Node000002" href="$mJoint_8hpp.html" title=" " alt="" coords="185,123,423,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="353,88,329,124,324,121,349,85"/>
+<area shape="rect" id="Node000006" href="$mJointCom_8cpp.html" title=" " alt="" coords="5,475,192,544"/>
+<area shape="poly" id="edge9_Node000001_Node000006" title=" " alt="" coords="262,68,215,91,194,106,175,124,147,166,126,212,111,261,102,310,95,403,98,474,92,475,90,403,96,310,106,260,121,210,142,163,171,121,190,102,212,87,260,64"/>
+<area shape="rect" id="Node000007" href="$mJoint_8cpp.html" title=" " alt="" coords="411,357,597,427"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="417,85,437,122,461,185,479,250,502,356,496,357,474,251,456,187,432,124,412,87"/>
+<area shape="rect" id="Node000008" href="$uI2C_8cpp.html" title=" " alt="" coords="497,123,684,192"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="456,79,531,120,528,125,453,84"/>
+<area shape="rect" id="Node000003" href="$mJoint_8h.html" title=" " alt="" coords="193,240,415,309"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="298,206,298,240,293,240,292,206"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="310,226,310,192,315,192,316,226"/>
+<area shape="rect" id="Node000004" href="$mJointCom_8h.html" title="File containing the Joint_comms class." alt="" coords="136,357,387,427"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="289,323,276,358,271,356,284,322"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="376,314,447,355,444,359,373,319"/>
+<area shape="rect" id="Node000005" href="$joint__comm__node_8cpp.html" title=" " alt="" coords="216,475,403,544"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="283,438,298,473,293,475,278,440"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="204,437,148,476,145,472,201,433"/>
+</map>

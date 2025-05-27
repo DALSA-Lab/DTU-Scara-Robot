@@ -35,17 +35,21 @@ int main(int argc, char **argv)
   // int period = 10;
   // while (1)
   // {
-
-  //   if (_Gripper.setPosition((float)-cos(0.2 * 2 * M_PI * time) * 85/2+85/2) != 0)
-  //   {
+  //   int i;
+  //   cin >> i;
+  //   if(_Gripper.setPosition(i*1.0) != 0){
   //     break;
   //   }
+    // if (_Gripper.setPosition((float)-cos(0.2 * 2 * M_PI * time) * 85/2+85/2) != 0)
+    // {
+    //   break;
+    // }
 
-  //   usleep(period * 1000);
-  //   time += period * 1.0 / 1000;
+    // usleep(period * 1000);
+    // time += period * 1.0 / 1000;
   // }
 
-  // return 0;
+  // return -1;  
 
   _Joints.addJoint(0x11, "j1", 35, 0);
   _Joints.addJoint(0x12, "j2", -360 / 4, -50);

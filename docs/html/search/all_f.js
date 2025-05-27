@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['setbrakemode_0',['setbrakemode',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a8967f5054ed12cf09fe37b7369a668af',1,'SETBRAKEMODE:&#160;joint.h'],['../classJoint.html#ace371fa42a397f96ac6bef7e2faffbbd',1,'Joint::setBrakeMode()']]],
+  ['setbrakemodes_1',['setBrakeModes',['../classJoint__comms.html#ae4f77985b4bbcaa99b7b2b83b3c1cf8f',1,'Joint_comms']]],
+  ['setcontrolthreshold_2',['SETCONTROLTHRESHOLD',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a25463cded0b67be6de7e47c1fc2825ea',1,'joint.h']]],
+  ['setcurrent_3',['SETCURRENT',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227ada9eaad2a52ca442e604b4f4553358b7',1,'joint.h']]],
+  ['setdrivecurrent_4',['setDriveCurrent',['../classJoint.html#a35a2db0195dc5dc7603810ab355acd94',1,'Joint']]],
+  ['setdrivecurrents_5',['setdrivecurrents',['../classJoint__comms.html#a11671ff7bd1fe19e159006a6846e3d8f',1,'Joint_comms::setDriveCurrents(u_int8_t current)'],['../classJoint__comms.html#a0871d435dbba6a648d7601c77345aa14',1,'Joint_comms::setDriveCurrents(std::vector&lt; u_int8_t &gt; current)']]],
+  ['setdutycycle_6',['setDutyCycle',['../classRPI__PWM.html#aa873d369ec4dec004a6be8ba63606c11',1,'RPI_PWM']]],
+  ['setholdcurrent_7',['setholdcurrent',['../classJoint.html#ad6c87283498d811fbf7b4936225d5b77',1,'Joint::setHoldCurrent()'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a8b0551c32439915ace9fc7c42c6ab252',1,'SETHOLDCURRENT:&#160;joint.h']]],
+  ['setholdcurrents_8',['setholdcurrents',['../classJoint__comms.html#a3d876a22e7e9675613e3c007ac97b262',1,'Joint_comms::setHoldCurrents(std::vector&lt; u_int8_t &gt; current)'],['../classJoint__comms.html#aaa2a7ec7988ebf6c5b3a81f9ffd5e367',1,'Joint_comms::setHoldCurrents(u_int8_t current)']]],
+  ['setmaxacceleration_9',['SETMAXACCELERATION',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a3603579a798a53df01f390ce1ceb4bd2',1,'joint.h']]],
+  ['setmaxdeceleration_10',['SETMAXDECELERATION',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227af5eb3f073abbadddebe0e462d0678cab',1,'joint.h']]],
+  ['setmaxvelocity_11',['SETMAXVELOCITY',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a1bede85166c17bd970bdb990ce63ccc0',1,'joint.h']]],
+  ['setposition_12',['setposition',['../classGripper.html#a982354e6c6f97a0f8ba6fed6c2b23a80',1,'Gripper::setPosition()'],['../classJoint.html#ab7c0d34338e87cfde6eea8ac905f8051',1,'Joint::setPosition()']]],
+  ['setpositions_13',['setPositions',['../classJoint__comms.html#ab139b8554e2210ecf9bd3c6e131d7b41',1,'Joint_comms']]],
+  ['setrpm_14',['SETRPM',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a043c90c670bd894bd93254d86d0d30dd',1,'joint.h']]],
+  ['setup_15',['setup',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227ae2b58a994ba6ad1506f2a89cc3a60a9b',1,'SETUP:&#160;joint.h'],['../joint_8ino.html#a7dfd9b79bc5a37d7df40207afbc5431f',1,'setup(void):&#160;joint.ino']]],
+  ['setvelocities_16',['setVelocities',['../classJoint__comms.html#a735045751a7c6eca41a65ae3432378fa',1,'Joint_comms']]],
+  ['setvelocity_17',['setVelocity',['../classJoint.html#ab002b54b54bb4a7009bf0920dff60e88',1,'Joint']]],
+  ['start_18',['start',['../classRPI__PWM.html#a99e582b3b8571eb991c80268d6024cd8',1,'RPI_PWM']]],
+  ['stepper_19',['stepper',['../joint_8ino.html#aba8f71f42a1e65ec8b11603f009f025b',1,'joint.ino']]],
+  ['stepper_5freceive_5fhandler_20',['stepper_receive_handler',['../joint_8ino.html#afd6c78476549e6e213995eaf3ce5f822',1,'joint.ino']]],
+  ['stepper_5frequest_5fhandler_21',['stepper_request_handler',['../joint_8ino.html#a208150601d4b6eda1e64de2c871b64e4',1,'joint.ino']]],
+  ['stop_22',['stop',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a679ee5320d66c8322e310daeb2ee99b8',1,'STOP:&#160;joint.h'],['../classRPI__PWM.html#a1ca02994ab743f3397bce2ebc2b745ed',1,'RPI_PWM::stop()'],['../classJoint.html#a89deba37891f86ec4cedbd7e3e001133',1,'Joint::stop()']]],
+  ['stops_23',['stops',['../classJoint__comms.html#a3f56abc43ef3054ec7b0295b10df4d1c',1,'Joint_comms']]],
+  ['stp_5freg_5ft_24',['stp_reg_t',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227',1,'joint.h']]]
+];

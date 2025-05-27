@@ -1,5 +1,16 @@
-/* I copied this from: https://github.com/berndporr/rpi_pwm/blob/main/rpi_pwm.h 
-and slightly modified it*/
+/**
+ * @file uPWM.h
+ * @author Sebastian Storz
+ * @brief Includes source code for PWM generation on Raspberry Pi 4
+ * @version 0.1
+ * @date 2025-05-27
+ *
+ * I copied this from: https://github.com/berndporr/rpi_pwm/blob/main/rpi_pwm.h
+ * and slightly modified it
+ *
+ * @copyright Copyright (c) 2025
+ *
+ */
 
 #ifndef __RPIPWM
 #define __RPIPWM
@@ -13,7 +24,7 @@ and slightly modified it*/
 #include <math.h>
 
 /**
- * PWM class for the Raspberry PI 5
+ * PWM class for the Raspberry PI 4 and 5
  **/
 class RPI_PWM
 {
@@ -34,7 +45,7 @@ public:
         FILE *const fp = fopen(p.c_str(), "w");
         if (NULL == fp)
         {
-           std::cerr << "PWM device does not exist. Make sure to add 'dtoverlay=pwm-2chan' to /boot/firmware/config.txt.\n";
+            std::cerr << "PWM device does not exist. Make sure to add 'dtoverlay=pwm-2chan' to /boot/firmware/config.txt.\n";
             return -1;
         }
         const int r = fprintf(fp, "%d", channel);

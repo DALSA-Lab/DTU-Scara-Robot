@@ -1,0 +1,18 @@
+<map id="/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/common.h" name="/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/common.h">
+<area shape="rect" id="Node000001" title="A file containing utility macros and functions." alt="" coords="325,5,561,75"/>
+<area shape="rect" id="Node000002" href="$mJoint_8hpp.html" title=" " alt="" coords="207,123,444,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="400,86,362,124,358,121,397,83"/>
+<area shape="rect" id="Node000008" href="$uI2C_8cpp.html" title=" " alt="" coords="468,123,655,192"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="489,83,528,121,525,124,485,86"/>
+<area shape="rect" id="Node000003" href="$mJoint_8h.html" title=" " alt="" coords="215,240,436,309"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="319,206,320,240,314,240,314,206"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="332,226,331,192,336,192,337,226"/>
+<area shape="rect" id="Node000004" href="$mJointCom_8h.html" title="File containing the Joint_comms class." alt="" coords="79,357,329,427"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="281,321,241,359,238,355,278,317"/>
+<area shape="rect" id="Node000007" href="$mJoint_8cpp.html" title=" " alt="" coords="353,357,540,427"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="373,317,413,355,409,359,369,321"/>
+<area shape="rect" id="Node000005" href="$joint__comm__node_8cpp.html" title=" " alt="" coords="5,475,192,544"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="166,439,131,476,128,473,162,435"/>
+<area shape="rect" id="Node000006" href="$mJointCom_8cpp.html" title=" " alt="" coords="216,475,403,544"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="246,435,280,473,277,476,242,439"/>
+</map>

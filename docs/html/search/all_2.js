@@ -1,0 +1,10 @@
+var searchData=
+[
+  ['checkcom_0',['checkCom',['../classJoint.html#a9a8ab4b5a0cf027c7f433c744c956c5a',1,'Joint']]],
+  ['checkorientation_1',['checkorientation',['../classJoint.html#a80055657a0ece2c9212eec16774d2789',1,'Joint::checkOrientation()'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227ab497f086d05a8a6ece2b0adae02b86b7',1,'CHECKORIENTATION:&#160;joint.h']]],
+  ['checkorientations_2',['checkorientations',['../classJoint__comms.html#a19be151ecaeb7e02ea1578e14c910c7b',1,'Joint_comms::checkOrientations(std::vector&lt; float &gt; angle_v)'],['../classJoint__comms.html#a57039c36082111c78f765eb2ce359da0',1,'Joint_comms::checkOrientations(float angle=10.0)']]],
+  ['clearstall_3',['CLEARSTALL',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a9a59d78a2b03d184ea1d02368aa9dcc2',1,'joint.h']]],
+  ['closei2cdevhandle_4',['closei2cdevhandle',['../uI2C_8h.html#adbcaf30222a905543e93ee1a6393f6b7',1,'closeI2CDevHandle(const int dev_handle):&#160;uI2C.cpp'],['../uI2C_8cpp.html#adbcaf30222a905543e93ee1a6393f6b7',1,'closeI2CDevHandle(const int dev_handle):&#160;uI2C.cpp']]],
+  ['common_2eh_5',['common.h',['../common_8h.html',1,'']]],
+  ['configuration_2eh_6',['configuration.h',['../configuration_8h.html',1,'']]]
+];
