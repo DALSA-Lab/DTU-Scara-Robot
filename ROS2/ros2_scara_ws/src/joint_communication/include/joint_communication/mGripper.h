@@ -1,11 +1,13 @@
 /**
  * @file mGripper.h
  * @author Sebastian Storz
- * @brief File containg the Gripper class
+ * @brief File containing the Gripper class
  * @version 0.1
  * @date 2025-05-27
  *
  * @copyright Copyright (c) 2025
+
+ * Include this file for API functions to interact with the gripper.
  *
  */
 #ifndef MGRIPPER_H

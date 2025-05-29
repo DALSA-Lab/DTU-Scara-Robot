@@ -1,12 +1,16 @@
 /**
  * @file uPWM.h
- * @author Sebastian Storz
- * @brief Includes source code for PWM generation on Raspberry Pi 4
+ * @author Sebastian Storz and Bernd Porr, bernd.porr@glasgow.ac.uk
+ * @brief Includes source code for Hardware PWM generation on Raspberry Pi 4
  * @version 0.1
  * @date 2025-05-27
  *
  * I copied this from: https://github.com/berndporr/rpi_pwm/blob/main/rpi_pwm.h
- * and slightly modified it
+ * and slightly modified it.
+ *
+ * lgpio, the library used for I2C access can only generate soft PWM, 
+ * The timing jitter will cause the servo to fidget. This may cause it to overheat and wear out prematurely.
+ * 
  *
  * @copyright Copyright (c) 2025
  *
@@ -24,7 +28,7 @@
 #include <math.h>
 
 /**
- * PWM class for the Raspberry PI 4 and 5
+ * @brief PWM class for the Raspberry PI 4 and 5
  **/
 class RPI_PWM
 {

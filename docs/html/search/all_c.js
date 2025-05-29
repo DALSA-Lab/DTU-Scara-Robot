@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['openi2cdevhandle_0',['openi2cdevhandle',['../uI2C_8h.html#a6434d4118a714731dc36bf1d2d1a9406',1,'openI2CDevHandle(const int dev_addr):&#160;uI2C.cpp'],['../uI2C_8cpp.html#a6434d4118a714731dc36bf1d2d1a9406',1,'openI2CDevHandle(const int dev_addr):&#160;uI2C.cpp']]]
+  ['nack_0',['nack',['../joint_8h.html#a958518a45b12053ae33606ee7cb68a55',1,'NACK:&#160;joint.h'],['../uI2C_8h.html#a958518a45b12053ae33606ee7cb68a55',1,'NACK:&#160;uI2C.h']]],
+  ['name_1',['name',['../classJoint.html#a57e3afaab4abae515d5053018e3cc886',1,'Joint']]]
 ];

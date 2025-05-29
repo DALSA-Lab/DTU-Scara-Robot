@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Bioscara: /home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/uPWM.h Source File</title>
+<title>Bioscara: ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/uPWM.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,9 +20,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="dtu_logo.png"/></td>
   <td id="projectalign">
    <div id="projectname">Bioscara
    </div>
+   <div id="projectbrief">DALSAs DIY SCARA robot arm.</div>
   </td>
  </tr>
  </tbody>
@@ -81,119 +83,135 @@ $(document).ready(function() { init_codefold(0); });
   <div class="headertitle"><div class="title">uPWM.h</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="uPWM_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/* I copied this from: https://github.com/berndporr/rpi_pwm/blob/main/rpi_pwm.h </span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">and slightly modified it*/</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#ifndef __RPIPWM</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#define __RPIPWM</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;string.h&gt;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;math.h&gt;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classRPI__PWM.html">   18</a></span><span class="keyword">class </span><a class="code hl_class" href="classRPI__PWM.html">RPI_PWM</a></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>{</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00029" data-start="{" data-end="}">
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#a99e582b3b8571eb991c80268d6024cd8">   29</a></span>    <span class="keywordtype">int</span> <a class="code hl_function" href="classRPI__PWM.html#a99e582b3b8571eb991c80268d6024cd8">start</a>(<span class="keywordtype">int</span> channel, <span class="keywordtype">int</span> frequency, <span class="keywordtype">float</span> duty_cycle = 0, <span class="keywordtype">int</span> chip = 2)</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    {</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        chippath = <span class="stringliteral">&quot;/sys/class/pwm/pwmchip&quot;</span> + std::to_string(chip);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        pwmpath = chippath + <span class="stringliteral">&quot;/pwm&quot;</span> + std::to_string(channel);</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        std::string p = chippath + <span class="stringliteral">&quot;/export&quot;</span>;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        FILE *<span class="keyword">const</span> fp = fopen(p.c_str(), <span class="stringliteral">&quot;w&quot;</span>);</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordflow">if</span> (NULL == fp)</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        {</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>           std::cerr &lt;&lt; <span class="stringliteral">&quot;PWM device does not exist. Make sure to add &#39;dtoverlay=pwm-2chan&#39; to /boot/firmware/config.txt.\n&quot;</span>;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        }</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> r = fprintf(fp, <span class="stringliteral">&quot;%d&quot;</span>, channel);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        fclose(fp);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        <span class="keywordflow">if</span> (r &lt; 0)</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            <span class="keywordflow">return</span> r;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        usleep(100000); <span class="comment">// it takes a while till the PWM subdir is created</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        per = (int)1E9 / frequency;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        setPeriod(per);</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <a class="code hl_function" href="classRPI__PWM.html#aa873d369ec4dec004a6be8ba63606c11">setDutyCycle</a>(duty_cycle);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        enable();</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <span class="keywordflow">return</span> r;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    }</div>
+<a href="uPWM_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#ifndef __RPIPWM</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#define __RPIPWM</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;string.h&gt;</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="preprocessor">#include &lt;math.h&gt;</span></div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="foldopen" id="foldopen00033" data-start="{" data-end="};">
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classRPI__PWM.html">   33</a></span><span class="keyword">class </span><a class="code hl_class" href="classRPI__PWM.html">RPI_PWM</a></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>{</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00044" data-start="{" data-end="}">
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#a99e582b3b8571eb991c80268d6024cd8">   44</a></span>    <span class="keywordtype">int</span> <a class="code hl_function" href="classRPI__PWM.html#a99e582b3b8571eb991c80268d6024cd8">start</a>(<span class="keywordtype">int</span> channel, <span class="keywordtype">int</span> frequency, <span class="keywordtype">float</span> duty_cycle = 0, <span class="keywordtype">int</span> chip = 2)</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <a class="code hl_variable" href="classRPI__PWM.html#a35df433d8a5faeed71f439ea6063030a">chippath</a> = <span class="stringliteral">&quot;/sys/class/pwm/pwmchip&quot;</span> + std::to_string(chip);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <a class="code hl_variable" href="classRPI__PWM.html#a62b8d2b406cbb62d2703d282bdc703d9">pwmpath</a> = <a class="code hl_variable" href="classRPI__PWM.html#a35df433d8a5faeed71f439ea6063030a">chippath</a> + <span class="stringliteral">&quot;/pwm&quot;</span> + std::to_string(channel);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        std::string p = <a class="code hl_variable" href="classRPI__PWM.html#a35df433d8a5faeed71f439ea6063030a">chippath</a> + <span class="stringliteral">&quot;/export&quot;</span>;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        FILE *<span class="keyword">const</span> fp = fopen(p.c_str(), <span class="stringliteral">&quot;w&quot;</span>);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="keywordflow">if</span> (NULL == fp)</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            std::cerr &lt;&lt; <span class="stringliteral">&quot;PWM device does not exist. Make sure to add &#39;dtoverlay=pwm-2chan&#39; to /boot/firmware/config.txt.\n&quot;</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> r = fprintf(fp, <span class="stringliteral">&quot;%d&quot;</span>, channel);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        fclose(fp);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="keywordflow">if</span> (r &lt; 0)</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>            <span class="keywordflow">return</span> r;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        usleep(100000); <span class="comment">// it takes a while till the PWM subdir is created</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <a class="code hl_variable" href="classRPI__PWM.html#a980677ec3d3119a4dc69a66cf73f1de6">per</a> = (int)1E9 / frequency;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <a class="code hl_function" href="classRPI__PWM.html#a6d1eaddac5428733db69f27d962b0cc3">setPeriod</a>(<a class="code hl_variable" href="classRPI__PWM.html#a980677ec3d3119a4dc69a66cf73f1de6">per</a>);</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <a class="code hl_function" href="classRPI__PWM.html#aa873d369ec4dec004a6be8ba63606c11">setDutyCycle</a>(duty_cycle);</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <a class="code hl_function" href="classRPI__PWM.html#aa023cdb54ae0945f74c454d70d654a58">enable</a>();</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">return</span> r;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    }</div>
 </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#a1ca02994ab743f3397bce2ebc2b745ed">   55</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classRPI__PWM.html#a1ca02994ab743f3397bce2ebc2b745ed">stop</a>()</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        disable();</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    }</div>
-</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="foldopen" id="foldopen00060" data-start="{" data-end="}">
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#a48018f0627c5c22a313a2d69b0bb3301">   60</a></span>    <a class="code hl_function" href="classRPI__PWM.html#a48018f0627c5c22a313a2d69b0bb3301">~RPI_PWM</a>()</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    {</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        disable();</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    }</div>
-</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
 <div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#aa873d369ec4dec004a6be8ba63606c11">   70</a></span>    <span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classRPI__PWM.html#aa873d369ec4dec004a6be8ba63606c11">setDutyCycle</a>(<span class="keywordtype">float</span> v)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> dc = (int)round((<span class="keywordtype">float</span>)per * (v / 100.0));</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> r = setDutyCycleNS(dc);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordflow">return</span> r;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    }</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#a1ca02994ab743f3397bce2ebc2b745ed">   70</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classRPI__PWM.html#a1ca02994ab743f3397bce2ebc2b745ed">stop</a>()</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <a class="code hl_function" href="classRPI__PWM.html#ade7c53f4c16b0dc40e8e8f38eb151a89">disable</a>();</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    }</div>
 </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordtype">void</span> setPeriod(<span class="keywordtype">int</span> ns)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        writeSYS(pwmpath + <span class="stringliteral">&quot;/&quot;</span> + <span class="stringliteral">&quot;period&quot;</span>, ns);</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    }</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    <span class="keyword">inline</span> <span class="keywordtype">int</span> setDutyCycleNS(<span class="keywordtype">int</span> ns)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> r = writeSYS(pwmpath + <span class="stringliteral">&quot;/&quot;</span> + <span class="stringliteral">&quot;duty_cycle&quot;</span>, ns);</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        <span class="keywordflow">return</span> r;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    }</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keywordtype">void</span> enable()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        writeSYS(pwmpath + <span class="stringliteral">&quot;/&quot;</span> + <span class="stringliteral">&quot;enable&quot;</span>, 1);</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    }</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keywordtype">void</span> disable()<span class="keyword"> const</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        writeSYS(pwmpath + <span class="stringliteral">&quot;/&quot;</span> + <span class="stringliteral">&quot;enable&quot;</span>, 0);</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    }</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    <span class="keywordtype">int</span> per = 0;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    std::string chippath;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    std::string pwmpath;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="foldopen" id="foldopen00075" data-start="{" data-end="}">
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#a48018f0627c5c22a313a2d69b0bb3301">   75</a></span>    <a class="code hl_function" href="classRPI__PWM.html#a48018f0627c5c22a313a2d69b0bb3301">~RPI_PWM</a>()</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    {</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <a class="code hl_function" href="classRPI__PWM.html#ade7c53f4c16b0dc40e8e8f38eb151a89">disable</a>();</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    }</div>
+</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="foldopen" id="foldopen00085" data-start="{" data-end="}">
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#aa873d369ec4dec004a6be8ba63606c11">   85</a></span>    <span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classRPI__PWM.html#aa873d369ec4dec004a6be8ba63606c11">setDutyCycle</a>(<span class="keywordtype">float</span> v)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> dc = (int)round((<span class="keywordtype">float</span>)<a class="code hl_variable" href="classRPI__PWM.html#a980677ec3d3119a4dc69a66cf73f1de6">per</a> * (v / 100.0));</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> r = <a class="code hl_function" href="classRPI__PWM.html#acd7a572ed91355ae643f39689c5c8174">setDutyCycleNS</a>(dc);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        <span class="keywordflow">return</span> r;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    }</div>
+</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="keyword">private</span>:</div>
+<div class="foldopen" id="foldopen00093" data-start="{" data-end="}">
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#a6d1eaddac5428733db69f27d962b0cc3">   93</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classRPI__PWM.html#a6d1eaddac5428733db69f27d962b0cc3">setPeriod</a>(<span class="keywordtype">int</span> ns)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <a class="code hl_function" href="classRPI__PWM.html#a96f1e19737bef5df387113a7dd7ca0f3">writeSYS</a>(<a class="code hl_variable" href="classRPI__PWM.html#a62b8d2b406cbb62d2703d282bdc703d9">pwmpath</a> + <span class="stringliteral">&quot;/&quot;</span> + <span class="stringliteral">&quot;period&quot;</span>, ns);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    }</div>
+</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="foldopen" id="foldopen00098" data-start="{" data-end="}">
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#acd7a572ed91355ae643f39689c5c8174">   98</a></span>    <span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classRPI__PWM.html#acd7a572ed91355ae643f39689c5c8174">setDutyCycleNS</a>(<span class="keywordtype">int</span> ns)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> r = <a class="code hl_function" href="classRPI__PWM.html#a96f1e19737bef5df387113a7dd7ca0f3">writeSYS</a>(<a class="code hl_variable" href="classRPI__PWM.html#a62b8d2b406cbb62d2703d282bdc703d9">pwmpath</a> + <span class="stringliteral">&quot;/&quot;</span> + <span class="stringliteral">&quot;duty_cycle&quot;</span>, ns);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keywordflow">return</span> r;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    }</div>
+</div>
 <div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keyword">inline</span> <span class="keywordtype">int</span> writeSYS(std::string filename, <span class="keywordtype">int</span> value)<span class="keyword"> const</span></div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="}">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#aa023cdb54ae0945f74c454d70d654a58">  104</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classRPI__PWM.html#aa023cdb54ae0945f74c454d70d654a58">enable</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="keyword">    </span>{</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        FILE *<span class="keyword">const</span> fp = fopen(filename.c_str(), <span class="stringliteral">&quot;w&quot;</span>);</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <span class="keywordflow">if</span> (NULL == fp)</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        {</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            <span class="keywordflow">return</span> -1;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        }</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> r = fprintf(fp, <span class="stringliteral">&quot;%d&quot;</span>, value);</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        fclose(fp);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keywordflow">return</span> r;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    }</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>};</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <a class="code hl_function" href="classRPI__PWM.html#a96f1e19737bef5df387113a7dd7ca0f3">writeSYS</a>(<a class="code hl_variable" href="classRPI__PWM.html#a62b8d2b406cbb62d2703d282bdc703d9">pwmpath</a> + <span class="stringliteral">&quot;/&quot;</span> + <span class="stringliteral">&quot;enable&quot;</span>, 1);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    }</div>
 </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassRPI__PWM_html"><div class="ttname"><a href="classRPI__PWM.html">RPI_PWM</a></div><div class="ttdef"><b>Definition</b> uPWM.h:19</div></div>
-<div class="ttc" id="aclassRPI__PWM_html_a1ca02994ab743f3397bce2ebc2b745ed"><div class="ttname"><a href="classRPI__PWM.html#a1ca02994ab743f3397bce2ebc2b745ed">RPI_PWM::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdef"><b>Definition</b> uPWM.h:55</div></div>
-<div class="ttc" id="aclassRPI__PWM_html_a48018f0627c5c22a313a2d69b0bb3301"><div class="ttname"><a href="classRPI__PWM.html#a48018f0627c5c22a313a2d69b0bb3301">RPI_PWM::~RPI_PWM</a></div><div class="ttdeci">~RPI_PWM()</div><div class="ttdef"><b>Definition</b> uPWM.h:60</div></div>
-<div class="ttc" id="aclassRPI__PWM_html_a99e582b3b8571eb991c80268d6024cd8"><div class="ttname"><a href="classRPI__PWM.html#a99e582b3b8571eb991c80268d6024cd8">RPI_PWM::start</a></div><div class="ttdeci">int start(int channel, int frequency, float duty_cycle=0, int chip=2)</div><div class="ttdef"><b>Definition</b> uPWM.h:29</div></div>
-<div class="ttc" id="aclassRPI__PWM_html_aa873d369ec4dec004a6be8ba63606c11"><div class="ttname"><a href="classRPI__PWM.html#aa873d369ec4dec004a6be8ba63606c11">RPI_PWM::setDutyCycle</a></div><div class="ttdeci">int setDutyCycle(float v) const</div><div class="ttdef"><b>Definition</b> uPWM.h:70</div></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="foldopen" id="foldopen00109" data-start="{" data-end="}">
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#ade7c53f4c16b0dc40e8e8f38eb151a89">  109</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classRPI__PWM.html#ade7c53f4c16b0dc40e8e8f38eb151a89">disable</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        <a class="code hl_function" href="classRPI__PWM.html#a96f1e19737bef5df387113a7dd7ca0f3">writeSYS</a>(<a class="code hl_variable" href="classRPI__PWM.html#a62b8d2b406cbb62d2703d282bdc703d9">pwmpath</a> + <span class="stringliteral">&quot;/&quot;</span> + <span class="stringliteral">&quot;enable&quot;</span>, 0);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    }</div>
+</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#a980677ec3d3119a4dc69a66cf73f1de6">  114</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="classRPI__PWM.html#a980677ec3d3119a4dc69a66cf73f1de6">per</a> = 0;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#a35df433d8a5faeed71f439ea6063030a">  116</a></span>    std::string <a class="code hl_variable" href="classRPI__PWM.html#a35df433d8a5faeed71f439ea6063030a">chippath</a>;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#a62b8d2b406cbb62d2703d282bdc703d9">  117</a></span>    std::string <a class="code hl_variable" href="classRPI__PWM.html#a62b8d2b406cbb62d2703d282bdc703d9">pwmpath</a>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="foldopen" id="foldopen00119" data-start="{" data-end="}">
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="classRPI__PWM.html#a96f1e19737bef5df387113a7dd7ca0f3">  119</a></span>    <span class="keyword">inline</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classRPI__PWM.html#a96f1e19737bef5df387113a7dd7ca0f3">writeSYS</a>(std::string filename, <span class="keywordtype">int</span> value)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        FILE *<span class="keyword">const</span> fp = fopen(filename.c_str(), <span class="stringliteral">&quot;w&quot;</span>);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="keywordflow">if</span> (NULL == fp)</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        {</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>            <span class="keywordflow">return</span> -1;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        }</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keyword">const</span> <span class="keywordtype">int</span> r = fprintf(fp, <span class="stringliteral">&quot;%d&quot;</span>, value);</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        fclose(fp);</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keywordflow">return</span> r;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    }</div>
+</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>};</div>
+</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassRPI__PWM_html"><div class="ttname"><a href="classRPI__PWM.html">RPI_PWM</a></div><div class="ttdoc">PWM class for the Raspberry PI 4 and 5.</div><div class="ttdef"><b>Definition</b> uPWM.h:34</div></div>
+<div class="ttc" id="aclassRPI__PWM_html_a1ca02994ab743f3397bce2ebc2b745ed"><div class="ttname"><a href="classRPI__PWM.html#a1ca02994ab743f3397bce2ebc2b745ed">RPI_PWM::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdef"><b>Definition</b> uPWM.h:70</div></div>
+<div class="ttc" id="aclassRPI__PWM_html_a35df433d8a5faeed71f439ea6063030a"><div class="ttname"><a href="classRPI__PWM.html#a35df433d8a5faeed71f439ea6063030a">RPI_PWM::chippath</a></div><div class="ttdeci">std::string chippath</div><div class="ttdef"><b>Definition</b> uPWM.h:116</div></div>
+<div class="ttc" id="aclassRPI__PWM_html_a48018f0627c5c22a313a2d69b0bb3301"><div class="ttname"><a href="classRPI__PWM.html#a48018f0627c5c22a313a2d69b0bb3301">RPI_PWM::~RPI_PWM</a></div><div class="ttdeci">~RPI_PWM()</div><div class="ttdef"><b>Definition</b> uPWM.h:75</div></div>
+<div class="ttc" id="aclassRPI__PWM_html_a62b8d2b406cbb62d2703d282bdc703d9"><div class="ttname"><a href="classRPI__PWM.html#a62b8d2b406cbb62d2703d282bdc703d9">RPI_PWM::pwmpath</a></div><div class="ttdeci">std::string pwmpath</div><div class="ttdef"><b>Definition</b> uPWM.h:117</div></div>
+<div class="ttc" id="aclassRPI__PWM_html_a6d1eaddac5428733db69f27d962b0cc3"><div class="ttname"><a href="classRPI__PWM.html#a6d1eaddac5428733db69f27d962b0cc3">RPI_PWM::setPeriod</a></div><div class="ttdeci">void setPeriod(int ns) const</div><div class="ttdef"><b>Definition</b> uPWM.h:93</div></div>
+<div class="ttc" id="aclassRPI__PWM_html_a96f1e19737bef5df387113a7dd7ca0f3"><div class="ttname"><a href="classRPI__PWM.html#a96f1e19737bef5df387113a7dd7ca0f3">RPI_PWM::writeSYS</a></div><div class="ttdeci">int writeSYS(std::string filename, int value) const</div><div class="ttdef"><b>Definition</b> uPWM.h:119</div></div>
+<div class="ttc" id="aclassRPI__PWM_html_a980677ec3d3119a4dc69a66cf73f1de6"><div class="ttname"><a href="classRPI__PWM.html#a980677ec3d3119a4dc69a66cf73f1de6">RPI_PWM::per</a></div><div class="ttdeci">int per</div><div class="ttdef"><b>Definition</b> uPWM.h:114</div></div>
+<div class="ttc" id="aclassRPI__PWM_html_a99e582b3b8571eb991c80268d6024cd8"><div class="ttname"><a href="classRPI__PWM.html#a99e582b3b8571eb991c80268d6024cd8">RPI_PWM::start</a></div><div class="ttdeci">int start(int channel, int frequency, float duty_cycle=0, int chip=2)</div><div class="ttdef"><b>Definition</b> uPWM.h:44</div></div>
+<div class="ttc" id="aclassRPI__PWM_html_aa023cdb54ae0945f74c454d70d654a58"><div class="ttname"><a href="classRPI__PWM.html#aa023cdb54ae0945f74c454d70d654a58">RPI_PWM::enable</a></div><div class="ttdeci">void enable() const</div><div class="ttdef"><b>Definition</b> uPWM.h:104</div></div>
+<div class="ttc" id="aclassRPI__PWM_html_aa873d369ec4dec004a6be8ba63606c11"><div class="ttname"><a href="classRPI__PWM.html#aa873d369ec4dec004a6be8ba63606c11">RPI_PWM::setDutyCycle</a></div><div class="ttdeci">int setDutyCycle(float v) const</div><div class="ttdef"><b>Definition</b> uPWM.h:85</div></div>
+<div class="ttc" id="aclassRPI__PWM_html_acd7a572ed91355ae643f39689c5c8174"><div class="ttname"><a href="classRPI__PWM.html#acd7a572ed91355ae643f39689c5c8174">RPI_PWM::setDutyCycleNS</a></div><div class="ttdeci">int setDutyCycleNS(int ns) const</div><div class="ttdef"><b>Definition</b> uPWM.h:98</div></div>
+<div class="ttc" id="aclassRPI__PWM_html_ade7c53f4c16b0dc40e8e8f38eb151a89"><div class="ttname"><a href="classRPI__PWM.html#ade7c53f4c16b0dc40e8e8f38eb151a89">RPI_PWM::disable</a></div><div class="ttdeci">void disable() const</div><div class="ttdef"><b>Definition</b> uPWM.h:109</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

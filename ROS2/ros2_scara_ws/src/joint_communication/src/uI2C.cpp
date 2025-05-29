@@ -74,16 +74,3 @@ int closeI2CDevHandle(const int dev_handle)
     return rc;
 }
 
-u_int8_t generateChecksum(const u_int8_t *buffer, size_t length)
-{
-    u_int32_t sum = 0; // Use a larger type to avoid overflow
-
-    // Sum all bytes in the buffer
-    for (size_t i = 0; i < length; ++i)
-    {
-        sum += buffer[i];
-    }
-
-    // Calculate the two's complement
-    return static_cast<u_int8_t>(~sum + 1);
-}

@@ -20,9 +20,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="dtu_logo.png"/></td>
   <td id="projectalign">
    <div id="projectname">Bioscara
    </div>
+   <div id="projectbrief">DALSAs DIY SCARA robot arm.</div>
   </td>
  </tr>
  </tbody>
@@ -155,7 +157,7 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:aa86717eaea6a3a52f6f61f9895dd4473" id="r_aa86717eaea6a3a52f6f61f9895dd4473"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classJoint.html">Joint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#aa86717eaea6a3a52f6f61f9895dd4473">joints</a></td></tr>
-<tr class="memdesc:aa86717eaea6a3a52f6f61f9895dd4473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal vector storing the <a class="el" href="classJoint.html">Joint</a> objects.  <br /></td></tr>
+<tr class="memdesc:aa86717eaea6a3a52f6f61f9895dd4473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal vector storing the <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> objects.  <br /></td></tr>
 <tr class="separator:aa86717eaea6a3a52f6f61f9895dd4473"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -246,7 +248,7 @@ Public Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd><ul>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd><ul>
 <li>Measure joint ranges</li>
 <li>Investigate if possible to make independent of homing</li>
 </ul>
@@ -299,7 +301,7 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd><ul>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd><ul>
 <li>Only execute if not performed before</li>
 <li>save in private flag and inhibit movement if this has not been executed. </li>
 </ul>
@@ -847,14 +849,14 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Internal vector storing the <a class="el" href="classJoint.html">Joint</a> objects. </p>
-<p>A <a class="el" href="classJoint.html">Joint</a> can be added by invoking <a class="el" href="classJoint__comms.html#a6c5191680daa212253d5d8c189f3e2a1" title="add Joints.">addJoint()</a>* </p>
+<p>Internal vector storing the <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> objects. </p>
+<p>A <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> can be added by invoking <a class="el" href="classJoint__comms.html#a6c5191680daa212253d5d8c189f3e2a1" title="add Joints.">addJoint()</a> </p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/<a class="el" href="mJointCom_8h_source.html">mJointCom.h</a></li>
-<li>/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/src/<a class="el" href="mJointCom_8cpp.html">mJointCom.cpp</a></li>
+<li>ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/<a class="el" href="mJointCom_8h_source.html">mJointCom.h</a></li>
+<li>ROS2/ros2_scara_ws/src/joint_communication/src/<a class="el" href="mJointCom_8cpp.html">mJointCom.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

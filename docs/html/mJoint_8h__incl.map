@@ -1,9 +1,9 @@
-<map id="/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mJoint.h" name="/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mJoint.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="248,5,469,75"/>
-<area shape="rect" id="Node000002" href="$mJoint_8hpp.html" title=" " alt="" coords="279,123,438,163"/>
+<map id="ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mJoint.h" name="ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mJoint.h">
+<area shape="rect" id="Node000001" title="File including the Joint class." alt="" coords="251,5,466,75"/>
+<area shape="rect" id="Node000002" href="$mJoint_8hpp.html" title="Templated functions for the Joint class." alt="" coords="279,123,438,163"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="353,75,353,108,347,108,347,75"/>
 <area shape="poly" id="edge2_Node000002_Node000001" title=" " alt="" coords="363,122,365,89,370,89,369,122"/>
-<area shape="rect" id="Node000003" href="$uI2C_8h.html" title=" " alt="" coords="189,211,347,251"/>
+<area shape="rect" id="Node000003" href="$uI2C_8h.html" title="Low level utility for I2C communication on Raspberry Pi using lgpio library." alt="" coords="189,211,347,251"/>
 <area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="340,165,300,203,296,199,337,161"/>
 <area shape="rect" id="Node000010" href="$common_8h.html" title="A file containing utility macros and functions." alt="" coords="371,211,530,251"/>
 <area shape="poly" id="edge10_Node000002_Node000010" title=" " alt="" coords="381,161,422,199,419,203,377,165"/>

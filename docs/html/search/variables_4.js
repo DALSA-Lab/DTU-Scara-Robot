@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['stepper_0',['stepper',['../joint_8ino.html#aba8f71f42a1e65ec8b11603f009f025b',1,'joint.ino']]]
+  ['gearratio_0',['gearRatio',['../classJoint.html#ab0e71cda03c816424f2ab1c222ef8f39',1,'Joint']]]
 ];

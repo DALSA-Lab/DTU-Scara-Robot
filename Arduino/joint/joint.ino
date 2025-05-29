@@ -1,9 +1,27 @@
+/**
+ * @file joint.ino
+ * @author Sebastian Storz
+ * @brief joint firmware
+ * @version 0.1
+ * @date 2025-05-27
+ *
+ * @copyright Copyright (c) 2025
+ *
+ * This file contains the joint firmware.
+ *
+ */
+
 #include <UstepperS32.h>
 
 #include <Wire.h>
 #include "joint.h"
 
-#define J1
+/**
+ * @brief Define either joint that is to be flashed
+ * 
+ * Define either J1, J2, J3 or J4 and subsequently include configuration.h 
+ */
+#define J4
 #include "configuration.h"
 
 
@@ -26,18 +44,23 @@ size_t tx_length = 0;
 size_t rx_length = 0;
 
 
-/**
- * Handles commands, is called from the main loop since it contains blocking function calls which can not be called from the I2C ISR.
- * @param reg command code
- */
 void stepper_receive_handler(uint8_t reg);
-
-/**
- * Handles read request, is called from the I2C ISR since reads from the stepper are non-blocking. Also Handling reads and the subsequent wire.write(), did not work from the main loop.
- * @param reg command code
- */
 void stepper_request_handler(uint8_t reg);
 
+/**
+ * @brief I2C receive event Handler.
+ *
+ * Reads the content of the received message. Saves the reg so it can be used in the main loop. If the master invokes the read() function the message contains only the register byte 
+ * and no payload. If the master invokes the write() the message has a payload of appropriate size for the command.
+ * For a read the message looks like this: \n 
+ * \< [REG] \n 
+ * \> [TXBUFn]...[TXBUF2][TXBUF1][TXBUF0] \n 
+ * For a write the message looks like this: \n 
+ * \< [REG][RXBUFn]...[RXBUF2][RXBUF1][RXBUF0] \n 
+ * \> [TXBUFn]...[TXBUF2][TXBUF1][TXBUF0][FLAGS] \n 
+ * The payload is read into the rx_buf, rx_length is set to the payload length and the rx_data_ready flag is set.
+ * @param n the number of bytes read from the controller device
+ */
 void receiveEvent(int n) {
   // Serial.println("receive");
   reg = Wire.read();
@@ -53,15 +76,29 @@ void receiveEvent(int n) {
   // if (i) { DUMP_BUFFER(rx_buf, rx_length); }
 }
 
+/**
+ * @brief I2C request event Handler.
+ *
+ * Sends the response data to the master. Every transaction begins with a receive event. This function is only called when the master calls the read() function.
+ * Hence this function is only invoked after the receiveEvent() handler has been called. The function calls the stepper_request_handler() which is non-blocking.
+ * stepper_request_handler() populates the tx_buf, the current state flags are appended to the tx_buf and then it is send to the master.
+ */
 void requestEvent() {
   // Serial.println("request");
   stepper_request_handler(reg);
   tx_buf[tx_length++] = state;
   // DUMP_BUFFER(tx_buf, tx_length);
   Wire.write(tx_buf, tx_length);
-  // TODO: consider checking for rx_ready flag
 }
 
+/**
+ * @brief Handles commands received via I2C.
+ * @warning This is a blocking function which may take some time to execute. This function must not be called from an ISR or callback! 
+ * Call from main loop instead.
+
+ * All the registers that are inside this handler are considered command which require an action. 
+ * @param reg command that should be executed.
+ */
 void stepper_receive_handler(uint8_t reg) {
   switch (reg) {
     case SETUP:
@@ -95,7 +132,7 @@ void stepper_receive_handler(uint8_t reg) {
         float v;
         readValue<float>(v, rx_buf, rx_length);
         if (!isStalled) {
-        stepper.setRPM(v);
+          stepper.setRPM(v);
         }
         break;
       }
@@ -109,13 +146,6 @@ void stepper_receive_handler(uint8_t reg) {
 
         break;
       }
-
-      // case MOVEANGLE:
-      //   {
-      Serial.print("Executing MOVEANGLE\n");
-      //     Serial2.write(ACK);  // send ACK to show that command was understood, then execute, then send
-      //     break;
-      //   }
 
     case MOVETOANGLE:
       {
@@ -199,13 +229,13 @@ void stepper_receive_handler(uint8_t reg) {
         break;
       }
 
-    case ENABLEPID:
-      // Serial.print("Executing ENABLEPID\n");
-      break;
+    // case ENABLEPID:
+    //   // Serial.print("Executing ENABLEPID\n");
+    //   break;
 
-    case DISABLEPID:
-      // Serial.print("Executing DISABLEPID\n");
-      break;
+    // case DISABLEPID:
+    //   // Serial.print("Executing DISABLEPID\n");
+    //   break;
 
 
     case DISABLECLOSEDLOOP:
@@ -284,6 +314,16 @@ void stepper_receive_handler(uint8_t reg) {
   }
 }
 
+/**
+ * @brief Handles read request received via I2C.
+
+ * Can be invoked from the I2C ISR since reads from the stepper are non-blocking. 
+ * Also Handling reads and the subsequent wire.write(), did not work from the main loop.
+
+ * All registers inside this function are regarded as read only.
+ * @param reg register to read.
+ */
+
 void stepper_request_handler(uint8_t reg) {
   switch (reg) {
     case PING:
@@ -348,7 +388,11 @@ void stepper_request_handler(uint8_t reg) {
   }
 }
 
+/**
+ * @brief Setup Peripherals
 
+ * Setup I2C with the address ADR, and begin Serial for debugging with baudrate 9600.
+ */
 void setup(void) {
   // Join I2C bus as follower
   Wire.begin(ADR);
@@ -358,14 +402,27 @@ void setup(void) {
   Wire.onRequest(requestEvent);
 }
 
+/**
+ * @brief Main loop
+
+ * Executes the following: \n 
+ * 1) if isStallguardEnabled: compares stepper.getPidError() with stallguardThreshold and sets BIT0 of the state byte. \n 
+ * 2) sets/clears BIT2 of the state byte if the joint is homed or not. \n 
+ * 3) sets/clears BIT3 of the state byte if the joint is setup or not. \n 
+ * 4) if rx_data_ready: set BIT1 of the state byte to indicate device is busy. Invoke stepper_receive_handler. 
+ * Clear BIT1 of the state byte to indicate device is no longer busy \n 
+ * @todo
+ - why are BIT2 and BIT3 constantly checked and set? Would it be sufficient to do this only invoking the actual functions?
+ */
 void loop(void) {
 
   if (isStallguardEnabled) {
     float err = stepper.getPidError();
-    if(abs(err) > stallguardThreshold){
+    if (abs(err) > stallguardThreshold) {
       isStalled = 1;
       state |= (1 << 0);
-    }else if(!isStalled){
+      stepper.stop(SOFT);  // UNTESTED
+    } else if (!isStalled) {
       state &= ~(1 << 0);
     }
     // state |= (abs(err) > stallguardThreshold) ? 0x01 : 0x00;
@@ -373,11 +430,9 @@ void loop(void) {
     Serial.print("\t");
     Serial.println(state);
   }
-  // state |= isHomed << 2;
-  // state |= ISSETUP << 3;
 
-  isHomed ? state |= (1 << 2) : state &= ~(1<<2);
-  isSetup ? state |= (1 << 2) : state &= ~(1<<3);
+  isHomed ? state |= (1 << 2) : state &= ~(1 << 2);
+  isSetup ? state |= (1 << 3) : state &= ~(1 << 3);
 
   if (rx_data_ready) {
     rx_data_ready = 0;

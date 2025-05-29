@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Bioscara: /home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mJoint.hpp File Reference</title>
+<title>Bioscara: ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mJoint.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,9 +20,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="dtu_logo.png"/></td>
   <td id="projectalign">
    <div id="projectname">Bioscara
    </div>
+   <div id="projectbrief">DALSAs DIY SCARA robot arm.</div>
   </td>
  </tr>
  </tbody>
@@ -76,18 +78,21 @@ $(function() {
   <div class="headertitle"><div class="title">mJoint.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Templated functions for the <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> class.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="mJoint_8h_source.html">joint_communication/mJoint.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="uI2C_8h_source.html">joint_communication/uI2C.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="common_8h_source.html">joint_communication/common.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for mJoint.hpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="mJoint_8hpp__incl.png" border="0" usemap="#a_2home_2scara_2bioscara_2ROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2mJoint_8hpp" alt=""/></div>
-<map name="a_2home_2scara_2bioscara_2ROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2mJoint_8hpp" id="a_2home_2scara_2bioscara_2ROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2mJoint_8hpp">
-<area shape="rect" title=" " alt="" coords="57,5,295,75"/>
-<area shape="rect" href="mJoint_8h.html" title=" " alt="" coords="6,123,165,163"/>
+<div class="center"><img src="mJoint_8hpp__incl.png" border="0" usemap="#aROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2mJoint_8hpp" alt=""/></div>
+<map name="aROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2mJoint_8hpp" id="aROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2mJoint_8hpp">
+<area shape="rect" title="Templated functions for the Joint class." alt="" coords="69,5,283,75"/>
+<area shape="rect" href="mJoint_8h.html" title="File including the Joint class." alt="" coords="6,123,165,163"/>
 <area shape="poly" title=" " alt="" coords="139,77,106,114,102,110,135,73"/>
-<area shape="rect" href="uI2C_8h.html" title=" " alt="" coords="189,123,347,163"/>
+<area shape="rect" href="uI2C_8h.html" title="Low level utility for I2C communication on Raspberry Pi using lgpio library." alt="" coords="189,123,347,163"/>
 <area shape="poly" title=" " alt="" coords="209,73,243,110,239,114,205,77"/>
 <area shape="rect" href="common_8h.html" title="A file containing utility macros and functions." alt="" coords="371,123,530,163"/>
 <area shape="poly" title=" " alt="" coords="269,72,388,116,386,121,267,77"/>
@@ -109,25 +114,32 @@ Include dependency graph for mJoint.hpp:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><img src="mJoint_8hpp__dep__incl.png" border="0" usemap="#a_2home_2scara_2bioscara_2ROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2mJoint_8hppdep" alt=""/></div>
-<map name="a_2home_2scara_2bioscara_2ROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2mJoint_8hppdep" id="a_2home_2scara_2bioscara_2ROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2mJoint_8hppdep">
-<area shape="rect" title=" " alt="" coords="207,5,444,75"/>
-<area shape="rect" href="mJoint_8h.html" title=" " alt="" coords="215,123,436,192"/>
-<area shape="poly" title=" " alt="" coords="319,89,320,122,314,123,314,89"/>
-<area shape="poly" title=" " alt="" coords="332,109,331,75,336,75,337,109"/>
-<area shape="rect" href="mJointCom_8h.html" title="File containing the Joint_comms class." alt="" coords="79,240,329,309"/>
-<area shape="poly" title=" " alt="" coords="281,204,241,242,238,238,278,200"/>
-<area shape="rect" href="mJoint_8cpp.html" title=" " alt="" coords="353,240,540,309"/>
-<area shape="poly" title=" " alt="" coords="373,200,413,238,409,242,369,204"/>
-<area shape="rect" href="joint__comm__node_8cpp.html" title=" " alt="" coords="5,357,192,427"/>
-<area shape="poly" title=" " alt="" coords="166,322,131,359,128,355,162,318"/>
-<area shape="rect" href="mJointCom_8cpp.html" title=" " alt="" coords="216,357,403,427"/>
-<area shape="poly" title=" " alt="" coords="246,318,280,355,277,359,242,322"/>
+<div class="center"><img src="mJoint_8hpp__dep__incl.png" border="0" usemap="#aROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2mJoint_8hppdep" alt=""/></div>
+<map name="aROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2mJoint_8hppdep" id="aROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2mJoint_8hppdep">
+<area shape="rect" title="Templated functions for the Joint class." alt="" coords="213,5,427,75"/>
+<area shape="rect" href="mJoint_8h.html" title="File including the Joint class." alt="" coords="213,123,427,192"/>
+<area shape="poly" title=" " alt="" coords="314,89,314,122,309,123,308,89"/>
+<area shape="poly" title=" " alt="" coords="326,109,326,75,331,75,332,109"/>
+<area shape="rect" href="mJointCom_8h.html" title="File containing the Joint_comms class." alt="" coords="101,240,315,309"/>
+<area shape="poly" title=" " alt="" coords="279,204,243,242,239,238,276,200"/>
+<area shape="rect" href="mJoint_8cpp.html" title=" " alt="" coords="340,247,527,302"/>
+<area shape="poly" title=" " alt="" coords="365,200,409,245,405,249,361,204"/>
+<area shape="rect" href="joint__comm__node_8cpp.html" title=" " alt="" coords="5,357,197,412"/>
+<area shape="poly" title=" " alt="" coords="167,321,129,359,125,355,163,317"/>
+<area shape="rect" href="mJointCom_8cpp.html" title=" " alt="" coords="221,357,408,412"/>
+<area shape="poly" title=" " alt="" coords="253,317,291,355,287,359,249,321"/>
 </map>
 </div>
 </div>
 <p><a href="mJoint_8hpp_source.html">Go to the source code of this file.</a></p>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Templated functions for the <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> class. </p>
+<dl class="section author"><dt>Author</dt><dd>Sebastian Storz </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>0.1 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2025-05-29</dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2025</dd></dl>
+<p>This header must be included at the END of the <a class="el" href="mJoint_8h.html" title="File including the Joint class.">mJoint.h</a> file. </p>
+</div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
 Generated by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8

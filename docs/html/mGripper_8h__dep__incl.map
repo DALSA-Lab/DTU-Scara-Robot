@@ -1,7 +1,7 @@
-<map id="/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mGripper.h" name="/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mGripper.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="85,5,323,75"/>
-<area shape="rect" id="Node000002" href="$joint__comm__node_8cpp.html" title=" " alt="" coords="5,123,192,192"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="166,87,131,124,128,121,162,83"/>
-<area shape="rect" id="Node000003" href="$mGripper_8cpp.html" title=" " alt="" coords="216,123,403,192"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="246,83,280,121,277,124,242,87"/>
+<map id="ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mGripper.h" name="ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mGripper.h">
+<area shape="rect" id="Node000001" title="File containing the Gripper class." alt="" coords="101,5,315,75"/>
+<area shape="rect" id="Node000002" href="$joint__comm__node_8cpp.html" title=" " alt="" coords="5,123,197,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,86,129,124,125,121,163,82"/>
+<area shape="rect" id="Node000003" href="$mGripper_8cpp.html" title=" " alt="" coords="221,123,408,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="253,82,291,121,287,124,249,86"/>
 </map>

@@ -20,9 +20,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="dtu_logo.png"/></td>
   <td id="projectalign">
    <div id="projectname">Bioscara
    </div>
+   <div id="projectbrief">DALSAs DIY SCARA robot arm.</div>
   </td>
  </tr>
  </tbody>
@@ -72,16 +74,22 @@ $(function() {
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pri-types">Private Types</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classJoint-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Joint Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
+<p>Representing a single joint on the I2C bus.  
+ <a href="classJoint.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="mJoint_8h_source.html">mJoint.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aa1c40be19d471e09ad6fedb95cc4a23a" id="r_aa1c40be19d471e09ad6fedb95cc4a23a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#aa1c40be19d471e09ad6fedb95cc4a23a">Joint</a> (const int address, const std::string <a class="el" href="classJoint.html#a57e3afaab4abae515d5053018e3cc886">name</a>, const float gearRatio, const int offset)</td></tr>
+<tr class="memitem:aa1c40be19d471e09ad6fedb95cc4a23a" id="r_aa1c40be19d471e09ad6fedb95cc4a23a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#aa1c40be19d471e09ad6fedb95cc4a23a">Joint</a> (const int <a class="el" href="classJoint.html#a7acd5a4c4b870de8674167b48504c95c">address</a>, const std::string <a class="el" href="classJoint.html#a57e3afaab4abae515d5053018e3cc886">name</a>, const float <a class="el" href="classJoint.html#ab0e71cda03c816424f2ab1c222ef8f39">gearRatio</a>, const int <a class="el" href="classJoint.html#a96b640f487cf0a5b08c46c4d80b9cb8c">offset</a>)</td></tr>
 <tr class="separator:aa1c40be19d471e09ad6fedb95cc4a23a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab62f504bb7a06ced79c24c54e254349e" id="r_ab62f504bb7a06ced79c24c54e254349e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ab62f504bb7a06ced79c24c54e254349e">init</a> (void)</td></tr>
 <tr class="separator:ab62f504bb7a06ced79c24c54e254349e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -100,35 +108,49 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a80055657a0ece2c9212eec16774d2789" id="r_a80055657a0ece2c9212eec16774d2789"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a80055657a0ece2c9212eec16774d2789">checkOrientation</a> (float angle=10.0)</td></tr>
 <tr class="separator:a80055657a0ece2c9212eec16774d2789"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3714c35d4488d03280a7c2dc9e415ee0" id="r_a3714c35d4488d03280a7c2dc9e415ee0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a3714c35d4488d03280a7c2dc9e415ee0">enable</a> (u_int8_t driveCurrent, u_int8_t holdCurrent)</td></tr>
+<tr class="memdesc:a3714c35d4488d03280a7c2dc9e415ee0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the joint and engages motor.  <br /></td></tr>
 <tr class="separator:a3714c35d4488d03280a7c2dc9e415ee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac591f5aaee3d8afb2768a67e5f0e4f38" id="r_ac591f5aaee3d8afb2768a67e5f0e4f38"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ac591f5aaee3d8afb2768a67e5f0e4f38">disable</a> (void)</td></tr>
+<tr class="memdesc:ac591f5aaee3d8afb2768a67e5f0e4f38"><td class="mdescLeft">&#160;</td><td class="mdescRight">disenganges the joint motor without closing i2c handle  <br /></td></tr>
 <tr class="separator:ac591f5aaee3d8afb2768a67e5f0e4f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3545a218f2b1b3f2dd2a5bf088335d3f" id="r_a3545a218f2b1b3f2dd2a5bf088335d3f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a3545a218f2b1b3f2dd2a5bf088335d3f">home</a> (u_int8_t direction, u_int8_t rpm, int8_t sensitivity, u_int8_t current)</td></tr>
+<tr class="memdesc:a3545a218f2b1b3f2dd2a5bf088335d3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Homes the motor.  <br /></td></tr>
 <tr class="separator:a3545a218f2b1b3f2dd2a5bf088335d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89deba37891f86ec4cedbd7e3e001133" id="r_a89deba37891f86ec4cedbd7e3e001133"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a89deba37891f86ec4cedbd7e3e001133">stop</a> (bool mode)</td></tr>
+<tr class="memdesc:a89deba37891f86ec4cedbd7e3e001133"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops the motor.  <br /></td></tr>
 <tr class="separator:a89deba37891f86ec4cedbd7e3e001133"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac35fe15f5bbaf68a9751f02b9c5ee93d" id="r_ac35fe15f5bbaf68a9751f02b9c5ee93d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ac35fe15f5bbaf68a9751f02b9c5ee93d">disableCL</a> (void)</td></tr>
+<tr class="memdesc:ac35fe15f5bbaf68a9751f02b9c5ee93d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables the Closed-Loop PID Controller.  <br /></td></tr>
 <tr class="separator:ac35fe15f5bbaf68a9751f02b9c5ee93d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35a2db0195dc5dc7603810ab355acd94" id="r_a35a2db0195dc5dc7603810ab355acd94"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a35a2db0195dc5dc7603810ab355acd94">setDriveCurrent</a> (u_int8_t current)</td></tr>
+<tr class="memdesc:a35a2db0195dc5dc7603810ab355acd94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Drive Current.  <br /></td></tr>
 <tr class="separator:a35a2db0195dc5dc7603810ab355acd94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6c87283498d811fbf7b4936225d5b77" id="r_ad6c87283498d811fbf7b4936225d5b77"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ad6c87283498d811fbf7b4936225d5b77">setHoldCurrent</a> (u_int8_t current)</td></tr>
+<tr class="memdesc:ad6c87283498d811fbf7b4936225d5b77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Hold Current.  <br /></td></tr>
 <tr class="separator:ad6c87283498d811fbf7b4936225d5b77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace371fa42a397f96ac6bef7e2faffbbd" id="r_ace371fa42a397f96ac6bef7e2faffbbd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ace371fa42a397f96ac6bef7e2faffbbd">setBrakeMode</a> (u_int8_t mode)</td></tr>
+<tr class="memdesc:ace371fa42a397f96ac6bef7e2faffbbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set Brake Mode.  <br /></td></tr>
 <tr class="separator:ace371fa42a397f96ac6bef7e2faffbbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a0b1b4e2e54aaddb24d97a2228b0414" id="r_a4a0b1b4e2e54aaddb24d97a2228b0414"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a4a0b1b4e2e54aaddb24d97a2228b0414">getStall</a> (u_int8_t &amp;stall)</td></tr>
+<tr class="memdesc:a4a0b1b4e2e54aaddb24d97a2228b0414"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if the motor is stalled  <br /></td></tr>
 <tr class="separator:a4a0b1b4e2e54aaddb24d97a2228b0414"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4269e05eca7c3d773d5ea2e7c25c2300" id="r_a4269e05eca7c3d773d5ea2e7c25c2300"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a4269e05eca7c3d773d5ea2e7c25c2300">enableStallguard</a> (u_int8_t sensitivity)</td></tr>
 <tr class="memdesc:a4269e05eca7c3d773d5ea2e7c25c2300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable encoder stall detection. A detected stall can be reset by homeing.  <br /></td></tr>
 <tr class="separator:a4269e05eca7c3d773d5ea2e7c25c2300"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8bf67b44a935b4903bbd629d6ec11214" id="r_a8bf67b44a935b4903bbd629d6ec11214"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a8bf67b44a935b4903bbd629d6ec11214">getIsHomed</a> (u_int8_t &amp;homed)</td></tr>
+<tr class="memdesc:a8bf67b44a935b4903bbd629d6ec11214"><td class="mdescLeft">&#160;</td><td class="mdescRight">retrieves the status flags from the joint and checks if the joint is homed.  <br /></td></tr>
 <tr class="separator:a8bf67b44a935b4903bbd629d6ec11214"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8067e61c6ae21cd3d3992d742d440ebf" id="r_a8067e61c6ae21cd3d3992d742d440ebf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a8067e61c6ae21cd3d3992d742d440ebf">getIsHomed</a> (void)</td></tr>
+<tr class="memdesc:a8067e61c6ae21cd3d3992d742d440ebf"><td class="mdescLeft">&#160;</td><td class="mdescRight">retrieves the status flags from the joint.  <br /></td></tr>
 <tr class="separator:a8067e61c6ae21cd3d3992d742d440ebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace70cee21bf7ff76ba85199a1d3f8d73" id="r_ace70cee21bf7ff76ba85199a1d3f8d73"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ace70cee21bf7ff76ba85199a1d3f8d73">isHomed</a> (void)</td></tr>
+<tr class="memdesc:ace70cee21bf7ff76ba85199a1d3f8d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the isHomed state variable saved locally.  <br /></td></tr>
 <tr class="separator:ace70cee21bf7ff76ba85199a1d3f8d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4058415328951d6ca96492df3e9c59f8" id="r_a4058415328951d6ca96492df3e9c59f8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a4058415328951d6ca96492df3e9c59f8">getIsSetup</a> (u_int8_t &amp;<a class="el" href="joint_8ino.html#a7dfd9b79bc5a37d7df40207afbc5431f">setup</a>)</td></tr>
+<tr class="memdesc:a4058415328951d6ca96492df3e9c59f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if the joint is setup from the joint  <br /></td></tr>
 <tr class="separator:a4058415328951d6ca96492df3e9c59f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a131ffd9c9b75fec6cb65b9b28ab4c800" id="r_a131ffd9c9b75fec6cb65b9b28ab4c800"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a131ffd9c9b75fec6cb65b9b28ab4c800">getIsSetup</a> (void)</td></tr>
+<tr class="memdesc:a131ffd9c9b75fec6cb65b9b28ab4c800"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if the joint is setup from the joint  <br /></td></tr>
 <tr class="separator:a131ffd9c9b75fec6cb65b9b28ab4c800"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac19ea5052bff39f7d8aa432aaa063557" id="r_ac19ea5052bff39f7d8aa432aaa063557"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ac19ea5052bff39f7d8aa432aaa063557">isSetup</a> (void)</td></tr>
 <tr class="separator:ac19ea5052bff39f7d8aa432aaa063557"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,7 +165,172 @@ Public Member Functions</h2></td></tr>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a57e3afaab4abae515d5053018e3cc886" id="r_a57e3afaab4abae515d5053018e3cc886"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a57e3afaab4abae515d5053018e3cc886">name</a></td></tr>
 <tr class="separator:a57e3afaab4abae515d5053018e3cc886"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-types" name="pri-types"></a>
+Private Types</h2></td></tr>
+<tr class="memitem:a8e8dbb90cccefd4f3ee472c6e8c85c18" id="r_a8e8dbb90cccefd4f3ee472c6e8c85c18"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18">stp_reg_t</a> { <br />
+&#160;&#160;<a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18af922c6520e40e336b7130cdb24d388c7">PING</a> = 0x0f
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a6fd4544fbf900a87dd6990477feebd9e">SETUP</a> = 0x10
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18afe94954e7116cdc52e361c6b6dcac960">SETRPM</a> = 0x11
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18ab83f51f6dcfe2f934e5fdd5dddeed8fb">GETDRIVERRPM</a> = 0x12
+, <br />
+&#160;&#160;<a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a22d51a84d712495b73dbb81b39b176d0">MOVESTEPS</a> = 0x13
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a49bf3d0eadbe640897a4638a6bfa097c">MOVEANGLE</a> = 0x14
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18ab23a3ac6f783ee9b32c90eb588921564">MOVETOANGLE</a> = 0x15
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a1660a4ec900f02ab8881f082009b7b6a">GETMOTORSTATE</a> = 0x16
+, <br />
+&#160;&#160;<a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a9e586e9d7223b163c8b2e138cf9924b8">RUNCOTINOUS</a> = 0x17
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a7daaf07b3619c037524e31c73320d7ee">ANGLEMOVED</a> = 0x18
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a4763bc90cfb24d8c7dcdc86e56d696d1">SETCURRENT</a> = 0x19
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a73b9e7d52741ac3a9f151c9c8fdf240a">SETHOLDCURRENT</a> = 0x1A
+, <br />
+&#160;&#160;<a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a49346b52978f793d7b0df1cc079ca553">SETMAXACCELERATION</a> = 0x1B
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18ac7f27dd47328fd48cf2132d61d56b816">SETMAXDECELERATION</a> = 0x1C
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a9c21c01868f3b75414574bde1c3a56fa">SETMAXVELOCITY</a> = 0x1D
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a4289e8f46427f607ec5c42d3c453552c">ENABLESTALLGUARD</a> = 0x1E
+, <br />
+&#160;&#160;<a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a25c58b5388feba1494c04db8c6268bdc">DISABLESTALLGUARD</a> = 0x1F
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18aa7c2d68da4de8b055714f2673355888a">CLEARSTALL</a> = 0x20
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18ae4bf64332f66fba30edffe2741e1acad">ISSTALLED</a> = 0x21
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a24a0636219d40c6bc04c13607a73bf14">SETBRAKEMODE</a> = 0x22
+, <br />
+&#160;&#160;<a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a808e1cfabc9285982e126715258f7650">ENABLEPID</a> = 0x23
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18adb96e473112b918eadc29e0aac92514e">DISABLEPID</a> = 0x24
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a156ef7be500b4e86e397cdbd7fb798ff">ENABLECLOSEDLOOP</a> = 0x25
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a5cd1d217ad26bf47859a1f33f73088a5">DISABLECLOSEDLOOP</a> = 0x26
+, <br />
+&#160;&#160;<a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a346c81a366404119562626b4442c0012">SETCONTROLTHRESHOLD</a> = 0x27
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18abb21ab5d530f13cfd2a1e0999faa8032">MOVETOEND</a> = 0x28
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a1c3854c27bdc5c8a6742b9613c13e9f7">STOP</a> = 0x29
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a8cccebc9d7d67d2438d7250512f175dd">GETPIDERROR</a> = 0x2A
+, <br />
+&#160;&#160;<a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18ac4090a70644d3e7dcf12ec04cf8c0cb0">CHECKORIENTATION</a> = 0x2B
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a4635d4f0488752377862eec66c9c53b6">GETENCODERRPM</a> = 0x2C
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18aa188969e84239aee3334c3ac140dec6f">HOME</a> = 0x2D
+, <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a0d8573d34327245ac74c4a0a1998a4a6">ISHOMED</a> = 0x2E
+, <br />
+&#160;&#160;<a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a049669e5098c849cfd332fb8e5434c0a">ISSETUP</a> = 0x2F
+<br />
+ }</td></tr>
+<tr class="memdesc:a8e8dbb90cccefd4f3ee472c6e8c85c18"><td class="mdescLeft">&#160;</td><td class="mdescRight">register and command definitions  <a href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18">More...</a><br /></td></tr>
+<tr class="separator:a8e8dbb90cccefd4f3ee472c6e8c85c18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a438524f28b96d67c997b590c785b6e0e" id="r_a438524f28b96d67c997b590c785b6e0e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a438524f28b96d67c997b590c785b6e0e"><td class="memTemplItemLeft" align="right" valign="top">int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classJoint.html#a438524f28b96d67c997b590c785b6e0e">read</a> (const <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18">stp_reg_t</a> <a class="el" href="joint_8ino.html#a9428adc9af4653a2050e2536b55dec8d">reg</a>, T &amp;data, u_int8_t &amp;<a class="el" href="classJoint.html#ac6a4b19a9a677e36deeaee7afd148497">flags</a>)</td></tr>
+<tr class="memdesc:a438524f28b96d67c997b590c785b6e0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper function to request data from the I2C slave.  <br /></td></tr>
+<tr class="separator:a438524f28b96d67c997b590c785b6e0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a516686bb9e04bccbd807e2c6123be730" id="r_a516686bb9e04bccbd807e2c6123be730"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a516686bb9e04bccbd807e2c6123be730"><td class="memTemplItemLeft" align="right" valign="top">int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classJoint.html#a516686bb9e04bccbd807e2c6123be730">write</a> (const <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18">stp_reg_t</a> <a class="el" href="joint_8ino.html#a9428adc9af4653a2050e2536b55dec8d">reg</a>, T data, u_int8_t &amp;<a class="el" href="classJoint.html#ac6a4b19a9a677e36deeaee7afd148497">flags</a>)</td></tr>
+<tr class="memdesc:a516686bb9e04bccbd807e2c6123be730"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper function to send command to the I2C slave.  <br /></td></tr>
+<tr class="separator:a516686bb9e04bccbd807e2c6123be730"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ac6a4b19a9a677e36deeaee7afd148497" id="r_ac6a4b19a9a677e36deeaee7afd148497"><td class="memItemLeft" align="right" valign="top">u_int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ac6a4b19a9a677e36deeaee7afd148497">flags</a> = 0x00</td></tr>
+<tr class="memdesc:ac6a4b19a9a677e36deeaee7afd148497"><td class="mdescLeft">&#160;</td><td class="mdescRight">State flags transmitted with every I2C transaction.  <br /></td></tr>
+<tr class="separator:ac6a4b19a9a677e36deeaee7afd148497"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1afa9a4c5c9cf617a305e93bbc6fd7f" id="r_ac1afa9a4c5c9cf617a305e93bbc6fd7f"><td class="memItemLeft" align="right" valign="top">u_int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ac1afa9a4c5c9cf617a305e93bbc6fd7f">ishomed</a> = 0</td></tr>
+<tr class="memdesc:ac1afa9a4c5c9cf617a305e93bbc6fd7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">flag if homed  <br /></td></tr>
+<tr class="separator:ac1afa9a4c5c9cf617a305e93bbc6fd7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad400b4eed6d3b47819ad39de7f41a37a" id="r_ad400b4eed6d3b47819ad39de7f41a37a"><td class="memItemLeft" align="right" valign="top">u_int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ad400b4eed6d3b47819ad39de7f41a37a">issetup</a> = 0</td></tr>
+<tr class="memdesc:ad400b4eed6d3b47819ad39de7f41a37a"><td class="mdescLeft">&#160;</td><td class="mdescRight">flag is setup  <br /></td></tr>
+<tr class="separator:ad400b4eed6d3b47819ad39de7f41a37a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7acd5a4c4b870de8674167b48504c95c" id="r_a7acd5a4c4b870de8674167b48504c95c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a7acd5a4c4b870de8674167b48504c95c">address</a></td></tr>
+<tr class="memdesc:a7acd5a4c4b870de8674167b48504c95c"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C adress.  <br /></td></tr>
+<tr class="separator:a7acd5a4c4b870de8674167b48504c95c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0e71cda03c816424f2ab1c222ef8f39" id="r_ab0e71cda03c816424f2ab1c222ef8f39"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ab0e71cda03c816424f2ab1c222ef8f39">gearRatio</a> = 1</td></tr>
+<tr class="memdesc:ab0e71cda03c816424f2ab1c222ef8f39"><td class="mdescLeft">&#160;</td><td class="mdescRight">gear ratio from encoder units to joint units  <br /></td></tr>
+<tr class="separator:ab0e71cda03c816424f2ab1c222ef8f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96b640f487cf0a5b08c46c4d80b9cb8c" id="r_a96b640f487cf0a5b08c46c4d80b9cb8c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a96b640f487cf0a5b08c46c4d80b9cb8c">offset</a> = 0</td></tr>
+<tr class="memdesc:a96b640f487cf0a5b08c46c4d80b9cb8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">offset in degrees or mm from encoder zero to joint zero.  <br /></td></tr>
+<tr class="separator:a96b640f487cf0a5b08c46c4d80b9cb8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afae800e0e291c5833c10d625c90e19a5" id="r_afae800e0e291c5833c10d625c90e19a5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#afae800e0e291c5833c10d625c90e19a5">handle</a> = -1</td></tr>
+<tr class="memdesc:afae800e0e291c5833c10d625c90e19a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C bus handle.  <br /></td></tr>
+<tr class="separator:afae800e0e291c5833c10d625c90e19a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Representing a single joint on the I2C bus. </p>
+</div><h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="a8e8dbb90cccefd4f3ee472c6e8c85c18" name="a8e8dbb90cccefd4f3ee472c6e8c85c18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e8dbb90cccefd4f3ee472c6e8c85c18">&#9670;&#160;</a></span>stp_reg_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18">Joint::stp_reg_t</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>register and command definitions </p>
+<p>a register can be read (R) or written (W), each register has a size in bytes. The payload can be split into multiple values or just be a single value. Note that not all functions are implemented. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18af922c6520e40e336b7130cdb24d388c7" name="a8e8dbb90cccefd4f3ee472c6e8c85c18af922c6520e40e336b7130cdb24d388c7"></a>PING&#160;</td><td class="fielddoc"><p>R; Size: 1; [(char) ACK]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a6fd4544fbf900a87dd6990477feebd9e" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a6fd4544fbf900a87dd6990477feebd9e"></a>SETUP&#160;</td><td class="fielddoc"><p>W; Size: 2; [(uint8) holdCurrent, (uint8) driveCurrent]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18afe94954e7116cdc52e361c6b6dcac960" name="a8e8dbb90cccefd4f3ee472c6e8c85c18afe94954e7116cdc52e361c6b6dcac960"></a>SETRPM&#160;</td><td class="fielddoc"><p>W; Size: 4; [(float) RPM]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18ab83f51f6dcfe2f934e5fdd5dddeed8fb" name="a8e8dbb90cccefd4f3ee472c6e8c85c18ab83f51f6dcfe2f934e5fdd5dddeed8fb"></a>GETDRIVERRPM&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a22d51a84d712495b73dbb81b39b176d0" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a22d51a84d712495b73dbb81b39b176d0"></a>MOVESTEPS&#160;</td><td class="fielddoc"><p>W; Size: 4; [(int32) steps]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a49bf3d0eadbe640897a4638a6bfa097c" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a49bf3d0eadbe640897a4638a6bfa097c"></a>MOVEANGLE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18ab23a3ac6f783ee9b32c90eb588921564" name="a8e8dbb90cccefd4f3ee472c6e8c85c18ab23a3ac6f783ee9b32c90eb588921564"></a>MOVETOANGLE&#160;</td><td class="fielddoc"><p>W; Size: 4; [(float) degrees]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a1660a4ec900f02ab8881f082009b7b6a" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a1660a4ec900f02ab8881f082009b7b6a"></a>GETMOTORSTATE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a9e586e9d7223b163c8b2e138cf9924b8" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a9e586e9d7223b163c8b2e138cf9924b8"></a>RUNCOTINOUS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a7daaf07b3619c037524e31c73320d7ee" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a7daaf07b3619c037524e31c73320d7ee"></a>ANGLEMOVED&#160;</td><td class="fielddoc"><p>R; Size: 4; [(float) degrees]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a4763bc90cfb24d8c7dcdc86e56d696d1" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a4763bc90cfb24d8c7dcdc86e56d696d1"></a>SETCURRENT&#160;</td><td class="fielddoc"><p>W; Size: 1; [(uint8) driveCurrent]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a73b9e7d52741ac3a9f151c9c8fdf240a" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a73b9e7d52741ac3a9f151c9c8fdf240a"></a>SETHOLDCURRENT&#160;</td><td class="fielddoc"><p>W; Size: 1; [(uint8) holdCurrent]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a49346b52978f793d7b0df1cc079ca553" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a49346b52978f793d7b0df1cc079ca553"></a>SETMAXACCELERATION&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18ac7f27dd47328fd48cf2132d61d56b816" name="a8e8dbb90cccefd4f3ee472c6e8c85c18ac7f27dd47328fd48cf2132d61d56b816"></a>SETMAXDECELERATION&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a9c21c01868f3b75414574bde1c3a56fa" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a9c21c01868f3b75414574bde1c3a56fa"></a>SETMAXVELOCITY&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a4289e8f46427f607ec5c42d3c453552c" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a4289e8f46427f607ec5c42d3c453552c"></a>ENABLESTALLGUARD&#160;</td><td class="fielddoc"><p>W; Size: 1; [(uint8) threshold]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a25c58b5388feba1494c04db8c6268bdc" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a25c58b5388feba1494c04db8c6268bdc"></a>DISABLESTALLGUARD&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18aa7c2d68da4de8b055714f2673355888a" name="a8e8dbb90cccefd4f3ee472c6e8c85c18aa7c2d68da4de8b055714f2673355888a"></a>CLEARSTALL&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18ae4bf64332f66fba30edffe2741e1acad" name="a8e8dbb90cccefd4f3ee472c6e8c85c18ae4bf64332f66fba30edffe2741e1acad"></a>ISSTALLED&#160;</td><td class="fielddoc"><p>R; Size: 1; [(uint8) isStalled]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a24a0636219d40c6bc04c13607a73bf14" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a24a0636219d40c6bc04c13607a73bf14"></a>SETBRAKEMODE&#160;</td><td class="fielddoc"><p>W; Size: 1; [(uint8) mode]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a808e1cfabc9285982e126715258f7650" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a808e1cfabc9285982e126715258f7650"></a>ENABLEPID&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18adb96e473112b918eadc29e0aac92514e" name="a8e8dbb90cccefd4f3ee472c6e8c85c18adb96e473112b918eadc29e0aac92514e"></a>DISABLEPID&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a156ef7be500b4e86e397cdbd7fb798ff" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a156ef7be500b4e86e397cdbd7fb798ff"></a>ENABLECLOSEDLOOP&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a5cd1d217ad26bf47859a1f33f73088a5" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a5cd1d217ad26bf47859a1f33f73088a5"></a>DISABLECLOSEDLOOP&#160;</td><td class="fielddoc"><p>W; Size: 1; [(uint8) 0]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a346c81a366404119562626b4442c0012" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a346c81a366404119562626b4442c0012"></a>SETCONTROLTHRESHOLD&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18abb21ab5d530f13cfd2a1e0999faa8032" name="a8e8dbb90cccefd4f3ee472c6e8c85c18abb21ab5d530f13cfd2a1e0999faa8032"></a>MOVETOEND&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a1c3854c27bdc5c8a6742b9613c13e9f7" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a1c3854c27bdc5c8a6742b9613c13e9f7"></a>STOP&#160;</td><td class="fielddoc"><p>W; Size: 1; [(uint8) mode]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a8cccebc9d7d67d2438d7250512f175dd" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a8cccebc9d7d67d2438d7250512f175dd"></a>GETPIDERROR&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18ac4090a70644d3e7dcf12ec04cf8c0cb0" name="a8e8dbb90cccefd4f3ee472c6e8c85c18ac4090a70644d3e7dcf12ec04cf8c0cb0"></a>CHECKORIENTATION&#160;</td><td class="fielddoc"><p>W; Size: 4; [(float) degrees]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a4635d4f0488752377862eec66c9c53b6" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a4635d4f0488752377862eec66c9c53b6"></a>GETENCODERRPM&#160;</td><td class="fielddoc"><p>R; Size: 4; [(float) RPM]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18aa188969e84239aee3334c3ac140dec6f" name="a8e8dbb90cccefd4f3ee472c6e8c85c18aa188969e84239aee3334c3ac140dec6f"></a>HOME&#160;</td><td class="fielddoc"><p>W; Size: 4; [(uint8) current, (int8) sensitivity, (uint8) speed, (uint8) direction]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a0d8573d34327245ac74c4a0a1998a4a6" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a0d8573d34327245ac74c4a0a1998a4a6"></a>ISHOMED&#160;</td><td class="fielddoc"><p>R; Size: 1; [(uint8) isStalled]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a8e8dbb90cccefd4f3ee472c6e8c85c18a049669e5098c849cfd332fb8e5434c0a" name="a8e8dbb90cccefd4f3ee472c6e8c85c18a049669e5098c849cfd332fb8e5434c0a"></a>ISSETUP&#160;</td><td class="fielddoc"><p>R; Size: 1; [(uint8) isStalled]. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aa1c40be19d471e09ad6fedb95cc4a23a" name="aa1c40be19d471e09ad6fedb95cc4a23a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa1c40be19d471e09ad6fedb95cc4a23a">&#9670;&#160;</a></span>Joint()</h2>
@@ -255,7 +442,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>disenganges the joint motor without closing i2c handle </p><dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
+
+<p>disenganges the joint motor without closing i2c handle </p>
+<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
 
 </div>
 </div>
@@ -274,7 +463,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Disables the Closed-Loop PID Controller </p><dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
+
+<p>Disables the Closed-Loop PID Controller. </p>
+<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
 
 </div>
 </div>
@@ -303,7 +494,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Initialize the driver </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Initialize the joint and engages motor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">driveCurrent</td><td>drive current in 0-100 % of 2.5A output (check uStepper doc.) </td></tr>
     <tr><td class="paramname">holdCurrent</td><td>hold current in 0-100 % of 2.5A output (check uStepper doc.) </td></tr>
@@ -374,7 +567,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>checks if the joint is homed from the joint </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>retrieves the status flags from the joint and checks if the joint is homed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">homed</td><td>not homed: 0, homed: 1 </td></tr>
   </table>
@@ -399,7 +594,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>checks if the joint is homed from the joint </p><dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
+
+<p>retrieves the status flags from the joint. </p>
+<p>This overload does not return the value of isHomed variable, use <a class="el" href="classJoint.html#ace70cee21bf7ff76ba85199a1d3f8d73" title="Get the isHomed state variable saved locally.">Joint::isHomed()</a> instead. </p><dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
 
 </div>
 </div>
@@ -418,7 +615,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>checks if the joint is setup from the joint </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>checks if the joint is setup from the joint </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">setup</td><td>not setup: 0, setup: 1 </td></tr>
   </table>
@@ -443,7 +642,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>checks if the joint is setup from the joint </p><dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
+
+<p>checks if the joint is setup from the joint </p>
+<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
 
 </div>
 </div>
@@ -480,7 +681,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>checks if the motor is stalled </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>checks if the motor is stalled </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">stall</td><td>not stalled: 0, stalled: 1 </td></tr>
   </table>
@@ -545,10 +748,12 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>make motor move to end stop </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Homes the motor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">direction</td><td>CCW: 0, CW: 1. </td></tr>
-    <tr><td class="paramname">rpm</td><td>speed of motor in rpm &gt; 10 </td></tr>
+    <tr><td class="paramname">rpm</td><td>speed of motor in rpm &gt; 10. </td></tr>
     <tr><td class="paramname">sensitivity</td><td>Encoder stalldetect sensitivity - From -100 to 10 where lower number is less sensitive and higher is more sensitive </td></tr>
     <tr><td class="paramname">current</td><td>homeing current, determines how easy it is to stop the motor and thereby provoke a stall</td></tr>
   </table>
@@ -591,7 +796,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>the isHomed state variable. </dd></dl>
+
+<p>Get the isHomed state variable saved locally. </p>
+<p>To retrieve the actual state call <a class="el" href="classJoint.html#a8067e61c6ae21cd3d3992d742d440ebf" title="retrieves the status flags from the joint.">Joint::getIsHomed()</a> </p><dl class="section return"><dt>Returns</dt><dd>local isHomed state variable. </dd></dl>
 
 </div>
 </div>
@@ -650,6 +857,72 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a438524f28b96d67c997b590c785b6e0e" name="a438524f28b96d67c997b590c785b6e0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a438524f28b96d67c997b590c785b6e0e">&#9670;&#160;</a></span>read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Joint::read </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18">stp_reg_t</a>&#160;</td>
+          <td class="paramname"><em>reg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">u_int8_t &amp;&#160;</td>
+          <td class="paramname"><em>flags</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Wrapper function to request data from the I2C slave. </p>
+<p>Allocates a buffer of size sizeof(T) + RFLAGS_SIZE. invokes <a class="el" href="uI2C_8h.html#a607cb25ea06e8ce952788a1e710e7f50" title="reads block of bytes from device to buffer">readFromI2CDev()</a>, and copies the received payload to <em>data</em> and the transmisison flags to <em>flags</em>. See <a class="el" href="classJoint.html#ac6a4b19a9a677e36deeaee7afd148497" title="State flags transmitted with every I2C transaction.">Joint::flags</a> for details. </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd><ul>
+<li>Implement a return code for read only functions</li>
+<li>Implement clearStall function </li>
+</ul>
+</dd></dl>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Datatype of value to be transmitted </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reg</td><td>stp_reg_t register to read </td></tr>
+    <tr><td class="paramname">data</td><td>reference to store payload. </td></tr>
+    <tr><td class="paramname">flags</td><td>reference to a byte which stores the return flags </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on OK, negative on error </dd></dl>
+
+</div>
+</div>
 <a id="ace371fa42a397f96ac6bef7e2faffbbd" name="ace371fa42a397f96ac6bef7e2faffbbd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ace371fa42a397f96ac6bef7e2faffbbd">&#9670;&#160;</a></span>setBrakeMode()</h2>
 
@@ -665,7 +938,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set Brake Mode </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Set Brake Mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mode</td><td>Freewheel: 0, Coolbrake: 1, Hardbrake: 2 </td></tr>
   </table>
@@ -690,7 +965,10 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set the Drive Current </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Set the Drive Current. </p>
+<dl class="section warning"><dt>Warning</dt><dd>This function is unreliable and not well tested. Use <a class="el" href="classJoint.html#a3714c35d4488d03280a7c2dc9e415ee0" title="Initialize the joint and engages motor.">enable()</a> instead! </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">current</td><td>0% - 100% of driver current </td></tr>
   </table>
@@ -715,7 +993,10 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Set the Hold Current </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Set the Hold Current. </p>
+<dl class="section warning"><dt>Warning</dt><dd>This function is unreliable and not well tested. Use <a class="el" href="classJoint.html#a3714c35d4488d03280a7c2dc9e415ee0" title="Initialize the joint and engages motor.">enable()</a> instead! </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">current</td><td>0% - 100% of driver current </td></tr>
   </table>
@@ -776,7 +1057,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Stops the motor </p><dl class="section note"><dt>Note</dt><dd>When stopping the motor in soft mode, wait sufficiently long until the motor has stopped. Since the <a class="el" href="classJoint.html#a89deba37891f86ec4cedbd7e3e001133">stop()</a> function in the motor controller is blocking. Continously checking the busy flag also might interfere with the <a class="el" href="classJoint.html#a89deba37891f86ec4cedbd7e3e001133">stop()</a> function on the controller side. </dd></dl>
+
+<p>Stops the motor. </p>
+<dl class="section note"><dt>Note</dt><dd>When stopping the motor in soft mode, wait sufficiently long until the motor has stopped. Since the <a class="el" href="classJoint.html#a89deba37891f86ec4cedbd7e3e001133" title="Stops the motor.">stop()</a> function in the motor controller is blocking. Continously checking the busy flag also might interfere with the <a class="el" href="classJoint.html#a89deba37891f86ec4cedbd7e3e001133" title="Stops the motor.">stop()</a> function on the controller side. </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mode</td><td>Hard: 0, Soft: 1 </td></tr>
@@ -787,7 +1070,224 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a516686bb9e04bccbd807e2c6123be730" name="a516686bb9e04bccbd807e2c6123be730"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a516686bb9e04bccbd807e2c6123be730">&#9670;&#160;</a></span>write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Joint::write </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18">stp_reg_t</a>&#160;</td>
+          <td class="paramname"><em>reg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">u_int8_t &amp;&#160;</td>
+          <td class="paramname"><em>flags</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Wrapper function to send command to the I2C slave. </p>
+<p>Allocates a buffer of size sizeof(T) + RFLAGS_SIZE. Copyies <em>data</em> to the buffer and invokes <a class="el" href="uI2C_8h.html#ab73613a3b862a54f70dff0b5192cbcac" title="writes block of bytes from buffer to device">writeToI2CDev()</a>. The flags received from the transaction are copied to <em>flags</em>. The flags are described in <a class="el" href="classJoint.html#a438524f28b96d67c997b590c785b6e0e" title="Wrapper function to request data from the I2C slave.">Joint::read()</a>.</p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Datatype of value to be transmitted </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">reg</td><td>stp_reg_t command to execute </td></tr>
+    <tr><td class="paramname">data</td><td>payload to transmit. It is the users responsibility to populate the right amount of data for the relevant register </td></tr>
+    <tr><td class="paramname">flags</td><td>reference to a byte which stores the return flags </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on OK, negative on error </dd></dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a7acd5a4c4b870de8674167b48504c95c" name="a7acd5a4c4b870de8674167b48504c95c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7acd5a4c4b870de8674167b48504c95c">&#9670;&#160;</a></span>address</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Joint::address</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>I2C adress. </p>
+
+</div>
+</div>
+<a id="ac6a4b19a9a677e36deeaee7afd148497" name="ac6a4b19a9a677e36deeaee7afd148497"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6a4b19a9a677e36deeaee7afd148497">&#9670;&#160;</a></span>flags</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">u_int8_t Joint::flags = 0x00</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>State flags transmitted with every I2C transaction. </p>
+<p>The transmission flags purpose are to transmit the joints current state. Note: They can not be used as error indication of the execution of a transmitted write command, since commands are executed after the I2C transaction is completed. The status flags are one byte with following structure: <br  />
+ </p><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">BIT7   </th><th class="markdownTableHeadNone">BIT6   </th><th class="markdownTableHeadNone">BIT5   </th><th class="markdownTableHeadNone">BIT4   </th><th class="markdownTableHeadNone">BIT3   </th><th class="markdownTableHeadNone">BIT2   </th><th class="markdownTableHeadNone">BIT1   </th><th class="markdownTableHeadNone">BIT0    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">reserved   </td><td class="markdownTableBodyNone">reserved   </td><td class="markdownTableBodyNone">reserved   </td><td class="markdownTableBodyNone">reserved   </td><td class="markdownTableBodyNone">SETUP   </td><td class="markdownTableBodyNone">HOMED   </td><td class="markdownTableBodyNone">BUSY   </td><td class="markdownTableBodyNone">STALL   </td></tr>
+</table>
+<p><b>STALL</b> is set if a stall from the stall detection is sensed and the joint is stopped. The flag is cleared when the joint is homed. <br  />
+<b>BUSY</b> is set if the slave is busy processing a previous command. <br  />
+<b>HOMED</b> is set if the joint is homed. Movement is only allowed if this flag is clear <br  />
+<b>SETUP</b> is set if the joint is setup after calling <a class="el" href="classJoint.html#a3714c35d4488d03280a7c2dc9e415ee0" title="Initialize the joint and engages motor.">Joint::enable()</a> </p>
+
+</div>
+</div>
+<a id="ab0e71cda03c816424f2ab1c222ef8f39" name="ab0e71cda03c816424f2ab1c222ef8f39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0e71cda03c816424f2ab1c222ef8f39">&#9670;&#160;</a></span>gearRatio</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Joint::gearRatio = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>gear ratio from encoder units to joint units </p>
+
+</div>
+</div>
+<a id="afae800e0e291c5833c10d625c90e19a5" name="afae800e0e291c5833c10d625c90e19a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afae800e0e291c5833c10d625c90e19a5">&#9670;&#160;</a></span>handle</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Joint::handle = -1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>I2C bus handle. </p>
+
+</div>
+</div>
+<a id="ac1afa9a4c5c9cf617a305e93bbc6fd7f" name="ac1afa9a4c5c9cf617a305e93bbc6fd7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1afa9a4c5c9cf617a305e93bbc6fd7f">&#9670;&#160;</a></span>ishomed</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">u_int8_t Joint::ishomed = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>flag if homed </p>
+
+</div>
+</div>
+<a id="ad400b4eed6d3b47819ad39de7f41a37a" name="ad400b4eed6d3b47819ad39de7f41a37a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad400b4eed6d3b47819ad39de7f41a37a">&#9670;&#160;</a></span>issetup</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">u_int8_t Joint::issetup = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>flag is setup </p>
+
+</div>
+</div>
 <a id="a57e3afaab4abae515d5053018e3cc886" name="a57e3afaab4abae515d5053018e3cc886"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a57e3afaab4abae515d5053018e3cc886">&#9670;&#160;</a></span>name</h2>
 
@@ -802,10 +1302,34 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a96b640f487cf0a5b08c46c4d80b9cb8c" name="a96b640f487cf0a5b08c46c4d80b9cb8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96b640f487cf0a5b08c46c4d80b9cb8c">&#9670;&#160;</a></span>offset</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Joint::offset = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>offset in degrees or mm from encoder zero to joint zero. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/<a class="el" href="mJoint_8h_source.html">mJoint.h</a></li>
-<li>/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/<a class="el" href="mJoint_8hpp_source.html">mJoint.hpp</a></li>
-<li>/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/src/<a class="el" href="mJoint_8cpp.html">mJoint.cpp</a></li>
+<li>ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/<a class="el" href="mJoint_8h_source.html">mJoint.h</a></li>
+<li>ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/<a class="el" href="mJoint_8hpp_source.html">mJoint.hpp</a></li>
+<li>ROS2/ros2_scara_ws/src/joint_communication/src/<a class="el" href="mJoint_8cpp.html">mJoint.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

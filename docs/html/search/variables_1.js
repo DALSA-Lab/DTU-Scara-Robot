@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['joints_0',['joints',['../classJoint__comms.html#aa86717eaea6a3a52f6f61f9895dd4473',1,'Joint_comms']]]
+  ['address_0',['address',['../classJoint.html#a7acd5a4c4b870de8674167b48504c95c',1,'Joint']]]
 ];

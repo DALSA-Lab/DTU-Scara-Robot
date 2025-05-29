@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Bioscara: /home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/uI2C.h File Reference</title>
+<title>Bioscara: ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/uI2C.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,9 +20,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="dtu_logo.png"/></td>
   <td id="projectalign">
    <div id="projectname">Bioscara
    </div>
+   <div id="projectbrief">DALSAs DIY SCARA robot arm.</div>
   </td>
  </tr>
  </tbody>
@@ -79,6 +81,9 @@ $(function() {
   <div class="headertitle"><div class="title">uI2C.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>Low level utility for I2C communication on Raspberry Pi using lgpio library.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;cstring&gt;</code><br />
 <code>#include &lt;errno.h&gt;</code><br />
 <code>#include &lt;fcntl.h&gt;</code><br />
@@ -88,46 +93,46 @@ $(function() {
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for uI2C.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="uI2C_8h__incl.png" border="0" usemap="#a_2home_2scara_2bioscara_2ROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2uI2C_8h" alt=""/></div>
-<map name="a_2home_2scara_2bioscara_2ROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2uI2C_8h" id="a_2home_2scara_2bioscara_2ROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2uI2C_8h">
-<area shape="rect" title=" " alt="" coords="161,5,375,75"/>
-<area shape="rect" title=" " alt="" coords="5,123,72,148"/>
-<area shape="poly" title=" " alt="" coords="186,77,81,120,79,115,184,72"/>
-<area shape="rect" title=" " alt="" coords="97,123,165,148"/>
-<area shape="poly" title=" " alt="" coords="220,77,161,117,158,112,217,73"/>
-<area shape="rect" title=" " alt="" coords="189,123,251,148"/>
-<area shape="poly" title=" " alt="" coords="253,76,235,112,230,109,248,74"/>
-<area shape="rect" title=" " alt="" coords="276,123,356,148"/>
-<area shape="poly" title=" " alt="" coords="288,74,306,109,301,112,283,76"/>
-<area shape="rect" title=" " alt="" coords="381,123,465,148"/>
-<area shape="poly" title=" " alt="" coords="325,73,393,113,390,118,322,77"/>
-<area shape="rect" title=" " alt="" coords="489,123,564,148"/>
-<area shape="poly" title=" " alt="" coords="362,72,483,115,481,120,360,77"/>
+<div class="center"><img src="uI2C_8h__incl.png" border="0" usemap="#aROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2uI2C_8h" alt=""/></div>
+<map name="aROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2uI2C_8h" id="aROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2uI2C_8h">
+<area shape="rect" title="Low level utility for I2C communication on Raspberry Pi using lgpio library." alt="" coords="139,5,397,60"/>
+<area shape="rect" title=" " alt="" coords="5,108,72,133"/>
+<area shape="poly" title=" " alt="" coords="199,63,83,106,81,101,197,58"/>
+<area shape="rect" title=" " alt="" coords="97,108,165,133"/>
+<area shape="poly" title=" " alt="" coords="227,62,162,103,159,98,225,58"/>
+<area shape="rect" title=" " alt="" coords="189,108,251,133"/>
+<area shape="poly" title=" " alt="" coords="256,61,236,97,231,95,251,59"/>
+<area shape="rect" title=" " alt="" coords="276,108,356,133"/>
+<area shape="poly" title=" " alt="" coords="285,59,305,95,300,97,280,61"/>
+<area shape="rect" title=" " alt="" coords="381,108,465,133"/>
+<area shape="poly" title=" " alt="" coords="317,58,391,99,389,104,314,62"/>
+<area shape="rect" title=" " alt="" coords="489,108,564,133"/>
+<area shape="poly" title=" " alt="" coords="348,58,480,101,479,106,346,63"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><img src="uI2C_8h__dep__incl.png" border="0" usemap="#a_2home_2scara_2bioscara_2ROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2uI2C_8hdep" alt=""/></div>
-<map name="a_2home_2scara_2bioscara_2ROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2uI2C_8hdep" id="a_2home_2scara_2bioscara_2ROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2uI2C_8hdep">
-<area shape="rect" title=" " alt="" coords="274,5,489,75"/>
-<area shape="rect" href="mJoint_8hpp.html" title=" " alt="" coords="185,123,423,192"/>
-<area shape="poly" title=" " alt="" coords="353,88,329,124,324,121,349,85"/>
-<area shape="rect" href="mJointCom_8cpp.html" title=" " alt="" coords="5,475,192,544"/>
-<area shape="poly" title=" " alt="" coords="262,68,215,91,194,106,175,124,147,166,126,212,111,261,102,310,95,403,98,474,92,475,90,403,96,310,106,260,121,210,142,163,171,121,190,102,212,87,260,64"/>
-<area shape="rect" href="mJoint_8cpp.html" title=" " alt="" coords="411,357,597,427"/>
-<area shape="poly" title=" " alt="" coords="417,85,437,122,461,185,479,250,502,356,496,357,474,251,456,187,432,124,412,87"/>
-<area shape="rect" href="uI2C_8cpp.html" title=" " alt="" coords="497,123,684,192"/>
-<area shape="poly" title=" " alt="" coords="456,79,531,120,528,125,453,84"/>
-<area shape="rect" href="mJoint_8h.html" title=" " alt="" coords="193,240,415,309"/>
-<area shape="poly" title=" " alt="" coords="298,206,298,240,293,240,292,206"/>
-<area shape="poly" title=" " alt="" coords="310,226,310,192,315,192,316,226"/>
-<area shape="rect" href="mJointCom_8h.html" title="File containing the Joint_comms class." alt="" coords="136,357,387,427"/>
-<area shape="poly" title=" " alt="" coords="289,323,276,358,271,356,284,322"/>
-<area shape="poly" title=" " alt="" coords="376,314,447,355,444,359,373,319"/>
-<area shape="rect" href="joint__comm__node_8cpp.html" title=" " alt="" coords="216,475,403,544"/>
-<area shape="poly" title=" " alt="" coords="283,438,298,473,293,475,278,440"/>
-<area shape="poly" title=" " alt="" coords="204,437,148,476,145,472,201,433"/>
+<div class="center"><img src="uI2C_8h__dep__incl.png" border="0" usemap="#aROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2uI2C_8hdep" alt=""/></div>
+<map name="aROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2uI2C_8hdep" id="aROS2_2ros2__scara__ws_2src_2joint__communication_2include_2joint__communication_2uI2C_8hdep">
+<area shape="rect" title="Low level utility for I2C communication on Raspberry Pi using lgpio library." alt="" coords="227,5,485,60"/>
+<area shape="rect" href="mJoint_8hpp.html" title="Templated functions for the Joint class." alt="" coords="177,108,391,177"/>
+<area shape="poly" title=" " alt="" coords="333,73,309,109,304,106,328,70"/>
+<area shape="rect" href="mJointCom_8cpp.html" title=" " alt="" coords="5,460,192,515"/>
+<area shape="poly" title=" " alt="" coords="221,68,191,86,166,110,138,152,118,199,105,248,97,298,93,391,98,459,92,460,88,391,92,298,100,247,113,197,134,149,162,106,188,82,219,64"/>
+<area shape="rect" href="mJoint_8cpp.html" title=" " alt="" coords="376,350,563,405"/>
+<area shape="poly" title=" " alt="" coords="385,70,405,107,429,174,447,241,468,349,463,350,442,243,424,175,400,109,381,73"/>
+<area shape="rect" href="uI2C_8cpp.html" title=" " alt="" coords="467,115,653,170"/>
+<area shape="poly" title=" " alt="" coords="419,64,511,113,509,118,417,69"/>
+<area shape="rect" href="mJoint_8h.html" title="File including the Joint class." alt="" coords="177,225,391,295"/>
+<area shape="poly" title=" " alt="" coords="278,191,278,225,273,225,272,191"/>
+<area shape="poly" title=" " alt="" coords="290,212,290,178,295,178,296,212"/>
+<area shape="rect" href="mJointCom_8h.html" title="File containing the Joint_comms class." alt="" coords="137,343,351,412"/>
+<area shape="poly" title=" " alt="" coords="270,309,258,343,253,342,265,307"/>
+<area shape="poly" title=" " alt="" coords="351,300,429,348,426,352,348,304"/>
+<area shape="rect" href="joint__comm__node_8cpp.html" title=" " alt="" coords="216,460,408,515"/>
+<area shape="poly" title=" " alt="" coords="275,422,298,458,293,461,270,425"/>
+<area shape="poly" title=" " alt="" coords="189,422,136,462,133,458,186,418"/>
 </map>
 </div>
 </div>
@@ -140,24 +145,46 @@ Macros</h2></td></tr>
 <tr class="memitem:a958518a45b12053ae33606ee7cb68a55" id="r_a958518a45b12053ae33606ee7cb68a55"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uI2C_8h.html#a958518a45b12053ae33606ee7cb68a55">NACK</a>&#160;&#160;&#160;'N'</td></tr>
 <tr class="separator:a958518a45b12053ae33606ee7cb68a55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf5d227b2ae124bdc7d5f15397b9bca1" id="r_abf5d227b2ae124bdc7d5f15397b9bca1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uI2C_8h.html#abf5d227b2ae124bdc7d5f15397b9bca1">RFLAGS_SIZE</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memdesc:abf5d227b2ae124bdc7d5f15397b9bca1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of the return flags in bytes.    <br /></td></tr>
 <tr class="separator:abf5d227b2ae124bdc7d5f15397b9bca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d5dab30b404fab91608086105afc78c" id="r_a1d5dab30b404fab91608086105afc78c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uI2C_8h.html#a1d5dab30b404fab91608086105afc78c">MAX_BUFFER</a>&#160;&#160;&#160;4</td></tr>
+<tr class="memdesc:a1d5dab30b404fab91608086105afc78c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum size of I2C Payload in bytes.    <br /></td></tr>
 <tr class="separator:a1d5dab30b404fab91608086105afc78c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a6434d4118a714731dc36bf1d2d1a9406" id="r_a6434d4118a714731dc36bf1d2d1a9406"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uI2C_8h.html#a6434d4118a714731dc36bf1d2d1a9406">openI2CDevHandle</a> (const int dev_addr)</td></tr>
+<tr class="memdesc:a6434d4118a714731dc36bf1d2d1a9406"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initiates an I2C device on the bus.  <br /></td></tr>
 <tr class="separator:a6434d4118a714731dc36bf1d2d1a9406"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a607cb25ea06e8ce952788a1e710e7f50" id="r_a607cb25ea06e8ce952788a1e710e7f50"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uI2C_8h.html#a607cb25ea06e8ce952788a1e710e7f50">readFromI2CDev</a> (const int dev_handle, const int <a class="el" href="joint_8ino.html#a9428adc9af4653a2050e2536b55dec8d">reg</a>, char *buffer, const int data_length)</td></tr>
+<tr class="memdesc:a607cb25ea06e8ce952788a1e710e7f50"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads block of bytes from device to buffer  <br /></td></tr>
 <tr class="separator:a607cb25ea06e8ce952788a1e710e7f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab73613a3b862a54f70dff0b5192cbcac" id="r_ab73613a3b862a54f70dff0b5192cbcac"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uI2C_8h.html#ab73613a3b862a54f70dff0b5192cbcac">writeToI2CDev</a> (const int dev_handle, const int <a class="el" href="joint_8ino.html#a9428adc9af4653a2050e2536b55dec8d">reg</a>, char *tx_buffer, const int data_length, char *RFLAGS_buffer)</td></tr>
+<tr class="memdesc:ab73613a3b862a54f70dff0b5192cbcac"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes block of bytes from buffer to device  <br /></td></tr>
 <tr class="separator:ab73613a3b862a54f70dff0b5192cbcac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbcaf30222a905543e93ee1a6393f6b7" id="r_adbcaf30222a905543e93ee1a6393f6b7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uI2C_8h.html#adbcaf30222a905543e93ee1a6393f6b7">closeI2CDevHandle</a> (const int dev_handle)</td></tr>
+<tr class="memdesc:adbcaf30222a905543e93ee1a6393f6b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">close an I2C device on the bus  <br /></td></tr>
 <tr class="separator:adbcaf30222a905543e93ee1a6393f6b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae37d8bf5a172df7def7890e32295e66a" id="r_ae37d8bf5a172df7def7890e32295e66a"><td class="memItemLeft" align="right" valign="top">u_int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uI2C_8h.html#ae37d8bf5a172df7def7890e32295e66a">generateChecksum</a> (const u_int8_t *buffer, size_t length)</td></tr>
-<tr class="separator:ae37d8bf5a172df7def7890e32295e66a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Low level utility for I2C communication on Raspberry Pi using lgpio library. </p>
+<dl class="section author"><dt>Author</dt><dd>Sebastian Storz </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>0.1 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2025-05-28</dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2025</dd></dl>
+<p>lgpio needs to be installed and linked! Installation: </p><div class="fragment"><div class="line">cd ~</div>
+<div class="line">sudo apt update</div>
+<div class="line">sudo apt install -y swig</div>
+<div class="line">wget https:<span class="comment">//github.com/joan2937/lg/archive/master.zip</span></div>
+<div class="line">unzip master.zip</div>
+<div class="line">cd lg-master</div>
+<div class="line">make</div>
+<div class="line">sudo make install</div>
+<div class="line">cd ..</div>
+<div class="line">sudo rm -rf lg-master</div>
+<div class="line">rm master.zip</div>
+</div><!-- fragment --><p> bash </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a6f6489887e08bff4887d0bc5dcf214d8" name="a6f6489887e08bff4887d0bc5dcf214d8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6f6489887e08bff4887d0bc5dcf214d8">&#9670;&#160;</a></span>ACK</h2>
 
@@ -183,6 +210,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Maximum size of I2C Payload in bytes.   </p>
+<p>4 bytes used to transmit floats and int32_t   </p>
 
 </div>
 </div>
@@ -212,6 +242,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Size of the return flags in bytes.   </p>
+<p>Only one byte used and hence set to 1.   </p>
+
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
@@ -230,49 +263,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>close an I2C device on the bus </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>close an I2C device on the bus </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dev_handle</td><td>device handle obtained from <code>openI2CDevHandle</code> </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>0 on OK, negative on error. </dd></dl>
-
-</div>
-</div>
-<a id="ae37d8bf5a172df7def7890e32295e66a" name="ae37d8bf5a172df7def7890e32295e66a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae37d8bf5a172df7def7890e32295e66a">&#9670;&#160;</a></span>generateChecksum()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">u_int8_t generateChecksum </td>
-          <td>(</td>
-          <td class="paramtype">const u_int8_t *&#160;</td>
-          <td class="paramname"><em>buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Compute the two' complement checksum of the <code>buffer</code> according to SAE J1708 </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">buffer</td><td>Pointer to buffer to compute checksum off </td></tr>
-    <tr><td class="paramname">length</td><td>Length of the buffer </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Two's complement checksum. </dd></dl>
 
 </div>
 </div>
@@ -291,7 +290,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Initiates an I2C device on the bus </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Initiates an I2C device on the bus. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dev_addr</td><td>7-bit device adress [0 - 0x7F] </td></tr>
   </table>
@@ -338,7 +339,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>reads block of bytes from device to buffer </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>reads block of bytes from device to buffer </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dev_handle</td><td>device handle obtained from <code>openI2CDevHandle</code> </td></tr>
     <tr><td class="paramname">reg</td><td>the command/data register </td></tr>
@@ -394,7 +397,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>writes block of bytes from buffer to device </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>writes block of bytes from buffer to device </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dev_handle</td><td>device handle obtained from <code>openI2CDevHandle</code> </td></tr>
     <tr><td class="paramname">reg</td><td>the command/data register </td></tr>

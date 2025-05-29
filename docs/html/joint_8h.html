@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Bioscara: /home/scara/bioscara/Arduino/joint/joint.h File Reference</title>
+<title>Bioscara: Arduino/joint/joint.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -20,9 +20,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="dtu_logo.png"/></td>
   <td id="projectalign">
    <div id="projectname">Bioscara
    </div>
+   <div id="projectbrief">DALSAs DIY SCARA robot arm.</div>
   </td>
  </tr>
  </tbody>
@@ -80,25 +82,28 @@ $(function() {
   <div class="headertitle"><div class="title">joint.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>joint firmware header  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;Arduino.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for joint.h:</div>
 <div class="dyncontent">
-<div class="center"><img src="joint_8h__incl.png" border="0" usemap="#a_2home_2scara_2bioscara_2Arduino_2joint_2joint_8h" alt=""/></div>
-<map name="a_2home_2scara_2bioscara_2Arduino_2joint_2joint_8h" id="a_2home_2scara_2bioscara_2Arduino_2joint_2joint_8h">
-<area shape="rect" title=" " alt="" coords="5,5,167,45"/>
-<area shape="rect" title=" " alt="" coords="44,93,128,119"/>
-<area shape="poly" title=" " alt="" coords="89,46,89,79,83,79,83,46"/>
+<div class="center"><img src="joint_8h__incl.png" border="0" usemap="#aArduino_2joint_2joint_8h" alt=""/></div>
+<map name="aArduino_2joint_2joint_8h" id="aArduino_2joint_2joint_8h">
+<area shape="rect" title="joint firmware header" alt="" coords="5,5,156,31"/>
+<area shape="rect" title=" " alt="" coords="39,79,123,104"/>
+<area shape="poly" title=" " alt="" coords="83,31,83,65,78,65,78,31"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><img src="joint_8h__dep__incl.png" border="0" usemap="#a_2home_2scara_2bioscara_2Arduino_2joint_2joint_8hdep" alt=""/></div>
-<map name="a_2home_2scara_2bioscara_2Arduino_2joint_2joint_8hdep" id="a_2home_2scara_2bioscara_2Arduino_2joint_2joint_8hdep">
-<area shape="rect" title=" " alt="" coords="8,5,169,45"/>
-<area shape="rect" href="joint_8ino.html" title=" " alt="" coords="5,93,172,133"/>
-<area shape="poly" title=" " alt="" coords="91,59,91,93,86,93,86,59"/>
+<div class="center"><img src="joint_8h__dep__incl.png" border="0" usemap="#aArduino_2joint_2joint_8hdep" alt=""/></div>
+<map name="aArduino_2joint_2joint_8hdep" id="aArduino_2joint_2joint_8hdep">
+<area shape="rect" title="joint firmware header" alt="" coords="11,5,162,31"/>
+<area shape="rect" href="joint_8ino.html" title="joint firmware" alt="" coords="5,79,168,104"/>
+<area shape="poly" title=" " alt="" coords="89,44,89,79,84,79,84,44"/>
 </map>
 </div>
 </div>
@@ -111,10 +116,13 @@ Macros</h2></td></tr>
 <tr class="memitem:a958518a45b12053ae33606ee7cb68a55" id="r_a958518a45b12053ae33606ee7cb68a55"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="joint_8h.html#a958518a45b12053ae33606ee7cb68a55">NACK</a>&#160;&#160;&#160;'N'</td></tr>
 <tr class="separator:a958518a45b12053ae33606ee7cb68a55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d5dab30b404fab91608086105afc78c" id="r_a1d5dab30b404fab91608086105afc78c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="joint_8h.html#a1d5dab30b404fab91608086105afc78c">MAX_BUFFER</a>&#160;&#160;&#160;4</td></tr>
+<tr class="memdesc:a1d5dab30b404fab91608086105afc78c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum size of I2C Payload in bytes.  <br /></td></tr>
 <tr class="separator:a1d5dab30b404fab91608086105afc78c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf5d227b2ae124bdc7d5f15397b9bca1" id="r_abf5d227b2ae124bdc7d5f15397b9bca1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="joint_8h.html#abf5d227b2ae124bdc7d5f15397b9bca1">RFLAGS_SIZE</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memdesc:abf5d227b2ae124bdc7d5f15397b9bca1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of the return flags in bytes.  <br /></td></tr>
 <tr class="separator:abf5d227b2ae124bdc7d5f15397b9bca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a292ca54fa46995e81a58e6432a23a114" id="r_a292ca54fa46995e81a58e6432a23a114"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="joint_8h.html#a292ca54fa46995e81a58e6432a23a114">DUMP_BUFFER</a>(buffer,  size)</td></tr>
+<tr class="memdesc:a292ca54fa46995e81a58e6432a23a114"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro to dump a buffer to the serial console.  <br /></td></tr>
 <tr class="separator:a292ca54fa46995e81a58e6432a23a114"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
@@ -163,20 +171,28 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227ab336d4f27301a6785af20d8ba0e5076d">ISSETUP</a> = 0x2F
 <br />
  }</td></tr>
+<tr class="memdesc:aaf12c41494c327736d4980ffe1184227"><td class="mdescLeft">&#160;</td><td class="mdescRight">register and command definitions  <a href="joint_8h.html#aaf12c41494c327736d4980ffe1184227">More...</a><br /></td></tr>
 <tr class="separator:aaf12c41494c327736d4980ffe1184227"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af86fd7bf99396eb72a71f4c9361ae750" id="r_af86fd7bf99396eb72a71f4c9361ae750"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="joint_8h.html#af86fd7bf99396eb72a71f4c9361ae750">generateChecksum</a> (const uint8_t *buffer, size_t length)</td></tr>
-<tr class="separator:af86fd7bf99396eb72a71f4c9361ae750"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a018130d8f5ce298859605a5c8e1320ee" id="r_a018130d8f5ce298859605a5c8e1320ee"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a018130d8f5ce298859605a5c8e1320ee"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="joint_8h.html#a018130d8f5ce298859605a5c8e1320ee">readValue</a> (T &amp;val, uint8_t *rxBuf, size_t <a class="el" href="joint_8ino.html#a15d2985ceb08bf6824378e9b6ee54ac1">rx_length</a>)</td></tr>
+<tr class="memdesc:a018130d8f5ce298859605a5c8e1320ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads a value from a buffer to a value of the specified type.  <br /></td></tr>
 <tr class="separator:a018130d8f5ce298859605a5c8e1320ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a840a800849418157245cec72759fba3a" id="r_a840a800849418157245cec72759fba3a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a840a800849418157245cec72759fba3a"><td class="memTemplItemLeft" align="right" valign="top">int&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="joint_8h.html#a840a800849418157245cec72759fba3a">writeValue</a> (const T val, uint8_t *txBuf, size_t &amp;<a class="el" href="joint_8ino.html#a7ab3114be16a93ee047a809202bc7183">tx_length</a>)</td></tr>
+<tr class="memdesc:a840a800849418157245cec72759fba3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a value of the specified type to a buffer.  <br /></td></tr>
 <tr class="separator:a840a800849418157245cec72759fba3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>joint firmware header </p>
+<dl class="section author"><dt>Author</dt><dd>Sebastian Storz </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>0.1 </dd></dl>
+<dl class="section date"><dt>Date</dt><dd>2025-05-27</dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2025</dd></dl>
+<p>This file contains definitions and macros for the joint firmware. </p>
+</div><h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a6f6489887e08bff4887d0bc5dcf214d8" name="a6f6489887e08bff4887d0bc5dcf214d8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6f6489887e08bff4887d0bc5dcf214d8">&#9670;&#160;</a></span>ACK</h2>
 
@@ -216,15 +232,25 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  { \</div>
-<div class="line">    Serial.print(<span class="stringliteral">&quot;Buffer dump: &quot;</span>); \</div>
-<div class="line">    for (<span class="keywordtype">size_t</span> i = 0; i &lt; size; i++) { \</div>
-<div class="line">      Serial.print(buffer[i], HEX); \</div>
-<div class="line">      Serial.print(<span class="stringliteral">&quot; &quot;</span>); \</div>
-<div class="line">    } \</div>
-<div class="line">    Serial.println(); \</div>
+<b>Value:</b><div class="fragment"><div class="line">  {                                   \</div>
+<div class="line">    Serial.print(<span class="stringliteral">&quot;Buffer dump: &quot;</span>);    \</div>
+<div class="line">    for (<span class="keywordtype">size_t</span> i = 0; i &lt; size; i++) \</div>
+<div class="line">    {                                 \</div>
+<div class="line">      Serial.print(buffer[i], HEX);   \</div>
+<div class="line">      Serial.print(<span class="stringliteral">&quot; &quot;</span>);              \</div>
+<div class="line">    }                                 \</div>
+<div class="line">    Serial.println();                 \</div>
 <div class="line">  }</div>
 </div><!-- fragment -->
+<p>Macro to dump a buffer to the serial console. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buffer</td><td>pointer to a buffer to dump to the console </td></tr>
+    <tr><td class="paramname">size</td><td>number of bytes to dump </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <a id="a1d5dab30b404fab91608086105afc78c" name="a1d5dab30b404fab91608086105afc78c"></a>
@@ -238,6 +264,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Maximum size of I2C Payload in bytes. </p>
+<p>4 bytes used to transmit floats and int32_t </p>
 
 </div>
 </div>
@@ -267,6 +296,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Size of the return flags in bytes. </p>
+<p>Only one byte used and hence set to 1. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
@@ -281,81 +313,66 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>register and command definitions </p>
+<p>a register can be read (R) or written (W), each register has a size in bytes. The payload can be split into multiple values or just be a single value. Note that not all functions are implemented. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a3a95ef902bc659901cceef98e0bc8041" name="aaf12c41494c327736d4980ffe1184227a3a95ef902bc659901cceef98e0bc8041"></a>PING&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227ae2b58a994ba6ad1506f2a89cc3a60a9b" name="aaf12c41494c327736d4980ffe1184227ae2b58a994ba6ad1506f2a89cc3a60a9b"></a>SETUP&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a043c90c670bd894bd93254d86d0d30dd" name="aaf12c41494c327736d4980ffe1184227a043c90c670bd894bd93254d86d0d30dd"></a>SETRPM&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a3a95ef902bc659901cceef98e0bc8041" name="aaf12c41494c327736d4980ffe1184227a3a95ef902bc659901cceef98e0bc8041"></a>PING&#160;</td><td class="fielddoc"><p>R; Size: 1; [(char) ACK]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227ae2b58a994ba6ad1506f2a89cc3a60a9b" name="aaf12c41494c327736d4980ffe1184227ae2b58a994ba6ad1506f2a89cc3a60a9b"></a>SETUP&#160;</td><td class="fielddoc"><p>W; Size: 2; [(uint8) holdCurrent, (uint8) driveCurrent]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a043c90c670bd894bd93254d86d0d30dd" name="aaf12c41494c327736d4980ffe1184227a043c90c670bd894bd93254d86d0d30dd"></a>SETRPM&#160;</td><td class="fielddoc"><p>W; Size: 4; [(float) RPM]. </p>
+</td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a52bf3247b510fa47ed5aa97a5a4a731b" name="aaf12c41494c327736d4980ffe1184227a52bf3247b510fa47ed5aa97a5a4a731b"></a>GETDRIVERRPM&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a134b6024d97c0e77ca70141c5f33dc09" name="aaf12c41494c327736d4980ffe1184227a134b6024d97c0e77ca70141c5f33dc09"></a>MOVESTEPS&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a134b6024d97c0e77ca70141c5f33dc09" name="aaf12c41494c327736d4980ffe1184227a134b6024d97c0e77ca70141c5f33dc09"></a>MOVESTEPS&#160;</td><td class="fielddoc"><p>W; Size: 4; [(int32) steps]. </p>
+</td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a3c1517845a585f93566de3e583482c61" name="aaf12c41494c327736d4980ffe1184227a3c1517845a585f93566de3e583482c61"></a>MOVEANGLE&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227aabd63690a16a4256469a128d019424bb" name="aaf12c41494c327736d4980ffe1184227aabd63690a16a4256469a128d019424bb"></a>MOVETOANGLE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227aabd63690a16a4256469a128d019424bb" name="aaf12c41494c327736d4980ffe1184227aabd63690a16a4256469a128d019424bb"></a>MOVETOANGLE&#160;</td><td class="fielddoc"><p>W; Size: 4; [(float) degrees]. </p>
+</td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a09fe23f25eea099be7608adce94684d1" name="aaf12c41494c327736d4980ffe1184227a09fe23f25eea099be7608adce94684d1"></a>GETMOTORSTATE&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a2fdd9e499993a5715fda88fa871e09fc" name="aaf12c41494c327736d4980ffe1184227a2fdd9e499993a5715fda88fa871e09fc"></a>RUNCOTINOUS&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a73a4e97441abbd39c1f477c0765482fa" name="aaf12c41494c327736d4980ffe1184227a73a4e97441abbd39c1f477c0765482fa"></a>ANGLEMOVED&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227ada9eaad2a52ca442e604b4f4553358b7" name="aaf12c41494c327736d4980ffe1184227ada9eaad2a52ca442e604b4f4553358b7"></a>SETCURRENT&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a8b0551c32439915ace9fc7c42c6ab252" name="aaf12c41494c327736d4980ffe1184227a8b0551c32439915ace9fc7c42c6ab252"></a>SETHOLDCURRENT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a73a4e97441abbd39c1f477c0765482fa" name="aaf12c41494c327736d4980ffe1184227a73a4e97441abbd39c1f477c0765482fa"></a>ANGLEMOVED&#160;</td><td class="fielddoc"><p>R; Size: 4; [(float) degrees]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227ada9eaad2a52ca442e604b4f4553358b7" name="aaf12c41494c327736d4980ffe1184227ada9eaad2a52ca442e604b4f4553358b7"></a>SETCURRENT&#160;</td><td class="fielddoc"><p>W; Size: 1; [(uint8) driveCurrent]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a8b0551c32439915ace9fc7c42c6ab252" name="aaf12c41494c327736d4980ffe1184227a8b0551c32439915ace9fc7c42c6ab252"></a>SETHOLDCURRENT&#160;</td><td class="fielddoc"><p>W; Size: 1; [(uint8) holdCurrent]. </p>
+</td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a3603579a798a53df01f390ce1ceb4bd2" name="aaf12c41494c327736d4980ffe1184227a3603579a798a53df01f390ce1ceb4bd2"></a>SETMAXACCELERATION&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227af5eb3f073abbadddebe0e462d0678cab" name="aaf12c41494c327736d4980ffe1184227af5eb3f073abbadddebe0e462d0678cab"></a>SETMAXDECELERATION&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a1bede85166c17bd970bdb990ce63ccc0" name="aaf12c41494c327736d4980ffe1184227a1bede85166c17bd970bdb990ce63ccc0"></a>SETMAXVELOCITY&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a1a150e10a4aaeffee9bff2ba1356b27f" name="aaf12c41494c327736d4980ffe1184227a1a150e10a4aaeffee9bff2ba1356b27f"></a>ENABLESTALLGUARD&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a1a150e10a4aaeffee9bff2ba1356b27f" name="aaf12c41494c327736d4980ffe1184227a1a150e10a4aaeffee9bff2ba1356b27f"></a>ENABLESTALLGUARD&#160;</td><td class="fielddoc"><p>W; Size: 1; [(uint8) threshold]. </p>
+</td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a266ba21402387fe0d25a356060b3894d" name="aaf12c41494c327736d4980ffe1184227a266ba21402387fe0d25a356060b3894d"></a>DISABLESTALLGUARD&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a9a59d78a2b03d184ea1d02368aa9dcc2" name="aaf12c41494c327736d4980ffe1184227a9a59d78a2b03d184ea1d02368aa9dcc2"></a>CLEARSTALL&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227aed8a50cbd61e7ae98db130c0fdae4911" name="aaf12c41494c327736d4980ffe1184227aed8a50cbd61e7ae98db130c0fdae4911"></a>ISSTALLED&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a8967f5054ed12cf09fe37b7369a668af" name="aaf12c41494c327736d4980ffe1184227a8967f5054ed12cf09fe37b7369a668af"></a>SETBRAKEMODE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227aed8a50cbd61e7ae98db130c0fdae4911" name="aaf12c41494c327736d4980ffe1184227aed8a50cbd61e7ae98db130c0fdae4911"></a>ISSTALLED&#160;</td><td class="fielddoc"><p>R; Size: 1; [(uint8) isStalled]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a8967f5054ed12cf09fe37b7369a668af" name="aaf12c41494c327736d4980ffe1184227a8967f5054ed12cf09fe37b7369a668af"></a>SETBRAKEMODE&#160;</td><td class="fielddoc"><p>W; Size: 1; [(uint8) mode]. </p>
+</td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a399fd338684eda1dedbb11aeb03f8e2f" name="aaf12c41494c327736d4980ffe1184227a399fd338684eda1dedbb11aeb03f8e2f"></a>ENABLEPID&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227aaf95a712e56303c0583c3fefa2b54557" name="aaf12c41494c327736d4980ffe1184227aaf95a712e56303c0583c3fefa2b54557"></a>DISABLEPID&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227adf27eff58b369b9beca8e31805c2431c" name="aaf12c41494c327736d4980ffe1184227adf27eff58b369b9beca8e31805c2431c"></a>ENABLECLOSEDLOOP&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227aeac2084745674097d6e6f35d9be7a168" name="aaf12c41494c327736d4980ffe1184227aeac2084745674097d6e6f35d9be7a168"></a>DISABLECLOSEDLOOP&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227aeac2084745674097d6e6f35d9be7a168" name="aaf12c41494c327736d4980ffe1184227aeac2084745674097d6e6f35d9be7a168"></a>DISABLECLOSEDLOOP&#160;</td><td class="fielddoc"><p>W; Size: 1; [(uint8) 0]. </p>
+</td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a25463cded0b67be6de7e47c1fc2825ea" name="aaf12c41494c327736d4980ffe1184227a25463cded0b67be6de7e47c1fc2825ea"></a>SETCONTROLTHRESHOLD&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a40442f487c9f54988557a67e0ead0a86" name="aaf12c41494c327736d4980ffe1184227a40442f487c9f54988557a67e0ead0a86"></a>MOVETOEND&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a679ee5320d66c8322e310daeb2ee99b8" name="aaf12c41494c327736d4980ffe1184227a679ee5320d66c8322e310daeb2ee99b8"></a>STOP&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a679ee5320d66c8322e310daeb2ee99b8" name="aaf12c41494c327736d4980ffe1184227a679ee5320d66c8322e310daeb2ee99b8"></a>STOP&#160;</td><td class="fielddoc"><p>W; Size: 1; [(uint8) mode]. </p>
+</td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a4294032a7f68338c60eabb96d9e868cb" name="aaf12c41494c327736d4980ffe1184227a4294032a7f68338c60eabb96d9e868cb"></a>GETPIDERROR&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227ab497f086d05a8a6ece2b0adae02b86b7" name="aaf12c41494c327736d4980ffe1184227ab497f086d05a8a6ece2b0adae02b86b7"></a>CHECKORIENTATION&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227aa23c46b2a03715e7fac0e2e660a7e247" name="aaf12c41494c327736d4980ffe1184227aa23c46b2a03715e7fac0e2e660a7e247"></a>GETENCODERRPM&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a8f280224da64e98f2d52d50ec43bc197" name="aaf12c41494c327736d4980ffe1184227a8f280224da64e98f2d52d50ec43bc197"></a>HOME&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a8aae6cf9961b7f745410acf817525888" name="aaf12c41494c327736d4980ffe1184227a8aae6cf9961b7f745410acf817525888"></a>ISHOMED&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227ab336d4f27301a6785af20d8ba0e5076d" name="aaf12c41494c327736d4980ffe1184227ab336d4f27301a6785af20d8ba0e5076d"></a>ISSETUP&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227ab497f086d05a8a6ece2b0adae02b86b7" name="aaf12c41494c327736d4980ffe1184227ab497f086d05a8a6ece2b0adae02b86b7"></a>CHECKORIENTATION&#160;</td><td class="fielddoc"><p>W; Size: 4; [(float) degrees]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227aa23c46b2a03715e7fac0e2e660a7e247" name="aaf12c41494c327736d4980ffe1184227aa23c46b2a03715e7fac0e2e660a7e247"></a>GETENCODERRPM&#160;</td><td class="fielddoc"><p>R; Size: 4; [(float) RPM]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a8f280224da64e98f2d52d50ec43bc197" name="aaf12c41494c327736d4980ffe1184227a8f280224da64e98f2d52d50ec43bc197"></a>HOME&#160;</td><td class="fielddoc"><p>W; Size: 4; [(uint8) current, (int8) sensitivity, (uint8) speed, (uint8) direction]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a8aae6cf9961b7f745410acf817525888" name="aaf12c41494c327736d4980ffe1184227a8aae6cf9961b7f745410acf817525888"></a>ISHOMED&#160;</td><td class="fielddoc"><p>R; Size: 1; [(uint8) isStalled]. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227ab336d4f27301a6785af20d8ba0e5076d" name="aaf12c41494c327736d4980ffe1184227ab336d4f27301a6785af20d8ba0e5076d"></a>ISSETUP&#160;</td><td class="fielddoc"><p>R; Size: 1; [(uint8) isStalled]. </p>
+</td></tr>
 </table>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="af86fd7bf99396eb72a71f4c9361ae750" name="af86fd7bf99396eb72a71f4c9361ae750"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af86fd7bf99396eb72a71f4c9361ae750">&#9670;&#160;</a></span>generateChecksum()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint8_t generateChecksum </td>
-          <td>(</td>
-          <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Compute the two' complement checksum of the <code>buffer</code> according to SAE J1708 </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">buffer</td><td>Pointer to buffer to compute checksum off </td></tr>
-    <tr><td class="paramname">length</td><td>Length of the buffer </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Two's complement checksum. </dd></dl>
-
-</div>
-</div>
 <a id="a018130d8f5ce298859605a5c8e1320ee" name="a018130d8f5ce298859605a5c8e1320ee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a018130d8f5ce298859605a5c8e1320ee">&#9670;&#160;</a></span>readValue()</h2>
 
@@ -389,7 +406,9 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Reads a value from Serial Buffer of the specified type <code>T</code> into <code>val</code> </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Reads a value from a buffer to a value of the specified type. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">val</td><td>Reference to output variable </td></tr>
     <tr><td class="paramname">rxBuf</td><td>Buffer to read value from </td></tr>
@@ -433,11 +452,13 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Writes a value to the Serial output buffer using a intermediate buffer. </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Writes a value of the specified type to a buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">val</td><td>Reference to input variable </td></tr>
     <tr><td class="paramname">txBuf</td><td>pointer to tx buffer </td></tr>
-    <tr><td class="paramname">tx_length</td><td>Length of the buffer </td></tr>
+    <tr><td class="paramname">tx_length</td><td>Length of the buffer returne </td></tr>
   </table>
   </dd>
 </dl>

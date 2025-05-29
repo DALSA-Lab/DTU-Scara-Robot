@@ -254,7 +254,7 @@ public:
   /**
    * @brief Internal vector storing the Joint objects.
    *
-   * A Joint can be added by invoking addJoint()*
+   * A Joint can be added by invoking addJoint()
    */
   std::vector<Joint> joints;
 

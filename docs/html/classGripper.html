@@ -20,9 +20,11 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="dtu_logo.png"/></td>
   <td id="projectalign">
    <div id="projectname">Bioscara
    </div>
+   <div id="projectbrief">DALSAs DIY SCARA robot arm.</div>
   </td>
  </tr>
  </tbody>
@@ -71,29 +73,56 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classGripper-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Gripper Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
+<p><a class="el" href="classGripper.html" title="Gripper object to interact with the robot gripper.">Gripper</a> object to interact with the robot gripper.  
+ <a href="classGripper.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="mGripper_8h_source.html">mGripper.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for Gripper:</div>
+<div class="dyncontent">
+<div class="center"><img src="classGripper__coll__graph.png" border="0" usemap="#aGripper_coll__map" alt="Collaboration graph"/></div>
+<map name="aGripper_coll__map" id="aGripper_coll__map">
+<area shape="rect" title="Gripper object to interact with the robot gripper." alt="" coords="11,93,82,119"/>
+<area shape="rect" href="classRPI__PWM.html" title="PWM class for the Raspberry PI 4 and 5." alt="" coords="5,5,88,31"/>
+<area shape="poly" title=" " alt="" coords="49,45,49,93,44,93,44,45"/>
+</map>
+<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aadab84d566650461aa48043a9d8705cc" id="r_aadab84d566650461aa48043a9d8705cc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGripper.html#aadab84d566650461aa48043a9d8705cc">Gripper</a> (void)</td></tr>
 <tr class="separator:aadab84d566650461aa48043a9d8705cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16c725ab54dfb822bb6cd94475407787" id="r_a16c725ab54dfb822bb6cd94475407787"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGripper.html#a16c725ab54dfb822bb6cd94475407787">init</a> (void)</td></tr>
+<tr class="memdesc:a16c725ab54dfb822bb6cd94475407787"><td class="mdescLeft">&#160;</td><td class="mdescRight">Placeholder, does nothing.  <br /></td></tr>
 <tr class="separator:a16c725ab54dfb822bb6cd94475407787"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad52210917d2e1736384372699473147c" id="r_ad52210917d2e1736384372699473147c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGripper.html#ad52210917d2e1736384372699473147c">deinit</a> (void)</td></tr>
+<tr class="memdesc:ad52210917d2e1736384372699473147c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Placeholder, does nothing.  <br /></td></tr>
 <tr class="separator:ad52210917d2e1736384372699473147c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa65e70728b2b1dc6dbdee2147354366b" id="r_aa65e70728b2b1dc6dbdee2147354366b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGripper.html#aa65e70728b2b1dc6dbdee2147354366b">enable</a> (void)</td></tr>
+<tr class="memdesc:aa65e70728b2b1dc6dbdee2147354366b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prepares the servo for use.  <br /></td></tr>
 <tr class="separator:aa65e70728b2b1dc6dbdee2147354366b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37aa55b9a63550fd2eb3c516f2adcfc5" id="r_a37aa55b9a63550fd2eb3c516f2adcfc5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGripper.html#a37aa55b9a63550fd2eb3c516f2adcfc5">disable</a> (void)</td></tr>
+<tr class="memdesc:a37aa55b9a63550fd2eb3c516f2adcfc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables the servo.  <br /></td></tr>
 <tr class="separator:a37aa55b9a63550fd2eb3c516f2adcfc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a982354e6c6f97a0f8ba6fed6c2b23a80" id="r_a982354e6c6f97a0f8ba6fed6c2b23a80"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGripper.html#a982354e6c6f97a0f8ba6fed6c2b23a80">setPosition</a> (float width)</td></tr>
+<tr class="memdesc:a982354e6c6f97a0f8ba6fed6c2b23a80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the gripper width in mm from the closed position.  <br /></td></tr>
 <tr class="separator:a982354e6c6f97a0f8ba6fed6c2b23a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a5e33de25cd8410c49f0cc832d74da7ef" id="r_a5e33de25cd8410c49f0cc832d74da7ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classRPI__PWM.html">RPI_PWM</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGripper.html#a5e33de25cd8410c49f0cc832d74da7ef">pwm</a></td></tr>
+<tr class="separator:a5e33de25cd8410c49f0cc832d74da7ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="classGripper.html" title="Gripper object to interact with the robot gripper.">Gripper</a> object to interact with the robot gripper. </p>
+<p>The gripper must be a PWM controlled servo. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aadab84d566650461aa48043a9d8705cc" name="aadab84d566650461aa48043a9d8705cc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aadab84d566650461aa48043a9d8705cc">&#9670;&#160;</a></span>Gripper()</h2>
 
@@ -129,6 +158,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Placeholder, does nothing. </p>
+<dl class="section return"><dt>Returns</dt><dd>0 </dd></dl>
+
 </div>
 </div>
 <a id="a37aa55b9a63550fd2eb3c516f2adcfc5" name="a37aa55b9a63550fd2eb3c516f2adcfc5"></a>
@@ -146,6 +178,10 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Disables the servo. </p>
+<p>Stops the servo and disables the PWM generation.</p>
+<dl class="section return"><dt>Returns</dt><dd>non-zero error code. </dd></dl>
 
 </div>
 </div>
@@ -165,6 +201,10 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Prepares the servo for use. </p>
+<p>Starts the PWM generation but does not set a position. Must be called before a position is set. The PWM pin is GPIO18. PWM chip is 0, channel 0. *</p>
+<dl class="section return"><dt>Returns</dt><dd>non-zero error code. </dd></dl>
+
 </div>
 </div>
 <a id="a16c725ab54dfb822bb6cd94475407787" name="a16c725ab54dfb822bb6cd94475407787"></a>
@@ -183,6 +223,9 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Placeholder, does nothing. </p>
+<dl class="section return"><dt>Returns</dt><dd>0 </dd></dl>
+
 </div>
 </div>
 <a id="a982354e6c6f97a0f8ba6fed6c2b23a80" name="a982354e6c6f97a0f8ba6fed6c2b23a80"></a>
@@ -200,18 +243,43 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Sets the gripper position/width in mm from the closed position </p><dl class="params"><dt>Parameters</dt><dd>
+
+<p>Sets the gripper width in mm from the closed position. </p>
+<p>Arguments outside the allowed range are bounded to limit. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">width</td><td>width in mm </td></tr>
+    <tr><td class="paramname">width</td><td>width in mm. 30 - 85 mm are currently allowed. With a new gripper this should be changed. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a5e33de25cd8410c49f0cc832d74da7ef" name="a5e33de25cd8410c49f0cc832d74da7ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e33de25cd8410c49f0cc832d74da7ef">&#9670;&#160;</a></span>pwm</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classRPI__PWM.html">RPI_PWM</a> Gripper::pwm</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/<a class="el" href="mGripper_8h_source.html">mGripper.h</a></li>
-<li>/home/scara/bioscara/ROS2/ros2_scara_ws/src/joint_communication/src/<a class="el" href="mGripper_8cpp.html">mGripper.cpp</a></li>
+<li>ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/<a class="el" href="mGripper_8h_source.html">mGripper.h</a></li>
+<li>ROS2/ros2_scara_ws/src/joint_communication/src/<a class="el" href="mGripper_8cpp.html">mGripper.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

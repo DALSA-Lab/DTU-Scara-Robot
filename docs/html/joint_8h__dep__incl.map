@@ -1,5 +1,5 @@
-<map id="/home/scara/bioscara/Arduino/joint/joint.h" name="/home/scara/bioscara/Arduino/joint/joint.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="8,5,169,45"/>
-<area shape="rect" id="Node000002" href="$joint_8ino.html" title=" " alt="" coords="5,93,172,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,59,91,93,86,93,86,59"/>
+<map id="Arduino/joint/joint.h" name="Arduino/joint/joint.h">
+<area shape="rect" id="Node000001" title="joint firmware header" alt="" coords="11,5,162,31"/>
+<area shape="rect" id="Node000002" href="$joint_8ino.html" title="joint firmware" alt="" coords="5,79,168,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,44,89,79,84,79,84,44"/>
 </map>

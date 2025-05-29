@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['ping_0',['PING',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a3a95ef902bc659901cceef98e0bc8041',1,'joint.h']]],
-  ['printinfo_1',['printInfo',['../classJoint.html#abc0fef67c332a238cc0897c06d157a22',1,'Joint']]]
+  ['offset_0',['offset',['../classJoint.html#a96b640f487cf0a5b08c46c4d80b9cb8c',1,'Joint']]],
+  ['openi2cdevhandle_1',['openi2cdevhandle',['../uI2C_8h.html#a6434d4118a714731dc36bf1d2d1a9406',1,'openI2CDevHandle(const int dev_addr):&#160;uI2C.cpp'],['../uI2C_8cpp.html#a6434d4118a714731dc36bf1d2d1a9406',1,'openI2CDevHandle(const int dev_addr):&#160;uI2C.cpp']]]
 ];
