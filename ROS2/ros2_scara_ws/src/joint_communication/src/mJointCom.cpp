@@ -10,7 +10,7 @@ Joint_comms::~Joint_comms()
 }
 
 
-void Joint_comms::addJoint(const int address, const std::string name, const float gearRatio, const int offset)
+void Joint_comms::addJoint(const int address, const std::string name, const float gearRatio, const float offset)
 {
     this->joints.push_back(Joint(address,name,gearRatio,offset));
 }
@@ -104,7 +104,7 @@ int Joint_comms::disables(void)
     return 0;
 }
 
-int Joint_comms::home(std::string name, u_int8_t direction, u_int8_t rpm, int8_t sensitivity, u_int8_t current)
+int Joint_comms::home(std::string name, u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t current)
 {
     for (size_t i = 0; i < this->joints.size(); i++)
     {

@@ -65,7 +65,7 @@ public:
  * - Investigate if possible to make independent of homing
 
  */
-  void addJoint(const int address, const std::string name, const float gearRatio, const int offset);
+  void addJoint(const int address, const std::string name, const float gearRatio, const float offset);
 
   /**
  * @brief Engages the joints
@@ -110,11 +110,11 @@ public:
    * @param name joint name.
    * @param direction  CCW: 0, CW: 1.
    * @param rpm  speed of motor in rpm > 10
-   * @param sensitivity Encoder stalldetect sensitivity - From -100 to 10 where lower number is less sensitive and higher is more sensitive
+   * @param sensitivity PID error threshold, 0 to 255.
    * @param current homeing current, determines how easy it is to stop the motor and thereby provoke a stall
    * @return error code.
    */
-  int home(std::string name, u_int8_t direction, u_int8_t rpm, int8_t sensitivity, u_int8_t current);
+  int home(std::string name, u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t current);
 
   /**
    * @brief Get the positions of all joints.

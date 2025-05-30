@@ -35,7 +35,7 @@ int main(int argc, char **argv)
   while (1)
   {
 
-    if (_Gripper.setPosition((float)-cos(0.2 * 2 * M_PI * time) * 85/2+85/2) != 0)
+    if (_Gripper.setPosition((float)-cos(0.2 * 2 * M_PI * time) * 20 + 60) != 0)
     {
       break;
     }

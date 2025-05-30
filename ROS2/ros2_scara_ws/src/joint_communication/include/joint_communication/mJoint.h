@@ -22,7 +22,7 @@
 class Joint
 {
 public:
-  Joint(const int address, const std::string name, const float gearRatio, const int offset);
+  Joint(const int address, const std::string name, const float gearRatio, const float offset);
   // ~Joint();
 
   int init(void);
@@ -52,12 +52,12 @@ public:
    * @brief Homes the motor.
    * @param direction  CCW: 0, CW: 1.
    * @param rpm  speed of motor in rpm > 10.
-   * @param sensitivity Encoder stalldetect sensitivity - From -100 to 10 where lower number is less sensitive and higher is more sensitive
+   * @param sensitivity Encoder pid error threshold 0 to 255.
    * @param current homeing current, determines how easy it is to stop the motor and thereby provoke a stall
 
    * @return error code.
    */
-  int home(u_int8_t direction, u_int8_t rpm, int8_t sensitivity, u_int8_t current);
+  int home(u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t current);
 
   /**
    * @brief Stops the motor.
@@ -241,7 +241,7 @@ private:
 
   int address;         ///< I2C adress
   float gearRatio = 1; ///< gear ratio from encoder units to joint units
-  int offset = 0;      ///< offset in degrees or mm from encoder zero to joint zero.
+  float offset = 0;      ///< offset in degrees or mm from encoder zero to joint zero.
 
   int handle = -1; ///< I2C bus handle
 };

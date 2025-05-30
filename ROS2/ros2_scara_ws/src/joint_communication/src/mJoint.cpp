@@ -1,7 +1,7 @@
 #include "joint_communication/uI2C.h"
 #include "joint_communication/mJoint.h"
 
-Joint::Joint(const int address, const std::string name, const float gearRatio, const int offset)
+Joint::Joint(const int address, const std::string name, const float gearRatio, const float offset)
 {
     this->address = address;
     this->name = name;
@@ -51,7 +51,7 @@ int Joint::enable(u_int8_t driveCurrent, u_int8_t holdCurrent)
     return this->write(SETUP, buf, this->flags);
 }
 
-int Joint::home(u_int8_t direction, u_int8_t rpm, int8_t sensitivity, u_int8_t current)
+int Joint::home(u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t current)
 {
     u_int32_t buf = 0;
     buf |= (direction & 0xFF);
