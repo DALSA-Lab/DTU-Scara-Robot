@@ -52,14 +52,14 @@ void stepper_request_handler(uint8_t reg);
  *
  * Reads the content of the received message. Saves the reg so it can be used in the main loop. If the master invokes the read() function the message contains only the register byte 
  * and no payload. If the master invokes the write() the message has a payload of appropriate size for the command.
- * For a read the message looks like this: \n 
+ * For a read request the message looks like this: \n 
  * \< [REG] \n 
- * \> [TXBUFn]...[TXBUF2][TXBUF1][TXBUF0] \n 
- * For a write the message looks like this: \n 
- * \< [REG][RXBUFn]...[RXBUF2][RXBUF1][RXBUF0] \n 
  * \> [TXBUFn]...[TXBUF2][TXBUF1][TXBUF0][FLAGS] \n 
+ * For a command the message looks like this: \n 
+ * \< [REG][RXBUFn]...[RXBUF2][RXBUF1][RXBUF0] \n 
+ * \> [FLAGS] \n 
  * The payload is read into the rx_buf, rx_length is set to the payload length and the rx_data_ready flag is set.
- * @param n the number of bytes read from the controller device
+ * @param n the number of bytes read from the controller device: MAX_BUFFER
  */
 void receiveEvent(int n) {
   // Serial.println("receive");
