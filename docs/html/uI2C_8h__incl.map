@@ -1,0 +1,15 @@
+<map id="ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/uI2C.h" name="ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/uI2C.h">
+<area shape="rect" id="Node000001" title="Low level utility for I2C communication on Raspberry Pi using lgpio library." alt="" coords="139,5,397,60"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,108,72,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,63,83,106,81,101,197,58"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="97,108,165,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="227,62,162,103,159,98,225,58"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="189,108,251,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="256,61,236,97,231,95,251,59"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="276,108,356,133"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="285,59,305,95,300,97,280,61"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="381,108,465,133"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="317,58,391,99,389,104,314,62"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="489,108,564,133"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="348,58,480,101,479,106,346,63"/>
+</map>

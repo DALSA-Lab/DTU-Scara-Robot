@@ -1,0 +1,21 @@
+<map id="ROS2/ros2_scara_ws/src/joint_communication/src/mGripper.cpp" name="ROS2/ros2_scara_ws/src/joint_communication/src/mGripper.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="231,5,417,60"/>
+<area shape="rect" id="Node000002" href="$mGripper_8h.html" title="File containing the Gripper class." alt="" coords="245,108,403,148"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="327,60,327,94,321,94,321,60"/>
+<area shape="rect" id="Node000003" href="$uPWM_8h.html" title="Includes source code for Hardware PWM generation on Raspberry Pi 4." alt="" coords="245,196,403,236"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="327,148,327,182,321,182,321,148"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="5,284,72,309"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="256,239,86,285,85,280,255,233"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="97,284,167,309"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="279,238,174,281,172,276,277,234"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="191,284,262,309"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="302,238,253,277,250,273,299,234"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="287,284,361,309"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="327,236,327,270,321,270,321,236"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="385,284,444,309"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="348,234,393,273,389,277,344,238"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="468,284,548,309"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="369,234,470,276,467,281,367,238"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="573,284,641,309"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="392,233,560,280,558,285,391,239"/>
+</map>

@@ -1,0 +1,18 @@
+<map id="ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/common.h" name="ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/common.h">
+<area shape="rect" id="Node000001" title="A file containing utility macros and functions." alt="" coords="325,5,539,75"/>
+<area shape="rect" id="Node000002" href="$mJoint_8hpp.html" title="Templated functions for the Joint class." alt="" coords="213,123,427,192"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="391,87,355,124,351,121,388,83"/>
+<area shape="rect" id="Node000008" href="$uI2C_8cpp.html" title=" " alt="" coords="452,130,639,185"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="477,83,521,128,517,132,473,87"/>
+<area shape="rect" id="Node000003" href="$mJoint_8h.html" title="File including the Joint class." alt="" coords="213,240,427,309"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="314,206,314,240,309,240,308,206"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="326,226,326,192,331,192,332,226"/>
+<area shape="rect" id="Node000004" href="$mJointCom_8h.html" title="File containing the Joint_comms class." alt="" coords="101,357,315,427"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="279,321,243,359,239,355,276,318"/>
+<area shape="rect" id="Node000007" href="$mJoint_8cpp.html" title=" " alt="" coords="340,365,527,419"/>
+<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="365,318,409,363,405,366,361,321"/>
+<area shape="rect" id="Node000005" href="$joint__comm__node_8cpp.html" title=" " alt="" coords="5,475,197,529"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="167,438,129,476,125,473,163,434"/>
+<area shape="rect" id="Node000006" href="$mJointCom_8cpp.html" title=" " alt="" coords="221,475,408,529"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="253,434,291,473,287,476,249,438"/>
+</map>
