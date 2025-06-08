@@ -5,6 +5,8 @@ Version 2 is defined by replacing the MKS SERVO42C stepper drivers with the Uste
 ## Documentation
 The documentation for the joint communication interface can be found in [/docs](/docs/). The documentation is made with Doxygen, its configuration file is in the root of the folder. The documentation can be found as a pdf [/docs/latex/refman.pdf](/docs/latex/refman.pdf) and as html in [/docs/html/index.html](/docs/html/index.html)
 
+## Usage
+Interacting with the robot is handled through ROS2. In the subdirectory a seperate README can be found explaining how to use the hardware.
 
 ## TODO
 ### Mechanical
