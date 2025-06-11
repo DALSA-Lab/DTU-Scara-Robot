@@ -30,13 +30,13 @@ int main(int argc, char **argv)
 
   while (1)
   {
-    cout << "enter a gripper positiob between 30 mm and 80 mm: " int i;
+    cout << "enter a gripper position between 30 mm and 85 mm: ";
+    int i;
     cin >> i;
     if (_Gripper.setPosition(i * 1.0) != 0)
     {
       return -1;
     }
-    cout << endl;
   }
 
   return 0;
