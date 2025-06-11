@@ -17,7 +17,38 @@
 /**
  * @brief Gripper object to interact with the robot gripper.
  *
- * The gripper must be a PWM controlled servo.
+ * This class is a wrapper function to interact with a PWM servo gripper.
+ * An example application is shown below. Note that depending on the build toolchain the include path can differ. This 
+example assumes the joint_communication package is built with ROS2.
+ * 
+ * 
+ *   \code{.cpp}
+#include "joint_communication/mGripper.h"
+int main(int argc, char **argv)
+{
+    Gripper gripper;
+    gripper.init();
+    if(gripper.enable() != 0){
+        cerr << "Failed to engage gripper" << endl;
+        return -1;
+    }
+
+    if (gripper.setPosition(40) != 0)
+    {
+        cerr << "setting position failed" << endl;
+        return -1;
+    }
+
+    if(gripper.disable() != 0){
+        cerr << "Failed to disengage gripper" << endl;
+        return -1;
+    }
+
+    gripper.deinit();
+    return 0;
+}
+  \endcode
+ *
  *
  */
 class Gripper
@@ -51,7 +82,7 @@ public:
 
     /**
      * @brief Disables the servo.
-     * 
+     *
      * Stops the servo and disables the PWM generation.
      *
      * @return non-zero error code.
@@ -60,7 +91,7 @@ public:
 
     /**
      * @brief Sets the gripper width in mm from the closed position.
-     * 
+     *
      * Arguments outside the allowed range are bounded to limit.
      * @param width width in mm. 30 - 85 mm are currently allowed. With a new gripper this should be changed.
      */

@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['j4_0',['J4',['../joint_8ino.html#a587193c9dfc1e471f4510ec090b3c01f',1,'joint.ino']]],
-  ['joint_1',['joint',['../classJoint.html',1,'Joint'],['../classJoint.html#aa1c40be19d471e09ad6fedb95cc4a23a',1,'Joint::Joint()']]],
+  ['j1_0',['J1',['../joint_8ino.html#aa0a810e76ff16787aab0c30a8b973e8a',1,'joint.ino']]],
+  ['joint_1',['joint',['../classJoint.html',1,'Joint'],['../classJoint.html#aad1752d1c481a3d00fc494529e470c51',1,'Joint::Joint()']]],
   ['joint_2eh_2',['joint.h',['../joint_8h.html',1,'']]],
   ['joint_2eino_3',['joint.ino',['../joint_8ino.html',1,'']]],
   ['joint2encoderangle_4',['JOINT2ENCODERANGLE',['../mJoint_8h.html#a0d336acf3d6043abbbe3a0667406b182',1,'mJoint.h']]],

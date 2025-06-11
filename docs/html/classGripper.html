@@ -121,8 +121,40 @@ Private Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classGripper.html" title="Gripper object to interact with the robot gripper.">Gripper</a> object to interact with the robot gripper. </p>
-<p>The gripper must be a PWM controlled servo. </p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p>This class is a wrapper function to interact with a PWM servo gripper. An example application is shown below. Note that depending on the build toolchain the include path can differ. This example assumes the joint_communication package is built with ROS2.</p>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="mGripper_8h.html">joint_communication/mGripper.h</a>&quot;</span></div>
+<div class="line"><span class="keywordtype">int</span> <a class="code hl_function" href="joint__comm__node_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> **argv)</div>
+<div class="line">{</div>
+<div class="line">    <a class="code hl_class" href="classGripper.html">Gripper</a> gripper;</div>
+<div class="line">    gripper.<a class="code hl_function" href="classGripper.html#a16c725ab54dfb822bb6cd94475407787">init</a>();</div>
+<div class="line">    <span class="keywordflow">if</span>(gripper.<a class="code hl_function" href="classGripper.html#aa65e70728b2b1dc6dbdee2147354366b">enable</a>() != 0){</div>
+<div class="line">        cerr &lt;&lt; <span class="stringliteral">&quot;Failed to engage gripper&quot;</span> &lt;&lt; endl;</div>
+<div class="line">        <span class="keywordflow">return</span> -1;</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">if</span> (gripper.<a class="code hl_function" href="classGripper.html#a982354e6c6f97a0f8ba6fed6c2b23a80">setPosition</a>(40) != 0)</div>
+<div class="line">    {</div>
+<div class="line">        cerr &lt;&lt; <span class="stringliteral">&quot;setting position failed&quot;</span> &lt;&lt; endl;</div>
+<div class="line">        <span class="keywordflow">return</span> -1;</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">if</span>(gripper.<a class="code hl_function" href="classGripper.html#a37aa55b9a63550fd2eb3c516f2adcfc5">disable</a>() != 0){</div>
+<div class="line">        cerr &lt;&lt; <span class="stringliteral">&quot;Failed to disengage gripper&quot;</span> &lt;&lt; endl;</div>
+<div class="line">        <span class="keywordflow">return</span> -1;</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    gripper.<a class="code hl_function" href="classGripper.html#ad52210917d2e1736384372699473147c">deinit</a>();</div>
+<div class="line">    <span class="keywordflow">return</span> 0;</div>
+<div class="line">}</div>
+<div class="ttc" id="aclassGripper_html"><div class="ttname"><a href="classGripper.html">Gripper</a></div><div class="ttdoc">Gripper object to interact with the robot gripper.</div><div class="ttdef"><b>Definition</b> mGripper.h:55</div></div>
+<div class="ttc" id="aclassGripper_html_a16c725ab54dfb822bb6cd94475407787"><div class="ttname"><a href="classGripper.html#a16c725ab54dfb822bb6cd94475407787">Gripper::init</a></div><div class="ttdeci">int init(void)</div><div class="ttdoc">Placeholder, does nothing.</div><div class="ttdef"><b>Definition</b> mGripper.cpp:8</div></div>
+<div class="ttc" id="aclassGripper_html_a37aa55b9a63550fd2eb3c516f2adcfc5"><div class="ttname"><a href="classGripper.html#a37aa55b9a63550fd2eb3c516f2adcfc5">Gripper::disable</a></div><div class="ttdeci">int disable(void)</div><div class="ttdoc">Disables the servo.</div><div class="ttdef"><b>Definition</b> mGripper.cpp:20</div></div>
+<div class="ttc" id="aclassGripper_html_a982354e6c6f97a0f8ba6fed6c2b23a80"><div class="ttname"><a href="classGripper.html#a982354e6c6f97a0f8ba6fed6c2b23a80">Gripper::setPosition</a></div><div class="ttdeci">int setPosition(float width)</div><div class="ttdoc">Sets the gripper width in mm from the closed position.</div><div class="ttdef"><b>Definition</b> mGripper.cpp:25</div></div>
+<div class="ttc" id="aclassGripper_html_aa65e70728b2b1dc6dbdee2147354366b"><div class="ttname"><a href="classGripper.html#aa65e70728b2b1dc6dbdee2147354366b">Gripper::enable</a></div><div class="ttdeci">int enable(void)</div><div class="ttdoc">Prepares the servo for use.</div><div class="ttdef"><b>Definition</b> mGripper.cpp:16</div></div>
+<div class="ttc" id="aclassGripper_html_ad52210917d2e1736384372699473147c"><div class="ttname"><a href="classGripper.html#ad52210917d2e1736384372699473147c">Gripper::deinit</a></div><div class="ttdeci">int deinit(void)</div><div class="ttdoc">Placeholder, does nothing.</div><div class="ttdef"><b>Definition</b> mGripper.cpp:12</div></div>
+<div class="ttc" id="ajoint__comm__node_8cpp_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="joint__comm__node_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition</b> joint_comm_node.cpp:21</div></div>
+<div class="ttc" id="amGripper_8h_html"><div class="ttname"><a href="mGripper_8h.html">mGripper.h</a></div><div class="ttdoc">File containing the Gripper class.</div></div>
+</div><!-- fragment --> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aadab84d566650461aa48043a9d8705cc" name="aadab84d566650461aa48043a9d8705cc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aadab84d566650461aa48043a9d8705cc">&#9670;&#160;</a></span>Gripper()</h2>
 
