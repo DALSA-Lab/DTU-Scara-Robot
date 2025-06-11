@@ -6,6 +6,12 @@ Version 2 is defined by replacing the MKS SERVO42C stepper drivers with the Uste
 The documentation for the joint communication interface can be found in [/docs](/docs/). The documentation is made with Doxygen, its configuration file is in the root of the folder. The documentation can be found as a pdf [/docs/latex/refman.pdf](/docs/latex/refman.pdf) and as html in [/docs/html/index.html](/docs/html/index.html)
 
 ## Usage
+The robots controller is a Raspberry Pi 4. The RPI is configured to connect to a WIFI network with the the following credentials:
+**SSID**: DALSA_IOT
+**Password**: dalsa_iot
+The easiest way to establish the network is to create a WIFI hotspot with the above credentials, however static IP assignemnt is not possible using Windows Hotspot, and hence the IP address must be checked before any connection attempt.
+On the RPI remote login and remote desktop as well as SSH is activated. This way the desktop can be accessed through a RDP software like Windows Remote Desktop or Remina. Be carefull that connecting this way will create a new user session!
+
 Interacting with the robot is handled through ROS2. In the subdirectory a seperate README can be found explaining how to use the hardware.
 
 ## TODO
