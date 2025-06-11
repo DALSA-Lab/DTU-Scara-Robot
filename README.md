@@ -22,8 +22,12 @@ Interacting with the robot is handled through ROS2. In the subdirectory a sepera
 - [ ] Gripper Redesign
 ### Software
 - [ ] Finish the TODO list for the Joint Communication Protocol (see the documentation)
+- [ ] Create URDF file
+- [ ] Get started with MoveIt
 ### Documentation
+- [ ] Continue this TODO list and Readme
 - [ ] Improve User guide with detailed descriptions and up to date 3D models
 - [ ] Document mechanical changes
 - [ ] Document Ubuntu install and configurations
+- [ ] Document ROS installation
 - [ ] Explain the scripts
