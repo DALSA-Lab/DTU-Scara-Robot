@@ -9,20 +9,20 @@ usage() {
 # Parse command-line arguments
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        --domain-id) ROS_DOMAIN_ID="$2"; shift ;;
-        --version) ROS_VERSION="$2"; shift ;;
+        --domain-id) p_ROS_DOMAIN_ID="$2"; shift ;;
+        --version) p_ROS_VERSION="$2"; shift ;;
         *) usage ;;
     esac
     shift
 done
 
 # Check if both arguments are provided
-if [ -z "$ROS_DOMAIN_ID" ] || [ -z "$ROS_VERSION" ]; then
+if [ -z "$p_ROS_DOMAIN_ID" ] || [ -z "$p_ROS_VERSION" ]; then
     usage
 fi
 
 # Validate ROS version argument
-if [[ "$ROS_VERSION" != "ros-base" && "$ROS_VERSION" != "ros-desktop" ]]; then
+if [[ "$p_ROS_VERSION" != "ros-base" && "$p_ROS_VERSION" != "ros-desktop" ]]; then
     echo "Invalid ROS version. Use 'ros-base' or 'ros-desktop'."
     exit 1
 fi
@@ -42,10 +42,10 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-a
 sudo apt update
 
 # Install the specified ROS version
-if [ "$ROS_VERSION" == "ros-base" ]; then
+if [ "$p_ROS_VERSION" == "ros-base" ]; then
     echo "Installing ros-jazzy-base"
     sudo apt install ros-jazzy-ros-base -y
-elif [ "$ROS_VERSION" == "ros-desktop" ]; then
+elif [ "$p_ROS_VERSION" == "ros-desktop" ]; then
     echo "Installing ros-jazzy-ros-desktop"
     sudo apt install ros-jazzy-desktop -y
 fi
@@ -55,7 +55,7 @@ source /opt/ros/jazzy/setup.bash
 
 # Add source command to .bashrc
 echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
-echo "export ROS_DOMAIN_ID=$ROS_DOMAIN_ID" >> ~/.bashrc
+echo "export ROS_DOMAIN_ID=$p_ROS_DOMAIN_ID" >> ~/.bashrc
 
 # Install colcon extensions
 sudo apt install python3-colcon-common-extensions -y
