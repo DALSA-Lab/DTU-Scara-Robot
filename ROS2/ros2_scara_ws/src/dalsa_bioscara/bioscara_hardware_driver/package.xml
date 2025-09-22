@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>joint_communication</name>
+  <name>bioscara_hardware_driver</name>
   <version>0.0.0</version>
   <description>This package is a communication library for the DTU Bioscara robot</description>
   <maintainer email="s.storz01@gmail.com">Sebastian Storz</maintainer>
@@ -9,7 +9,8 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>rclcpp</depend>
+  <!-- <depend>rclcpp</depend> -->
+  <!-- <depend>lgpio</depend> -->
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

@@ -1,0 +1,9 @@
+<library path="bioscara_hardware_interface">
+  <class name="bioscara_hardware_interface/BioscaraHardwareInterface"
+         type="bioscara_hardware_interface::BioscaraHardwareInterface"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Bioscara hardware plugin.
+    </description>
+  </class>
+</library>
