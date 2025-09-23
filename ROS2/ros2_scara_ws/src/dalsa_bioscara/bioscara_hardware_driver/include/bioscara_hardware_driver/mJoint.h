@@ -28,8 +28,24 @@ public:
   int init(void);
   int deinit(void);
   int printInfo(void);
+
+  /**
+   * @brief get the current joint position in degrees or mm for 
+   * cylindrical and prismatic joints respectively.
+   * 
+   * @param angle 
+   * @return error code 
+   */
   int getPosition(float &angle);
   int setPosition(float angle);
+
+    /**
+   * @brief get the current joint velocity in degrees/s or mm/s for 
+   * cylindrical and prismatic joints respectively.
+   * 
+   * @param angle 
+   * @return error code 
+   */
   int getVelocity(float &degps);
   int setVelocity(float degps);
   int checkOrientation(float angle = 10.0);
