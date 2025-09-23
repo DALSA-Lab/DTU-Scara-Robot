@@ -1,4 +1,4 @@
-// Copyright (c) 2022, Stogl Robotics Consulting UG (haftungsbeschränkt)
+// Copyright 2023 ros2_control Development Team
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,83 +21,55 @@
 
 #include "bioscara_hardware_driver/mJointCom.h"
 
-#include "bioscara_hardware_interface/visibility_control.h"
 #include "hardware_interface/handle.hpp"
 #include "hardware_interface/hardware_info.hpp"
 #include "hardware_interface/system_interface.hpp"
 #include "hardware_interface/types/hardware_interface_return_values.hpp"
 #include "rclcpp/macros.hpp"
+#include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
 namespace bioscara_hardware_interface
 {
-class BioscaraHardwareInterface : public hardware_interface::SystemInterface
-{
-public:
-  TEMPLATES__ROS2_CONTROL__VISIBILITY_PUBLIC
-  hardware_interface::CallbackReturn on_init(
-    const hardware_interface::HardwareInfo & info) override;
+  class BioscaraHardwareInterface : public hardware_interface::SystemInterface
+  {
+  public:
+    RCLCPP_SHARED_PTR_DEFINITIONS(BioscaraHardwareInterface)
 
-  TEMPLATES__ROS2_CONTROL__VISIBILITY_PUBLIC
-  hardware_interface::CallbackReturn on_configure(
-    const rclcpp_lifecycle::State & previous_state) override;
+    hardware_interface::CallbackReturn on_init(
+        const hardware_interface::HardwareInfo &info) override;
 
-  TEMPLATES__ROS2_CONTROL__VISIBILITY_PUBLIC
-  std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
+    hardware_interface::CallbackReturn on_shutdown(
+        const rclcpp_lifecycle::State &previous_state) override;
 
-  TEMPLATES__ROS2_CONTROL__VISIBILITY_PUBLIC
-  std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
+    hardware_interface::CallbackReturn on_configure(
+        const rclcpp_lifecycle::State &previous_state) override;
 
-  TEMPLATES__ROS2_CONTROL__VISIBILITY_PUBLIC
-  hardware_interface::return_type prepare_command_mode_switch(
-    const std::vector<std::string> & start_interfaces,
-    const std::vector<std::string> & stop_interfaces) override;
+    hardware_interface::CallbackReturn on_cleanup(
+        const rclcpp_lifecycle::State &previous_state) override;
 
-  TEMPLATES__ROS2_CONTROL__VISIBILITY_PUBLIC
-  hardware_interface::return_type perform_command_mode_switch(
-    const std::vector<std::string> & start_interfaces,
-    const std::vector<std::string> & stop_interfaces) override;
+    hardware_interface::CallbackReturn on_activate(
+        const rclcpp_lifecycle::State &previous_state) override;
 
-  TEMPLATES__ROS2_CONTROL__VISIBILITY_PUBLIC
-  hardware_interface::CallbackReturn on_activate(
-    const rclcpp_lifecycle::State & previous_state) override;
+    hardware_interface::CallbackReturn on_deactivate(
+        const rclcpp_lifecycle::State &previous_state) override;
 
-  TEMPLATES__ROS2_CONTROL__VISIBILITY_PUBLIC
-  hardware_interface::CallbackReturn on_deactivate(
-    const rclcpp_lifecycle::State & previous_state) override;
+    hardware_interface::return_type read(
+        const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
-  TEMPLATES__ROS2_CONTROL__VISIBILITY_PUBLIC
-  hardware_interface::CallbackReturn on_shutdown(
-    const rclcpp_lifecycle::State & previous_state) override;
+    hardware_interface::return_type write(
+        const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
-  TEMPLATES__ROS2_CONTROL__VISIBILITY_PUBLIC
-  hardware_interface::return_type read(
-    const rclcpp::Time & time, const rclcpp::Duration & period) override;
+  private:
+    /*
+     * Communication object containing all joints of the robot
+     */
+    Joint_comms joints_;
 
-  TEMPLATES__ROS2_CONTROL__VISIBILITY_PUBLIC
-  hardware_interface::return_type write(
-    const rclcpp::Time & time, const rclcpp::Duration & period) override;
+    // std::vector<u_int8_t> drive_currents;
+    // std::vector<u_int8_t> hold_currents;
+  };
 
-private:
-  std::vector<double> joint_pos_commands_;
-  std::vector<double> joint_vel_commands_;
-  std::vector<double> joint_pos_states_;
-  std::vector<double> joint_vel_states_;
-  std::vector<double> joint_acc_states_;
+} // namespace bioscara_hardware_interface
 
-  std::vector<double> gpio_commands_;
-  std::vector<double> gpio_states_;
-  std::vector<bool> gpio_ins_storage_;
-  std::vector<bool> gpio_outs_storage_;
-  std::vector<bool> gpio_cmds_storage_;
-  std::vector<double> sensor_states_;
-
-  std::vector<std::string> position_command_interface_names_;
-  std::vector<std::string> velocity_command_interface_names_;
-
-  // std::unique_ptr<dr_denis_rrbot_comms::DrDenisRRBotComms> rrbot_comms_;
-};
-
-}  // namespace bioscara_hardware_interface
-
-#endif  // BIOSCARA_HARDWARE_INTERFACE_HPP_
+#endif // BIOSCARA_HARDWARE_INTERFACE_HPP_

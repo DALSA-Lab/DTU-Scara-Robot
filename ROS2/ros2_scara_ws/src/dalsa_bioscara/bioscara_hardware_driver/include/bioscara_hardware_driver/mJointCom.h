@@ -21,7 +21,7 @@
 /**
  * @brief Communication object for all joints.
  *
- * CLass handling interfacing with the joints.
+ * Class handling interfacing with the joints.
  *
  */
 class Joint_comms
@@ -31,17 +31,18 @@ public:
   ~Joint_comms();
 
   /**
-   * @brief Initializes all joints.
+   * @brief Connects to all joints.
    *
+   * Iterates over all joints and connects to them on the I2C bus and tests if they are responsive.
+   * 
    * @warning Add some joints using addJoint() before calling this function.
-   * Iterates over all joints and initializes them on the I2C bus and tests if they are responsive.
    *
    * @return 0 on success, non-zero otherwise
    */
   int init(void);
 
   /**
-   * @brief Frees all joints from the I2C bus.
+   * @brief Disconnects all joints from the I2C bus.
    *
    * Deinitializes all joints by removing them from the I2C bus.
    *
@@ -60,7 +61,7 @@ public:
  * J1: 35; J2: -360/4 (4 mm per revolution); J3: 24; J4: 12;
  * @param offset offset between encoder zero and joint zero (in joint units).
  * J1: TBD; J2: -TBD (negative because homed at top); J3: TBD; J4: TBD;
- * @todo 
+ * @todo
  * - Measure joint ranges
  * - Investigate if possible to make independent of homing
 
@@ -168,7 +169,7 @@ public:
    * and before any movement.
    * @param angle_v vector of degrees to rotate to check the orientation. Should be small values of a few degrees.
    * @return error code.
-   * @todo 
+   * @todo
    * - Only execute if not performed before
    * - save in private flag and inhibit movement if this has not been executed.
    */

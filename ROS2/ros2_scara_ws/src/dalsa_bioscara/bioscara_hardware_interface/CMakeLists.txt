@@ -81,6 +81,7 @@ ament_export_libraries(
 )
 ament_export_dependencies(
   hardware_interface
+  bioscara_hardware_driver
   pluginlib
   rclcpp
   rclcpp_lifecycle
