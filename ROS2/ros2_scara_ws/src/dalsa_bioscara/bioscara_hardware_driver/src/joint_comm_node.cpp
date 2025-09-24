@@ -1,20 +1,19 @@
 #include <signal.h>
 #include <unistd.h>
+#include <chrono>
+#include <thread>
 #include "bioscara_hardware_driver/mJointCom.h"
-#include "bioscara_hardware_driver/mGripper.h"
 
 #include <cmath>
 
 using namespace std;
 
 Joint_comms _Joints;
-Gripper _Gripper;
 
 void INT_handler(int s)
 {
   printf("Caught signal %d\n", s);
   _Joints.disables();
-  _Gripper.disable();
   exit(0);
 }
 
@@ -25,35 +24,6 @@ int main(int argc, char **argv)
   (void)argc;
   (void)argv;
 
-  _Gripper.init();
-  if (_Gripper.enable() != 0)
-  {
-    cerr << "Gripper not enabled" << endl;
-    return 0;
-  }
-  // // float time = 0;
-  // // int period = 10;
-  // // while (1)
-  // // {
-  // //   int i;
-  // //   cin >> i;
-  // //   if(_Gripper.setPosition(i*1.0) != 0){
-  // //     break;
-  // //   }
-  // // if (_Gripper.setPosition((float)-cos(0.2 * 2 * M_PI * time) * 85/2+85/2) != 0)
-  // // {
-  // //   break;
-  // // }
-
-  // // usleep(period * 1000);
-  // // time += period * 1.0 / 1000;
-  // // }
-
-  // // return -1;
-
-  _Joints.addJoint("j1", 0x11, 35, 349.1 / 2);
-  _Joints.addJoint("j2", 0x12, -360 / 4, -349.35);
-  _Joints.addJoint("j3", 0x13, 24, 301 / 2);
   _Joints.addJoint("j4", 0x14, 12, 345 / 2);
 
   if (_Joints.init())
@@ -62,99 +32,70 @@ int main(int argc, char **argv)
     return -1;
   }
 
-  _Joints.enable("j1", 30, 30);
-  _Joints.enable("j2", 40, 40);
-  _Joints.enable("j3", 40, 40);
   _Joints.enable("j4", 20, 20);
   sleep(1);
 
-  // if (_Joints.checkOrientations(1))
-  // {
-  //   cerr << "Could not check orientation of joints" << endl;
-  //   return -1;
-  // }
-  // sleep(1);
-
-  if (!_Joints.joints.at("j1").isHomed())
-  {
-    _Joints.home("j1", 0, 20, 30, 15);
-  }
-  // _Joints.joints.at("j1").disable();
-  if (!_Joints.joints.at("j2").isHomed())
-  {
-    _Joints.home("j2", 0, 20, 50, 30);
-  }
-  // _Joints.joints.at("j2").disable();
-  if (!_Joints.joints.at("j3").isHomed())
-  {
-    _Joints.home("j3", 0, 10, 30, 10);
-  }
-  // _Joints.joints.at("j3").disable();
   if (!_Joints.joints.at("j4").isHomed())
   {
-    _Joints.home("j4", 0, 10, 30, 10);
+    _Joints.home("j4", 0, 10, 5, 10); // very low threshold -> should trigger immediatly
   }
-  // _Joints.joints.at("j4").disable();
 
   sleep(1);
-  // // return 0;
 
-  _Joints.enableStallguard("j1", 20);
-  _Joints.enableStallguard("j2", 20);
-  _Joints.enableStallguard("j3", 20);
   _Joints.enableStallguard("j4", 20);
-  // usleep(1000 * 1000);
 
-  _Joints.disables();
-  // // return 0;
+  _Joints.setPosition("j4", 0);
+  sleep(1);
 
-  vector<float> q = {0.0, 0.0, 0.0, 0.0};
-  vector<float> qd = {0.0, 0.0, 0.0, 0.0};
-  vector<float> q_set = {0.0, 50.0, 0.0, 0.0};
-  vector<float> qd_set = {0.0, 0.0, 0.0, 0.0};
-  // vector<float> q = {0.0};
-  // vector<float> qd = {0.0};
-  // vector<float> q_set = {0.0};
-  // vector<float> qd_set = {0.0};
-  float t = 0;
-  int period_ms = 10;
-  while (1)
+  vector<float> q = {0.0, 0.0};  // pos_k, pos_(k-1)
+  vector<float> qd = {0.0, 0.0}; // vel_k, vel_(k-1)
+  vector<float> q_set = {100.0, 0, -100, 0};
+
+  vector<float> maxAccel = {10.0, 40.0, 10.0, 40.0};
+  vector<float> maxVel = {20.0, 20.0, 100, 100};
+
+
+  for (size_t i = 0; i < 4; i++)
   {
-
-    // qd_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 1000;
-    q_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 10;
-    // q_set[2] = (float)sin(0.2 * 2 * M_PI * t) * 10;
-    // q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 10+15;
-
-    // q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 360;
-
-    // _Joints.setVelocities(qd_set);
-    // if (_Joints.setPositions(q_set) != 0)
-    // {
-    //   break;
-    // }
-
-    usleep(period_ms * 1000);
-    t += period_ms * 1.0 / 1000;
-
-    if (_Joints.getPosition("j1", q[0]) == 0 &&
-        _Joints.getPosition("j2", q[1]) == 0 &&
-        _Joints.getPosition("j3", q[2]) == 0 &&
-        _Joints.getPosition("j4", q[3]) == 0)
-    {
-      cout << "Positions: ";
-      for (float n : q)
-      {
-        cout << n << '\t';
-      }
-      cout << endl;
-    }
-    else
+    _Joints.setMaxAcceleration("j4", maxAccel[i % 4]);
+    _Joints.setMaxVelocity("j4", maxVel[i % 4]);
+    sleep(1);
+    if (_Joints.setPosition("j4", q_set[i % 4]) != 0)
     {
       break;
     }
+
+    auto last_measurement = std::chrono::high_resolution_clock::now();
+    float t = -1.0;
+    while (abs(q[0] - q_set[i % 4] > 1.0))
+    {
+      _Joints.getPosition("j4", q[0]);
+      _Joints.getVelocity("j4", qd[0]);
+      auto now = std::chrono::high_resolution_clock::now();
+      float acc;
+      if (t >= 0)
+      {
+        const std::chrono::duration<float> elapsed = now - last_measurement;
+        last_measurement = now;
+        float dt = elapsed.count();
+        acc = (q[0] - q[1])/dt;
+        t += dt;
+      }else{
+        acc = 0.0;
+        t = 0.0;
+      }
+      q[1] = q[0];
+      qd[1] = qd[0];
+      printf("%f, %f, %f, %f",t,q[0],qd[0],acc);
+
+      std::this_thread::sleep_for(10ms);
+
+    }
+
+    std::cout << "Press Enter to Continue...";
+    std::cin.ignore();
   }
-  _Gripper.disable();
+
   _Joints.disables();
   return 0;
 }
