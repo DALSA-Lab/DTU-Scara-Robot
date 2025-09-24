@@ -44,7 +44,7 @@ int Joint_comms::deinit()
 
 void Joint_comms::addJoint(const std::string name, const int address, const float gearRatio, const float offset)
 {
-    this->joints.insert({name,Joint(address, name, gearRatio, offset)});
+    this->joints.insert({name, Joint(address, name, gearRatio, offset)});
 }
 
 void Joint_comms::removeJoint(const std::string name)
@@ -133,6 +133,11 @@ int Joint_comms::disables(void)
 
 int Joint_comms::home(const std::string name, const u_int8_t direction, const u_int8_t rpm, const u_int8_t sensitivity, const u_int8_t current)
 {
+    if (checkOrientation(name, 1.0) < 0)
+    {
+        return -1;
+    }
+
     auto it = this->joints.find(name);
     if (it == this->joints.end())
     {
@@ -336,6 +341,23 @@ int Joint_comms::checkOrientations(float angle)
         }
     }
     sleep(1);
+    return 0;
+}
+
+int Joint_comms::checkOrientation(const std::string name, float angle)
+{
+    auto it = this->joints.find(name);
+    if (it == this->joints.end())
+    {
+        std::cerr << "The joint: '" << name << "' does not exist! Add the joint using addJoint()." << std::endl;
+        return -2;
+    }
+
+    if (it->second.checkOrientation(angle) < 0)
+    {
+        std::cerr << "Failed to check orientation of joint: " << name << std::endl;
+        return -1;
+    }
     return 0;
 }
 

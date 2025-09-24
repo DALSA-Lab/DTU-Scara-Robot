@@ -151,7 +151,14 @@ int Joint::setVelocity(float degps)
 
 int Joint::checkOrientation(float angle)
 {
-    return this->write(CHECKORIENTATION, angle, this->flags);
+    int rc=  this->write(CHECKORIENTATION, angle, this->flags);
+    usleep(10 * 1000);
+    while (this->getFlags() & (1 << 1))
+    {
+        usleep(10 * 1000);
+    }
+
+    return rc;
 }
 
 int Joint::stop(bool mode)

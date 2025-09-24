@@ -15,7 +15,7 @@ void INT_handler(int s)
   printf("Caught signal %d\n", s);
   _Joints.disables();
   _Gripper.disable();
-  exit(1);
+  exit(0);
 }
 
 int main(int argc, char **argv)
@@ -68,12 +68,12 @@ int main(int argc, char **argv)
   _Joints.enable("j4", 20, 20);
   sleep(1);
 
-  if (_Joints.checkOrientations(1))
-  {
-    cerr << "Could not check orientation of joints" << endl;
-    return -1;
-  }
-  sleep(1);
+  // if (_Joints.checkOrientations(1))
+  // {
+  //   cerr << "Could not check orientation of joints" << endl;
+  //   return -1;
+  // }
+  // sleep(1);
 
   if (!_Joints.joints.at("j1").isHomed())
   {
@@ -145,7 +145,7 @@ int main(int argc, char **argv)
       cout << "Positions: ";
       for (float n : q)
       {
-        cout << n << ' ';
+        cout << n << '\t';
       }
       cout << endl;
     }

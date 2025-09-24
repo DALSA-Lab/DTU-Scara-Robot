@@ -265,6 +265,20 @@ public:
    */
   int checkOrientations(float angle = 10.0);
 
+    /**
+   * @brief Checks the orientations of the specified joint. This function is automatically called when homing a joint.
+   *
+   * When checking the orientation the motor moves a few degrees and compares the encoder output. It then internally saves
+   * the direction it is wired.
+   * This function should only be called after the joint has just been powered up.
+   * This function must be called after the joint has been enabled with enable()
+   * and before any movement. 
+   * @param name name of the joint to check the orientation.
+   * @param angle degrees in motor units to rotate to check the orientation. Should be small values of a few degrees.
+   * @return error code.
+   */
+  int checkOrientation(const std::string name, float angle = 10.0);
+
   /**
    * @brief Stops the motors
    *

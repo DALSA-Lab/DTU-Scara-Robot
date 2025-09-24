@@ -48,6 +48,15 @@ public:
    */
   int getVelocity(float &degps);
   int setVelocity(float degps);
+
+  /**
+   * @brief Calls the checkOrientation method of the motor. Checks in which direction the motor is turning.
+   * 
+   * As the orientation check is blocking on the motor, this this function returns when the isBusy flag is clear again.
+   * 
+   * @param angle degrees how much the motor should turn. A few degrees is sufficient.
+   * @return error code
+   */
   int checkOrientation(float angle = 10.0);
 
   /**
