@@ -151,7 +151,7 @@ int Joint::setVelocity(float degps)
 
 int Joint::checkOrientation(float angle)
 {
-    int rc=  this->write(CHECKORIENTATION, angle, this->flags);
+    int rc = this->write(CHECKORIENTATION, angle, this->flags);
     usleep(10 * 1000);
     while (this->getFlags() & (1 << 1))
     {
@@ -186,6 +186,16 @@ int Joint::setHoldCurrent(u_int8_t current)
 int Joint::setBrakeMode(u_int8_t mode)
 {
     return this->write(SETBRAKEMODE, mode, this->flags);
+}
+
+int Joint::setMaxAcceleration(float maxAccel)
+{
+    return this->write(SETMAXACCELERATION, JOINT2ENCODERANGLE(maxAccel, this->gearRatio, 0), this->flags);
+}
+
+int Joint::setMaxVelocity(float maxVel)
+{
+    return this->write(SETMAXVELOCITY, JOINT2ENCODERANGLE(maxVel, this->gearRatio, 0), this->flags);
 }
 
 int Joint::getStall(u_int8_t &stall)

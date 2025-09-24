@@ -123,6 +123,24 @@ public:
   int setBrakeMode(u_int8_t mode);
 
   /**
+   * @brief Set the maximum permitted joint acceleration (and deceleration) in deg/s^2 or mm/s^2 for cylindrical
+   * and prismatic joints respectively.
+   * 
+   * @param maxAccel maximum joint acceleration.
+   * @return error code 
+   */
+  int setMaxAcceleration(float maxAccel);
+
+    /**
+   * @brief Set the maximum permitted joint velocity in deg/s or mm/s for cylindrical
+   * and prismatic joints respectively.
+   * 
+   * @param maxVel maximum joint velocity.
+   * @return error code 
+   */
+  int setMaxVelocity(float maxVel);
+
+  /**
    * @brief checks if the motor is stalled
    * @param stall not stalled: 0, stalled: 1
    * @return error code.

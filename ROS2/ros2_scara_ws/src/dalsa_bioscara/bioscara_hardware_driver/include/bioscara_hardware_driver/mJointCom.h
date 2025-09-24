@@ -23,7 +23,7 @@
  * @brief Communication object for all joints.
  *
  * Class handling interfacing with the joints.
- * 
+ *
  * The methods of this class are optimized for easy use in the ROS2_control hardware
  * interface methods.
  *
@@ -72,7 +72,6 @@ public:
  */
   void addJoint(const std::string name, const int address, const float gearRatio, const float offset);
 
-
   /**
    * @brief removes a joint.
    *
@@ -86,20 +85,20 @@ public:
    */
   void removeJoints(void);
 
-//  /**
-//  * @brief Engages the joints
-//  *
-//  * Sets the drive and hold currents for each joint and engages the motor.
-//  * Currents are in percent of driver max. output (2.5A, check with datasheet)
-//  *
-//  * @param driveCurrent_v vector of drive currents 0-100.
-//  * the i'th vector entry sets the current for the i'th added joint.
-//  * @param holdCurrent_v vector of hold currents 0-100.
-//  * the i'th vector entry sets the current for the i'th added joint.
+  //  /**
+  //  * @brief Engages the joints
+  //  *
+  //  * Sets the drive and hold currents for each joint and engages the motor.
+  //  * Currents are in percent of driver max. output (2.5A, check with datasheet)
+  //  *
+  //  * @param driveCurrent_v vector of drive currents 0-100.
+  //  * the i'th vector entry sets the current for the i'th added joint.
+  //  * @param holdCurrent_v vector of hold currents 0-100.
+  //  * the i'th vector entry sets the current for the i'th added joint.
 
-//  * @return error code.
-//  */
-//   int enables(std::vector<u_int8_t> driveCurrent_v, std::vector<u_int8_t> holdCurrent_v);
+  //  * @return error code.
+  //  */
+  //   int enables(std::vector<u_int8_t> driveCurrent_v, std::vector<u_int8_t> holdCurrent_v);
 
   // /**
   //  * @brief Engages the joints with the same current settings for all joints.
@@ -111,19 +110,18 @@ public:
   //  */
   // int enables(u_int8_t driveCurrent, u_int8_t holdCurrent);
 
-     /**
- * @brief Engage a joint by name
- *
- * Sets the drive and hold currents for the specified joint and engages the motor.
- * Currents are in percent of driver max. output (2.5A, check with datasheet)
- *
- * @param driveCurrent drive current 0-100%.
- * @param holdCurrent hold current 0-100%.
+  /**
+* @brief Engage a joint by name
+*
+* Sets the drive and hold currents for the specified joint and engages the motor.
+* Currents are in percent of driver max. output (2.5A, check with datasheet)
+*
+* @param driveCurrent drive current 0-100%.
+* @param holdCurrent hold current 0-100%.
 
- * @return error code.
- */
+* @return error code.
+*/
   int enable(const std::string name, const u_int8_t driveCurrent, const u_int8_t holdCurrent);
-
 
   /**
    * @brief Disenganges all joints without closing i2c handle
@@ -160,7 +158,7 @@ public:
   //  */
   // int getPositions(std::vector<float> &angle_v);
 
-    /**
+  /**
    * @brief Get the position of the joint by name.
    *
    * The current positions of the joint specified by the name is returned. The units are degrees and mm for
@@ -182,7 +180,7 @@ public:
   //  */
   // int setPositions(std::vector<float> angle_v);
 
-    /**
+  /**
    * @brief Set the position of the joint by name.
    *
    * Set new target positons of the specified joint. The units are degrees and mm for
@@ -204,7 +202,7 @@ public:
   //  */
   // int getVelocities(std::vector<float> &degps_v);
 
-    /**
+  /**
    * @brief Get the velocity of a joint by name.
    *
    * The current velocity of the specified joint is returned. The units are degrees/s and mm/s for
@@ -225,7 +223,7 @@ public:
   //  * @return error code.
   //  */
   // int setVelocities(std::vector<float> degps_v);
-  
+
   /**
    * @brief Set the velocity of a joint by name.
    *
@@ -265,14 +263,14 @@ public:
    */
   int checkOrientations(float angle = 10.0);
 
-    /**
+  /**
    * @brief Checks the orientations of the specified joint. This function is automatically called when homing a joint.
    *
    * When checking the orientation the motor moves a few degrees and compares the encoder output. It then internally saves
    * the direction it is wired.
    * This function should only be called after the joint has just been powered up.
    * This function must be called after the joint has been enabled with enable()
-   * and before any movement. 
+   * and before any movement.
    * @param name name of the joint to check the orientation.
    * @param angle degrees in motor units to rotate to check the orientation. Should be small values of a few degrees.
    * @return error code.
@@ -349,7 +347,7 @@ public:
   //  */
   // int enableStallguards(std::vector<u_int8_t> thresholds);
 
-    /**
+  /**
    * @brief Enable encoder stall detection of specified joint.
    *
    * If the PID error exceeds the set threshold a stall is triggered and the motor disabled.
@@ -360,16 +358,33 @@ public:
   int enableStallguard(const std::string name, const u_int8_t threshold);
 
   /**
-   * @brief unordered map storing the Joint objects.
+   * @brief Set the maximum permitted joint acceleration (and deceleration) in deg/s^2 or mm/s^2 for cylindrical
+   * and prismatic joints respectively.
    * 
+   * @param maxAccel maximum joint acceleration.
+   * @return error code 
+   */
+  int setMaxAcceleration(const std::string name, float maxAccel);
+
+    /**
+   * @brief Set the maximum permitted joint velocity in deg/s or mm/s for cylindrical
+   * and prismatic joints respectively.
+   * 
+   * @param maxVel maximum joint velocity.
+   * @return error code 
+   */
+  int setMaxVelocity(const std::string name, float maxVel);
+
+  /**
+   * @brief unordered map storing the Joint objects.
+   *
    * an unordered map is chosen to simplify acces via the joint name, as this conforms well with the ROS2_control hardware interface
-   * The map does not need to be ordered. Search, insertion, and removal of elements have average constant-time complexity. 
+   * The map does not need to be ordered. Search, insertion, and removal of elements have average constant-time complexity.
    *
    * A Joint can be added by invoking addJoint()
    * A joint can be removed by invoking remvoveJoint()
    */
-  std::unordered_map<std::string,Joint> joints;
-
+  std::unordered_map<std::string, Joint> joints;
 
 protected:
 private:
