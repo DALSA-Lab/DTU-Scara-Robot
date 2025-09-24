@@ -1,0 +1,1 @@
+This package contains all launch and config files for the robot to work.
