@@ -110,6 +110,7 @@ void stepper_receive_handler(uint8_t reg) {
           stepper.setup(CLOSEDLOOP, 200);
           isHomed = 0;
         }
+        
         stepper.setMaxAcceleration(MAXACCEL);
         stepper.setMaxDeceleration(MAXACCEL);
         stepper.setMaxVelocity(MAXVEL);
@@ -179,17 +180,28 @@ void stepper_receive_handler(uint8_t reg) {
         break;
       }
 
-      // case SETMAXACCELERATION:
-      // Serial.print("Executing SETMAXACCELERATION\n");
-      //   break;
+      case SETMAXACCELERATION:
+      {
+        Serial.print("Executing SETMAXACCELERATION\n");
+        float v;
+        readValue<float>(v, rx_buf, rx_length);
+        stepper.setMaxAcceleration(v*200.0/360.0);
+        stepper.setMaxDeceleration(v*200.0/360.0);
+        break;
+      }
 
       // case SETMAXDECELERATION:
       // Serial.print("Executing SETMAXDECELERATION\n");
       //   break;
 
-      // case SETMAXVELOCITY:
-      // Serial.print("Executing SETMAXVELOCITY\n");
-      //   break;
+      case SETMAXVELOCITY:
+      {
+        Serial.print("Executing SETMAXVELOCITY\n");
+        float v;
+        readValue<float>(v, rx_buf, rx_length);
+        stepper.setMaxVelocity(v*200.0/360.0);
+        break;
+      }
 
     case ENABLESTALLGUARD:
       {
