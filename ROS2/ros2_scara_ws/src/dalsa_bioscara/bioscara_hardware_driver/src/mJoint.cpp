@@ -41,14 +41,20 @@ int Joint::disable(void)
 
 int Joint::enable(u_int8_t driveCurrent, u_int8_t holdCurrent)
 {
-    this->getIsSetup();
-    this->getIsHomed();
-
     u_int32_t buf = 0;                  // Initialize buf to 0
     buf |= (driveCurrent & 0xFF);       // Copy driveCurrent to the least significant byte
     buf |= ((holdCurrent & 0xFF) << 8); // Copy holdCurrent to the next byte
 
-    return this->write(SETUP, buf, this->flags);
+    if (this->write(SETUP, buf, this->flags) < 0)
+    {
+        return -2;
+    }
+    do{
+        usleep(10 * 1000);
+    }while (this->getFlags() & (1 << 1));
+
+    this->getIsSetup();
+    return this->isSetup() ? 0 : -1;
 }
 
 int Joint::home(u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t current)
@@ -67,7 +73,12 @@ int Joint::home(u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t
         usleep(10 * 1000);
     }
 
-    return rc;
+    if (rc < 0)
+    {
+        return -2;
+    }
+    this->getIsHomed();
+    return this->isHomed() ? 0 : -1;
 }
 
 int Joint::printInfo(void)
@@ -87,7 +98,7 @@ int Joint::setPosition(float angle)
 {
     if (!this->ishomed)
     {
-        return 2; // not homed
+        return -2; // not homed
     }
     int rc;
     rc = this->write(MOVETOANGLE, JOINT2ENCODERANGLE(angle, this->gearRatio, this->offset), this->flags);
@@ -96,10 +107,10 @@ int Joint::setPosition(float angle)
         return rc;
     }
 
-    // printf("Flags: %#x\n", this->flags);
+    printf("Flags: %#x\n", this->flags);
     if (this->flags & (1 << 0))
     {
-        return 1; // STALLED
+        return -1; // STALLED
     }
     return 0;
 }
