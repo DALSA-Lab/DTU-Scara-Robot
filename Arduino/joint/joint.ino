@@ -26,11 +26,11 @@
 
 
 UstepperS32 stepper;
-static uint8_t state = 0x00;
 static uint8_t driveCurrent, holdCurrent;
-static uint8_t isHomed = 0;
+static uint8_t notHomed = 1;
 static uint8_t isStalled = 0;
-static uint8_t isSetup = 0;
+static uint8_t isBusy = 0;
+static uint8_t notSetup= 1;
 static uint8_t isStallguardEnabled = 0;
 static int stallguardThreshold = 100;
 
@@ -95,6 +95,11 @@ void requestEvent() {
   Serial.println(reg);
 
   non_blocking_handler(reg);
+  uint8_t state = 0x00;
+  state |= (isStalled << 0);
+  state |= (isBusy << 1);
+  state |= (notHomed << 2);
+  state |= (notSetup << 3);
   tx_buf[tx_length++] = state;
   // DUMP_BUFFER(tx_buf, tx_length);
   Wire.write(tx_buf, tx_length);
@@ -119,7 +124,7 @@ void blocking_handler(uint8_t reg) {
         memcpy(&holdCurrent, rx_buf + 1, 1);
         if (!isSetup) {
           stepper.setup(CLOSEDLOOP, 200);
-          isHomed = 0;
+          notHomed = 1;
         }
 
         stepper.setMaxAcceleration(MAXACCEL);
@@ -133,7 +138,7 @@ void blocking_handler(uint8_t reg) {
         stepper.stop();
 
         isStallguardEnabled = 0;
-        isSetup = 1;
+        notSetup = 0;
         isStalled = 0;
         break;
       }
@@ -201,7 +206,7 @@ void blocking_handler(uint8_t reg) {
 
         stepper.setCurrent(driveCurrent);
 
-        isHomed = 1;
+        notHomed = 0;
         isStalled = 0;
         break;
       }
@@ -247,7 +252,7 @@ void non_blocking_handler(uint8_t reg) {
     case ISSTALLED:
       {
         Serial.print("Executing ISSTALLED\n");
-        writeValue<uint8_t>(state & 0x01, tx_buf, tx_length);
+        writeValue<uint8_t>(isStalled, tx_buf, tx_length);
 
         tx_data_ready = 1;
         break;
@@ -255,7 +260,7 @@ void non_blocking_handler(uint8_t reg) {
     case ISHOMED:
       {
         Serial.print("Executing ISHOMED\n");
-        writeValue<uint8_t>(isHomed ? 1 : 0, tx_buf, tx_length);
+        writeValue<uint8_t>(notHomed, tx_buf, tx_length);
         tx_data_ready = 1;
         break;
       }
@@ -263,7 +268,7 @@ void non_blocking_handler(uint8_t reg) {
     case ISSETUP:
       {
         Serial.print("Executing ISSETUP\n");
-        writeValue<uint8_t>(isSetup ? 1 : 0, tx_buf, tx_length);
+        writeValue<uint8_t>(notSetup, tx_buf, tx_length);
         tx_data_ready = 1;
         break;
       }
@@ -295,7 +300,6 @@ void non_blocking_handler(uint8_t reg) {
         int32_t v;
         readValue<int32_t>(v, rx_buf, rx_length);
         stepper.moveSteps(v);
-
         break;
       }
 
@@ -365,7 +369,6 @@ void non_blocking_handler(uint8_t reg) {
         // stepper.encoder.encoderStallDetectSensitivity = sensitivity * 1.0/10 ;
         // stepper.encoder.encoderStallDetectEnable = 1;
         // stepper.encoder.encoderStallDetect = 0;
-        state &= ~(1 << 0);  // Clear STALL bit
         isStallguardEnabled = 1;
         isStalled = 0;
 
@@ -436,24 +439,19 @@ void setup(void) {
  * @brief Main loop
 
  * Executes the following: \n 
- * 1) if isStallguardEnabled: compares stepper.getPidError() with stallguardThreshold and sets BIT0 of the state byte. \n 
- * 2) sets/clears BIT2 of the state byte if the joint is homed or not. \n 
- * 3) sets/clears BIT3 of the state byte if the joint is setup or not. \n 
- * 4) if rx_data_ready: set BIT1 of the state byte to indicate device is busy. Invoke blocking_handler. 
- * Clear BIT1 of the state byte to indicate device is no longer busy \n 
- * @todo
- - why are BIT2 and BIT3 constantly checked and set? Would it be sufficient to do this only invoking the actual functions?
+ * 1) if isStallguardEnabled: compares stepper.getPidError() with stallguardThreshold and sets isStalled flag. \n 
+ * 2) sets/clears notHomed flag if the joint is homed or not. \n 
+ * 3) sets/clears notSetup if the joint is setup or not. \n 
+ * 4) if rx_data_ready: set isBusy flag to indicate device is busy. Invoke blocking_handler. 
+ * Clear isBusy flag to indicate device is no longer busy \n 
  */
 void loop(void) {
 
-  if (isStallguardEnabled) {
+  if (isStallguardEnabled && !isStalled) {
     float err = stepper.getPidError();
     if (abs(err) > stallguardThreshold) {
       isStalled = 1;
-      state |= (1 << 0);
       stepper.stop(SOFT);  // UNTESTED
-    } else if (!isStalled) {
-      state &= ~(1 << 0);
     }
     // state |= (abs(err) > stallguardThreshold) ? 0x01 : 0x00;
     // Serial.print(abs(err));
@@ -461,14 +459,12 @@ void loop(void) {
     // Serial.println(state);
   }
 
-  isHomed ? state |= (1 << 2) : state &= ~(1 << 2);
-  isSetup ? state |= (1 << 3) : state &= ~(1 << 3);
 
   if (rx_data_ready) {
     rx_data_ready = 0;
-    state |= 1 << 1;  // set is busy flag
+    isBusy = 1;  // set is busy flag
     blocking_handler(reg);
-    state &= ~(1 << 1);  // reset is busy flag
+    isBusy = 0;  // reset is busy flag
   }
 
   delay(10);
