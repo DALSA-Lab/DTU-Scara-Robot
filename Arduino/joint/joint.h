@@ -71,9 +71,9 @@ enum stp_reg_t
   ANGLEMOVED = 0x18,          ///< R; Size: 4; [(float) degrees]
   SETCURRENT = 0x19,          ///< W; Size: 1; [(uint8) driveCurrent]
   SETHOLDCURRENT = 0x1A,      ///< W; Size: 1; [(uint8) holdCurrent]
-  SETMAXACCELERATION = 0x1B,  ///<
+  SETMAXACCELERATION = 0x1B,  ///< W; Size: 4; [(float) deg/s^2]
   SETMAXDECELERATION = 0x1C,  ///<
-  SETMAXVELOCITY = 0x1D,      ///<
+  SETMAXVELOCITY = 0x1D,      ///< W; Size: 4; [(float) deg/s]
   ENABLESTALLGUARD = 0x1E,    ///< W; Size: 1; [(uint8) threshold]
   DISABLESTALLGUARD = 0x1F,   ///<
   CLEARSTALL = 0x20,          ///<

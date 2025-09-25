@@ -226,7 +226,7 @@ int Joint_comms::setPosition(const std::string name, const float angle)
 
     if (it->second.setPosition(angle) < 0)
     {
-        std::cerr << "Failed to set posistion for joint: " << name << std::endl;
+        std::cerr << "Failed to set position for joint: " << name << std::endl;
         return -1;
     }
 
@@ -496,6 +496,38 @@ int Joint_comms::enableStallguard(const std::string name, const u_int8_t thresho
     if (it->second.enableStallguard(threshold) < 0)
     {
         std::cerr << "Failed to enable stallguard for motor: " << name << std::endl;
+        return -1;
+    }
+    return 0;
+}
+
+int Joint_comms::setMaxAcceleration(const std::string name, float maxAccel)
+{
+    auto it = this->joints.find(name);
+    if (it == this->joints.end())
+    {
+        std::cerr << "The joint: '" << name << "' does not exist! Add the joint using addJoint()." << std::endl;
+        return -2;
+    }
+    if (it->second.setMaxAcceleration(maxAccel) < 0)
+    {
+        std::cerr << "Failed to set max acceleration for motor: " << name << std::endl;
+        return -1;
+    }
+    return 0;
+}
+
+int Joint_comms::setMaxVelocity(const std::string name, float maxVel)
+{
+    auto it = this->joints.find(name);
+    if (it == this->joints.end())
+    {
+        std::cerr << "The joint: '" << name << "' does not exist! Add the joint using addJoint()." << std::endl;
+        return -2;
+    }
+    if (it->second.setMaxVelocity(maxVel) < 0)
+    {
+        std::cerr << "Failed to set max velocity for motor: " << name << std::endl;
         return -1;
     }
     return 0;
