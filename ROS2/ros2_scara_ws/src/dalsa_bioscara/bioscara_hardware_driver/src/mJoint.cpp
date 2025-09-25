@@ -96,7 +96,7 @@ int Joint::setPosition(float angle)
         return rc;
     }
 
-    printf("Flags: %#x\n", this->flags);
+    // printf("Flags: %#x\n", this->flags);
     if (this->flags & (1 << 0))
     {
         return 1; // STALLED

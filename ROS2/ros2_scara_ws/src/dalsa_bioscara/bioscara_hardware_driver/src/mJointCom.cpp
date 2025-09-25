@@ -226,7 +226,7 @@ int Joint_comms::setPosition(const std::string name, const float angle)
 
     if (it->second.setPosition(angle) < 0)
     {
-        std::cerr << "Failed to set posistion for joint: " << name << std::endl;
+        std::cerr << "Failed to set position for joint: " << name << std::endl;
         return -1;
     }
 
