@@ -272,10 +272,10 @@ private:
    * |reserved|reserved|reserved|reserved|SETUP|HOMED|BUSY|STALL|
    *
    * \b STALL is set if a stall from the stall detection is sensed and the joint is stopped.
-   * The flag is cleared when the joint is homed. \n
+   * The flag is cleared when the joint is homed or the Stallguard enabled. \n
    * \b BUSY is set if the slave is busy processing a previous command. \n
-   * \b HOMED is set if the joint is homed. Movement is only allowed if this flag is clear \n
-   * \b SETUP is set if the joint is setup after calling Joint::enable()
+   * \b HOMED is set if the joint is NOT homed. Movement is only allowed if this flag is clear \n
+   * \b SETUP is set if the joint is NOT setup after calling Joint::enable()
    */
   u_int8_t flags = 0x00;
 

@@ -151,8 +151,6 @@ int Joint_comms::home(const std::string name, const u_int8_t direction, const u_
         return -1;
     }
 
-    it->second.getIsHomed();
-
     std::cout << "Homed joint " << name << std::endl;
 
     return 0;
