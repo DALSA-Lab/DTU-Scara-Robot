@@ -30,7 +30,7 @@ static uint8_t driveCurrent, holdCurrent;
 static uint8_t notHomed = 1;
 static uint8_t isStalled = 0;
 static uint8_t isBusy = 0;
-static uint8_t notSetup= 1;
+static uint8_t notSetup = 1;
 static uint8_t isStallguardEnabled = 0;
 static int stallguardThreshold = 100;
 
@@ -77,7 +77,12 @@ void receiveEvent(int n) {
     i++;
   }
   rx_length = i;
-  if (i) { DUMP_BUFFER(rx_buf, rx_length); }
+  tx_length = 0;
+
+  if (i) {
+    Serial.print("rx_buf: ");
+    DUMP_BUFFER(rx_buf, rx_length);
+  }
 }
 
 /**
@@ -100,8 +105,12 @@ void requestEvent() {
   state |= (isBusy << 1);
   state |= (notHomed << 2);
   state |= (notSetup << 3);
+  Serial.print("state: \t");
+  Serial.print(state, HEX);
+  Serial.print("\t");
   tx_buf[tx_length++] = state;
-  // DUMP_BUFFER(tx_buf, tx_length);
+  Serial.print("tx_buf: \t");
+  DUMP_BUFFER(tx_buf, tx_length);
   Wire.write(tx_buf, tx_length);
 }
 
@@ -122,7 +131,7 @@ void blocking_handler(uint8_t reg) {
         Serial.print("Executing SETUP\n");
         memcpy(&driveCurrent, rx_buf, 1);
         memcpy(&holdCurrent, rx_buf + 1, 1);
-        if (!isSetup) {
+        if (notSetup) {
           stepper.setup(CLOSEDLOOP, 200);
           notHomed = 1;
         }
@@ -260,7 +269,7 @@ void non_blocking_handler(uint8_t reg) {
     case ISHOMED:
       {
         Serial.print("Executing ISHOMED\n");
-        writeValue<uint8_t>(notHomed, tx_buf, tx_length);
+        writeValue<uint8_t>(!notHomed, tx_buf, tx_length);
         tx_data_ready = 1;
         break;
       }
@@ -268,7 +277,7 @@ void non_blocking_handler(uint8_t reg) {
     case ISSETUP:
       {
         Serial.print("Executing ISSETUP\n");
-        writeValue<uint8_t>(notSetup, tx_buf, tx_length);
+        writeValue<uint8_t>(!notSetup, tx_buf, tx_length);
         tx_data_ready = 1;
         break;
       }
@@ -448,15 +457,17 @@ void setup(void) {
 void loop(void) {
 
   if (isStallguardEnabled && !isStalled) {
-    float err = stepper.getPidError();
-    if (abs(err) > stallguardThreshold) {
-      isStalled = 1;
-      stepper.stop(SOFT);  // UNTESTED
+    float err = abs(stepper.getPidError());
+    Serial.print("PID error: \t");
+    Serial.println(err);
+    if (err > stallguardThreshold) {
+      delay(5);
+      if (abs(stepper.getPidError()) > stallguardThreshold) {
+        Serial.println("STALL");
+        isStalled = 1;
+        stepper.stop(SOFT);  // UNTESTED
+      }
     }
-    // state |= (abs(err) > stallguardThreshold) ? 0x01 : 0x00;
-    // Serial.print(abs(err));
-    // Serial.print("\t");
-    // Serial.println(state);
   }
 
 
