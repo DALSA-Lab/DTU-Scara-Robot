@@ -58,8 +58,8 @@ public:
    * @brief add a Joint.
    *
  * Appends a joint to internal map.
- * @param names string device name for output logs
- * @param addresses 1-byte I2C device adress (0x11 ... 0x14) for J1 ... J4
+ * @param name string device name for output logs
+ * @param address 1-byte I2C device adress (0x11 ... 0x14) for J1 ... J4
  * @param gearRatio gear ratio of joint. This is used to transform position
  * and velocity commands in joint units to the stepper units. Signed: sign depends if homed CW or CCW.
  * J1: 35; J2: -360/4 (4 mm per revolution); J3: 24; J4: 12;

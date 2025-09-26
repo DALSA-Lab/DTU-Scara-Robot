@@ -47,21 +47,23 @@ int main(int argc, char **argv)
   vector<float> qd_set = {0.0};
   float t = 0;
   int period_ms = 10;
+  q_set[0] = 10000;
+      if (_Joints.setPosition("j4", q_set[0]) < 0)
+    {
+      // break;
+    }
   while (1)
   {
 
     // qd_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 1000;
-    q_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 10;
+    // q_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 10;
     // q_set[2] = (float)sin(0.2 * 2 * M_PI * t) * 10;
     // q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 10+15;
 
     // q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 360;
 
     // _Joints.setVelocities(qd_set);
-    if (_Joints.setPosition("j4", q_set[0]) < 0)
-    {
-      break;
-    }
+
 
     usleep(period_ms * 1000);
     t += period_ms * 1.0 / 1000;

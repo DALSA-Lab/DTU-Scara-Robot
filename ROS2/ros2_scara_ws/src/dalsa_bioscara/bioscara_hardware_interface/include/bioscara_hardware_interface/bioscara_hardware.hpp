@@ -64,10 +64,9 @@ namespace bioscara_hardware_interface
     /*
      * Communication object containing all joints of the robot
      */
-    Joint_comms joints_;
+    Joint_comms Joints_;
 
-    // std::vector<u_int8_t> drive_currents;
-    // std::vector<u_int8_t> hold_currents;
+    double deg2rad(float )
   };
 
 } // namespace bioscara_hardware_interface

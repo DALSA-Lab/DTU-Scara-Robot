@@ -39,7 +39,7 @@ namespace bioscara_hardware_interface
 
     /**
      * Loop over all joints decribed in the hardware description file, check if they have only the position command
-     * and state interface defined and finally add them to the internal joints_ list
+     * and state interface defined and finally add them to the internal Joints_ list
      *
      */
     for (const hardware_interface::ComponentInfo &joint : info_.joints)
@@ -80,6 +80,13 @@ namespace bioscara_hardware_interface
             joint.state_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION);
         return hardware_interface::CallbackReturn::ERROR;
       }
+
+      // add joint one by one reading parameters from urdf
+      Joints_.addJoint(
+          joint.name,
+          std::stoi(joint.parameters.at("i2c_address")),
+          std::stof(joint.parameters.at("gear_ratio")),
+          std::stof(joint.parameters.at("offset")));
     }
 
     /**
@@ -121,28 +128,22 @@ namespace bioscara_hardware_interface
     //   return hardware_interface::CallbackReturn::ERROR;
     // }
 
-    // add joint one by one reading parameters from urdf
-    joints_.addJoint(
-        std::stoi(joint.parameters.at("i2c_address")),
-        joint.name,
-        std::stof(joint.parameters.at("gear_ratio")),
-        std::stof(joint.parameters.at("offset")));
-
-    // drive_currents.push_back(std::stoi(joint.parameters.at("drive_current")));
-    // hold_currents.push_back(std::stoi(joint.parameters.at("hold_current")));
-
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
   /**
-   * @todo
-   * - delete joints from comm object
+   * @brief Called on transition to FINALIZED state
+   *
+   * Removes all joints from the com object.
+   *
+   * @todo Research in ROS2_control source code if this is ever called from any state other than
+   * UNCONFIGURED
    *
    */
   hardware_interface::CallbackReturn BioscaraHardwareInterface::on_shutdown(
       const rclcpp_lifecycle::State & /*previous_state*/)
   {
-
+    Joints_.removeJoints();
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
@@ -155,7 +156,7 @@ namespace bioscara_hardware_interface
      * Connect to the joints and throw error if it fails
      *
      */
-    if (joints_.init() != 0)
+    if (Joints_.init() < 0)
     {
       RCLCPP_FATAL(
           get_logger(),
@@ -192,7 +193,7 @@ namespace bioscara_hardware_interface
      * Disconnect from the joints and throw error if it fails
      *
      */
-    if (joints_.deinit() != 0)
+    if (Joints_.deinit() != 0)
     {
       RCLCPP_FATAL(
           get_logger(),
@@ -207,16 +208,19 @@ namespace bioscara_hardware_interface
   {
     RCLCPP_INFO(get_logger(), "Activating ...please wait...");
 
-    // joints_.enables(drive_currents, hold_currents);
     for (const auto &[name, descr] : joint_command_interfaces_)
     {
-      /**
-       * @todo
-       * - Implement methods by joint name
-       */
-      joints_.enable(name,
-                     descr.interface_info.parameters["drive_current"],
-                     descr.interface_info.parameters["hold_current"])
+      Joints_.enable(name,
+                     std::stoi(descr.interface_info.parameters.at("drive_current")),
+                     std::stoi(descr.interface_info.parameters.at("hold_current")));
+
+      Joints_.enableStallguard(name,
+                               std::stoi(descr.interface_info.parameters.at("stall_threshold")));
+
+      Joints_.setMaxAcceleration(name,
+                                 std::stof(descr.interface_info.parameters.at("max_acceleration")));
+      Joints_.setMaxVelocity(name,
+                             std::stof(descr.interface_info.parameters.at("max_velocity")));
     }
 
     // command and state should be equal when starting
@@ -238,7 +242,7 @@ namespace bioscara_hardware_interface
       const rclcpp_lifecycle::State & /*previous_state*/)
   {
     RCLCPP_INFO(get_logger(), "Activating ...please wait...");
-    joints_.disables();
+    Joints_.disables();
     RCLCPP_INFO(get_logger(), "Successfully deactivated!");
     return hardware_interface::CallbackReturn::SUCCESS;
   }
@@ -246,20 +250,30 @@ namespace bioscara_hardware_interface
   hardware_interface::return_type BioscaraHardwareInterface::read(
       const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
-    // std::stringstream ss;
-    // ss << "Reading states:";
-
     for (const auto &[name, descr] : joint_state_interfaces_)
     {
       float v;
-      if (joints_.getPosition(name, v) != 0)
+      if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
-        RCLCPP_FATAL(
-            get_logger(),
-            "Failed to read position from joint. Check error output for more information");
-        return hardware_interface::return_type::ERROR;
+        if (Joints_.getPosition(name, v) < 0)
+        {
+          RCLCPP_FATAL(
+              get_logger(),
+              "Failed to read position from joint. Check error output for more information");
+          return hardware_interface::return_type::ERROR;
+        }
       }
-      set_state(name, v);
+      else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
+      {
+        if (Joints_.getVelocity(name, v) < 0)
+        {
+          RCLCPP_FATAL(
+              get_logger(),
+              "Failed to read velocity from joint. Check error output for more information");
+          return hardware_interface::return_type::ERROR;
+        }
+      }
+      set_state(name, (double)v);
     }
 
     // for (const auto &[name, descr] : gpio_command_interfaces_)
@@ -291,18 +305,30 @@ namespace bioscara_hardware_interface
   hardware_interface::return_type BioscaraHardwareInterface::write(
       const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
-
     for (const auto &[name, descr] : joint_command_interfaces_)
     {
-      if (joints_.setPosition(name, get_command(name)) != 0)
+      float v;
+      if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
-        RCLCPP_FATAL(
-            get_logger(),
-            "Failed to set position for joint. Check error output for more information");
-        return hardware_interface::return_type::ERROR;
+        if (Joints_.setPosition(name, (float)get_command(v)) < 0)
+        {
+          RCLCPP_FATAL(
+              get_logger(),
+              "Failed to set position of joint. Check error output for more information");
+          return hardware_interface::return_type::ERROR;
+        }
+      }
+      else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
+      {
+        if (Joints_.setVelocity(name, (float)get_command(v)) < 0)
+        {
+          RCLCPP_FATAL(
+              get_logger(),
+              "Failed to set velocity of joint. Check error output for more information");
+          return hardware_interface::return_type::ERROR;
+        }
       }
     }
-
     // for (const auto &[name, descr] : gpio_command_interfaces_)
     // {
     //   // Simulate sending commands to the hardware
