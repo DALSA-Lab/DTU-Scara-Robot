@@ -37,7 +37,32 @@ public:
    * @return error code 
    */
   int getPosition(float &angle);
+
+  /**
+   * @brief get the current joint position in degrees or mm for 
+   * cylindrical and prismatic joints respectively.
+   * 
+   * @param angle in deg or mm
+   * @return 0 on success,
+    -1 on communication error,
+    -2 when not homed,
+    -3 when the motor is not enabled,
+    -4 when the motor is stalled. 
+   */
   int setPosition(float angle);
+
+  /**
+   * @brief Move full steps.
+   * 
+   * This function can be called even when not homed.
+   * 
+   * @param steps number of full steps
+   * @return 0 on success,
+    -1 on communication error,
+    -3 when the motor is not enabled,
+    -4 when the motor is stalled. 
+   */
+  int moveSteps(int32_t steps);
 
     /**
    * @brief get the current joint velocity in degrees/s or mm/s for 
@@ -47,6 +72,18 @@ public:
    * @return error code 
    */
   int getVelocity(float &degps);
+
+  /**
+   * @brief Set the current joint velocity in degrees/s or mm/s for 
+   * cylindrical and prismatic joints respectively.
+   * 
+   * @param degps 
+   * @return 0 on success,
+    -1 on communication error,
+    -2 when not homed,
+    -3 when the motor is not enabled,
+    -4 when the motor is stalled.
+   */
   int setVelocity(float degps);
 
   /**
@@ -55,7 +92,10 @@ public:
    * As the orientation check is blocking on the motor, this this function returns when the isBusy flag is clear again.
    * 
    * @param angle degrees how much the motor should turn. A few degrees is sufficient.
-   * @return error code
+   * @return 0 on success,
+    -1 on communication error,
+    -3 when the motor is not enabled,
+    -4 when the motor is stalled.
    */
   int checkOrientation(float angle = 10.0);
 
@@ -63,7 +103,9 @@ public:
    * @brief Initialize the joint and engages motor.
    * @param driveCurrent drive current in 0-100 % of 2.5A output (check uStepper doc.)
    * @param holdCurrent hold current in 0-100 % of 2.5A output (check uStepper doc.)
-   * @return error code.
+   * @return 0 on success,
+    -1 on communication error,
+    -3 when the motor is not enabled.
    */
   int enable(u_int8_t driveCurrent, u_int8_t holdCurrent);
 
@@ -80,7 +122,10 @@ public:
    * @param sensitivity Encoder pid error threshold 0 to 255.
    * @param current homeing current, determines how easy it is to stop the motor and thereby provoke a stall
 
-   * @return error code.
+   * @return 0 on success,
+    -1 on communication error,
+    -2 when not homed succesfull (isHomed flag still not set),
+    -3 when the motor is not enabled.
    */
   int home(u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t current);
 
@@ -141,60 +186,43 @@ public:
   int setMaxVelocity(float maxVel);
 
   /**
-   * @brief checks if the motor is stalled
-   * @param stall not stalled: 0, stalled: 1
-   * @return error code.
-   */
-  int getStall(u_int8_t &stall);
-
-  /**
    * @brief Enable encoder stall detection. A detected stall can be reset by homeing.
    * @param sensitivity Encoder stalldetect sensitivity - From -100 to 10 where lower number is less sensitive and higher is more sensitive
    */
   int enableStallguard(u_int8_t sensitivity);
 
   /**
-   * @brief retrieves the status flags from the joint and checks if the joint is homed.
-   * @param homed not homed: 0, homed: 1
-   * @return error code.
-   */
-  int getIsHomed(u_int8_t &homed);
-
-  /**
-   * @brief retrieves the status flags from the joint.
+   * @brief Checks the state if the motor is homed.
+   * 
+   * Reads the internal state flags from the last transmission. If an update is neccessary call getFlags() before invoking this function.
    *
-   * This overload does not return the value of isHomed variable, use Joint::isHomed() instead.
-   * @return error code.
-   */
-  int getIsHomed(void);
-
-  /**
-   * @brief Get the isHomed state variable saved locally.
-   *
-   * To retrieve the actual state call Joint::getIsHomed()
-   * @return local isHomed state variable.
+   * @return true if the motor is homed,
+   * false if not.
    */
   bool isHomed(void);
 
   /**
-   * @brief checks if the joint is setup from the joint
-   * @param setup not setup: 0, setup: 1
-   * @return error code.
+   * @brief Checks the state if the motor is enabled.
+   * 
+   * Reads the internal state flags from the last transmission. If an update is neccessary call getFlags() before invoking this function.
+   * If the motor actually can move depends on the state of the STALLED flag which can be checked using isStalled().
+   *
+   * @return true if the motor is enabled,
+   * false if not.
    */
-  int getIsSetup(u_int8_t &setup);
+  bool isEnabled(void);
 
   /**
-   * @brief checks if the joint is setup from the joint
-   * @return error code.
+   * @brief Checks if the motor is stalled.
+   * 
+   * Reads the internal state flags from the last transmission. If an update is neccessary call getFlags() before invoking this function.
+   * @return true if the motor is stalled,
+   * false if not.
    */
-  int getIsSetup(void);
+  bool isStalled(void);
 
-  /**
-   * @return the isSetup state variable.
-   */
-  bool isSetup(void);
 
-  int moveSteps(int32_t steps);
+
   int checkCom(void);
 
   /**
@@ -269,18 +297,15 @@ private:
    *
    * |BIT7|BIT6|BIT5|BIT4|BIT3|BIT2|BIT1|BIT0|
    * | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
-   * |reserved|reserved|reserved|reserved|SETUP|HOMED|BUSY|STALL|
+   * |reserved|reserved|reserved|reserved|ENABLED|HOMED|BUSY|STALL|
    *
    * \b STALL is set if a stall from the stall detection is sensed and the joint is stopped.
-   * The flag is cleared when the joint is homed. \n
+   * The flag is cleared when the joint is homed or the Stallguard enabled. \n
    * \b BUSY is set if the slave is busy processing a previous command. \n
-   * \b HOMED is set if the joint is homed. Movement is only allowed if this flag is clear \n
-   * \b SETUP is set if the joint is setup after calling Joint::enable()
+   * \b HOMED is cleared if the joint is homed. Movement is only allowed if this flag is clear \n
+   * \b ENABLED is cleared if the joint is enabled after calling Joint::enable()
    */
   u_int8_t flags = 0x00;
-
-  u_int8_t ishomed = 0; ///< flag if homed
-  u_int8_t issetup = 0; ///< flag is setup
 
   int address;         ///< I2C adress
   float gearRatio = 1; ///< gear ratio from encoder units to joint units
