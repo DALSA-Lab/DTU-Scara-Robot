@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['rpi_5fpwm_0',['RPI_PWM',['../classRPI__PWM.html',1,'']]]
+  ['joint_0',['Joint',['../classJoint.html',1,'']]],
+  ['joint_5fcomms_1',['Joint_comms',['../classJoint__comms.html',1,'']]]
 ];

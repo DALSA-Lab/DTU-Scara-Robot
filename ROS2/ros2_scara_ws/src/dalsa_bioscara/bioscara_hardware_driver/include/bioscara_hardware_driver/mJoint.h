@@ -12,8 +12,43 @@
 #ifndef MJOINT_H
 #define MJOINT_H
 
-#define JOINT2ENCODERANGLE(jointAngle, gearRatio, offset) (gearRatio * (jointAngle + offset))
-#define ENCODER2JOINTANGLE(encoderAngle, gearRatio, offset) (encoderAngle / gearRatio - offset)
+/**
+ * @brief Macro for a simple transmission from joint units to actuator units.
+ *
+ * The translation is based on the ros2_control transmission interface, simple transmission.
+ * For position reduction and offset need to be used.\n
+ * For velocity and acceleration only use reduction and NO offset \n
+ * For effort/torque use 1/reduction and NO offset \n
+ */
+#define JOINT2ACTUATOR(in, reduction, offset) (reduction * (in - offset))
+
+/**
+ * @brief Macro for a simple transmission from actuator units to joint units.
+ *
+ * The translation is based on the ros2_control transmission interface, simple transmission.
+ * For position reduction and offset need to be used.\n
+ * For velocity and acceleration only use reduction and NO offset \n
+ * For effort/torque use 1/reduction and NO offset \n
+ */
+#define ACTUATOR2JOINT(in, reduction, offset) (in / reduction + offset)
+
+/**
+ * @brief pi
+ *
+ */
+#define M_PI 3.14159265358979323846
+
+/**
+ * @brief Macro to convert radians to degree
+ *
+ */
+#define RAD2DEG(rad) (rad / M_PI * 180)
+
+/**
+ * @brief Macro to convert degree to radians
+ *
+ */
+#define DEG2RAD(deg) (deg * M_PI / 180)
 
 /**
  * @brief Representing a single joint on the I2C bus
@@ -22,75 +57,125 @@
 class Joint
 {
 public:
-  Joint(const int address, const std::string name, const float gearRatio, const float offset);
+  /**
+   * @brief Create a Joint object
+   *
+   * The Joint object represents a single joint and its actuator.
+   * Each Joint has a transmission with the following relationship: \n
+   *
+   * > actuator position = (joint position - offset) * reduction \n
+   * > joint position = actuator position / reduction + offset
+   *
+   *
+   * @param name string device name for identification
+   * @param address 1-byte I2C device adress (0x11 ... 0x14) for J1 ... J4
+   * @param reduction gear reduction of the joint. This is used to transform position
+   * and velocity values between in joint units and actuator (stepper) units.
+   * The sign depends on the direction is turning. Adjust such that the joint moves in the positive
+   * direction on on positive joint commands. Cable polarity has no effect since the motors
+   * automatically adjust to always run in the 'right' direction from their point of view. \n
+   * J1: 35 \n
+   * J2: -2*pi/0.004 (4 mm linear movement per stepper revolution) \n
+   * J3: 24 \n
+   * J4: 12
+   * @param offset offset between actuator zero and joint zero (in joint units).
+   * Set this to the angle the joint is at when is is homed. F.x. since J2 is homing at the top the
+   * offset shall be a positive numer. \n
+   * J1: (-)3.04647 \n
+   * J2: 0.34935 \n
+   * J3: (-)2.62672 \n
+   * J4: (-)3.01069
+   * @todo
+   * - Measure joint ranges
+   * - Investigate if possible to make independent of homing
+   */
+  Joint(const int address, const std::string name, const float reduction, const float offset);
   // ~Joint();
 
+  /**
+   * @brief Established connection to a joint via I2C
+   *
+   * Adds the joint to the I2C bus and tests if is responsive by sending a PING.
+   *
+   * @return 0 on success,
+   *  -1 on when no ACK is received from the joint,
+   *  -2 if the I2C device could not be opened given the joint address.
+   */
   int init(void);
+
+  /**
+   * @brief Disconnects from a joint.
+   *
+   * Removes the joint from the I2C bus.
+   *
+   * @return 0 on success,
+   *  -1 when the joint could not be removed due to an I2C error.
+   */
   int deinit(void);
   int printInfo(void);
 
   /**
-   * @brief get the current joint position in degrees or mm for 
+   * @brief get the current joint position in radians or m for
    * cylindrical and prismatic joints respectively.
-   * 
-   * @param angle 
-   * @return error code 
+   *
+   * @param pos
+   * @return error code
    */
-  int getPosition(float &angle);
+  int getPosition(float &pos);
 
   /**
-   * @brief get the current joint position in degrees or mm for 
+   * @brief get the current joint position in radians or m for
    * cylindrical and prismatic joints respectively.
-   * 
-   * @param angle in deg or mm
-   * @return 0 on success,
-    -1 on communication error,
-    -2 when not homed,
-    -3 when the motor is not enabled,
-    -4 when the motor is stalled. 
-   */
-  int setPosition(float angle);
-
-  /**
-   * @brief Move full steps.
-   * 
-   * This function can be called even when not homed.
-   * 
-   * @param steps number of full steps
-   * @return 0 on success,
-    -1 on communication error,
-    -3 when the motor is not enabled,
-    -4 when the motor is stalled. 
-   */
-  int moveSteps(int32_t steps);
-
-    /**
-   * @brief get the current joint velocity in degrees/s or mm/s for 
-   * cylindrical and prismatic joints respectively.
-   * 
-   * @param angle 
-   * @return error code 
-   */
-  int getVelocity(float &degps);
-
-  /**
-   * @brief Set the current joint velocity in degrees/s or mm/s for 
-   * cylindrical and prismatic joints respectively.
-   * 
-   * @param degps 
+   *
+   * @param pos in rad or m
    * @return 0 on success,
     -1 on communication error,
     -2 when not homed,
     -3 when the motor is not enabled,
     -4 when the motor is stalled.
    */
-  int setVelocity(float degps);
+  int setPosition(float pos);
+
+  /**
+   * @brief Move full steps.
+   *
+   * This function can be called even when not homed.
+   *
+   * @param steps number of full steps
+   * @return 0 on success,
+    -1 on communication error,
+    -3 when the motor is not enabled,
+    -4 when the motor is stalled.
+   */
+  int moveSteps(int32_t steps);
+
+  /**
+   * @brief get the current joint velocity in radians/s or m/s for
+   * cylindrical and prismatic joints respectively.
+   *
+   * @param vel
+   * @return error code
+   */
+  int getVelocity(float &vel);
+
+  /**
+   * @brief Set the current joint velocity in radians/s or m/s for
+   * cylindrical and prismatic joints respectively.
+   *
+   * @param vel
+   * @return 0 on success,
+    -1 on communication error,
+    -2 when not homed,
+    -3 when the motor is not enabled,
+    -4 when the motor is stalled.
+   */
+  int setVelocity(float vel);
 
   /**
    * @brief Calls the checkOrientation method of the motor. Checks in which direction the motor is turning.
-   * 
+   *
    * As the orientation check is blocking on the motor, this this function returns when the isBusy flag is clear again.
-   * 
+   *
    * @param angle degrees how much the motor should turn. A few degrees is sufficient.
    * @return 0 on success,
     -1 on communication error,
@@ -100,7 +185,12 @@ public:
   int checkOrientation(float angle = 10.0);
 
   /**
-   * @brief Initialize the joint and engages motor.
+   * @brief Setup the joint and engages motor.
+   *
+   * This function prepares the motor for movement. After successfull execution the joint
+   * is ready to accept setPosition() and setVelocity() commands. \n
+   * The function ets the drive and hold current for the specified joint and engages the motor.
+   * The currents are in percent of driver max. output (2.5A, check with TMC5130 datasheet or Ustepper documentation)
    * @param driveCurrent drive current in 0-100 % of 2.5A output (check uStepper doc.)
    * @param holdCurrent hold current in 0-100 % of 2.5A output (check uStepper doc.)
    * @return 0 on success,
@@ -116,9 +206,14 @@ public:
   int disable(void);
 
   /**
-   * @brief Homes the motor.
+   * @brief Executes the homing sequence of a joint.
+   * 
+   * The joint will drive in the specified direction (from the motor perspective, not joint CW or CCW) 
+   * with the specified speed
+   * until a resistance which drives the PID error above the specified threshold is encountered.
+   * At this point the stepper stops and zeros the encoder.
    * @param direction  CCW: 0, CW: 1.
-   * @param rpm  speed of motor in rpm > 10.
+   * @param rpm  speed of motor in rpm.
    * @param sensitivity Encoder pid error threshold 0 to 255.
    * @param current homeing current, determines how easy it is to stop the motor and thereby provoke a stall
 
@@ -168,20 +263,20 @@ public:
   int setBrakeMode(u_int8_t mode);
 
   /**
-   * @brief Set the maximum permitted joint acceleration (and deceleration) in deg/s^2 or mm/s^2 for cylindrical
+   * @brief Set the maximum permitted joint acceleration (and deceleration) in rad/s^2 or m/s^2 for cylindrical
    * and prismatic joints respectively.
-   * 
+   *
    * @param maxAccel maximum joint acceleration.
-   * @return error code 
+   * @return error code
    */
   int setMaxAcceleration(float maxAccel);
 
-    /**
-   * @brief Set the maximum permitted joint velocity in deg/s or mm/s for cylindrical
+  /**
+   * @brief Set the maximum permitted joint velocity in rad/s or m/s for cylindrical
    * and prismatic joints respectively.
-   * 
+   *
    * @param maxVel maximum joint velocity.
-   * @return error code 
+   * @return error code
    */
   int setMaxVelocity(float maxVel);
 
@@ -193,7 +288,7 @@ public:
 
   /**
    * @brief Checks the state if the motor is homed.
-   * 
+   *
    * Reads the internal state flags from the last transmission. If an update is neccessary call getFlags() before invoking this function.
    *
    * @return true if the motor is homed,
@@ -203,7 +298,7 @@ public:
 
   /**
    * @brief Checks the state if the motor is enabled.
-   * 
+   *
    * Reads the internal state flags from the last transmission. If an update is neccessary call getFlags() before invoking this function.
    * If the motor actually can move depends on the state of the STALLED flag which can be checked using isStalled().
    *
@@ -214,14 +309,12 @@ public:
 
   /**
    * @brief Checks if the motor is stalled.
-   * 
+   *
    * Reads the internal state flags from the last transmission. If an update is neccessary call getFlags() before invoking this function.
    * @return true if the motor is stalled,
    * false if not.
    */
   bool isStalled(void);
-
-
 
   int checkCom(void);
 
@@ -308,8 +401,8 @@ private:
   u_int8_t flags = 0x00;
 
   int address;         ///< I2C adress
-  float gearRatio = 1; ///< gear ratio from encoder units to joint units
-  float offset = 0;      ///< offset in degrees or mm from encoder zero to joint zero.
+  float reduction = 1; ///< Joint to actuator reduction ratio
+  float offset = 0;    ///< Joint position offset
 
   int handle = -1; ///< I2C bus handle
 };

@@ -1,11 +1,11 @@
 #include "bioscara_hardware_driver/uI2C.h"
 #include "bioscara_hardware_driver/mJoint.h"
 
-Joint::Joint(const int address, const std::string name, const float gearRatio, const float offset)
+Joint::Joint(const int address, const std::string name, const float reduction, const float offset)
 {
     this->address = address;
     this->name = name;
-    this->gearRatio = gearRatio;
+    this->reduction = reduction;
     this->offset = offset;
 }
 
@@ -15,7 +15,7 @@ int Joint::init(void)
     this->handle = openI2CDevHandle(this->address);
     if (this->handle < 0)
     {
-        return -1;
+        return -2;
     }
     return checkCom();
 }
@@ -96,14 +96,14 @@ int Joint::printInfo(void)
     return 0;
 }
 
-int Joint::getPosition(float &angle)
+int Joint::getPosition(float &pos)
 {
-    int rc = this->read(ANGLEMOVED, angle, this->flags);
-    angle = ENCODER2JOINTANGLE(angle, this->gearRatio, this->offset);
+    int rc = this->read(ANGLEMOVED, pos, this->flags);
+    pos = ACTUATOR2JOINT(DEG2RAD(pos), this->reduction, this->offset);
     return rc < 0 ? -1 : 0;
 }
 
-int Joint::setPosition(float angle)
+int Joint::setPosition(float pos)
 {
     if (!this->isEnabled())
     {
@@ -114,7 +114,7 @@ int Joint::setPosition(float angle)
         return -2; // not homed
     }
     int rc;
-    rc = this->write(MOVETOANGLE, JOINT2ENCODERANGLE(angle, this->gearRatio, this->offset), this->flags);
+    rc = this->write(MOVETOANGLE, JOINT2ACTUATOR(RAD2DEG(pos), this->reduction, this->offset), this->flags);
     if (rc < 0)
     {
         return -1;
@@ -145,15 +145,15 @@ int Joint::moveSteps(int32_t steps)
     return 0;
 }
 
-int Joint::getVelocity(float &degps)
+int Joint::getVelocity(float &vel)
 {
-    int rc = this->read(GETENCODERRPM, degps, this->flags);
-    degps = ENCODER2JOINTANGLE(degps, this->gearRatio, 0);
-    degps *= 6.0;
+    int rc = this->read(GETENCODERRPM, vel, this->flags);
+    vel = ACTUATOR2JOINT(DEG2RAD(vel), this->reduction, 0);
+    vel *= 6.0; // convert from rpm to rad/s
     return rc < 0 ? -1 : 0;
 }
 
-int Joint::setVelocity(float degps)
+int Joint::setVelocity(float vel)
 {
     if (!this->isEnabled())
     {
@@ -164,7 +164,7 @@ int Joint::setVelocity(float degps)
         return -2; // not homed
     }
     int rc;
-    rc = this->write(SETRPM, JOINT2ENCODERANGLE(degps, this->gearRatio, 0) / 6, this->flags);
+    rc = this->write(SETRPM, JOINT2ACTUATOR(RAD2DEG(vel), this->reduction, 0) / 6, this->flags);
     if (rc < 0)
     {
         return -1;
@@ -230,12 +230,12 @@ int Joint::setBrakeMode(u_int8_t mode)
 
 int Joint::setMaxAcceleration(float maxAccel)
 {
-    return this->write(SETMAXACCELERATION, JOINT2ENCODERANGLE(maxAccel, this->gearRatio, 0), this->flags);
+    return this->write(SETMAXACCELERATION, JOINT2ACTUATOR(RAD2DEG(maxAccel), this->reduction, 0), this->flags);
 }
 
 int Joint::setMaxVelocity(float maxVel)
 {
-    return this->write(SETMAXVELOCITY, JOINT2ENCODERANGLE(maxVel, this->gearRatio, 0), this->flags);
+    return this->write(SETMAXVELOCITY, JOINT2ACTUATOR(RAD2DEG(maxVel), this->reduction, 0), this->flags);
 }
 
 int Joint::enableStallguard(u_int8_t sensitivity)

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['flags_0',['flags',['../classJoint.html#ac6a4b19a9a677e36deeaee7afd148497',1,'Joint']]]
+  ['data_5ffiles_0',['data_files',['../namespacesetup.html#ad027a8e9452da003dca32bf7467bd16e',1,'setup']]],
+  ['description_1',['description',['../namespacesetup.html#aedf461ec52a946bda975938ba0b93ec0',1,'setup']]]
 ];

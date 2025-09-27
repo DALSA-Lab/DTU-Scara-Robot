@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Bioscara: ROS2/ros2_scara_ws/src/joint_communication/src/joint_comm_node.cpp File Reference</title>
+<title>Bioscara: ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/src/joint_comm_node.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -71,7 +71,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_6ae0b01f0f0f6604eb42ef4bd48f1556.html">ROS2</a></li><li class="navelem"><a class="el" href="dir_b67307fe4e93fb504fe09caf509972ce.html">ros2_scara_ws</a></li><li class="navelem"><a class="el" href="dir_990abb0e987bfba662b0b5dc7f2406e3.html">src</a></li><li class="navelem"><a class="el" href="dir_4c20a758bceb3f2692da4e95aa21c87a.html">joint_communication</a></li><li class="navelem"><a class="el" href="dir_ebd56fcb10e14cf0fea1a28f9b5c93b3.html">src</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_6ae0b01f0f0f6604eb42ef4bd48f1556.html">ROS2</a></li><li class="navelem"><a class="el" href="dir_b67307fe4e93fb504fe09caf509972ce.html">ros2_scara_ws</a></li><li class="navelem"><a class="el" href="dir_990abb0e987bfba662b0b5dc7f2406e3.html">src</a></li><li class="navelem"><a class="el" href="dir_c5f16f00854b2a3ac59c958cf935af9a.html">dalsa_bioscara</a></li><li class="navelem"><a class="el" href="dir_f1c1d1ac105549c5818c47ce870acb86.html">bioscara_hardware_driver</a></li><li class="navelem"><a class="el" href="dir_546726c3f60991aca27841f9e03bb2aa.html">src</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -83,62 +83,64 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &lt;signal.h&gt;</code><br />
 <code>#include &lt;unistd.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="mJointCom_8h_source.html">joint_communication/mJointCom.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="mGripper_8h_source.html">joint_communication/mGripper.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="mJointCom_8h_source.html">bioscara_hardware_driver/mJointCom.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="mGripper_8h_source.html">bioscara_hardware_driver/mGripper.h</a>&quot;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for joint_comm_node.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="joint__comm__node_8cpp__incl.png" border="0" usemap="#aROS2_2ros2__scara__ws_2src_2joint__communication_2src_2joint__comm__node_8cpp" alt=""/></div>
-<map name="aROS2_2ros2__scara__ws_2src_2joint__communication_2src_2joint__comm__node_8cpp" id="aROS2_2ros2__scara__ws_2src_2joint__communication_2src_2joint__comm__node_8cpp">
-<area shape="rect" title=" " alt="" coords="541,5,733,60"/>
-<area shape="rect" title=" " alt="" coords="343,115,416,141"/>
-<area shape="poly" title=" " alt="" coords="562,63,428,111,422,113,420,108,426,105,560,58"/>
-<area shape="rect" title=" " alt="" coords="529,460,603,485"/>
-<area shape="poly" title=" " alt="" coords="639,60,639,215,639,306,634,347,620,387,602,423,585,450,580,447,597,420,615,385,629,346,634,305,634,215,634,60"/>
-<area shape="rect" href="mJointCom_8h.html" title="File containing the Joint_comms class." alt="" coords="440,108,599,148"/>
-<area shape="poly" title=" " alt="" coords="605,62,555,102,552,97,602,58"/>
-<area shape="rect" href="mGripper_8h.html" title="File containing the Gripper class." alt="" coords="675,196,833,236"/>
-<area shape="poly" title=" " alt="" coords="656,59,736,183,732,186,651,62"/>
-<area shape="rect" title=" " alt="" coords="725,115,788,141"/>
-<area shape="poly" title=" " alt="" coords="672,58,732,105,729,109,669,62"/>
-<area shape="rect" title=" " alt="" coords="536,203,599,229"/>
-<area shape="poly" title=" " alt="" coords="532,147,556,190,552,192,528,150"/>
-<area shape="rect" title=" " alt="" coords="425,460,505,485"/>
-<area shape="poly" title=" " alt="" coords="519,149,471,447,466,446,514,148"/>
-<area shape="rect" href="mJoint_8h.html" title="File including the Joint class." alt="" coords="301,196,460,236"/>
-<area shape="poly" title=" " alt="" coords="490,150,424,191,421,187,488,146"/>
-<area shape="rect" href="mJoint_8hpp.html" title="Templated functions for the Joint class." alt="" coords="301,284,460,324"/>
-<area shape="poly" title=" " alt="" coords="376,236,375,271,369,270,370,236"/>
-<area shape="poly" title=" " alt="" coords="386,284,387,249,392,250,391,284"/>
-<area shape="rect" href="uI2C_8h.html" title="Low level utility for I2C communication on Raspberry Pi using lgpio library." alt="" coords="119,372,277,412"/>
-<area shape="poly" title=" " alt="" coords="342,326,251,369,249,364,339,322"/>
-<area shape="rect" href="common_8h.html" title="A file containing utility macros and functions." alt="" coords="301,372,460,412"/>
-<area shape="poly" title=" " alt="" coords="383,324,383,358,378,358,378,324"/>
-<area shape="poly" title=" " alt="" coords="278,407,516,457,515,462,277,412"/>
-<area shape="poly" title=" " alt="" coords="263,409,413,453,412,459,261,415"/>
-<area shape="rect" title=" " alt="" coords="114,460,181,485"/>
-<area shape="poly" title=" " alt="" coords="188,414,165,450,160,447,183,411"/>
-<area shape="rect" title=" " alt="" coords="205,460,273,485"/>
-<area shape="poly" title=" " alt="" coords="210,411,229,446,224,449,206,413"/>
-<area shape="rect" title=" " alt="" coords="297,460,360,485"/>
-<area shape="poly" title=" " alt="" coords="231,410,299,451,296,455,228,415"/>
-<area shape="rect" title=" " alt="" coords="5,460,89,485"/>
-<area shape="poly" title=" " alt="" coords="163,414,83,456,81,451,161,410"/>
-<area shape="rect" href="uPWM_8h.html" title="Includes source code for Hardware PWM generation on Raspberry Pi 4." alt="" coords="675,372,833,412"/>
-<area shape="poly" title=" " alt="" coords="757,236,757,358,751,358,751,236"/>
-<area shape="poly" title=" " alt="" coords="710,414,607,457,605,452,708,410"/>
-<area shape="poly" title=" " alt="" coords="685,415,519,460,517,454,684,409"/>
-<area shape="rect" title=" " alt="" coords="627,460,694,485"/>
-<area shape="poly" title=" " alt="" coords="733,414,687,453,684,449,730,410"/>
-<area shape="rect" title=" " alt="" coords="719,460,789,485"/>
-<area shape="poly" title=" " alt="" coords="757,412,757,446,751,446,751,412"/>
-<area shape="rect" title=" " alt="" coords="813,460,884,485"/>
-<area shape="poly" title=" " alt="" coords="779,410,825,449,822,453,775,414"/>
-<area shape="rect" title=" " alt="" coords="909,460,967,485"/>
-<area shape="poly" title=" " alt="" coords="799,410,900,452,897,457,797,414"/>
-<area shape="rect" title=" " alt="" coords="992,460,1060,485"/>
-<area shape="poly" title=" " alt="" coords="820,409,979,455,978,460,818,415"/>
+<div class="center"><img src="joint__comm__node_8cpp__incl.png" border="0" usemap="#aROS2_2ros2__scara__ws_2src_2dalsa__bioscara_2bioscara__hardware__driver_2src_2joint__comm__node_8cpp" alt=""/></div>
+<map name="aROS2_2ros2__scara__ws_2src_2dalsa__bioscara_2bioscara__hardware__driver_2src_2joint__comm__node_8cpp" id="aROS2_2ros2__scara__ws_2src_2dalsa__bioscara_2bioscara__hardware__driver_2src_2joint__comm__node_8cpp">
+<area shape="rect" title=" " alt="" coords="344,5,539,75"/>
+<area shape="rect" title=" " alt="" coords="279,130,353,155"/>
+<area shape="poly" title=" " alt="" coords="401,77,342,124,339,119,398,73"/>
+<area shape="rect" title=" " alt="" coords="463,475,537,500"/>
+<area shape="poly" title=" " alt="" coords="444,75,444,229,444,320,449,360,460,399,489,462,484,464,455,401,443,361,439,320,439,229,439,75"/>
+<area shape="rect" href="mJointCom_8h.html" title="File containing the Joint_comms class." alt="" coords="505,123,695,163"/>
+<area shape="poly" title=" " alt="" coords="496,73,560,113,557,118,493,77"/>
+<area shape="rect" href="mGripper_8h.html" title="File containing the Gripper class." alt="" coords="213,299,403,339"/>
+<area shape="poly" title=" " alt="" coords="427,76,325,287,321,285,423,74"/>
+<area shape="rect" title=" " alt="" coords="719,130,782,155"/>
+<area shape="poly" title=" " alt="" coords="540,66,709,120,715,122,713,127,707,125,538,71"/>
+<area shape="rect" title=" " alt="" coords="745,218,807,243"/>
+<area shape="poly" title=" " alt="" coords="640,160,742,210,739,214,637,165"/>
+<area shape="rect" title=" " alt="" coords="831,218,955,243"/>
+<area shape="poly" title=" " alt="" coords="665,160,842,212,840,217,664,165"/>
+<area shape="rect" title=" " alt="" coords="561,475,641,500"/>
+<area shape="poly" title=" " alt="" coords="566,165,540,185,520,212,496,270,488,319,495,368,520,425,538,449,563,466,560,470,535,453,515,428,490,370,483,319,491,268,515,209,536,181,563,161"/>
+<area shape="rect" href="mJoint_8h.html" title="File including the Joint class." alt="" coords="530,211,721,251"/>
+<area shape="poly" title=" " alt="" coords="608,162,618,197,613,198,603,164"/>
+<area shape="rect" href="mJoint_8hpp.html" title="Templated functions for the Joint class." alt="" coords="530,299,721,339"/>
+<area shape="poly" title=" " alt="" coords="620,251,619,285,614,285,615,251"/>
+<area shape="poly" title=" " alt="" coords="630,298,631,264,637,264,636,299"/>
+<area shape="rect" href="uI2C_8h.html" title="Low level utility for I2C communication on Raspberry Pi using lgpio library." alt="" coords="745,387,935,427"/>
+<area shape="poly" title=" " alt="" coords="673,336,781,379,779,384,671,341"/>
+<area shape="rect" href="common_8h.html" title="A file containing utility macros and functions." alt="" coords="530,387,721,427"/>
+<area shape="poly" title=" " alt="" coords="628,339,628,373,623,373,623,339"/>
+<area shape="poly" title=" " alt="" coords="759,429,551,477,550,472,758,424"/>
+<area shape="poly" title=" " alt="" coords="784,429,650,473,648,468,782,424"/>
+<area shape="rect" title=" " alt="" coords="691,475,757,500"/>
+<area shape="poly" title=" " alt="" coords="813,429,754,469,751,465,810,425"/>
+<area shape="rect" title=" " alt="" coords="782,475,850,500"/>
+<area shape="poly" title=" " alt="" coords="837,428,826,462,821,461,832,426"/>
+<area shape="rect" title=" " alt="" coords="874,475,937,500"/>
+<area shape="poly" title=" " alt="" coords="858,425,889,462,885,466,854,429"/>
+<area shape="rect" title=" " alt="" coords="961,475,1045,500"/>
+<area shape="poly" title=" " alt="" coords="880,424,967,466,965,471,878,429"/>
+<area shape="rect" href="uPWM_8h.html" title="Includes source code for Hardware PWM generation on Raspberry Pi 4." alt="" coords="213,387,403,427"/>
+<area shape="poly" title=" " alt="" coords="311,339,311,373,305,373,305,339"/>
+<area shape="poly" title=" " alt="" coords="355,424,460,467,458,472,353,429"/>
+<area shape="poly" title=" " alt="" coords="379,424,548,469,547,474,378,429"/>
+<area shape="rect" title=" " alt="" coords="181,475,248,500"/>
+<area shape="poly" title=" " alt="" coords="287,429,241,468,238,463,284,425"/>
+<area shape="rect" title=" " alt="" coords="273,475,343,500"/>
+<area shape="poly" title=" " alt="" coords="311,427,311,461,305,461,305,427"/>
+<area shape="rect" title=" " alt="" coords="367,475,438,500"/>
+<area shape="poly" title=" " alt="" coords="333,425,379,463,376,468,329,429"/>
+<area shape="rect" title=" " alt="" coords="5,475,64,500"/>
+<area shape="poly" title=" " alt="" coords="243,429,78,477,76,471,242,424"/>
+<area shape="rect" title=" " alt="" coords="89,475,157,500"/>
+<area shape="poly" title=" " alt="" coords="265,429,163,472,161,467,263,424"/>
 </map>
 </div>
 </div><table class="memberdecls">

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['printinfo_0',['printInfo',['../classJoint.html#abc0fef67c332a238cc0897c06d157a22',1,'Joint']]]
+  ['non_5fblocking_5fhandler_0',['non_blocking_handler',['../joint_8ino.html#a80f7e5c60aa6959bb0b1b9a53b423670',1,'joint.ino']]]
 ];

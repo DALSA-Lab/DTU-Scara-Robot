@@ -1,7 +1,13 @@
-<map id="ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mJointCom.h" name="ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mJointCom.h">
-<area shape="rect" id="Node000001" title="File containing the Joint_comms class." alt="" coords="101,5,315,75"/>
-<area shape="rect" id="Node000002" href="$joint__comm__node_8cpp.html" title=" " alt="" coords="5,123,197,177"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,86,129,124,125,121,163,82"/>
-<area shape="rect" id="Node000003" href="$mJointCom_8cpp.html" title=" " alt="" coords="221,123,408,177"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="253,82,291,121,287,124,249,86"/>
+<map id="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/mJointCom.h" name="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/mJointCom.h">
+<area shape="rect" id="Node000001" title="File containing the Joint_comms class." alt="" coords="343,5,543,89"/>
+<area shape="rect" id="Node000002" href="$joint__comm__node_8cpp.html" title=" " alt="" coords="5,145,200,214"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="331,94,192,147,190,142,329,89"/>
+<area shape="rect" id="Node000003" href="$mJointCom_8cpp.html" title=" " alt="" coords="224,145,419,214"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="397,102,355,146,351,142,393,98"/>
+<area shape="rect" id="Node000004" href="$bioscara__hardware_8hpp.html" title=" " alt="" coords="443,137,685,221"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="492,98,527,135,523,139,488,101"/>
+<area shape="rect" id="Node000006" href="$main_8cpp.html" title=" " alt="" coords="710,152,893,207"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="557,84,698,135,736,149,735,154,696,140,555,89"/>
+<area shape="rect" id="Node000005" href="$bioscara__hardware_8cpp.html" title=" " alt="" coords="457,269,671,339"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="567,235,567,269,561,269,561,235"/>
 </map>
