@@ -89,7 +89,7 @@ public:
    * - Measure joint ranges
    * - Investigate if possible to make independent of homing
    */
-  Joint(const int address, const std::string name, const float reduction, const float offset);
+  Joint(const std::string name, const int address, const float reduction, const float offset);
   // ~Joint();
 
   /**
@@ -119,7 +119,9 @@ public:
    * cylindrical and prismatic joints respectively.
    *
    * @param pos
-   * @return error code
+   * @return 0 on success,
+    -1 on communication error,
+    -2 when not homed
    */
   int getPosition(float &pos);
 
@@ -154,7 +156,9 @@ public:
    * cylindrical and prismatic joints respectively.
    *
    * @param vel
-   * @return error code
+   * @return 0 on success,
+    -1 on communication error,
+    -2 when not homed
    */
   int getVelocity(float &vel);
 
@@ -201,14 +205,14 @@ public:
 
   /**
    * @brief disenganges the joint motor without closing i2c handle
-   * @return error code.
+   * @return 0 on success, -1 on communication error.
    */
   int disable(void);
 
   /**
    * @brief Executes the homing sequence of a joint.
-   * 
-   * The joint will drive in the specified direction (from the motor perspective, not joint CW or CCW) 
+   *
+   * The joint will drive in the specified direction (from the motor perspective, not joint CW or CCW)
    * with the specified speed
    * until a resistance which drives the PID error above the specified threshold is encountered.
    * At this point the stepper stops and zeros the encoder.
@@ -230,12 +234,12 @@ public:
    * Since the stop() function in the motor controller is blocking.
    * Continously checking the busy flag also might interfere with the stop() function on the controller side.
    * @param mode Hard: 0, Soft: 1
-   * @return error code.
+   * @return 0 on success, -1 on communication error.
    */
   int stop(bool mode);
   /**
    * @brief Disables the Closed-Loop PID Controller
-   * @return error code.
+   * @return 0 on success, -1 on communication error.
    */
   int disableCL(void);
 
@@ -243,7 +247,7 @@ public:
    * @brief Set the Drive Current
    * @warning This function is unreliable and not well tested. Use enable() instead!
    * @param current 0% - 100% of driver current
-   * @return error code.
+   * @return 0 on success, -1 on communication error.
    */
   int setDriveCurrent(u_int8_t current);
 
@@ -258,7 +262,7 @@ public:
   /**
    * @brief Set Brake Mode
    * @param mode Freewheel: 0, Coolbrake: 1, Hardbrake: 2
-   * @return error code.
+   * @return 0 on success, -1 on communication error.
    */
   int setBrakeMode(u_int8_t mode);
 
@@ -267,7 +271,7 @@ public:
    * and prismatic joints respectively.
    *
    * @param maxAccel maximum joint acceleration.
-   * @return error code
+   * @return 0 on success, -1 on communication error.
    */
   int setMaxAcceleration(float maxAccel);
 
@@ -276,13 +280,17 @@ public:
    * and prismatic joints respectively.
    *
    * @param maxVel maximum joint velocity.
-   * @return error code
+   * @return 0 on success, -1 on communication error.
    */
   int setMaxVelocity(float maxVel);
 
   /**
-   * @brief Enable encoder stall detection. A detected stall can be reset by homeing.
-   * @param sensitivity Encoder stalldetect sensitivity - From -100 to 10 where lower number is less sensitive and higher is more sensitive
+   * @brief Enable encoder stall detection of the joint.
+   *
+   * If the PID error exceeds the set threshold a stall is triggered and the motor disabled.
+   * A detected stall can be reset by homeing or by reenabling the stall guard.
+   * @param thresholds value of threshold. 0 - 255 where lower is more sensitive.
+   * @return 0 on success, -1 on communication error.
    */
   int enableStallguard(u_int8_t sensitivity);
 

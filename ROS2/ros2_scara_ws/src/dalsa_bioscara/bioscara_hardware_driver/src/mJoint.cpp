@@ -1,7 +1,7 @@
 #include "bioscara_hardware_driver/uI2C.h"
 #include "bioscara_hardware_driver/mJoint.h"
 
-Joint::Joint(const int address, const std::string name, const float reduction, const float offset)
+Joint::Joint(const std::string name, const int address, const float reduction, const float offset)
 {
     this->address = address;
     this->name = name;
@@ -98,6 +98,10 @@ int Joint::printInfo(void)
 
 int Joint::getPosition(float &pos)
 {
+    if (!this->isHomed())
+    {
+        return -2; // not homed
+    }
     int rc = this->read(ANGLEMOVED, pos, this->flags);
     pos = ACTUATOR2JOINT(DEG2RAD(pos), this->reduction, this->offset);
     return rc < 0 ? -1 : 0;
@@ -147,6 +151,10 @@ int Joint::moveSteps(int32_t steps)
 
 int Joint::getVelocity(float &vel)
 {
+    if (!this->isHomed())
+    {
+        return -2; // not homed
+    }
     int rc = this->read(GETENCODERRPM, vel, this->flags);
     vel = ACTUATOR2JOINT(DEG2RAD(vel), this->reduction, 0);
     vel *= 6.0; // convert from rpm to rad/s
@@ -203,44 +211,43 @@ int Joint::checkOrientation(float angle)
 
 int Joint::stop(bool mode)
 {
-    int rc = this->write(STOP, mode, this->flags);
-    return rc < 0 ? -1 : 0;
+    return this->write(STOP, mode, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::disableCL(void)
 {
     u_int8_t buf = 0;
-    return this->write(DISABLECLOSEDLOOP, buf, this->flags);
+    return this->write(DISABLECLOSEDLOOP, buf, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::setDriveCurrent(u_int8_t current)
 {
-    return this->write(SETCURRENT, current, this->flags);
+    return this->write(SETCURRENT, current, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::setHoldCurrent(u_int8_t current)
 {
-    return this->write(SETHOLDCURRENT, current, this->flags);
+    return this->write(SETHOLDCURRENT, current, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::setBrakeMode(u_int8_t mode)
 {
-    return this->write(SETBRAKEMODE, mode, this->flags);
+    return this->write(SETBRAKEMODE, mode, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::setMaxAcceleration(float maxAccel)
 {
-    return this->write(SETMAXACCELERATION, JOINT2ACTUATOR(RAD2DEG(maxAccel), this->reduction, 0), this->flags);
+    return this->write(SETMAXACCELERATION, JOINT2ACTUATOR(RAD2DEG(maxAccel), this->reduction, 0), this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::setMaxVelocity(float maxVel)
 {
-    return this->write(SETMAXVELOCITY, JOINT2ACTUATOR(RAD2DEG(maxVel), this->reduction, 0), this->flags);
+    return this->write(SETMAXVELOCITY, JOINT2ACTUATOR(RAD2DEG(maxVel), this->reduction, 0), this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::enableStallguard(u_int8_t sensitivity)
 {
-    return this->write(ENABLESTALLGUARD, sensitivity, this->flags);
+    return this->write(ENABLESTALLGUARD, sensitivity, this->flags) < 0 ? -1 : 0;
 }
 
 bool Joint::isHomed(void)

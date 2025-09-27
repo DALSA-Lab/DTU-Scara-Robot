@@ -44,7 +44,7 @@ int Joint_comms::deinit()
 
 void Joint_comms::addJoint(const std::string name, const int address, const float reduction, const float offset)
 {
-    this->joints.insert({name, Joint(address, name, reduction, offset)});
+    this->joints.insert({name, Joint(name, address, reduction, offset)});
 }
 
 void Joint_comms::removeJoint(const std::string name)
