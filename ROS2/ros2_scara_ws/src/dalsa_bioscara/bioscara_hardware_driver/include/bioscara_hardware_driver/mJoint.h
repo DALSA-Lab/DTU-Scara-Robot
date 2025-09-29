@@ -82,7 +82,7 @@ public:
    * Set this to the angle the joint is at when is is homed. F.x. since J2 is homing at the top the
    * offset shall be a positive numer. \n
    * J1: (-)3.04647 \n
-   * J2: 0.34935 \n
+   * J2: 0.3380 \n
    * J3: (-)2.62672 \n
    * J4: (-)3.01069
    * @todo

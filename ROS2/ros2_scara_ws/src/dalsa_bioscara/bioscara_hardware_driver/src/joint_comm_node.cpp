@@ -8,13 +8,11 @@
 using namespace std;
 
 Joint_comms _Joints;
-Gripper _Gripper;
 
 void INT_handler(int s)
 {
   printf("Caught signal %d\n", s);
   _Joints.disables();
-  _Gripper.disable();
   exit(0);
 }
 
