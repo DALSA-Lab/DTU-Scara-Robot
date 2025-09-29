@@ -154,15 +154,6 @@ void blocking_handler(uint8_t reg) {
         break;
       }
 
-    case STOP:
-      {
-        // Serial.print("Executing STOP\n");
-        uint8_t v;
-        readValue<uint8_t>(v, rx_buf, rx_length);
-        stepper.stop(v);
-        break;
-      }
-
     case CHECKORIENTATION:
       {
         // Serial.print("Executing CHECKORIENTATION\n");
@@ -186,34 +177,22 @@ void blocking_handler(uint8_t reg) {
         memcpy(&current, rx_buf + 3, 1);
 
         stepper.stop();
-        // stepper.encoder = TLE5012B();  // Reset Enocoder to clear stall<<
-        // stepper.encoder.init();
-        // stepper.encoder.encoderStallDetect = 0;<<
 
         stepper.setRPM(dir ? speed : -speed);
         stepper.setCurrent(current);
-        // stepper.encoder.encoderStallDetectSensitivity = sensitivity * 1.0 / 10;<<
-        // stepper.encoder.encoderStallDetectEnable = 1;<<
 
         float err;
         do {
           err = stepper.getPidError();
 
-          // Serial.println(abs(err));
+
           delay(1);
         } while (abs(err) < sensitivity);
 
-        // while (!stepper.encoder.encoderStallDetect) {
-        //   delay(5);
-        // }
+
         stepper.encoder.setHome();
         stepper.driver.setHome();
         stepper.stop();  // Stop motor !
-
-        // stepper.encoder = TLE5012B();  // Reset Enocoder to clear stall
-        // stepper.encoder.encoderStallDetect = 0;
-        // stepper.encoder.setHome();
-        // stepper.encoder.encoderStallDetectEnable = 0;<<
 
         stepper.setCurrent(driveCurrent);
 
@@ -417,6 +396,18 @@ void non_blocking_handler(uint8_t reg) {
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
         stepper.disableClosedLoop();
+        break;
+      }
+
+    case STOP:
+      {
+        // Serial.print("Executing STOP\n");
+        uint8_t v;
+        readValue<uint8_t>(v, rx_buf, rx_length);
+        Stepper.setRPM(0);
+
+        // Set new position
+        Stepper.driver.setPosition(Stepper.driver.getPosition());  // Neccessary?
         break;
       }
 
