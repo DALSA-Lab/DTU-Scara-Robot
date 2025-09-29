@@ -6,9 +6,9 @@
 <xacro:include filename="$(find bioscara_description)/urdf/bioscara.gazebo" />
 <link name="base_link">
   <inertial>
-    <origin xyz="-0.04774409590466954 -1.3713643648383251e-17 0.039130407252064556" rpy="0 0 0"/>
-    <mass value="41.649228123317556"/>
-    <inertia ixx="0.19426" iyy="0.329216" izz="0.477531" ixy="0.0" iyz="-0.0" ixz="-0.015869"/>
+    <origin xyz="-0.04726295478480471 -4.0726333219249673e-17 0.039609285941398516" rpy="0 0 0"/>
+    <mass value="42.07322100213777"/>
+    <inertia ixx="0.19661" iyy="0.332522" izz="0.481291" ixy="-0.0" iyz="-0.0" ixz="-0.016821"/>
   </inertial>
   <visual>
     <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -27,19 +27,19 @@
 
 <link name="link_1_1">
   <inertial>
-    <origin xyz="-0.0159850493532449 0.0 0.28398899999999994" rpy="0 0 0"/>
-    <mass value="200.7089851591611"/>
-    <inertia ixx="5.982117" iyy="6.311802" izz="1.502498" ixy="0.0" iyz="0.0" ixz="0.0"/>
+    <origin xyz="-0.015985049353244893 0.0 0.22758900000000004" rpy="0 0 0"/>
+    <mass value="201.06235973556932"/>
+    <inertia ixx="6.011699" iyy="6.341964" izz="1.505144" ixy="0.0" iyz="0.0" ixz="0.0"/>
   </inertial>
   <visual>
-    <origin xyz="-0.0 -0.0 -0.086" rpy="0 0 0"/>
+    <origin xyz="-0.0 -0.0 -0.1442" rpy="0 0 0"/>
     <geometry>
       <mesh filename="file://$(find bioscara_description)/meshes/link_1_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
-    <origin xyz="-0.0 -0.0 -0.086" rpy="0 0 0"/>
+    <origin xyz="-0.0 -0.0 -0.1442" rpy="0 0 0"/>
     <geometry>
       <mesh filename="file://$(find bioscara_description)/meshes/link_1_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
@@ -48,19 +48,19 @@
 
 <link name="link_2_1">
   <inertial>
-    <origin xyz="0.1639379406013823 -1.0038303710814588e-17 0.07552563377953825" rpy="0 0 0"/>
-    <mass value="31.79071648534617"/>
-    <inertia ixx="0.067297" iyy="0.418803" izz="0.409122" ixy="0.0" iyz="0.0" ixz="-0.039463"/>
+    <origin xyz="0.16393794060138223 0.0 0.06413863377953821" rpy="0 0 0"/>
+    <mass value="31.7907164853462"/>
+    <inertia ixx="0.067297" iyy="0.418803" izz="0.409122" ixy="-0.0" iyz="0.0" ixz="-0.039463"/>
   </inertial>
   <visual>
-    <origin xyz="-0.0 -0.0 -0.172" rpy="0 0 0"/>
+    <origin xyz="-0.0 -0.0 -0.1442" rpy="0 0 0"/>
     <geometry>
       <mesh filename="file://$(find bioscara_description)/meshes/link_2_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
-    <origin xyz="-0.0 -0.0 -0.172" rpy="0 0 0"/>
+    <origin xyz="-0.0 -0.0 -0.1442" rpy="0 0 0"/>
     <geometry>
       <mesh filename="file://$(find bioscara_description)/meshes/link_2_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
@@ -69,19 +69,19 @@
 
 <link name="link_3_1">
   <inertial>
-    <origin xyz="0.14250000000000124 -2.5586863992405562e-17 -5.551115123125783e-17" rpy="0 0 0"/>
-    <mass value="26.382731999662866"/>
-    <inertia ixx="0.052146" iyy="0.299228" izz="0.268844" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
+    <origin xyz="0.14250000161157844 -4.518384865479846e-17 0.08014650000000001" rpy="0 0 0"/>
+    <mass value="28.44193338693538"/>
+    <inertia ixx="0.063431" iyy="0.329798" izz="0.289827" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
   </inertial>
   <visual>
-    <origin xyz="-0.329476 0.0 -0.25945" rpy="0 0 0"/>
+    <origin xyz="-0.329476 -0.0 -0.1442" rpy="0 0 0"/>
     <geometry>
       <mesh filename="file://$(find bioscara_description)/meshes/link_3_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
-    <origin xyz="-0.329476 0.0 -0.25945" rpy="0 0 0"/>
+    <origin xyz="-0.329476 -0.0 -0.1442" rpy="0 0 0"/>
     <geometry>
       <mesh filename="file://$(find bioscara_description)/meshes/link_3_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
@@ -90,51 +90,51 @@
 
 <link name="link_4_1">
   <inertial>
-    <origin xyz="2.220446049250313e-15 1.5259760060586006e-17 -0.07519999999999916" rpy="0 0 0"/>
-    <mass value="1.4265673120000002"/>
-    <inertia ixx="0.002783" iyy="0.002909" izz="0.000314" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
+    <origin xyz="3.2231565194607015e-09 -4.5766223964710255e-17 0.06973284751916564" rpy="0 0 0"/>
+    <mass value="1.4470826717389633"/>
+    <inertia ixx="0.002924" iyy="0.003053" izz="0.000318" ixy="0.0" iyz="0.0" ixz="-0.0"/>
   </inertial>
   <visual>
-    <origin xyz="-0.614476 0.0 -0.32795" rpy="0 0 0"/>
+    <origin xyz="-0.614476 0.0 -0.1442" rpy="0 0 0"/>
     <geometry>
       <mesh filename="file://$(find bioscara_description)/meshes/link_4_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
-    <origin xyz="-0.614476 0.0 -0.32795" rpy="0 0 0"/>
+    <origin xyz="-0.614476 0.0 -0.1442" rpy="0 0 0"/>
     <geometry>
       <mesh filename="file://$(find bioscara_description)/meshes/link_4_1.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
 
-<joint name="joint_1" type="revolute">
-  <origin xyz="0.0 0.0 0.086" rpy="0 0 0"/>
+<joint name="j1" type="revolute">
+  <origin xyz="0.0 0.0 0.1442" rpy="0 0 0"/>
   <parent link="base_link"/>
   <child link="link_1_1"/>
   <axis xyz="0.0 0.0 1.0"/>
   <limit upper="2.96706" lower="-2.96706" effort="100" velocity="100"/>
 </joint>
 
-<joint name="joint_2" type="prismatic">
-  <origin xyz="0.0 0.0 0.086" rpy="0 0 0"/>
+<joint name="j2" type="prismatic">
+  <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
   <parent link="link_1_1"/>
   <child link="link_2_1"/>
   <axis xyz="0.0 0.0 1.0"/>
-  <limit upper="0.25" lower="0.0" effort="100" velocity="100"/>
+  <limit upper="0.338" lower="0.0" effort="100" velocity="100"/>
 </joint>
 
-<joint name="joint_3" type="revolute">
-  <origin xyz="0.329476 -0.0 0.08745" rpy="0 0 0"/>
+<joint name="j3" type="revolute">
+  <origin xyz="0.329476 0.0 0.0" rpy="0 0 0"/>
   <parent link="link_2_1"/>
   <child link="link_3_1"/>
   <axis xyz="0.0 0.0 1.0"/>
   <limit upper="2.96706" lower="-2.96706" effort="100" velocity="100"/>
 </joint>
 
-<joint name="joint_4" type="revolute">
-  <origin xyz="0.285 0.0 0.0685" rpy="0 0 0"/>
+<joint name="j4" type="revolute">
+  <origin xyz="0.285 -0.0 0.0" rpy="0 0 0"/>
   <parent link="link_3_1"/>
   <child link="link_4_1"/>
   <axis xyz="0.0 0.0 1.0"/>

@@ -4,7 +4,7 @@
 <name>bioscara_description</name>
   <version>0.0.0</version>
 <description>The bioscara_description package</description>
-  <maintainer email="s.storz01@gmail.com">Sebastian Storz</maintainer>
+  <maintainer email="todo@todo.com">author</maintainer>
   <license>TODO: License declaration</license>
 
   <depend>xacro</depend>
