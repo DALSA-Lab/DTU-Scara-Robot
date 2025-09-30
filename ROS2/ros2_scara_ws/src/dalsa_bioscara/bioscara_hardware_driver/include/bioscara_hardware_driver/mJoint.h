@@ -12,6 +12,8 @@
 #ifndef MJOINT_H
 #define MJOINT_H
 
+#include <iostream>
+
 /**
  * @brief Macro for a simple transmission from joint units to actuator units.
  *

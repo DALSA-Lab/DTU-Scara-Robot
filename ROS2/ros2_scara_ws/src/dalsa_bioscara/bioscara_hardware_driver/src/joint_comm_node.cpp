@@ -1,18 +1,17 @@
 #include <signal.h>
 #include <unistd.h>
-#include "bioscara_hardware_driver/mJointCom.h"
-#include "bioscara_hardware_driver/mGripper.h"
-
+#include "bioscara_hardware_driver/mJoint.h"
+#include <vector>
 #include <cmath>
 
 using namespace std;
 
-Joint_comms _Joints;
+Joint J4("j4", 0x14, 1 /*12*/, 0);
 
 void INT_handler(int s)
 {
   printf("Caught signal %d\n", s);
-  _Joints.disables();
+  J4.disable();
   exit(0);
 }
 
@@ -23,21 +22,19 @@ int main(int argc, char **argv)
   (void)argc;
   (void)argv;
 
-  _Joints.addJoint("j4", 0x14, 12, 0); // 345 / 2);
-
-  if (_Joints.init())
+  if (J4.init())
   {
     cerr << "Could not establish connection to joints" << endl;
     return -1;
   }
-  _Joints.enable("j4", 20, 20);
+  J4.enable(20, 20);
   sleep(1);
-  if (!_Joints.joints.at("j4").isHomed())
+  if (!J4.isHomed())
   {
-    std::cout << _Joints.home("j4", 0, 10, 30, 10);
+    std::cout << J4.home(0, 10, 30, 10);
   }
 
-  _Joints.enableStallguard("j4", 20);
+  J4.enableStallguard(20);
 
   vector<float> q = {0.0};
   vector<float> qd = {0.0};
@@ -45,33 +42,33 @@ int main(int argc, char **argv)
   vector<float> qd_set = {0.0};
   float t = 0;
   int period_ms = 10;
-  q_set[0] = 10000;
-      if (_Joints.setPosition("j4", q_set[0]) < 0)
-    {
-      // break;
-    }
+  q_set[0] = 90;
+
   while (1)
   {
 
     // qd_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 1000;
-    // q_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 10;
+    q_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 90;
     // q_set[2] = (float)sin(0.2 * 2 * M_PI * t) * 10;
     // q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 10+15;
 
     // q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 360;
 
     // _Joints.setVelocities(qd_set);
-
+    if (J4.setPosition(DEG2RAD(q_set[0])) < 0)
+    {
+      break;
+    }
 
     usleep(period_ms * 1000);
     t += period_ms * 1.0 / 1000;
 
-    if (_Joints.getPosition("j4", q[0]) == 0)
+    if (J4.getPosition(q[0]) == 0)
     {
       cout << "Positions: ";
       for (float n : q)
       {
-        cout << n << '\t';
+        cout << RAD2DEG(n) << '\t';
       }
       cout << endl;
     }
@@ -80,6 +77,6 @@ int main(int argc, char **argv)
       break;
     }
   }
-  _Joints.disables();
+  J4.disable();
   return 0;
 }
