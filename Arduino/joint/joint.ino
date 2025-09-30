@@ -246,30 +246,6 @@ void non_blocking_handler(uint8_t reg) {
         break;
       }
 
-    case ISSTALLED:
-      {
-        // Serial.print("Executing ISSTALLED\n");
-        writeValue<uint8_t>(isStalled, tx_buf, tx_length);
-
-        tx_data_ready = 1;
-        break;
-      }
-    case ISHOMED:
-      {
-        // Serial.print("Executing ISHOMED\n");
-        writeValue<uint8_t>(!notHomed, tx_buf, tx_length);
-        tx_data_ready = 1;
-        break;
-      }
-
-    case ISSETUP:
-      {
-        // Serial.print("Executing ISSETUP\n");
-        writeValue<uint8_t>(!notEnabled, tx_buf, tx_length);
-        tx_data_ready = 1;
-        break;
-      }
-
     case GETENCODERRPM:
       {
         // Serial.print("Executing GETENCODERRPM\n");
