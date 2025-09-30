@@ -118,7 +118,10 @@ int Joint::setPosition(float pos)
         return -2; // not homed
     }
     int rc;
-    rc = this->write(MOVETOANGLE, JOINT2ACTUATOR(RAD2DEG(pos), this->reduction, this->offset), this->flags);
+
+    // inline expansion of the macro did not work, convert before sending to function.
+    pos = JOINT2ACTUATOR(RAD2DEG(pos), this->reduction, this->offset);
+    rc = this->write(MOVETOANGLE, pos, this->flags);
     if (rc < 0)
     {
         return -1;
@@ -172,7 +175,10 @@ int Joint::setVelocity(float vel)
         return -2; // not homed
     }
     int rc;
-    rc = this->write(SETRPM, JOINT2ACTUATOR(RAD2DEG(vel), this->reduction, 0) / 6, this->flags);
+
+    // inline expansion of the macro did not work, convert before sending to function.
+    vel = JOINT2ACTUATOR(RAD2DEG(vel), this->reduction, 0)/6;
+    rc = this->write(SETRPM, vel, this->flags);
     if (rc < 0)
     {
         return -1;
@@ -237,12 +243,14 @@ int Joint::setBrakeMode(u_int8_t mode)
 
 int Joint::setMaxAcceleration(float maxAccel)
 {
-    return this->write(SETMAXACCELERATION, JOINT2ACTUATOR(RAD2DEG(maxAccel), this->reduction, 0), this->flags) < 0 ? -1 : 0;
+    maxAccel = JOINT2ACTUATOR(RAD2DEG(maxAccel), this->reduction, 0);
+    return this->write(SETMAXACCELERATION, maxAccel, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::setMaxVelocity(float maxVel)
 {
-    return this->write(SETMAXVELOCITY, JOINT2ACTUATOR(RAD2DEG(maxVel), this->reduction, 0), this->flags) < 0 ? -1 : 0;
+    maxVel =  JOINT2ACTUATOR(RAD2DEG(maxVel), this->reduction, 0);
+    return this->write(SETMAXVELOCITY,maxVel, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::enableStallguard(u_int8_t sensitivity)
