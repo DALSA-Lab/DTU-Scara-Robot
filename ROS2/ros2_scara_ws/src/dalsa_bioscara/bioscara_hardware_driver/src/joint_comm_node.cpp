@@ -7,7 +7,7 @@
 using namespace std;
 
 // Joint J2("j4", 0x14, 1 /*12*/, 0);
-Joint J2("j2", 0x12, -2 * M_PI / 0.004, 0.388);
+Joint J2("j2", 0x12, -2 * M_PI / 0.004, 0.338);
 
 void INT_handler(int s)
 {
@@ -38,7 +38,7 @@ int main(int argc, char **argv)
   if (!J2.isHomed())
   {
     cout << "homing" << endl;
-    J2.home(0, 20, 5, 30);
+    J2.home(0, 100, 50, 30);
     // J2.home(0, 20, 50, 30);
   }
 
@@ -53,8 +53,9 @@ int main(int argc, char **argv)
   int period_ms = 100;
 
 
-  q_set[0] = 0.350;
-  J2.setMaxAcceleration(0.001);
+  q_set[0] = 0.1;
+  J2.setMaxAcceleration(0.01);
+  J2.setMaxVelocity(0.01);
   if (J2.setPosition(q_set[0]) < 0)
   {
     return -1;
@@ -87,6 +88,9 @@ int main(int argc, char **argv)
     }
     else
     {
+      break;
+    }
+    if(J2.isStalled()){
       break;
     }
 
