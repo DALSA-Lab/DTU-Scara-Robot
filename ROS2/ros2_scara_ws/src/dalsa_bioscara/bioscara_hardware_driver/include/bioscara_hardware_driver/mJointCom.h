@@ -180,11 +180,9 @@ public:
   /**
    * @brief Stops the motors
    *
-   * Stops all motors either soft or hard.
-   * @param mode Hard: 0, Soft: 1
    * @return error code.
    */
-  int stops(bool mode);
+  int stops(void);
 
   // /**
   //  * @brief Disables the Closed-Loop PID Controllers

@@ -69,7 +69,7 @@ int Joint::disable(void)
         return -5;
     }
     int rc = 0;
-    rc |= this->stop(1);
+    rc |= this->stop();
     usleep(100000);
     rc |= this->disableCL();
     usleep(10000);
@@ -158,7 +158,7 @@ int Joint::setPosition(float pos)
     int rc;
 
     // inline expansion of the macro did not work, convert before sending to function.
-    pos = JOINT2ACTUATOR(RAD2DEG(pos), this->reduction, this->offset);
+    pos = RAD2DEG(JOINT2ACTUATOR(pos, this->reduction, this->offset));
     rc = this->write(MOVETOANGLE, pos, this->flags);
     if (rc < 0)
     {
@@ -227,7 +227,7 @@ int Joint::setVelocity(float vel)
     int rc;
 
     // inline expansion of the macro did not work, convert before sending to function.
-    vel = JOINT2ACTUATOR(RAD2DEG(vel), this->reduction, 0) / 6;
+    vel = RAD2DEG(JOINT2ACTUATOR(vel, this->reduction, 0)) / 6;
     rc = this->write(SETRPM, vel, this->flags);
     if (rc < 0)
     {
@@ -269,13 +269,13 @@ int Joint::checkOrientation(float angle)
     return 0;
 }
 
-int Joint::stop(bool mode)
+int Joint::stop(void)
 {
     if (this->handle < 0)
     {
         return -5;
     }
-    return this->write(STOP, mode, this->flags) < 0 ? -1 : 0;
+    return this->write(STOP, 0x00, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::disableCL(void)
@@ -321,7 +321,7 @@ int Joint::setMaxAcceleration(float maxAccel)
     {
         return -5;
     }
-    maxAccel = JOINT2ACTUATOR(RAD2DEG(maxAccel), this->reduction, 0);
+    maxAccel = RAD2DEG(JOINT2ACTUATOR(maxAccel, this->reduction, 0));
     return this->write(SETMAXACCELERATION, maxAccel, this->flags) < 0 ? -1 : 0;
 }
 
@@ -331,7 +331,7 @@ int Joint::setMaxVelocity(float maxVel)
     {
         return -5;
     }
-    maxVel = JOINT2ACTUATOR(RAD2DEG(maxVel), this->reduction, 0);
+    maxVel = RAD2DEG(JOINT2ACTUATOR(maxVel, this->reduction, 0));
     return this->write(SETMAXVELOCITY, maxVel, this->flags) < 0 ? -1 : 0;
 }
 

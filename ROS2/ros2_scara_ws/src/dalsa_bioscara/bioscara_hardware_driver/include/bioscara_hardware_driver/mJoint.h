@@ -73,7 +73,7 @@ public:
    * @param address 1-byte I2C device adress (0x11 ... 0x14) for J1 ... J4
    * @param reduction gear reduction of the joint. This is used to transform position
    * and velocity values between in joint units and actuator (stepper) units.
-   * The sign depends on the direction is turning. Adjust such that the joint moves in the positive
+   * The sign depends on the direction the motor is mounted and is turning. Adjust such that the joint moves in the positive
    * direction on on positive joint commands. Cable polarity has no effect since the motors
    * automatically adjust to always run in the 'right' direction from their point of view. \n
    * J1: 35 \n
@@ -244,15 +244,15 @@ public:
 
   /**
    * @brief Stops the motor.
-   * @note When stopping the motor in soft mode, wait sufficiently long until the motor has stopped.
-   * Since the stop() function in the motor controller is blocking.
-   * Continously checking the busy flag also might interfere with the stop() function on the controller side.
-   * @param mode Hard: 0, Soft: 1
+   *
+   * Stops the motor by setting the maximum velocity to zero and the position setpoint
+   * to the current position
+   *
    * @return 0 on success,
    * -1 on communication error,
    * -5 if the joint is not initialized.
    */
-  int stop(bool mode);
+  int stop(void);
   /**
    * @brief Disables the Closed-Loop PID Controller
    * @return 0 on success, -1 on communication error,
@@ -381,7 +381,7 @@ private:
   enum stp_reg_t
   {
     PING = 0x0f,                ///< R; Size: 1; [(char) ACK]
-    SETUP = 0x10,               ///< W; Size: 2; [(uint8) holdCurrent, (uint8) driveCurrent]
+    SETUP = 0x10,              ///< W; Size: 2; [(uint8) holdCurrent, (uint8) driveCurrent]
     SETRPM = 0x11,              ///< W; Size: 4; [(float) RPM]
     GETDRIVERRPM = 0x12,        ///<
     MOVESTEPS = 0x13,           ///< W; Size: 4; [(int32) steps]
@@ -398,7 +398,6 @@ private:
     ENABLESTALLGUARD = 0x1E,    ///< W; Size: 1; [(uint8) threshold]
     DISABLESTALLGUARD = 0x1F,   ///<
     CLEARSTALL = 0x20,          ///<
-    ISSTALLED = 0x21,           ///< R; Size: 1; [(uint8) isStalled]
     SETBRAKEMODE = 0x22,        ///< W; Size: 1; [(uint8) mode]
     ENABLEPID = 0x23,           ///<
     DISABLEPID = 0x24,          ///<
@@ -411,8 +410,6 @@ private:
     CHECKORIENTATION = 0x2B,    ///< W; Size: 4; [(float) degrees]
     GETENCODERRPM = 0x2C,       ///< R; Size: 4; [(float) RPM]
     HOME = 0x2D,                ///< W; Size: 4; [(uint8) current, (int8) sensitivity, (uint8) speed, (uint8) direction]
-    ISHOMED = 0x2E,             ///< R; Size: 1; [(uint8) isStalled]
-    ISSETUP = 0x2F              ///< R; Size: 1; [(uint8) isStalled]
   };
 
   template <typename T>
@@ -431,13 +428,13 @@ private:
    *
    * |BIT7|BIT6|BIT5|BIT4|BIT3|BIT2|BIT1|BIT0|
    * | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
-   * |reserved|reserved|reserved|reserved|ENABLED|HOMED|BUSY|STALL|
+   * |reserved|reserved|reserved|reserved|NOTENABLED|NOTHOMED|BUSY|STALL|
    *
    * \b STALL is set if a stall from the stall detection is sensed and the joint is stopped.
    * The flag is cleared when the joint is homed or the Stallguard enabled. \n
    * \b BUSY is set if the slave is busy processing a previous command. \n
-   * \b HOMED is cleared if the joint is homed. Movement is only allowed if this flag is clear \n
-   * \b ENABLED is cleared if the joint is enabled after calling Joint::enable()
+   * \b NOTHOMED is cleared if the joint is homed. Movement is only allowed if this flag is clear \n
+   * \b NOTENABLED is cleared if the joint is enabled after calling Joint::enable()
    */
   u_int8_t flags = 0x00;
 

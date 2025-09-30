@@ -219,11 +219,11 @@ int Joint_comms::checkOrientation(const std::string name, float angle)
     return 0;
 }
 
-int Joint_comms::stops(bool mode)
+int Joint_comms::stops(void)
 {
     for (auto &[name, joint] : this->joints)
     {
-        int err = joint.stop(mode);
+        int err = joint.stop();
         if (err != 0)
         {
             std::cerr << "Failed to stop motor: " << name << " - error: " << err << std::endl;
