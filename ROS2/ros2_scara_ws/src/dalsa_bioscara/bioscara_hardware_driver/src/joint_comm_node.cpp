@@ -11,7 +11,6 @@ Joint J4("j4", 0x14, 1 /*12*/, 0);
 void INT_handler(int s)
 {
   printf("Caught signal %d\n", s);
-  J4.disable();
   exit(0);
 }
 
@@ -86,6 +85,5 @@ int main(int argc, char **argv)
       break;
     }
   }
-  J4.disable();
   return 0;
 }

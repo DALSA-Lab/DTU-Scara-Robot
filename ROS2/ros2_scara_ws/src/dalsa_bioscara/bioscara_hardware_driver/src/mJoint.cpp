@@ -9,6 +9,12 @@ Joint::Joint(const std::string name, const int address, const float reduction, c
     this->offset = offset;
 }
 
+Joint::~Joint(void)
+{
+    this->disable();
+    this->deinit();
+}
+
 int Joint::init(void)
 {
     std::cout << "INFO: Initializing " << this->name << std::endl;
@@ -22,25 +28,20 @@ int Joint::init(void)
 
 int Joint::deinit(void)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     int rc = closeI2CDevHandle(this->handle);
-    return rc < 0 ? -1 : 0;
-}
-int Joint::disable(void)
-{
-    int rc = 0;
-    rc |= this->stop(1);
-    usleep(100000);
-    rc |= this->disableCL();
-    usleep(10000);
-    rc |= this->setHoldCurrent(0);
-    usleep(10000);
-    rc |= this->setBrakeMode(0);
-    usleep(10000);
     return rc < 0 ? -1 : 0;
 }
 
 int Joint::enable(u_int8_t driveCurrent, u_int8_t holdCurrent)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     u_int32_t buf = 0;                  // Initialize buf to 0
     buf |= (driveCurrent & 0xFF);       // Copy driveCurrent to the least significant byte
     buf |= ((holdCurrent & 0xFF) << 8); // Copy holdCurrent to the next byte
@@ -61,14 +62,36 @@ int Joint::enable(u_int8_t driveCurrent, u_int8_t holdCurrent)
     return 0;
 }
 
+int Joint::disable(void)
+{
+    if (this->handle < 0)
+    {
+        return -5;
+    }
+    int rc = 0;
+    rc |= this->stop(1);
+    usleep(100000);
+    rc |= this->disableCL();
+    usleep(10000);
+    rc |= this->setHoldCurrent(0);
+    usleep(10000);
+    rc |= this->setBrakeMode(0);
+    usleep(10000);
+    return rc < 0 ? -1 : 0;
+}
+
 int Joint::home(u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t current)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     if (!this->isEnabled())
     {
         return -3;
     }
 
-    int rc  = this->checkOrientation(1.0);
+    int rc = this->checkOrientation(1.0);
     if (rc < 0)
     {
         return rc;
@@ -105,6 +128,10 @@ int Joint::printInfo(void)
 
 int Joint::getPosition(float &pos)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     if (!this->isHomed())
     {
         return -2; // not homed
@@ -116,6 +143,10 @@ int Joint::getPosition(float &pos)
 
 int Joint::setPosition(float pos)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     if (!this->isEnabled())
     {
         return -3; // not enabled
@@ -142,6 +173,10 @@ int Joint::setPosition(float pos)
 
 int Joint::moveSteps(int32_t steps)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     if (!this->isEnabled())
     {
         return -3; // not enabled
@@ -161,6 +196,10 @@ int Joint::moveSteps(int32_t steps)
 
 int Joint::getVelocity(float &vel)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     if (!this->isHomed())
     {
         return -2; // not homed
@@ -173,6 +212,10 @@ int Joint::getVelocity(float &vel)
 
 int Joint::setVelocity(float vel)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     if (!this->isEnabled())
     {
         return -3; // not enabled
@@ -199,6 +242,10 @@ int Joint::setVelocity(float vel)
 
 int Joint::checkOrientation(float angle)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     if (!this->isEnabled())
     {
         return -3; // not enabled
@@ -224,44 +271,76 @@ int Joint::checkOrientation(float angle)
 
 int Joint::stop(bool mode)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     return this->write(STOP, mode, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::disableCL(void)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     u_int8_t buf = 0;
     return this->write(DISABLECLOSEDLOOP, buf, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::setDriveCurrent(u_int8_t current)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     return this->write(SETCURRENT, current, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::setHoldCurrent(u_int8_t current)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     return this->write(SETHOLDCURRENT, current, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::setBrakeMode(u_int8_t mode)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     return this->write(SETBRAKEMODE, mode, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::setMaxAcceleration(float maxAccel)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     maxAccel = JOINT2ACTUATOR(RAD2DEG(maxAccel), this->reduction, 0);
     return this->write(SETMAXACCELERATION, maxAccel, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::setMaxVelocity(float maxVel)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     maxVel = JOINT2ACTUATOR(RAD2DEG(maxVel), this->reduction, 0);
     return this->write(SETMAXVELOCITY, maxVel, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::enableStallguard(u_int8_t sensitivity)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     return this->write(ENABLESTALLGUARD, sensitivity, this->flags) < 0 ? -1 : 0;
 }
 
@@ -282,6 +361,10 @@ bool Joint::isStalled(void)
 
 int Joint::checkCom(void)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     u_int8_t buf;
     int rc = this->read(PING, buf, this->flags);
 
@@ -294,6 +377,10 @@ int Joint::checkCom(void)
 
 u_int8_t Joint::getFlags(void)
 {
+    if (this->handle < 0)
+    {
+        return -5;
+    }
     u_int8_t buf;
     this->read(PING, buf, this->flags);
     return this->flags;

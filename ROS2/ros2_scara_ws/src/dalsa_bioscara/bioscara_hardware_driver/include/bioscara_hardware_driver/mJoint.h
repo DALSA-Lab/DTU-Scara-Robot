@@ -92,7 +92,7 @@ public:
    * - Investigate if possible to make independent of homing
    */
   Joint(const std::string name, const int address, const float reduction, const float offset);
-  // ~Joint();
+  ~Joint(void);
 
   /**
    * @brief Established connection to a joint via I2C
@@ -111,84 +111,10 @@ public:
    * Removes the joint from the I2C bus.
    *
    * @return 0 on success,
-   *  -1 when the joint could not be removed due to an I2C error.
+   *  -1 when the joint could not be removed due to an I2C error,
+   *  -5 if the joint is not initialized.
    */
   int deinit(void);
-  int printInfo(void);
-
-  /**
-   * @brief get the current joint position in radians or m for
-   * cylindrical and prismatic joints respectively.
-   *
-   * @param pos
-   * @return 0 on success,
-    -1 on communication error,
-    -2 when not homed
-   */
-  int getPosition(float &pos);
-
-  /**
-   * @brief get the current joint position in radians or m for
-   * cylindrical and prismatic joints respectively.
-   *
-   * @param pos in rad or m
-   * @return 0 on success,
-    -1 on communication error,
-    -2 when not homed,
-    -3 when the motor is not enabled,
-    -4 when the motor is stalled.
-   */
-  int setPosition(float pos);
-
-  /**
-   * @brief Move full steps.
-   *
-   * This function can be called even when not homed.
-   *
-   * @param steps number of full steps
-   * @return 0 on success,
-    -1 on communication error,
-    -3 when the motor is not enabled,
-    -4 when the motor is stalled.
-   */
-  int moveSteps(int32_t steps);
-
-  /**
-   * @brief get the current joint velocity in radians/s or m/s for
-   * cylindrical and prismatic joints respectively.
-   *
-   * @param vel
-   * @return 0 on success,
-    -1 on communication error,
-    -2 when not homed
-   */
-  int getVelocity(float &vel);
-
-  /**
-   * @brief Set the current joint velocity in radians/s or m/s for
-   * cylindrical and prismatic joints respectively.
-   *
-   * @param vel
-   * @return 0 on success,
-    -1 on communication error,
-    -2 when not homed,
-    -3 when the motor is not enabled,
-    -4 when the motor is stalled.
-   */
-  int setVelocity(float vel);
-
-  /**
-   * @brief Calls the checkOrientation method of the motor. Checks in which direction the motor is turning.
-   *
-   * As the orientation check is blocking on the motor, this this function returns when the isBusy flag is clear again.
-   *
-   * @param angle degrees how much the motor should turn. A few degrees is sufficient.
-   * @return 0 on success,
-    -1 on communication error,
-    -3 when the motor is not enabled,
-    -4 when the motor is stalled.
-   */
-  int checkOrientation(float angle = 10.0);
 
   /**
    * @brief Setup the joint and engages motor.
@@ -201,13 +127,16 @@ public:
    * @param holdCurrent hold current in 0-100 % of 2.5A output (check uStepper doc.)
    * @return 0 on success,
     -1 on communication error,
-    -3 when the motor is not enabled.
+    -3 when the motor is not enabled,
+    -5 if the joint is not initialized.
    */
   int enable(u_int8_t driveCurrent, u_int8_t holdCurrent);
 
   /**
    * @brief disenganges the joint motor without closing i2c handle
-   * @return 0 on success, -1 on communication error.
+   * @return 0 on success,
+   * -1 on communication error,
+    -5 if the joint is not initialized.
    */
   int disable(void);
 
@@ -226,9 +155,92 @@ public:
    * @return 0 on success,
     -1 on communication error,
     -2 when not homed succesfull (isHomed flag still not set),
-    -3 when the motor is not enabled.
+    -3 when the motor is not enabled,
+    -5 if the joint is not initialized.
    */
   int home(u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t current);
+
+  int printInfo(void);
+
+  /**
+   * @brief get the current joint position in radians or m for
+   * cylindrical and prismatic joints respectively.
+   *
+   * @param pos
+   * @return 0 on success,
+    -1 on communication error,
+    -2 when not homed,
+    -5 if the joint is not initialized.
+   */
+  int getPosition(float &pos);
+
+  /**
+   * @brief get the current joint position in radians or m for
+   * cylindrical and prismatic joints respectively.
+   *
+   * @param pos in rad or m
+   * @return 0 on success,
+    -1 on communication error,
+    -2 when not homed,
+    -3 when the motor is not enabled,
+    -4 when the motor is stalled,
+    -5 if the joint is not initialized.
+   */
+  int setPosition(float pos);
+
+  /**
+   * @brief Move full steps.
+   *
+   * This function can be called even when not homed.
+   *
+   * @param steps number of full steps
+   * @return 0 on success,
+    -1 on communication error,
+    -3 when the motor is not enabled,
+    -4 when the motor is stalled,
+    -5 if the joint is not initialized.
+   */
+  int moveSteps(int32_t steps);
+
+  /**
+   * @brief get the current joint velocity in radians/s or m/s for
+   * cylindrical and prismatic joints respectively.
+   *
+   * @param vel
+   * @return 0 on success,
+    -1 on communication error,
+    -2 when not homed,
+    -5 if the joint is not initialized.
+   */
+  int getVelocity(float &vel);
+
+  /**
+   * @brief Set the current joint velocity in radians/s or m/s for
+   * cylindrical and prismatic joints respectively.
+   *
+   * @param vel
+   * @return 0 on success,
+    -1 on communication error,
+    -2 when not homed,
+    -3 when the motor is not enabled,
+    -4 when the motor is stalled,
+    -5 if the joint is not initialized.
+   */
+  int setVelocity(float vel);
+
+  /**
+   * @brief Calls the checkOrientation method of the motor. Checks in which direction the motor is turning.
+   *
+   * As the orientation check is blocking on the motor, this this function returns when the isBusy flag is clear again.
+   *
+   * @param angle degrees how much the motor should turn. A few degrees is sufficient.
+   * @return 0 on success,
+    -1 on communication error,
+    -3 when the motor is not enabled,
+    -4 when the motor is stalled,
+    -5 if the joint is not initialized.
+   */
+  int checkOrientation(float angle = 10.0);
 
   /**
    * @brief Stops the motor.
@@ -236,12 +248,15 @@ public:
    * Since the stop() function in the motor controller is blocking.
    * Continously checking the busy flag also might interfere with the stop() function on the controller side.
    * @param mode Hard: 0, Soft: 1
-   * @return 0 on success, -1 on communication error.
+   * @return 0 on success,
+   * -1 on communication error,
+   * -5 if the joint is not initialized.
    */
   int stop(bool mode);
   /**
    * @brief Disables the Closed-Loop PID Controller
-   * @return 0 on success, -1 on communication error.
+   * @return 0 on success, -1 on communication error,
+    -5 if the joint is not initialized.
    */
   int disableCL(void);
 
@@ -249,7 +264,8 @@ public:
    * @brief Set the Drive Current
    * @warning This function is unreliable and not well tested. Use enable() instead!
    * @param current 0% - 100% of driver current
-   * @return 0 on success, -1 on communication error.
+   * @return 0 on success, -1 on communication error,
+    -5 if the joint is not initialized.
    */
   int setDriveCurrent(u_int8_t current);
 
@@ -257,14 +273,17 @@ public:
    * @brief Set the Hold Current
    * @warning This function is unreliable and not well tested. Use enable() instead!
    * @param current 0% - 100% of driver current
-   * @return error code.
+   * @return 0 on success,
+   * -1 on communication error,
+    -5 if the joint is not initialized.
    */
   int setHoldCurrent(u_int8_t current);
 
   /**
    * @brief Set Brake Mode
    * @param mode Freewheel: 0, Coolbrake: 1, Hardbrake: 2
-   * @return 0 on success, -1 on communication error.
+   * @return 0 on success, -1 on communication error,
+    -5 if the joint is not initialized.
    */
   int setBrakeMode(u_int8_t mode);
 
@@ -273,7 +292,8 @@ public:
    * and prismatic joints respectively.
    *
    * @param maxAccel maximum joint acceleration.
-   * @return 0 on success, -1 on communication error.
+   * @return 0 on success, -1 on communication error,
+    -5 if the joint is not initialized.
    */
   int setMaxAcceleration(float maxAccel);
 
@@ -282,7 +302,8 @@ public:
    * and prismatic joints respectively.
    *
    * @param maxVel maximum joint velocity.
-   * @return 0 on success, -1 on communication error.
+   * @return 0 on success, -1 on communication error,
+    -5 if the joint is not initialized.
    */
   int setMaxVelocity(float maxVel);
 
@@ -292,7 +313,8 @@ public:
    * If the PID error exceeds the set threshold a stall is triggered and the motor disabled.
    * A detected stall can be reset by homeing or by reenabling the stall guard.
    * @param thresholds value of threshold. 0 - 255 where lower is more sensitive.
-   * @return 0 on success, -1 on communication error.
+   * @return 0 on success, -1 on communication error,
+    -5 if the joint is not initialized.
    */
   int enableStallguard(u_int8_t sensitivity);
 
@@ -326,11 +348,20 @@ public:
    */
   bool isStalled(void);
 
+  /**
+   * @brief Check if communication to the joint is established
+   *
+   * Sends a PING to and expects a ACK from the joint.
+   *
+   * @return 0 on success, -1 on communication error,
+    -5 if the joint is not initialized.
+   */
   int checkCom(void);
 
   /**
    * get driver state flags
-   * @return flags.
+   * @return flags >= 0 on success,
+    -5 if the joint is not initialized.
    */
   u_int8_t getFlags(void);
 
