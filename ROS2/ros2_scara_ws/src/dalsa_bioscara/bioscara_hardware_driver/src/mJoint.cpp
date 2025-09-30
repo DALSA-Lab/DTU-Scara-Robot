@@ -67,13 +67,20 @@ int Joint::home(u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t
     {
         return -3;
     }
+
+    int rc  = this->checkOrientation(1.0);
+    if (rc < 0)
+    {
+        return rc;
+    }
+
     u_int32_t buf = 0;
     buf |= (direction & 0xFF);
     buf |= ((rpm & 0xFF) << 8);
     buf |= ((sensitivity & 0xFF) << 16);
     buf |= ((current & 0xFF) << 24);
 
-    int rc = this->write(HOME, buf, this->flags);
+    rc = this->write(HOME, buf, this->flags);
     if (rc < 0)
     {
         return -1;
@@ -177,7 +184,7 @@ int Joint::setVelocity(float vel)
     int rc;
 
     // inline expansion of the macro did not work, convert before sending to function.
-    vel = JOINT2ACTUATOR(RAD2DEG(vel), this->reduction, 0)/6;
+    vel = JOINT2ACTUATOR(RAD2DEG(vel), this->reduction, 0) / 6;
     rc = this->write(SETRPM, vel, this->flags);
     if (rc < 0)
     {
@@ -249,8 +256,8 @@ int Joint::setMaxAcceleration(float maxAccel)
 
 int Joint::setMaxVelocity(float maxVel)
 {
-    maxVel =  JOINT2ACTUATOR(RAD2DEG(maxVel), this->reduction, 0);
-    return this->write(SETMAXVELOCITY,maxVel, this->flags) < 0 ? -1 : 0;
+    maxVel = JOINT2ACTUATOR(RAD2DEG(maxVel), this->reduction, 0);
+    return this->write(SETMAXVELOCITY, maxVel, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::enableStallguard(u_int8_t sensitivity)
