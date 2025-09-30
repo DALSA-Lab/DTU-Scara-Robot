@@ -30,7 +30,8 @@ static uint8_t driveCurrent, holdCurrent;
 static uint8_t notHomed = 1;
 static uint8_t isStalled = 0;
 static uint8_t isBusy = 0;
-static uint8_t notSetup = 1;
+static uint8_t notEnabled = 1;
+static bool stepperSetup = 0;
 static uint8_t isStallguardEnabled = 0;
 static int stallguardThreshold = 100;
 static float q_set, q, qd_set, qd;
@@ -106,7 +107,7 @@ void requestEvent() {
   state |= (isStalled << 0);
   state |= (isBusy << 1);
   state |= (notHomed << 2);
-  state |= (notSetup << 3);
+  state |= (notEnabled << 3);
   // Serial.print("state: \t");
   // Serial.print(state, HEX);
   // Serial.print("\t");
@@ -133,8 +134,9 @@ void blocking_handler(uint8_t reg) {
         // Serial.print("Executing SETUP\n");
         memcpy(&driveCurrent, rx_buf, 1);
         memcpy(&holdCurrent, rx_buf + 1, 1);
-        if (notSetup) {
+        if (!stepperSetup) {
           stepper.setup(CLOSEDLOOP, 200);
+          stepperSetup = 1;
           notHomed = 1;
         }
 
@@ -149,7 +151,7 @@ void blocking_handler(uint8_t reg) {
         stepper.stop();
 
         isStallguardEnabled = 0;
-        notSetup = 0;
+        notEnabled = 0;
         isStalled = 0;
         break;
       }
@@ -263,7 +265,7 @@ void non_blocking_handler(uint8_t reg) {
     case ISSETUP:
       {
         // Serial.print("Executing ISSETUP\n");
-        writeValue<uint8_t>(!notSetup, tx_buf, tx_length);
+        writeValue<uint8_t>(!notEnabled, tx_buf, tx_length);
         tx_data_ready = 1;
         break;
       }
@@ -315,6 +317,9 @@ void non_blocking_handler(uint8_t reg) {
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
         stepper.setCurrent(v);
+        if (v == 0) {
+          notEnabled = 1;
+        }
         break;
       }
 
@@ -324,6 +329,9 @@ void non_blocking_handler(uint8_t reg) {
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
         stepper.setHoldCurrent(v);
+        if (v == 0) {
+          notEnabled = 1;
+        }
         break;
       }
 
@@ -400,7 +408,7 @@ void non_blocking_handler(uint8_t reg) {
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
         stepper.disableClosedLoop();
-        notSetup = 1;
+        notEnabled = 1;
         break;
       }
 
@@ -452,9 +460,7 @@ static float err = 0;
 
  * Executes the following: \n 
  * 1) if isStallguardEnabled: compares stepper.getPidError() with stallguardThreshold and sets isStalled flag. \n 
- * 2) sets/clears notHomed flag if the joint is homed or not. \n 
- * 3) sets/clears notSetup if the joint is setup or not. \n 
- * 4) if rx_data_ready: set isBusy flag to indicate device is busy. Invoke blocking_handler. 
+ * 2) if rx_data_ready: set isBusy flag to indicate device is busy. Invoke blocking_handler. 
  * Clear isBusy flag to indicate device is no longer busy \n 
  */
 void loop(void) {
