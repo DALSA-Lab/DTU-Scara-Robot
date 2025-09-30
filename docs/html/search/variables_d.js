@@ -1,6 +1,8 @@
 var searchData=
 [
-  ['tx_5fbuf_0',['tx_buf',['../joint_8ino.html#a12443830e4f85d217d84ce079f79a59d',1,'joint.ino']]],
-  ['tx_5fdata_5fready_1',['tx_data_ready',['../joint_8ino.html#a2ba4f569de9a7849ccfaf4602fb77494',1,'joint.ino']]],
-  ['tx_5flength_2',['tx_length',['../joint_8ino.html#a7ab3114be16a93ee047a809202bc7183',1,'joint.ino']]]
+  ['package_5fname_0',['package_name',['../namespacesetup.html#a69903e4f05cebc9e005b22b36f5724eb',1,'setup']]],
+  ['packages_1',['packages',['../namespacesetup.html#aff2375a361fd5865c77bd9aa093be747',1,'setup']]],
+  ['per_2',['per',['../classRPI__PWM.html#a980677ec3d3119a4dc69a66cf73f1de6',1,'RPI_PWM']]],
+  ['pwm_3',['pwm',['../classGripper.html#a5e33de25cd8410c49f0cc832d74da7ef',1,'Gripper']]],
+  ['pwmpath_4',['pwmpath',['../classRPI__PWM.html#a62b8d2b406cbb62d2703d282bdc703d9',1,'RPI_PWM']]]
 ];

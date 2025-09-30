@@ -1,19 +1,19 @@
-<map id="ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mGripper.h" name="ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/mGripper.h">
-<area shape="rect" id="Node000001" title="File containing the Gripper class." alt="" coords="217,5,431,75"/>
-<area shape="rect" id="Node000002" href="$uPWM_8h.html" title="Includes source code for Hardware PWM generation on Raspberry Pi 4." alt="" coords="245,123,403,163"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="327,75,327,108,321,108,321,75"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,211,72,236"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="256,165,86,212,85,207,255,160"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="97,211,167,236"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="279,165,174,208,172,203,277,160"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="191,211,262,236"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="302,165,253,204,250,200,299,161"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="287,211,361,236"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="327,163,327,197,321,197,321,163"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="385,211,444,236"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="348,161,393,199,389,204,344,165"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="468,211,548,236"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="369,160,470,203,467,208,367,165"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="573,211,641,236"/>
-<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="392,160,560,206,558,211,391,165"/>
+<map id="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/mGripper.h" name="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/mGripper.h">
+<area shape="rect" id="Node000001" title="File containing the Gripper class." alt="" coords="224,5,424,89"/>
+<area shape="rect" id="Node000002" href="$uPWM_8h.html" title="Includes source code for Hardware PWM generation on Raspberry Pi 4." alt="" coords="229,137,419,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="327,90,327,124,321,124,321,90"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,225,72,251"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="256,180,86,226,85,221,255,175"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="97,225,167,251"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="279,180,174,223,172,218,277,175"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="191,225,262,251"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="302,180,253,219,250,214,299,175"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="287,225,361,251"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="327,178,327,211,321,211,321,178"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="385,225,444,251"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="348,176,393,214,389,218,344,180"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="468,225,548,251"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="369,175,470,217,467,222,367,180"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="573,225,641,251"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="392,175,560,221,558,226,391,180"/>
 </map>

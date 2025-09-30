@@ -35,18 +35,18 @@ public:
   ~Joint_comms();
 
   /**
-   * @brief Connects to all joints.
+   * @brief Connects to all joints using the Joint::init() function.
    *
    * Iterates over all joints and connects to them on the I2C bus and tests if they are responsive.
    *
    * @warning Add some joints using addJoint() before calling this function.
    *
-   * @return 0 on success, non-zero otherwise
+   * @return 0 on success, -1 on error.
    */
   int init(void);
 
   /**
-   * @brief Disconnects all joints from the I2C bus.
+   * @brief Disconnects all joints from the I2C bus using the Joint::deinit() function.
    *
    * Deinitializes all joints by removing them from the I2C bus.
    *
@@ -55,22 +55,11 @@ public:
   int deinit(void);
 
   /**
-   * @brief add a Joint.
+   * @brief add a Joint::Joint() to the internal map storing all connected joints.
    *
- * Appends a joint to internal map.
- * @param name string device name for output logs
- * @param address 1-byte I2C device adress (0x11 ... 0x14) for J1 ... J4
- * @param gearRatio gear ratio of joint. This is used to transform position
- * and velocity commands in joint units to the stepper units. Signed: sign depends if homed CW or CCW.
- * J1: 35; J2: -360/4 (4 mm per revolution); J3: 24; J4: 12;
- * @param offset offset between encoder zero and joint zero (in joint units).
- * J1: TBD; J2: -TBD (negative because homed at top); J3: TBD; J4: TBD;
- * @todo
- * - Measure joint ranges
- * - Investigate if possible to make independent of homing
-
- */
-  void addJoint(const std::string name, const int address, const float gearRatio, const float offset);
+   * @copydetails Joint::Joint()
+   */
+  void addJoint(const std::string name, const int address, const float reduction, const float offset);
 
   /**
    * @brief removes a joint.
@@ -85,42 +74,11 @@ public:
    */
   void removeJoints(void);
 
-  //  /**
-  //  * @brief Engages the joints
-  //  *
-  //  * Sets the drive and hold currents for each joint and engages the motor.
-  //  * Currents are in percent of driver max. output (2.5A, check with datasheet)
-  //  *
-  //  * @param driveCurrent_v vector of drive currents 0-100.
-  //  * the i'th vector entry sets the current for the i'th added joint.
-  //  * @param holdCurrent_v vector of hold currents 0-100.
-  //  * the i'th vector entry sets the current for the i'th added joint.
-
-  //  * @return error code.
-  //  */
-  //   int enables(std::vector<u_int8_t> driveCurrent_v, std::vector<u_int8_t> holdCurrent_v);
-
-  // /**
-  //  * @brief Engages the joints with the same current settings for all joints.
-  //  *
-  //  * In this overload the same drive and hold currents are written to every joint.
-  //  * @param driveCurrent drive current 0-100.
-  //  * @param holdCurrent hold current 0-100.
-  //  * @return error code.
-  //  */
-  // int enables(u_int8_t driveCurrent, u_int8_t holdCurrent);
-
   /**
-* @brief Engage a joint by name
-*
-* Sets the drive and hold currents for the specified joint and engages the motor.
-* Currents are in percent of driver max. output (2.5A, check with datasheet)
-*
-* @param driveCurrent drive current 0-100%.
-* @param holdCurrent hold current 0-100%.
-
-* @return error code.
-*/
+   * @brief Engage a joint by name
+   * @copydetails Joint::enable()
+   * @return 0 on success, -1 on error, -2 if the specified joint is not found.
+   */
   int enable(const std::string name, const u_int8_t driveCurrent, const u_int8_t holdCurrent);
 
   /**
@@ -147,17 +105,6 @@ public:
    */
   int home(const std::string name, const u_int8_t direction, const u_int8_t rpm, const u_int8_t sensitivity, const u_int8_t current);
 
-  // /**
-  //  * @brief Get the positions of all joints.
-  //  *
-  //  * The current positions of all joints are returned. The units are degrees and mm for
-  //  * revolute and prismatic joints respectively.
-  //  *
-  //  * @param angle_v Reference to allocated vector of appropriate size to hold all joint positions.
-  //  * @return error code.
-  //  */
-  // int getPositions(std::vector<float> &angle_v);
-
   /**
    * @brief Get the position of the joint by name.
    *
@@ -168,17 +115,6 @@ public:
    * @return error code.
    */
   int getPosition(const std::string name, float &angle);
-
-  // /**
-  //  * @brief Set the positions of all joints.
-  //  *
-  //  * Set new target positons of all joints. The units are degrees and mm for
-  //  * revolute and prismatic joints respectively.
-  //  *
-  //  * @param angle_v Vector of new target positions.
-  //  * @return error code.
-  //  */
-  // int setPositions(std::vector<float> angle_v);
 
   /**
    * @brief Set the position of the joint by name.
@@ -191,17 +127,6 @@ public:
    */
   int setPosition(const std::string name, const float angle);
 
-  // /**
-  //  * @brief Get the velocities of all joints.
-  //  *
-  //  * The current velocities of all joints are returned. The units are degrees/s and mm/s for
-  //  * revolute and prismatic joints respectively.
-  //  *
-  //  * @param degps_v Reference to allocated vector of appropriate size to hold all joint velocities.
-  //  * @return error code.
-  //  */
-  // int getVelocities(std::vector<float> &degps_v);
-
   /**
    * @brief Get the velocity of a joint by name.
    *
@@ -213,17 +138,6 @@ public:
    */
   int getVelocity(const std::string name, float &degps);
 
-  // /**
-  //  * @brief Set the velocities of all joints.
-  //  *
-  //  * Set new target velocities of all joints. The units are degrees/s and mm/s for
-  //  * revolute and prismatic joints respectively.
-  //  *
-  //  * @param degps_v Vector of new target velocities.
-  //  * @return error code.
-  //  */
-  // int setVelocities(std::vector<float> degps_v);
-
   /**
    * @brief Set the velocity of a joint by name.
    *
@@ -234,20 +148,6 @@ public:
    * @return error code.
    */
   int setVelocity(const std::string name, float degps);
-
-  // /**
-  //  * @brief Sequentially checks the orientations of each joint.
-  //  *
-  //  * This function should only be called after the joint has just been powered up.
-  //  * This function must be called after the joint has been enabled with enables()
-  //  * and before any movement.
-  //  * @param angle_v vector of degrees to rotate to check the orientation. Should be small values of a few degrees.
-  //  * @return error code.
-  //  * @todo
-  //  * - Only execute if not performed before
-  //  * - save in private flag and inhibit movement if this has not been executed.
-  //  */
-  // int checkOrientations(std::vector<float> angle_v);
 
   /**
    * @brief Sequentially checks the orientations of each joint.
@@ -280,11 +180,9 @@ public:
   /**
    * @brief Stops the motors
    *
-   * Stops all motors either soft or hard.
-   * @param mode Hard: 0, Soft: 1
    * @return error code.
    */
-  int stops(bool mode);
+  int stops(void);
 
   // /**
   //  * @brief Disables the Closed-Loop PID Controllers
@@ -360,18 +258,18 @@ public:
   /**
    * @brief Set the maximum permitted joint acceleration (and deceleration) in deg/s^2 or mm/s^2 for cylindrical
    * and prismatic joints respectively.
-   * 
+   *
    * @param maxAccel maximum joint acceleration.
-   * @return error code 
+   * @return error code
    */
   int setMaxAcceleration(const std::string name, float maxAccel);
 
-    /**
+  /**
    * @brief Set the maximum permitted joint velocity in deg/s or mm/s for cylindrical
    * and prismatic joints respectively.
-   * 
+   *
    * @param maxVel maximum joint velocity.
-   * @return error code 
+   * @return error code
    */
   int setMaxVelocity(const std::string name, float maxVel);
 

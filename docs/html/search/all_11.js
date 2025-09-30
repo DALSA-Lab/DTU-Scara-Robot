@@ -1,7 +1,24 @@
 var searchData=
 [
-  ['todo_20list_0',['Todo List',['../todo.html',1,'']]],
-  ['tx_5fbuf_1',['tx_buf',['../joint_8ino.html#a12443830e4f85d217d84ce079f79a59d',1,'joint.ino']]],
-  ['tx_5fdata_5fready_2',['tx_data_ready',['../joint_8ino.html#a2ba4f569de9a7849ccfaf4602fb77494',1,'joint.ino']]],
-  ['tx_5flength_3',['tx_length',['../joint_8ino.html#a7ab3114be16a93ee047a809202bc7183',1,'joint.ino']]]
+  ['setbrakemode_0',['setbrakemode',['../classJoint.html#ace371fa42a397f96ac6bef7e2faffbbd',1,'Joint::setBrakeMode(u_int8_t mode)'],['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a24a0636219d40c6bc04c13607a73bf14',1,'Joint::SETBRAKEMODE'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a8967f5054ed12cf09fe37b7369a668af',1,'SETBRAKEMODE:&#160;joint.h']]],
+  ['setcontrolthreshold_1',['setcontrolthreshold',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a25463cded0b67be6de7e47c1fc2825ea',1,'SETCONTROLTHRESHOLD:&#160;joint.h'],['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a346c81a366404119562626b4442c0012',1,'Joint::SETCONTROLTHRESHOLD']]],
+  ['setcurrent_2',['setcurrent',['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a4763bc90cfb24d8c7dcdc86e56d696d1',1,'Joint::SETCURRENT'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227ada9eaad2a52ca442e604b4f4553358b7',1,'SETCURRENT:&#160;joint.h']]],
+  ['setdrivecurrent_3',['setDriveCurrent',['../classJoint.html#a35a2db0195dc5dc7603810ab355acd94',1,'Joint']]],
+  ['setdutycycle_4',['setDutyCycle',['../classRPI__PWM.html#aa873d369ec4dec004a6be8ba63606c11',1,'RPI_PWM']]],
+  ['setdutycyclens_5',['setDutyCycleNS',['../classRPI__PWM.html#acd7a572ed91355ae643f39689c5c8174',1,'RPI_PWM']]],
+  ['setholdcurrent_6',['setholdcurrent',['../classJoint.html#ad6c87283498d811fbf7b4936225d5b77',1,'Joint::setHoldCurrent()'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a8b0551c32439915ace9fc7c42c6ab252',1,'SETHOLDCURRENT:&#160;joint.h'],['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a73b9e7d52741ac3a9f151c9c8fdf240a',1,'Joint::SETHOLDCURRENT']]],
+  ['setmaxacceleration_7',['setmaxacceleration',['../classJoint.html#ace6f23fd07b18c93a5bfa0eb3b169ead',1,'Joint::setMaxAcceleration()'],['../classJoint__comms.html#af09d72794cb0d7b3bf79be3eeaad53f2',1,'Joint_comms::setMaxAcceleration()'],['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a49346b52978f793d7b0df1cc079ca553',1,'Joint::SETMAXACCELERATION'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a3603579a798a53df01f390ce1ceb4bd2',1,'SETMAXACCELERATION:&#160;joint.h']]],
+  ['setmaxdeceleration_8',['setmaxdeceleration',['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18ac7f27dd47328fd48cf2132d61d56b816',1,'Joint::SETMAXDECELERATION'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227af5eb3f073abbadddebe0e462d0678cab',1,'SETMAXDECELERATION:&#160;joint.h']]],
+  ['setmaxvelocity_9',['setmaxvelocity',['../classJoint__comms.html#ad87fd8a32ab2788b871046fc492c6f2e',1,'Joint_comms::setMaxVelocity()'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a1bede85166c17bd970bdb990ce63ccc0',1,'SETMAXVELOCITY:&#160;joint.h'],['../classJoint.html#a4d0f0be9bc855b75ae88e88043f4bfa4',1,'Joint::setMaxVelocity(float maxVel)'],['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a9c21c01868f3b75414574bde1c3a56fa',1,'Joint::SETMAXVELOCITY']]],
+  ['setperiod_10',['setPeriod',['../classRPI__PWM.html#a6d1eaddac5428733db69f27d962b0cc3',1,'RPI_PWM']]],
+  ['setposition_11',['setposition',['../classJoint__comms.html#ae9306d7e5217617e70d9da955e19075c',1,'Joint_comms::setPosition()'],['../classJoint.html#a365628f72a742bb383f6e495b7d9f74a',1,'Joint::setPosition()'],['../classGripper.html#a982354e6c6f97a0f8ba6fed6c2b23a80',1,'Gripper::setPosition()']]],
+  ['setrpm_12',['setrpm',['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18afe94954e7116cdc52e361c6b6dcac960',1,'Joint::SETRPM'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a043c90c670bd894bd93254d86d0d30dd',1,'SETRPM:&#160;joint.h']]],
+  ['setup_13',['setup',['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a6fd4544fbf900a87dd6990477feebd9e',1,'Joint::SETUP'],['../joint_8ino.html#a7dfd9b79bc5a37d7df40207afbc5431f',1,'setup(void):&#160;joint.ino'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227ae2b58a994ba6ad1506f2a89cc3a60a9b',1,'SETUP:&#160;joint.h'],['../namespacesetup.html',1,'setup']]],
+  ['setup_2epy_14',['setup.py',['../setup_8py.html',1,'']]],
+  ['setvelocity_15',['setvelocity',['../classJoint__comms.html#a6919e5270073edef2561ab6d83974070',1,'Joint_comms::setVelocity()'],['../classJoint.html#a3dbda9cbf3b38d85bc693a742998bbe0',1,'Joint::setVelocity()']]],
+  ['start_16',['start',['../classRPI__PWM.html#a99e582b3b8571eb991c80268d6024cd8',1,'RPI_PWM']]],
+  ['stepper_17',['stepper',['../joint_8ino.html#aba8f71f42a1e65ec8b11603f009f025b',1,'joint.ino']]],
+  ['stop_18',['stop',['../classRPI__PWM.html#a1ca02994ab743f3397bce2ebc2b745ed',1,'RPI_PWM::stop()'],['../classJoint.html#a89deba37891f86ec4cedbd7e3e001133',1,'Joint::stop(bool mode)'],['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a1c3854c27bdc5c8a6742b9613c13e9f7',1,'Joint::STOP'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a679ee5320d66c8322e310daeb2ee99b8',1,'STOP:&#160;joint.h']]],
+  ['stops_19',['stops',['../classJoint__comms.html#a3f56abc43ef3054ec7b0295b10df4d1c',1,'Joint_comms']]],
+  ['stp_5freg_5ft_20',['stp_reg_t',['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18',1,'Joint::stp_reg_t'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227',1,'stp_reg_t:&#160;joint.h']]]
 ];

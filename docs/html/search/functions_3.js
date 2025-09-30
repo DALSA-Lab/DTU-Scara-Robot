@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['enable_0',['enable',['../classGripper.html#aa65e70728b2b1dc6dbdee2147354366b',1,'Gripper::enable()'],['../classJoint.html#a3714c35d4488d03280a7c2dc9e415ee0',1,'Joint::enable()'],['../classRPI__PWM.html#aa023cdb54ae0945f74c454d70d654a58',1,'RPI_PWM::enable()']]],
-  ['enables_1',['enables',['../classJoint__comms.html#a6df8ddf06f23eff71e3e2f3c402e33bb',1,'Joint_comms::enables(std::vector&lt; u_int8_t &gt; driveCurrent_v, std::vector&lt; u_int8_t &gt; holdCurrent_v)'],['../classJoint__comms.html#a40a7c7b5eec013ba18f13dd0a5f10a89',1,'Joint_comms::enables(u_int8_t driveCurrent, u_int8_t holdCurrent)']]],
-  ['enablestallguard_2',['enableStallguard',['../classJoint.html#a4269e05eca7c3d773d5ea2e7c25c2300',1,'Joint']]],
-  ['enablestallguards_3',['enableStallguards',['../classJoint__comms.html#a24e10dc20814532ec5326084448c8039',1,'Joint_comms']]]
+  ['deinit_0',['deinit',['../classGripper.html#ad52210917d2e1736384372699473147c',1,'Gripper::deinit()'],['../classJoint.html#a5d3de221dc515ba43c8ae3a1d08751d6',1,'Joint::deinit()'],['../classJoint__comms.html#ae25646f0c0d4ee0d4b256580747eab2e',1,'Joint_comms::deinit()']]],
+  ['disable_1',['disable',['../classGripper.html#a37aa55b9a63550fd2eb3c516f2adcfc5',1,'Gripper::disable()'],['../classJoint.html#ac591f5aaee3d8afb2768a67e5f0e4f38',1,'Joint::disable()'],['../classRPI__PWM.html#ade7c53f4c16b0dc40e8e8f38eb151a89',1,'RPI_PWM::disable()']]],
+  ['disablecl_2',['disableCL',['../classJoint.html#ac35fe15f5bbaf68a9751f02b9c5ee93d',1,'Joint']]],
+  ['disables_3',['disables',['../classJoint__comms.html#aa73b0604f5ccddc66eee71ad787e87d6',1,'Joint_comms']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['stepper_0',['stepper',['../joint_8ino.html#aba8f71f42a1e65ec8b11603f009f025b',1,'joint.ino']]]
+  ['offset_0',['offset',['../classJoint.html#a83ba15eb990b4a47501fc7377b5093ff',1,'Joint']]]
 ];
