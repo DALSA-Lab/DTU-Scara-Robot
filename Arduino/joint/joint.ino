@@ -21,7 +21,7 @@
  * 
  * Define either J1, J2, J3 or J4 and subsequently include configuration.h 
  */
-#define J4
+#define J2
 #include "configuration.h"
 
 
@@ -393,10 +393,10 @@ void non_blocking_handler(uint8_t reg) {
         // Serial.print("Executing STOP\n");
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
-        // stepper.setRPM(0);
+        stepper.setRPM(0);
 
         // Set new position
-        stepper.driver.setPosition(stepper.driver.getPosition());
+        // stepper.driver.setPosition(stepper.driver.getPosition());
 
         // reset isBusy flag to signal to blocking functions to stop when they can
         isBusy = 0;
