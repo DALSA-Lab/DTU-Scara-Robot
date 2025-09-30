@@ -1,4 +1,57 @@
 <?xml version="1.0" ?>
-<robot name="bioscara" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+<ros2_control name="bioscara" type="system">
+      <hardware>
+        <plugin>bioscara_hardware_interface/BioscaraHardwareInterface</plugin>
+      </hardware>
 
+      <joint name="j1">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <param name="i2c_address">0x11</param>
+        <param name="reduction">35</param>
+        <param name="offset">-3.04647</param>
+        <param name="stall_threshold">6</param>
+        <param name="hold_current">20</param>
+        <param name="drive_current">20</param>
+        <param name="max_acceleration">${pi}</param>
+        <param name="max_velocity">${pi}</param>
+      </joint>
+      <joint name="j2">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <param name="i2c_address">0x12</param>
+        <param name="reduction">${-2*pi/0.004}</param>
+        <param name="offset">0.388</param>
+        <param name="stall_threshold">6</param>
+        <param name="hold_current">30</param>
+        <param name="drive_current">30</param>
+        <param name="max_acceleration">0.1</param>
+        <param name="max_velocity">0.1</param>
+      </joint>
+      <joint name="j3">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <param name="i2c_address">0x13</param>
+        <param name="reduction">24</param>
+        <param name="offset">-2.62672</param>
+        <param name="stall_threshold">6</param>
+        <param name="hold_current">20</param>
+        <param name="drive_current">20</param>
+        <param name="max_acceleration">${pi}</param>
+        <param name="max_velocity">${pi}</param>
+      </joint>
+      <joint name="j4">
+        <command_interface name="position"/>
+        <state_interface name="position"/>
+        <param name="i2c_address">0x14</param>
+        <param name="reduction">12</param>
+        <param name="offset">-3.01069</param>
+        <param name="stall_threshold">6</param>
+        <param name="hold_current">20</param>
+        <param name="drive_current">20</param>
+        <param name="max_acceleration">${pi}</param>
+        <param name="max_velocity">${pi}</param>
+      </joint>
+    </ros2_control>
 </robot>

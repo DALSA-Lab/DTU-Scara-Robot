@@ -82,11 +82,11 @@ public:
    * J4: 12
    * @param offset offset between actuator zero and joint zero (in joint units).
    * Set this to the angle the joint is at when is is homed. F.x. since J2 is homing at the top the
-   * offset shall be a positive numer. \n
-   * J1: (-)3.04647 \n
+   * offset shall be a positive numer. All other joints are homed at the most negative position, hence the offset is negative. \n
+   * J1: -3.04647 \n
    * J2: 0.3380 \n
-   * J3: (-)2.62672 \n
-   * J4: (-)3.01069
+   * J3: -2.62672 \n
+   * J4: -3.01069
    * @todo
    * - Measure joint ranges
    * - Investigate if possible to make independent of homing

@@ -84,7 +84,7 @@ namespace bioscara_hardware_interface
       // add joint one by one reading parameters from urdf
 
       joint_config_t cfg;
-      cfg.i2c_address = std::stoi(joint.parameters.at("i2c_address")),
+      cfg.i2c_address = std::stoi(joint.parameters.at("i2c_address"), nullptr, 16),
       cfg.reduction = std::stof(joint.parameters.at("reduction")),
       cfg.offset = std::stof(joint.parameters.at("offset")),
       cfg.stall_threshold = std::stoi(joint.parameters.at("stall_threshold")),

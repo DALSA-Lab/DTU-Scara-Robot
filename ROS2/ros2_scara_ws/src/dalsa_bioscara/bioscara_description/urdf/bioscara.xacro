@@ -25,7 +25,7 @@
   </collision>
 </link>
 
-<link name="link_1_1">
+<link name="link_1">
   <inertial>
     <origin xyz="-0.015985049353244893 0.0 0.22758900000000004" rpy="0 0 0"/>
     <mass value="201.06235973556932"/>
@@ -46,7 +46,7 @@
   </collision>
 </link>
 
-<link name="link_2_1">
+<link name="link_2">
   <inertial>
     <origin xyz="0.16393794060138223 0.0 0.06413863377953821" rpy="0 0 0"/>
     <mass value="31.7907164853462"/>
@@ -67,7 +67,7 @@
   </collision>
 </link>
 
-<link name="link_3_1">
+<link name="link_3">
   <inertial>
     <origin xyz="0.14250000161157844 -4.518384865479846e-17 0.08014650000000001" rpy="0 0 0"/>
     <mass value="28.44193338693538"/>
@@ -88,7 +88,7 @@
   </collision>
 </link>
 
-<link name="link_4_1">
+<link name="link_4">
   <inertial>
     <origin xyz="3.2231565194607015e-09 -4.5766223964710255e-17 0.06973284751916564" rpy="0 0 0"/>
     <mass value="1.4470826717389633"/>
@@ -112,33 +112,44 @@
 <joint name="j1" type="revolute">
   <origin xyz="0.0 0.0 0.1442" rpy="0 0 0"/>
   <parent link="base_link"/>
-  <child link="link_1_1"/>
+  <child link="link_1"/>
   <axis xyz="0.0 0.0 1.0"/>
   <limit upper="2.96706" lower="-2.96706" effort="100" velocity="100"/>
 </joint>
 
 <joint name="j2" type="prismatic">
   <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
-  <parent link="link_1_1"/>
-  <child link="link_2_1"/>
+  <parent link="link_1"/>
+  <child link="link_2"/>
   <axis xyz="0.0 0.0 1.0"/>
   <limit upper="0.338" lower="0.0" effort="100" velocity="100"/>
 </joint>
 
 <joint name="j3" type="revolute">
   <origin xyz="0.329476 0.0 0.0" rpy="0 0 0"/>
-  <parent link="link_2_1"/>
-  <child link="link_3_1"/>
+  <parent link="link_2"/>
+  <child link="link_3"/>
   <axis xyz="0.0 0.0 1.0"/>
   <limit upper="2.96706" lower="-2.96706" effort="100" velocity="100"/>
 </joint>
 
 <joint name="j4" type="revolute">
   <origin xyz="0.285 -0.0 0.0" rpy="0 0 0"/>
-  <parent link="link_3_1"/>
-  <child link="link_4_1"/>
+  <parent link="link_3"/>
+  <child link="link_4"/>
   <axis xyz="0.0 0.0 1.0"/>
   <limit upper="2.96706" lower="-2.96706" effort="100" velocity="100"/>
 </joint>
+
+  <joint name="tool_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="${pi} 0 0" />
+    <parent link="link_4"/>
+    <child link="tool0" />
+  </joint>
+
+  <!-- Tool Link -->
+  <link name="tool0">
+  </link>
+
 
 </robot>
