@@ -4,7 +4,6 @@
       <hardware>
         <plugin>bioscara_hardware_interface/BioscaraHardwareInterface</plugin>
       </hardware>
-
       <joint name="j1">
         <command_interface name="position"/>
         <state_interface name="position"/>

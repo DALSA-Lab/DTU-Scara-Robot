@@ -1,155 +1,19 @@
 <?xml version="1.0" ?>
 <robot name="bioscara" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<xacro:include filename="$(find bioscara_description)/urdf/materials.xacro" />
-<xacro:include filename="$(find bioscara_description)/urdf/bioscara.ros2control" />
-<xacro:include filename="$(find bioscara_description)/urdf/bioscara.gazebo" />
-<link name="base_link">
-  <inertial>
-    <origin xyz="-0.04726295478480471 -4.0726333219249673e-17 0.039609285941398516" rpy="0 0 0"/>
-    <mass value="42.07322100213777"/>
-    <inertia ixx="0.19661" iyy="0.332522" izz="0.481291" ixy="-0.0" iyz="-0.0" ixz="-0.016821"/>
-  </inertial>
-  <visual>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="file://$(find bioscara_description)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="silver"/>
-  </visual>
-  <collision>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="file://$(find bioscara_description)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
+  <xacro:arg name="use_mock_hardware" default="false"/>
+  <xacro:arg name="prefix" default=""/>
 
-<link name="link_1">
-  <inertial>
-    <origin xyz="-0.015985049353244893 0.0 0.22758900000000004" rpy="0 0 0"/>
-    <mass value="201.06235973556932"/>
-    <inertia ixx="6.011699" iyy="6.341964" izz="1.505144" ixy="0.0" iyz="0.0" ixz="0.0"/>
-  </inertial>
-  <visual>
-    <origin xyz="-0.0 -0.0 -0.1442" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="file://$(find bioscara_description)/meshes/link_1_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="silver"/>
-  </visual>
-  <collision>
-    <origin xyz="-0.0 -0.0 -0.1442" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="file://$(find bioscara_description)/meshes/link_1_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
+  <xacro:include filename="$(find bioscara_description)/urdf/materials.xacro" />
 
-<link name="link_2">
-  <inertial>
-    <origin xyz="0.16393794060138223 0.0 0.06413863377953821" rpy="0 0 0"/>
-    <mass value="31.7907164853462"/>
-    <inertia ixx="0.067297" iyy="0.418803" izz="0.409122" ixy="-0.0" iyz="0.0" ixz="-0.039463"/>
-  </inertial>
-  <visual>
-    <origin xyz="-0.0 -0.0 -0.1442" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="file://$(find bioscara_description)/meshes/link_2_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="silver"/>
-  </visual>
-  <collision>
-    <origin xyz="-0.0 -0.0 -0.1442" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="file://$(find bioscara_description)/meshes/link_2_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
+  <xacro:if value="$(arg use_mock_hardware)">
+      <xacro:include filename="$(find bioscara_description)/urdf/bioscara_mock.ros2control" />
+  </xacro:if>
+  <xacro:unless value="$(arg use_mock_hardware)">
+      <xacro:include filename="$(find bioscara_description)/urdf/bioscara.ros2control" />
+  </xacro:unless>
 
-<link name="link_3">
-  <inertial>
-    <origin xyz="0.14250000161157844 -4.518384865479846e-17 0.08014650000000001" rpy="0 0 0"/>
-    <mass value="28.44193338693538"/>
-    <inertia ixx="0.063431" iyy="0.329798" izz="0.289827" ixy="-0.0" iyz="-0.0" ixz="0.0"/>
-  </inertial>
-  <visual>
-    <origin xyz="-0.329476 -0.0 -0.1442" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="file://$(find bioscara_description)/meshes/link_3_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="silver"/>
-  </visual>
-  <collision>
-    <origin xyz="-0.329476 -0.0 -0.1442" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="file://$(find bioscara_description)/meshes/link_3_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<link name="link_4">
-  <inertial>
-    <origin xyz="3.2231565194607015e-09 -4.5766223964710255e-17 0.06973284751916564" rpy="0 0 0"/>
-    <mass value="1.4470826717389633"/>
-    <inertia ixx="0.002924" iyy="0.003053" izz="0.000318" ixy="0.0" iyz="0.0" ixz="-0.0"/>
-  </inertial>
-  <visual>
-    <origin xyz="-0.614476 0.0 -0.1442" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="file://$(find bioscara_description)/meshes/link_4_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-    <material name="silver"/>
-  </visual>
-  <collision>
-    <origin xyz="-0.614476 0.0 -0.1442" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="file://$(find bioscara_description)/meshes/link_4_1.stl" scale="0.001 0.001 0.001"/>
-    </geometry>
-  </collision>
-</link>
-
-<joint name="j1" type="revolute">
-  <origin xyz="0.0 0.0 0.1442" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="link_1"/>
-  <axis xyz="0.0 0.0 1.0"/>
-  <limit upper="2.96706" lower="-2.96706" effort="100" velocity="100"/>
-</joint>
-
-<joint name="j2" type="prismatic">
-  <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
-  <parent link="link_1"/>
-  <child link="link_2"/>
-  <axis xyz="0.0 0.0 1.0"/>
-  <limit upper="0.338" lower="0.0" effort="100" velocity="100"/>
-</joint>
-
-<joint name="j3" type="revolute">
-  <origin xyz="0.329476 0.0 0.0" rpy="0 0 0"/>
-  <parent link="link_2"/>
-  <child link="link_3"/>
-  <axis xyz="0.0 0.0 1.0"/>
-  <limit upper="2.96706" lower="-2.96706" effort="100" velocity="100"/>
-</joint>
-
-<joint name="j4" type="revolute">
-  <origin xyz="0.285 -0.0 0.0" rpy="0 0 0"/>
-  <parent link="link_3"/>
-  <child link="link_4"/>
-  <axis xyz="0.0 0.0 1.0"/>
-  <limit upper="2.96706" lower="-2.96706" effort="100" velocity="100"/>
-</joint>
-
-  <joint name="tool_joint" type="fixed">
-    <origin xyz="0 0 0" rpy="${pi} 0 0" />
-    <parent link="link_4"/>
-    <child link="tool0" />
-  </joint>
-
-  <!-- Tool Link -->
-  <link name="tool0">
-  </link>
-
+  <xacro:include filename="$(find bioscara_description)/urdf/bioscara.gazebo" />
+  <xacro:include filename="$(find bioscara_description)/urdf/bioscara.urdf.xacro" />
 
 </robot>
