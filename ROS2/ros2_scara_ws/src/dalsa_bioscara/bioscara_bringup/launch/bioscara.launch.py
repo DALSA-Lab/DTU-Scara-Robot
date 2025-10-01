@@ -135,7 +135,17 @@ def generate_launch_description():
         arguments=["-d", rviz_config_file],
     )
 
-    # uses the controller manager to spawn joint state broadcaster. Dont understand what spawning actually does.
+    rqt_joint_trajectory_controller_node = Node(
+        package="rqt_joint_trajectory_controller",
+        executable="rqt_joint_trajectory_controller",
+        # name="rviz2",
+        output="log",
+    )
+
+    # uses the controller manager to spawn joint state broadcaster.
+    # The joint_state_broadcaster is not actually a controller but is treated as such.
+    # it publishes/broadcasts the joint states.
+    # Dont understand what spawning actually does.
     joint_state_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -177,7 +187,8 @@ def generate_launch_description():
     delay_rviz_after_joint_state_broadcaster_spawner = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=joint_state_broadcaster_spawner,
-            on_exit=[rviz_node],
+            on_exit=[rviz_node,
+            rqt_joint_trajectory_controller_node,],
         )
     )
 
