@@ -183,7 +183,7 @@ namespace bioscara_hardware_interface
           break;
 
         default:
-          reason = "Unkown Reason";
+          reason = "Unkown Reason " + std::to_string(rc);
         }
         RCLCPP_FATAL(
             get_logger(),
@@ -235,7 +235,7 @@ namespace bioscara_hardware_interface
           reason = "I2C error";
           break;
         default:
-          reason = "Unkown Reason";
+          reason = "Unkown Reason " + std::to_string(rc);
         }
         RCLCPP_FATAL(
             get_logger(),
@@ -270,7 +270,7 @@ namespace bioscara_hardware_interface
           reason = "motor failed to enable";
           break;
         default:
-          reason = "Unkown Reason";
+          reason = "Unkown Reason " + std::to_string(rc);
         }
         RCLCPP_FATAL(
             get_logger(),
@@ -290,7 +290,7 @@ namespace bioscara_hardware_interface
           break;
 
         default:
-          reason = "Unkown Reason";
+          reason = "Unkown Reason " + std::to_string(rc);
         }
         RCLCPP_FATAL(
             get_logger(),
@@ -310,7 +310,7 @@ namespace bioscara_hardware_interface
           break;
 
         default:
-          reason = "Unkown Reason";
+          reason = "Unkown Reason " + std::to_string(rc);
         }
         RCLCPP_FATAL(
             get_logger(),
@@ -330,7 +330,7 @@ namespace bioscara_hardware_interface
           break;
 
         default:
-          reason = "Unkown Reason";
+          reason = "Unkown Reason " + std::to_string(rc);
         }
         RCLCPP_FATAL(
             get_logger(),
@@ -339,9 +339,18 @@ namespace bioscara_hardware_interface
       }
     }
 
+    /**
+     * Below a workaround to force a read cycle of all joints to get inital values for the state interfaces.
+     * These will be copied to the command interface to prevent movement at startup. 
+     */
+    rclcpp::Time t(0);
+    rclcpp::Duration d(0,0);
+    read(t,d);
+
     // command and state should be equal when starting
-    for (const auto &[name, descr] : joint_state_interfaces_)
+    for (const auto &[name, descr] : joint_command_interfaces_)
     {
+      RCLCPP_INFO(get_logger(), "Set %s, to %f",name.c_str(),get_state(name));
       set_command(name, get_state(name));
     }
     // for (const auto &[name, descr] : gpio_command_interfaces_)
@@ -375,7 +384,7 @@ namespace bioscara_hardware_interface
           reason = "communication error";
           break;
         default:
-          reason = "Unkown Reason";
+          reason = "Unkown Reason " + std::to_string(rc);
         }
         RCLCPP_FATAL(
             get_logger(),
@@ -390,11 +399,6 @@ namespace bioscara_hardware_interface
   hardware_interface::return_type BioscaraHardwareInterface::read(
       const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
-    /**
-     *
-     *
-     * @todo Verifiy that the state interface name is actually the joint name
-     */
     for (const auto &[name, descr] : joint_state_interfaces_)
     {
       float v;
@@ -424,7 +428,7 @@ namespace bioscara_hardware_interface
           reason = "joint not homed, can not read " + descr.interface_info.name;
           break;
         default:
-          reason = "Unkown Reason";
+          reason = "Unkown Reason " + std::to_string(rc);
         }
         RCLCPP_FATAL(
             get_logger(),
@@ -489,8 +493,14 @@ namespace bioscara_hardware_interface
         case -2:
           reason = "joint not homed, can not set " + descr.interface_info.name;
           break;
+        case -3:
+          reason = "joint not enabled, can not set " + descr.interface_info.name;
+          break;
+        case -4:
+          reason = "joint stalled, can not set " + descr.interface_info.name;
+          break;
         default:
-          reason = "Unkown Reason";
+          reason = "Unkown Reason " + std::to_string(rc);
         }
         RCLCPP_FATAL(
             get_logger(),

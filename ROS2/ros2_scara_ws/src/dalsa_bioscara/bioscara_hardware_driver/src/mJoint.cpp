@@ -17,7 +17,7 @@ Joint::~Joint(void)
 
 int Joint::init(void)
 {
-    std::cout << "INFO: Initializing " << this->name << std::endl;
+    std::cout << "[INFO] Initializing " << this->name << std::endl;
     this->handle = openI2CDevHandle(this->address);
     if (this->handle < 0)
     {
@@ -45,7 +45,7 @@ int Joint::enable(u_int8_t driveCurrent, u_int8_t holdCurrent)
     u_int32_t buf = 0;                  // Initialize buf to 0
     buf |= (driveCurrent & 0xFF);       // Copy driveCurrent to the least significant byte
     buf |= ((holdCurrent & 0xFF) << 8); // Copy holdCurrent to the next byte
-
+    std::cout << "[INFO] enabling " << this->name << std::endl;
     if (this->write(SETUP, buf, this->flags) < 0)
     {
         return -1;

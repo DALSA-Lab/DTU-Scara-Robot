@@ -6,11 +6,10 @@
 
 using namespace std;
 
-// Joint J2("j4", 0x14, 1 /*12*/, 0);
-// Joint J2("j2", 0x12, -2 * M_PI / 0.004, 0.338);
-// Joint J2("j2", 0x11, 35, 0);
-Joint J2("j2", 0x13, 24, 0);
-
+Joint J1("j1", 0x11, 35, -3.04647);
+Joint J2("j2", 0x12, -2 * M_PI / 0.004, 0.338);
+Joint J3("j3", 0x13, 24, -2.62672);
+Joint J4("j4", 0x14, 12, -3.01069);
 
 void INT_handler(int s)
 {
@@ -25,25 +24,54 @@ int main(int argc, char **argv)
   (void)argc;
   (void)argv;
 
-  if (J2.init() < 0)
-  {
-    cerr << "Could not establish connection to joints" << endl;
-    return -1;
-  }
+  J1.init();
+  J2.init();
+  J3.init();
+  J4.init();
 
-  if (J2.enable(20, 20) < 0)
-  {
-    cerr << "Could not enable joint" << endl;
-    return -1;
-  }
+  J1.enable(20, 20);
+  J2.enable(20, 20);
+  J3.enable(20, 20);
+  J4.enable(20, 20);
 
-  sleep(1);
-  // if (!J2.isHomed())
-  // {
-  cout << "homing" << endl;
-  // J2.home(0, 100, 50, 30);
-  J2.home(0, 20, 50, 20);
-  // }
+  if (!J1.isHomed())
+  {
+    cout << "Homing J1...\n";
+    J1.home(0, 20, 30, 15);
+  }
+  J1.disable();
+  cout << "Press Enter to Continue...";
+  cin.ignore();
+
+  if (!J2.isHomed())
+  {
+    cout << "Homing J2...\n";
+    J2.home(0, 100, 50, 30);
+  }
+  J2.disable();
+  cout << "Press Enter to Continue...";
+  cin.ignore();
+
+  if (!J3.isHomed())
+  {
+    cout << "Homing J3...\n";
+    J3.home(0, 10 , 30, 10);
+  }
+  J3.disable();
+  cout << "Press Enter to Continue...";
+  cin.ignore();
+
+  if (!J4.isHomed())
+  {
+    cout << "Homing J4...\n";
+    J4.home(0, 10, 30, 10);
+  }
+  J4.disable();
+
+  return 0;
+
+  cout << "Press Enter to Continue...";
+  cin.ignore();
 
   // J2.disable();
   J2.enableStallguard(5);
@@ -88,7 +116,7 @@ int main(int argc, char **argv)
       cout << "Positions: ";
       for (float n : q)
       {
-        cout << n/2 << '\t';
+        cout << n / 2 << '\t';
       }
       cout << endl;
     }
