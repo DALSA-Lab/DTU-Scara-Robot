@@ -13,7 +13,7 @@
         <param name="stall_threshold">6</param>
         <param name="hold_current">20</param>
         <param name="drive_current">20</param>
-        <param name="max_acceleration">${pi}/10</param>
+        <param name="max_acceleration">${pi/20}</param>
         <param name="max_velocity">${pi}</param>
       </joint>
       <joint name="j2">
@@ -37,7 +37,7 @@
         <param name="stall_threshold">6</param>
         <param name="hold_current">20</param>
         <param name="drive_current">20</param>
-        <param name="max_acceleration">${pi}</param>
+        <param name="max_acceleration">${pi/10}</param>
         <param name="max_velocity">${pi}</param>
       </joint>
       <joint name="j4">
@@ -49,7 +49,7 @@
         <param name="stall_threshold">6</param>
         <param name="hold_current">20</param>
         <param name="drive_current">20</param>
-        <param name="max_acceleration">${pi/100}</param>
+        <param name="max_acceleration">${pi/10}</param>
         <param name="max_velocity">${pi/10}</param>
       </joint>
     </ros2_control>

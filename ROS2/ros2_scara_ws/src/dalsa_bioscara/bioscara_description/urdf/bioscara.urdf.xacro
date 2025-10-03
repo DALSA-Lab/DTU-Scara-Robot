@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+<link name="world" />
+
 <link name="base_link">
   <inertial>
     <origin xyz="-0.04726295478480471 -4.0726333219249673e-17 0.039609285941398516" rpy="0 0 0"/>
@@ -106,6 +108,12 @@
   </collision>
 </link>
 
+<joint name="base_joint" type="fixed">
+  <origin xyz="0 0 0" rpy="0 0 0" />
+  <parent link="world" />
+  <child link="base_link" />
+</joint>
+
 <joint name="j1" type="revolute">
   <origin xyz="0.0 0.0 0.1442" rpy="0 0 0"/>
   <parent link="base_link"/>
@@ -138,11 +146,11 @@
   <limit upper="2.96706" lower="-2.96706" effort="100" velocity="100"/>
 </joint>
 
-  <joint name="tool_joint" type="fixed">
-    <origin xyz="0 0 0" rpy="${pi} 0 0" />
-    <parent link="link_4"/>
-    <child link="tool0" />
-  </joint>
+<joint name="tool_joint" type="fixed">
+  <origin xyz="0 0 0" rpy="${pi} 0 0" />
+  <parent link="link_4"/>
+  <child link="tool0" />
+</joint>
 
   <!-- Tool Link -->
   <link name="tool0">
