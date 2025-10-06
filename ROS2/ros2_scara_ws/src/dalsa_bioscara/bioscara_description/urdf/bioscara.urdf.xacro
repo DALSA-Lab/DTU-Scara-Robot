@@ -1,7 +1,8 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<link name="world" />
+<link name="world">
+</link>
 
 <link name="base_link">
   <inertial>
@@ -108,6 +109,10 @@
   </collision>
 </link>
 
+<!-- Tool Link -->
+<link name="tool0">
+</link>
+
 <joint name="base_joint" type="fixed">
   <origin xyz="0 0 0" rpy="0 0 0" />
   <parent link="world" />
@@ -151,10 +156,6 @@
   <parent link="link_4"/>
   <child link="tool0" />
 </joint>
-
-  <!-- Tool Link -->
-  <link name="tool0">
-  </link>
 
 
 </robot>
