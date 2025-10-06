@@ -1,7 +1,7 @@
 ## Setup on the Raspberry Pi
 > [!CAUTION]
 >
-> This list is under development and not complete
+> This list is under development and not complete (yet)
 
 - Install Ubuntu Server 24.04 LTS
 - Install openssh-server
@@ -34,3 +34,59 @@ cat /boot/<BUILD?> | grep CONFIG_HZ
 ```
 last \<BUILD\> = config-6.8.0-1028-raspi
 
+### Adding the scara user to realtime group
+With the above actions the controller manasger still reports missed deadlines continously with Rviz enabled (10 ms period) and intermittently without Rviz. 
+TODO
+
+
+## Network Configuration
+The dev-machine is connected to the robot via a local private network via a switch.
+```mermaid
+graph TD;
+
+    Switch<--Ethernet-->robot["Raspberry Pi 
+    hostname: scara"
+    ip: 10.10.10.2];
+
+    Switch<--Ethernet-->dev["Dev Machine
+    hostname: scara-dev"
+    ip: 10.10.10.3];
+
+    laptop["Laptop
+    hostname: -"
+    ip: -]<-.Wifi.->robot;
+
+    laptop<-.Wifi.->dev
+```
+
+### Assign a static IP
+create the */etc/netplan/99_config.yaml* file with following content:
+```yaml
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      addresses:
+        - 10.10.10.2/24
+      routes:
+        - to: default
+          via: 10.10.10.1
+      nameservers:
+          addresses:
+            - 8.8.8.8
+            - 8.8.4.4
+```
+
+### Create a static hostname entry
+in the */etc/hosts* add the following line:
+```
+10.10.10.3 scara-dev
+```
+
+## Development Purposes:
+### Install [PlotJuggler](https://github.com/facontidavide/PlotJuggler)
+A very powerfull to to display data
+```bash
+sudo snap install plotjuggler
+```
