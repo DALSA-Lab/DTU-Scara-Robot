@@ -39,10 +39,15 @@ network:
       routes:
         - to: default
           via: 10.10.10.1
+          metric: 700 # Increase the metric so that a the wifi connection (metric: 600) is preffered for internet traffic
       nameservers:
           addresses:
             - 8.8.8.8
             - 8.8.4.4
+```
+to apply the changes execute:
+```bash
+sudo netplan apply
 ```
 
 ### Create a static hostname entry
