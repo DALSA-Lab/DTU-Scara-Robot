@@ -128,7 +128,7 @@
     <parent link="base_link"/>
     <child link="link_1"/>
     <axis xyz="0.0 0.0 1.0"/>
-    <limit upper="${abs(params['j1']['offset']}" lower="${0-abs(params['j1']['offset']}" effort="100" velocity="100"/>
+    <limit upper="${fabs(params['j1']['offset'])}" lower="${0-fabs(params['j1']['offset'])}" effort="100" velocity="${params['j1']['max_velocity']}"/>
   </joint>
 
   <joint name="j2" type="prismatic">
@@ -136,7 +136,7 @@
     <parent link="link_1"/>
     <child link="link_2"/>
     <axis xyz="0.0 0.0 1.0"/>
-    <limit upper="0.338" lower="0.0" effort="100" velocity="100"/>
+    <limit upper="${params['j2']['offset']}" lower="0" effort="100" velocity="${params['j2']['max_velocity']}"/>
   </joint>
 
   <joint name="j3" type="revolute">
@@ -144,7 +144,7 @@
     <parent link="link_2"/>
     <child link="link_3"/>
     <axis xyz="0.0 0.0 1.0"/>
-    <limit upper="2.96706" lower="-2.96706" effort="100" velocity="100"/>
+    <limit upper="${fabs(params['j3']['offset'])}" lower="${0-fabs(params['j3']['offset'])}" effort="100" velocity="${params['j3']['max_velocity']}"/>
   </joint>
 
   <joint name="j4" type="revolute">
@@ -152,7 +152,7 @@
     <parent link="link_3"/>
     <child link="link_4"/>
     <axis xyz="0.0 0.0 1.0"/>
-    <limit upper="2.96706" lower="-2.96706" effort="100" velocity="100"/>
+    <limit upper="${fabs(params['j4']['offset'])}" lower="${0-fabs(params['j4']['offset'])}" effort="100" velocity="${params['j4']['max_velocity']}"/>
   </joint>
 
   <joint name="tool_joint" type="fixed">
