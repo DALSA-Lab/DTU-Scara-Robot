@@ -24,10 +24,15 @@ int main(int argc, char **argv)
   (void)argc;
   (void)argv;
 
+  J1.init();
+  J2.init();
+  J3.init();
+  J4.init();
+
   if (!J1.isHomed())
   {
     cout << "Homing J1...\n";
-    J1.enable(20, 20);
+     J1.enable(20, 20);
     J1.home(0, 20, 30, 15);
   }
   J1.disable();
@@ -37,7 +42,7 @@ int main(int argc, char **argv)
   if (!J2.isHomed())
   {
     cout << "Homing J2...\n";
-    J2.enable(20, 20);
+      J2.enable(20, 20);
 
     J2.home(0, 100, 55, 30);
   }
@@ -48,9 +53,9 @@ int main(int argc, char **argv)
   if (!J3.isHomed())
   {
     cout << "Homing J3...\n";
-    J3.enable(20, 20);
+      J3.enable(20, 20);
 
-    J3.home(0, 10, 30, 10);
+    J3.home(0, 10 , 30, 10);
   }
   J3.disable();
   cout << "Press Enter to Continue...";
@@ -59,7 +64,7 @@ int main(int argc, char **argv)
   if (!J4.isHomed())
   {
     cout << "Homing J4...\n";
-    J4.enable(20, 20);
+      J4.enable(20, 20);
 
     J4.home(0, 10, 30, 10);
   }
