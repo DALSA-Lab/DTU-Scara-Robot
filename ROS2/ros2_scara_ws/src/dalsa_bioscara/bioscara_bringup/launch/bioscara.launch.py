@@ -151,8 +151,8 @@ def generate_launch_description():
         executable="spawner",
         arguments=[
             "joint_state_broadcaster",
-            # "--controller-manager",
-            # "/controller_manager",
+            "--controller-manager",
+            "/controller_manager",
         ],
     )
 

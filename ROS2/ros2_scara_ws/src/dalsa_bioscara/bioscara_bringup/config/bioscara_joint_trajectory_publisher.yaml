@@ -2,17 +2,13 @@ publisher_joint_trajectory_controller:
   ros__parameters:
 
     controller_name: "joint_trajectory_controller"
-    wait_sec_between_publish: 6
+    wait_sec_between_publish: 10
 
-    goal_names: ["pos1", "pos2", "pos3", "pos4"]
+    goal_names: ["pos1", "pos2"]
     pos1:
       positions: [0.0, 0.2, 0.0, 0.0]
     pos2:
-      positions: [0.785, 0.2, -0.785, 0.0]
-    pos3:
-      positions: [-0.785, 0.1, 0.785, 0.0]
-    pos4:
-      positions: [0.0, 0.0, 0.0, 0.0]
+      positions: [0.1, 0.22, 0.0, 0.0]
 
     joints:
       - j1
@@ -21,6 +17,3 @@ publisher_joint_trajectory_controller:
       - j4
 
     check_starting_point: false
-    # starting_point_limits:
-    #   joint1: [-0.1,0.1]
-    #   joint2: [-0.1,0.1]
