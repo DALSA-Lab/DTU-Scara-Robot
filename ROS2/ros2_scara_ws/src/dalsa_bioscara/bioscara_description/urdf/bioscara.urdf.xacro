@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:property name="config_file" value="$(find bioscara_description)/config/bioscara_parameters.yaml" />
-  <xacro:property name="params" value="${load_yaml(config_file)}"/>
+  <xacro:property name="params" value="${xacro.load_yaml(config_file)}"/>
 
 
   <link name="world">

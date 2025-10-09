@@ -6,11 +6,11 @@ j1:
   stall_threshold: 6
   hold_current: 20
   drive_current: 20
-  max_acceleration: ${pi/20}
-  max_velocity: ${pi}
+  max_acceleration: ${pi/20} # doesnt work (yet)
+  max_velocity: 1.0
 j2:
   i2c_address: 0x12
-  reduction: ${-2*pi/0.004}
+  reduction: ${-2*pi/0.004 # doesnt work (yet)
   offset: 0.338
   stall_threshold: 6
   hold_current: 40
@@ -24,8 +24,8 @@ j3:
   stall_threshold: 6
   hold_current: 20
   drive_current: 20
-  max_acceleration: ${pi/10}
-  max_velocity: ${pi}
+  max_acceleration: ${pi/10 # doesnt work (yet)
+  max_velocity: 3.0 # doesnt work (yet)
 j4:
   i2c_address: 0x14
   reduction: 12
@@ -33,5 +33,5 @@ j4:
   stall_threshold: 6
   hold_current: 20
   drive_current: 20
-  max_acceleration: ${pi/10}
-  max_velocity: ${pi/10}
+  max_acceleration: ${pi/10 # doesnt work (yet)
+  max_velocity: 3.0 # doesnt work (yet)
