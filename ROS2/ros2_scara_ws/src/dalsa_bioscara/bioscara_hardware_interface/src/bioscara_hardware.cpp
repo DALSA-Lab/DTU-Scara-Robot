@@ -157,7 +157,9 @@ namespace bioscara_hardware_interface
   hardware_interface::CallbackReturn BioscaraHardwareInterface::on_shutdown(
       const rclcpp_lifecycle::State & /*previous_state*/)
   {
+    RCLCPP_INFO(get_logger(), "Shutting down ...please wait...");
     _joints.clear();
+    RCLCPP_INFO(get_logger(), "Shut down");
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
@@ -341,16 +343,16 @@ namespace bioscara_hardware_interface
 
     /**
      * Below a workaround to force a read cycle of all joints to get inital values for the state interfaces.
-     * These will be copied to the command interface to prevent movement at startup. 
+     * These will be copied to the command interface to prevent movement at startup.
      */
     rclcpp::Time t(0);
-    rclcpp::Duration d(0,0);
-    read(t,d);
+    rclcpp::Duration d(0, 0);
+    read(t, d);
 
     // command and state should be equal when starting
     for (const auto &[name, descr] : joint_command_interfaces_)
     {
-      RCLCPP_INFO(get_logger(), "Set %s, to %f",name.c_str(),get_state(name));
+      RCLCPP_INFO(get_logger(), "Set %s, to %f", name.c_str(), get_state(name));
       set_command(name, get_state(name));
     }
     // for (const auto &[name, descr] : gpio_command_interfaces_)
@@ -518,6 +520,26 @@ namespace bioscara_hardware_interface
     // RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 500, "%s", ss.str().c_str());
 
     return hardware_interface::return_type::OK;
+  }
+
+  hardware_interface::CallbackReturn BioscaraHardwareInterface::on_error(
+      const rclcpp_lifecycle::State & previous_state)
+  {
+    /**
+     * Call the deactivation method. If the robot successfully deactivates the hardware remains in the unconfigured state,
+     * and is able to be activated again. Otherwise the hardware goes to the finalized state and can not be recovered.
+     * 
+     * @todo implement a more fine tuned error handling.
+     */
+
+    RCLCPP_INFO(get_logger(), "Previous State: %s",previous_state.label().c_str()); 
+    // states: "active", "finalized",...
+    if(previous_state.label() == "active"){
+      return on_deactivate(previous_state);
+    }
+    return CallbackReturn::ERROR;
+    
+    
   }
 
 } // namespace bioscara_hardware_interface
