@@ -44,7 +44,7 @@ int main(int argc, char **argv)
     cout << "Homing J2...\n";
       J2.enable(20, 20);
 
-    J2.home(0, 100, 55, 30);
+    J2.home(0, 100, 60, 30);
   }
   J2.disable();
   cout << "Press Enter to Continue...";
