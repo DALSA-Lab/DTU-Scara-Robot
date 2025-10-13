@@ -1,56 +1,71 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
-<ros2_control name="bioscara" type="system">
-      <hardware>
-        <plugin>bioscara_hardware_interface/BioscaraHardwareInterface</plugin>
-      </hardware>
-      <joint name="j1">
+
+<!-- TODO: find out how to "macro-fy the joints, lots of repitition there" -->
+  <xacro:macro name="bioscara_ros2_control" params="prefix parameters use_mock_hardware">
+
+    <ros2_control name="bioscara" type="system">
+      <xacro:if value="${use_mock_hardware}">
+        <hardware>
+          <plugin>mock_components/GenericSystem</plugin>
+        </hardware>
+      </xacro:if>
+      <xacro:unless value="${use_mock_hardware}">
+        <hardware>
+          <plugin>bioscara_hardware_interface/BioscaraHardwareInterface</plugin>
+        </hardware>
+      </xacro:unless>
+      
+      <joint name="${prefix}j1">
         <command_interface name="position"/>
         <state_interface name="position"/>
-        <param name="i2c_address">0x11</param>
-        <param name="reduction">35</param>
-        <param name="offset">-3.04647</param>
-        <param name="stall_threshold">6</param>
-        <param name="hold_current">20</param>
-        <param name="drive_current">20</param>
-        <param name="max_acceleration">${pi/20}</param>
-        <param name="max_velocity">${pi}</param>
+        <param name="i2c_address">${parameters['j1']['i2c_address']}</param>
+        <param name="reduction">${parameters['j1']['reduction']}</param>
+        <param name="offset">${parameters['j1']['offset']}</param>
+        <param name="stall_threshold">${parameters['j1']['stall_threshold']}</param>
+        <param name="hold_current">${parameters['j1']['hold_current']}</param>
+        <param name="drive_current">${parameters['j1']['drive_current']}</param>
+        <param name="max_acceleration">${parameters['j1']['max_acceleration']}</param>
+        <param name="max_velocity">${parameters['j1']['max_velocity']}</param>
       </joint>
-      <joint name="j2">
+      <joint name="${prefix}j2">
         <command_interface name="position"/>
         <state_interface name="position"/>
-        <param name="i2c_address">0x12</param>
-        <param name="reduction">${-2*pi/0.004}</param>
-        <param name="offset">0.338</param>
-        <param name="stall_threshold">6</param>
-        <param name="hold_current">40</param>
-        <param name="drive_current">40</param>
-        <param name="max_acceleration">0.01</param>
-        <param name="max_velocity">0.005</param>
+        <param name="i2c_address">${parameters['j2']['i2c_address']}</param>
+        <param name="reduction">${parameters['j2']['reduction']}</param>
+        <param name="offset">${parameters['j2']['offset']}</param>
+        <param name="stall_threshold">${parameters['j2']['stall_threshold']}</param>
+        <param name="hold_current">${parameters['j2']['hold_current']}</param>
+        <param name="drive_current">${parameters['j2']['drive_current']}</param>
+        <param name="max_acceleration">${parameters['j2']['max_acceleration']}</param>
+        <param name="max_velocity">${parameters['j2']['max_velocity']}</param>
       </joint>
-      <joint name="j3">
+      <joint name="${prefix}j3">
         <command_interface name="position"/>
         <state_interface name="position"/>
-        <param name="i2c_address">0x13</param>
-        <param name="reduction">24</param>
-        <param name="offset">-2.62672</param>
-        <param name="stall_threshold">6</param>
-        <param name="hold_current">20</param>
-        <param name="drive_current">20</param>
-        <param name="max_acceleration">${pi/10}</param>
-        <param name="max_velocity">${pi}</param>
+        <param name="i2c_address">${parameters['j3']['i2c_address']}</param>
+        <param name="reduction">${parameters['j3']['reduction']}</param>
+        <param name="offset">${parameters['j3']['offset']}</param>
+        <param name="stall_threshold">${parameters['j3']['stall_threshold']}</param>
+        <param name="hold_current">${parameters['j3']['hold_current']}</param>
+        <param name="drive_current">${parameters['j3']['drive_current']}</param>
+        <param name="max_acceleration">${parameters['j3']['max_acceleration']}</param>
+        <param name="max_velocity">${parameters['j3']['max_velocity']}</param>
       </joint>
-      <joint name="j4">
+      <joint name="${prefix}j4">
         <command_interface name="position"/>
         <state_interface name="position"/>
-        <param name="i2c_address">0x14</param>
-        <param name="reduction">12</param>
-        <param name="offset">-3.01069</param>
-        <param name="stall_threshold">6</param>
-        <param name="hold_current">20</param>
-        <param name="drive_current">20</param>
-        <param name="max_acceleration">${pi/10}</param>
-        <param name="max_velocity">${pi/10}</param>
+        <param name="i2c_address">${parameters['j4']['i2c_address']}</param>
+        <param name="reduction">${parameters['j4']['reduction']}</param>
+        <param name="offset">${parameters['j4']['offset']}</param>
+        <param name="stall_threshold">${parameters['j4']['stall_threshold']}</param>
+        <param name="hold_current">${parameters['j4']['hold_current']}</param>
+        <param name="drive_current">${parameters['j4']['drive_current']}</param>
+        <param name="max_acceleration">${parameters['j4']['max_acceleration']}</param>
+        <param name="max_velocity">${parameters['j4']['max_velocity']}</param>
       </joint>
     </ros2_control>
+
+  </xacro:macro>
+
 </robot>

@@ -4,16 +4,22 @@
   <xacro:arg name="use_mock_hardware" default="false"/>
   <xacro:arg name="prefix" default=""/>
 
+  <xacro:property name="config_file" value="$(find bioscara_description)/config/bioscara_parameters.yaml" />
+  <xacro:property name="params" value="${xacro.load_yaml(config_file)}"/>
+
   <xacro:include filename="$(find bioscara_description)/urdf/materials.xacro" />
-
-  <xacro:if value="$(arg use_mock_hardware)">
-      <xacro:include filename="$(find bioscara_description)/urdf/bioscara_mock.ros2control" />
-  </xacro:if>
-  <xacro:unless value="$(arg use_mock_hardware)">
-      <xacro:include filename="$(find bioscara_description)/urdf/bioscara.ros2control" />
-  </xacro:unless>
-
-  <xacro:include filename="$(find bioscara_description)/urdf/bioscara.gazebo" />
   <xacro:include filename="$(find bioscara_description)/urdf/bioscara.urdf.xacro" />
+  <xacro:include filename="$(find bioscara_description)/urdf/bioscara.gazebo" />
+
+  <xacro:include filename="$(find bioscara_description)/urdf/bioscara.ros2control" />
+  <xacro:bioscara_ros2_control prefix="$(arg prefix)" parameters="${params}" use_mock_hardware="$(arg use_mock_hardware)"/>
+
+  <!-- Used for fixing robot -->
+  <link name="world"/>
+
+  <xacro:bioscara parent="world" prefix="$(arg prefix)" parameters="${params}">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:bioscara>
+
 
 </robot>
