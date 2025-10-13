@@ -56,7 +56,6 @@ in case (2) no missed deadlines
 cyclictest only works with RT policies, so I cant test with non rt prio 19 for example
 
 
-
 ## Alternative Approach:
 Directly collect statistics from the controller managers statistics diagnostics output. */controller_manager/statistics/*
 
@@ -99,10 +98,13 @@ listen and export topics:
 ```bash
 ros2 topic echo /controller_manager/statistics/full --csv > record_<update_rate>_<prio>_<note>.csv
 ```
-#### Recording 1
+#### Test 1
 - Position control, prio 20
 
-#### Recording 2
+#### Test 2
+Add the user to the realtime group as described [here](../../Raspberry/README.md#adding-the-scara-user-to-realtime-group)
+
+Then execute the test:
 - Position control, RT prio 50, FIFO Scheduler (default ROS2 control values)
 
 
@@ -127,7 +129,7 @@ W: avg 5062 us
 R: avg 1875 us
 W: avg 2615 us
 
-2 joints:
+3 joints:
 R: avg 2697 us
 W: avg 3815 us
 
