@@ -347,7 +347,9 @@ namespace bioscara_hardware_interface
      */
     rclcpp::Time t(0);
     rclcpp::Duration d(0, 0);
-    read(t, d);
+    if(read(t, d) != hardware_interface::return_type::OK){
+      return hardware_interface::CallbackReturn::ERROR;
+    }
 
     // command and state should be equal when starting
     for (const auto &[name, descr] : joint_command_interfaces_)
@@ -535,7 +537,19 @@ namespace bioscara_hardware_interface
     RCLCPP_INFO(get_logger(), "Previous State: %s",previous_state.label().c_str()); 
     // states: "active", "finalized",...
     if(previous_state.label() == "active"){
-      return on_deactivate(previous_state);
+      hardware_interface::CallbackReturn cr = on_deactivate(previous_state);
+      if(cr != CallbackReturn::SUCCESS){
+        return cr;
+      }
+
+      /* since the hardware goes to "unconfigured state if an error is caugth and the on_error function returns SUCCESS
+      we also have to manually call the on_cleanup function */
+      cr = on_deactivate(previous_state);
+      if(cr != CallbackReturn::SUCCESS){
+        return cr;
+      }
+      return CallbackReturn::SUCCESS;
+      
     }
     return CallbackReturn::ERROR;
     
