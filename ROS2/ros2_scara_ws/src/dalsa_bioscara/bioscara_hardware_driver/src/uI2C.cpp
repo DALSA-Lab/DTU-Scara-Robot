@@ -28,7 +28,7 @@ int readFromI2CDev(const int dev_handle, const int reg, char *buffer, const int 
 
     if (rc < 0)
     {
-        std::cerr << "I2C READ ERROR: \'" << lguErrorText(rc) << "\'" << std::endl;
+        std::cerr << "[ERROR] I2C read error: \'" << lguErrorText(rc) << "\'" << std::endl;
     }
     return rc;
 }
@@ -59,7 +59,7 @@ int writeToI2CDev(const int dev_handle, const int reg, char *tx_buffer, const in
 
     if (rc < 0)
     {
-        std::cerr << "I2C WRITE ERROR: \'" << lguErrorText(rc) << "\'" << std::endl;
+        std::cerr << "[ERROR] I2C write error: \'" << lguErrorText(rc) << "\'" << std::endl;
     }
     return rc;
 }

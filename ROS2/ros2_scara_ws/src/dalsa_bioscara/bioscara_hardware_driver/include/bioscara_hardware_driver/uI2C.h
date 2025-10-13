@@ -47,6 +47,22 @@
  */
 #define MAX_BUFFER 4 // Bytes
 
+// /**
+//  * @brief TODO
+//  * @todo this
+//  * @return char* 
+//  */
+// char *initRXbuffer();
+
+// /**
+//  * @brief TODO
+//  * @todo this
+//  * @return char* 
+//  */
+// char *initTXbuffer();
+
+
+
 /**
  * @brief Initiates an I2C device on the bus
  * @param dev_addr 7-bit device adress [0 - 0x7F]

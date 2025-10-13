@@ -53,6 +53,17 @@ add_executable(
   src/joint_comm_node.cpp# src/uI2C.cpp src/mJoint.cpp src/mJointCom.cpp src/mGripper.cpp
 )
 
+# Add second executable
+add_executable(timing_test
+      src/timing_test.cpp
+)
+
+# link library so it can acces the driver
+target_link_libraries(
+  timing_test
+  ${PROJECT_NAME}
+)
+
 ## also link the executable to the library created in this package
 target_link_libraries(
   ${RCLCPP_LOCAL_BINARY_NAME}
