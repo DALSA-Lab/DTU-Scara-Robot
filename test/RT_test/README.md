@@ -129,7 +129,7 @@ W: avg 5062 us
 R: avg 1875 us
 W: avg 2615 us
 
-2 joints:
+3 joints:
 R: avg 2697 us
 W: avg 3815 us
 

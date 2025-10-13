@@ -60,6 +60,9 @@ namespace bioscara_hardware_interface
         hardware_interface::return_type write(
             const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
+        hardware_interface::CallbackReturn on_error(
+            const rclcpp_lifecycle::State &previous_state) override;
+
     private:
         struct joint_config_t
         {
