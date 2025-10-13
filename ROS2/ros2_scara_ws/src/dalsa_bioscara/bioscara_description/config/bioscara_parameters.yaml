@@ -6,7 +6,7 @@ j1:
   stall_threshold: 6
   hold_current: 20
   drive_current: 20
-  max_acceleration: 0.157
+  max_acceleration: 1.57
   max_velocity: 1.0
 j2:
   i2c_address: '0x12'

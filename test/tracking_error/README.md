@@ -5,7 +5,8 @@ This test is to quantify the tracking errors of position inputs with focus on ra
 
 
 use J1
-set ramp that is below max speed (max vel: pi rad/s)
+set ramp that is below max speed (max vel: 1.0 rad/s)
+max velocity constant for all tests
 
 ramp from -1.5707 to 1.5707 in 20s -> 0,15707 rad/s
 
@@ -38,7 +39,9 @@ ros2 topic echo /controller_manager/statistics/full --csv > record_<ramp_gradien
 ```
 
 ## Preliminary Results
-|      | 0.15707 |      |
+|      | 0.15707  (-1.5707 rad to 1.5707 rad in 20s) | 0.31415 (-1.5707 rad to 1.5707 rad in 10s)    |
 | ---- | ------- | ---- |
-| 0.15707 | ~0.52   |      |
-| 1.5707  |  ~0.07 |      |
+| 0.15707 | ~0.52   |  ~1.0    |
+| 1.5707  |  ~0.07 |  ~0.12    |
+
+weird, not what expected, error scales with ramp gradient despite normalizing it
