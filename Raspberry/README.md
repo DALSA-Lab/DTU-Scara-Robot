@@ -35,8 +35,24 @@ cat /boot/<BUILD?> | grep CONFIG_HZ
 last \<BUILD\> = config-6.8.0-1028-raspi
 
 ### Adding the scara user to realtime group
-With the above actions the controller manasger still reports missed deadlines continously with Rviz enabled (10 ms period) and intermittently without Rviz. 
-TODO
+Add the user to the realtime group and give it the rights to set higher scheduler priotities as described [here](https://control.ros.org/jazzy/doc/ros2_control/controller_manager/doc/userdoc.html#determinism)
+
+| For real-time tasks, a priority range of 0 to 99 is expected, with higher numbers indicating higher priority. By default, users do not have permission to set such high priorities. To give the user such permissions, add a group named realtime and add the user controlling your robot to this group:
+
+```bash
+sudo addgroup realtime
+sudo usermod -a -G realtime $(whoami)
+```
+| Afterwards, add the following limits to the realtime group in /etc/security/limits.conf:
+```
+@realtime soft rtprio 99
+@realtime soft priority 99
+@realtime soft memlock unlimited
+@realtime hard rtprio 99
+@realtime hard priority 99
+@realtime hard memlock unlimited
+```
+| The limits will be applied after you log out and in again.
 
 
 ## Network Configuration
