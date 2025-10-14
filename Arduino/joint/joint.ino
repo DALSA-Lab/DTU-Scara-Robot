@@ -21,7 +21,7 @@
  * 
  * Define either J1, J2, J3 or J4 and subsequently include configuration.h 
  */
-#define J2
+#define J4
 #include "configuration.h"
 
 
@@ -443,25 +443,25 @@ void loop(void) {
 
   if (isStallguardEnabled && !isStalled) {
     err = abs(stepper.getPidError());
-    Serial.print(err);
-    Serial.print("\t");
-    Serial.print(stallguardThreshold);
-    Serial.print("\t");
-    Serial.print(q);
-    Serial.print("\t");
-    Serial.print(q_set);
-    Serial.print("\t");
-    Serial.print(qd * 6);
-    Serial.print("\t");
-    Serial.print(qd_set * 6);
-    Serial.print("\t");
+    // Serial.print(err);
+    // Serial.print("\t");
+    // Serial.print(stallguardThreshold);
+    // Serial.print("\t");
+    // Serial.print(q);
+    // Serial.print("\t");
+    // Serial.print(q_set);
+    // Serial.print("\t");
+    // Serial.print(qd * 6);
+    // Serial.print("\t");
+    // Serial.print(qd_set * 6);
+    // Serial.print("\t");
     if (err > stallguardThreshold && last_err > stallguardThreshold) {
-      Serial.println(1);
+      // Serial.println(1);
       isStalled = 1;
       stepper.stop(HARD);
       last_err = 0;
     } else {
-      Serial.println(0);
+      // Serial.println(0);
       last_err = err;
     }
   }
