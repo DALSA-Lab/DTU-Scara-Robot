@@ -4,7 +4,6 @@
 #include <unordered_map>
 #include <cmath>
 #include <chrono>
-#include <thread>
 
 using namespace std;
 
@@ -29,31 +28,44 @@ int main(int argc, char **argv)
 
   for (auto &[name, joint] : _joints)
   {
-    joint.init();
-    joint.enable(20, 20);
-    joint.enableStallguard(5);
+    int rc = joint.init();
+    if(rc < 0){
+      std::cerr << "Failed to init:" << rc << std::endl;
+      return -1;
+    }
+    rc = joint.enable(20, 20);
+    if(rc < 0){
+      std::cerr << "Failed to enable:" << rc << std::endl;
+      return -1;
+    }
+    rc = joint.enableStallguard(5);
+    if(rc < 0){
+      std::cerr << "Failed to enableStallguard:" << rc << std::endl;
+      return -1;
+    }
   }
 
 
-  FILE *fp = std::fopen("/home/scara/bioscara/test/RW_test/simple_preAlloc.csv", "w"); // Open file for writing
+  FILE *fp = std::fopen("/home/scara/bioscara/test/RW_test/temp_100kHz.csv", "w"); // Open file for writing
   fprintf(fp, "time [ms], iteration [-], joint [-], read [us], write[us]\n");
 
   auto prog_start = std::chrono::high_resolution_clock::now();
   for (size_t i = 1; i <= 1000; i++)
   {
 
-    /* Read */
     for (auto &[name, joint] : _joints)
     {
 
       float v;
       auto start = std::chrono::high_resolution_clock::now();
-      joint.getPosition(v);
+      // joint.getPosition(v);
+      joint.getVelocity(v);
       auto now = std::chrono::high_resolution_clock::now();
       const std::chrono::duration<double, std::micro> t_read = now - start;
 
       start = std::chrono::high_resolution_clock::now();
-      joint.setPosition(v);
+      // joint.setPosition(v);
+      joint.setVelocity(v);
       now = std::chrono::high_resolution_clock::now();
       const std::chrono::duration<double, std::micro> t_write = now - start;
 
@@ -62,6 +74,8 @@ int main(int argc, char **argv)
       fprintf(fp, "%f, %ld, %s, %f, %f\n", t.count(), i, name.c_str(), t_read.count(), t_write.count());
     }
   }
+
+
   fclose(fp);
   return 0;
 }

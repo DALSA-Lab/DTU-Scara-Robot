@@ -3,6 +3,9 @@
 
 #include <lgpio.h>
 
+// #include <chrono> // remove when done timing
+
+
 int openI2CDevHandle(const int dev_addr)
 {
     int rc = lgI2cOpen(1, dev_addr, 0);
@@ -48,9 +51,17 @@ int writeToI2CDev(const int dev_handle, const int reg, char *tx_buffer, const in
     int rc;
     for (size_t i = 0; i < 3; i++)
     {
+        // auto start = std::chrono::high_resolution_clock::now();
         /* There is a bug in the lgpio library that requires `rxCount` to be set n+1 higher*/
         rc = lgI2cZip(dev_handle, cmnd, 6 + data_length, RFLAGS_buffer, RFLAGS_SIZE + 1);
+        // rc = lgI2cWriteBlockData(dev_handle, reg, tx_buffer, data_length);
+        // rc |= lgI2cReadDevice(dev_handle, RFLAGS_buffer, RFLAGS_SIZE);
+        // auto now = std::chrono::high_resolution_clock::now();
+        // const std::chrono::duration<double, std::micro> t = now - start;
+        // printf("lgI2cZip, tx size: %d, rx size: %d, took: %.3f\n",data_length,RFLAGS_SIZE,t.count());
+
         if(rc < 0 && i+1 < 3){
+            std::cerr << "[WARN] I2C write unsuccessfull, retrying. Error: \'" << lguErrorText(rc) << "\'" << std::endl;
             usleep(50);
         }else{
             break;
