@@ -119,19 +119,19 @@ void requestEvent() {
   // Serial.print("tx_buf: \t");
   // DUMP_BUFFER(tx_buf, tx_length);
   Wire.write(tx_buf, tx_length);
-  
 
-  
+
+
   // time [ms], command, rx_length, tx_length, t_exec [us]
-  Serial.print(millis());
-  Serial.print(", ");
-  Serial.print(reg_txt);
-  Serial.print(", ");
-  Serial.print(rx_length);
-  Serial.print(", ");
-  Serial.print(tx_length);
-  Serial.print(", ");
-  Serial.println(now - start);
+  // Serial.print(millis());
+  // Serial.print(", ");
+  // Serial.print(reg_txt);
+  // Serial.print(", ");
+  // Serial.print(rx_length);
+  // Serial.print(", ");
+  // Serial.print(tx_length);
+  // Serial.print(", ");
+  // Serial.println(now - start);
 }
 
 /**
@@ -307,7 +307,10 @@ void non_blocking_handler(uint8_t reg) {
         reg_txt = "MOVETOANGLE";
         readValue<float>(q_set, rx_buf, rx_length);
         if (!isStalled) {
+          // unsigned long start = micros();
           stepper.moveToAngle(q_set);
+          // unsigned long now = micros();
+          // Serial.println(now-start);
         }
         break;
       }
