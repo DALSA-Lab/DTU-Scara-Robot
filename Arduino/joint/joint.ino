@@ -16,9 +16,6 @@
 #include <Wire.h>
 #include "joint.h"
 
-#include <chrono>
-
-
 /**
  * @brief Define either joint that is to be flashed
  * 
@@ -49,6 +46,8 @@ bool rx_data_ready = 0;
 
 size_t tx_length = 0;
 size_t rx_length = 0;
+
+static String reg_txt;
 
 
 void blocking_handler(uint8_t reg);
@@ -107,6 +106,7 @@ void requestEvent() {
 
   unsigned long start = micros();
   non_blocking_handler(reg);
+  unsigned long now = micros();
   uint8_t state = 0x00;
   state |= (isStalled << 0);
   state |= (isBusy << 1);
@@ -119,13 +119,19 @@ void requestEvent() {
   // Serial.print("tx_buf: \t");
   // DUMP_BUFFER(tx_buf, tx_length);
   Wire.write(tx_buf, tx_length);
-  unsigned long now = micros();
-  Serial.print("requestEvent, rx_length: ");
+  
+
+  
+  // time [ms], command, rx_length, tx_length, t_exec [us]
+  Serial.print(millis());
+  Serial.print(", ");
+  Serial.print(reg_txt);
+  Serial.print(", ");
   Serial.print(rx_length);
-  Serial.print(", tx_length: ");
+  Serial.print(", ");
   Serial.print(tx_length);
-  Serial.print(", took: ");
-  Serial.println(now-start);
+  Serial.print(", ");
+  Serial.println(now - start);
 }
 
 /**
@@ -142,7 +148,7 @@ void blocking_handler(uint8_t reg) {
   switch (reg) {
     case SETUP:
       {
-        Serial.print("Executing SETUP\n");
+        // Serial.print("Executing SETUP\n");
         memcpy(&driveCurrent, rx_buf, 1);
         memcpy(&holdCurrent, rx_buf + 1, 1);
         if (!stepperSetup) {
@@ -237,20 +243,25 @@ void non_blocking_handler(uint8_t reg) {
   switch (reg) {
     case PING:
       {
-        Serial.print("Executing PING\n");
+        // Serial.print("Executing PING\n");
+        reg_txt = "PING";
         writeValue<char>(ACK, tx_buf, tx_length);
         tx_data_ready = true;
         break;
       }
 
     case GETDRIVERRPM:
-      Serial.print("Executing GETDRIVERRPM\n");
-      break;
+      {
+        Serial.print("Executing GETDRIVERRPM\n");
+        break;
+      }
+
 
 
     case ANGLEMOVED:
       {
         // Serial.print("Executing ANGLEMOVED\n");
+        reg_txt = "ANGLEMOVED";
         q = stepper.angleMoved();
         writeValue<float>(q, tx_buf, tx_length);
         tx_data_ready = 1;
@@ -260,6 +271,7 @@ void non_blocking_handler(uint8_t reg) {
     case GETENCODERRPM:
       {
         // Serial.print("Executing GETENCODERRPM\n");
+        reg_txt = "GETENCODERRPM";
         qd = stepper.encoder.getRPM();
         writeValue<float>(qd, tx_buf, tx_length);
         tx_data_ready = 1;
@@ -271,6 +283,7 @@ void non_blocking_handler(uint8_t reg) {
     case SETRPM:
       {
         // Serial.print("Executing SETRPM\n");
+        reg_txt = "SETRPM";
         readValue<float>(qd_set, rx_buf, rx_length);
         if (!isStalled) {
           stepper.setRPM(qd_set);
@@ -281,6 +294,7 @@ void non_blocking_handler(uint8_t reg) {
     case MOVESTEPS:
       {
         // Serial.print("Executing MOVESTEPS\n");
+        reg_txt = "MOVESTEPS";
         int32_t v;
         readValue<int32_t>(v, rx_buf, rx_length);
         stepper.moveSteps(v);
@@ -290,6 +304,7 @@ void non_blocking_handler(uint8_t reg) {
     case MOVETOANGLE:
       {
         // Serial.print("Executing MOVETOANGLE\n");
+        reg_txt = "MOVETOANGLE";
         readValue<float>(q_set, rx_buf, rx_length);
         if (!isStalled) {
           stepper.moveToAngle(q_set);
@@ -301,6 +316,7 @@ void non_blocking_handler(uint8_t reg) {
     case SETCURRENT:
       {
         // Serial.print("Executing SETCURRENT\n");
+        reg_txt = "SETCURRENT";
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
         stepper.setCurrent(v);
@@ -313,6 +329,7 @@ void non_blocking_handler(uint8_t reg) {
     case SETHOLDCURRENT:
       {
         // Serial.print("Executing SETHOLDCURRENT\n");
+        reg_txt = "SETHOLDCURRENT";
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
         stepper.setHoldCurrent(v);
@@ -325,6 +342,7 @@ void non_blocking_handler(uint8_t reg) {
     case SETMAXACCELERATION:
       {
         // Serial.print("Executing SETMAXACCELERATION\n");
+        reg_txt = "SETMAXACCELERATION";
         readValue<float>(maxAccel, rx_buf, rx_length);
         maxAccel *= 200 / 360.0;  // conversion from degrees/s^2 to steps/s^2
         stepper.setMaxAcceleration(maxAccel);
@@ -333,12 +351,13 @@ void non_blocking_handler(uint8_t reg) {
       }
 
       // case SETMAXDECELERATION:
-      Serial.print("Executing SETMAXDECELERATION\n");
+      // Serial.print("Executing SETMAXDECELERATION\n");
       //   break;
 
     case SETMAXVELOCITY:
       {
         // Serial.print("Executing SETMAXVELOCITY\n");
+        reg_txt = "SETMAXVELOCITY";
         readValue<float>(maxVel, rx_buf, rx_length);
         maxVel *= 200 / 360.0;  // conversion from degrees/s to steps/s
         stepper.setMaxVelocity(maxVel);
@@ -348,6 +367,7 @@ void non_blocking_handler(uint8_t reg) {
     case ENABLESTALLGUARD:
       {
         // Serial.print("Executing ENABLESTALLGUARD\n");
+        reg_txt = "ENABLESTALLGUARD";
 
         // Very simple workaround for stall detection, since the built-in encoder stall-detection is tricky to work with in particular in combination with homeing since it can not be reset.
         uint8_t sensitivity;
@@ -374,6 +394,7 @@ void non_blocking_handler(uint8_t reg) {
     case SETBRAKEMODE:
       {
         // Serial.print("Executing SETBRAKEMODE\n");
+        reg_txt = "SETBRAKEMODE";
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
         stepper.setBrakeMode(v);
@@ -392,6 +413,7 @@ void non_blocking_handler(uint8_t reg) {
     case DISABLECLOSEDLOOP:
       {
         // Serial.print("Executing DISABLECLOSEDLOOP\n");
+        reg_txt = "DISABLECLOSEDLOOP";
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
         stepper.disableClosedLoop();
@@ -402,6 +424,7 @@ void non_blocking_handler(uint8_t reg) {
     case STOP:
       {
         // Serial.print("Executing STOP\n");
+        reg_txt = "STOP";
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
         stepper.setRPM(0);
