@@ -91,78 +91,70 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abeb024265f1fc02bf141dc63bf642670" id="r_abeb024265f1fc02bf141dc63bf642670"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#abeb024265f1fc02bf141dc63bf642670">~Joint_comms</a> ()</td></tr>
 <tr class="separator:abeb024265f1fc02bf141dc63bf642670"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a49b80e783b273377f20a42877316e9d9" id="r_a49b80e783b273377f20a42877316e9d9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a49b80e783b273377f20a42877316e9d9">init</a> (void)</td></tr>
-<tr class="memdesc:a49b80e783b273377f20a42877316e9d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes all joints.  <br /></td></tr>
+<tr class="memdesc:a49b80e783b273377f20a42877316e9d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Connects to all joints using the <a class="el" href="classJoint.html#ab62f504bb7a06ced79c24c54e254349e" title="Established connection to a joint via I2C.">Joint::init()</a> function.  <br /></td></tr>
 <tr class="separator:a49b80e783b273377f20a42877316e9d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae25646f0c0d4ee0d4b256580747eab2e" id="r_ae25646f0c0d4ee0d4b256580747eab2e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#ae25646f0c0d4ee0d4b256580747eab2e">deinit</a> (void)</td></tr>
-<tr class="memdesc:ae25646f0c0d4ee0d4b256580747eab2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees all joints from the I2C bus.  <br /></td></tr>
+<tr class="memdesc:ae25646f0c0d4ee0d4b256580747eab2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disconnects all joints from the I2C bus using the <a class="el" href="classJoint.html#a5d3de221dc515ba43c8ae3a1d08751d6" title="Disconnects from a joint.">Joint::deinit()</a> function.  <br /></td></tr>
 <tr class="separator:ae25646f0c0d4ee0d4b256580747eab2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adaeb5b0737077a6fca3c76787d1dca15" id="r_adaeb5b0737077a6fca3c76787d1dca15"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#adaeb5b0737077a6fca3c76787d1dca15">addJoint</a> (const int address, const std::string name, const float gearRatio, const float offset)</td></tr>
-<tr class="memdesc:adaeb5b0737077a6fca3c76787d1dca15"><td class="mdescLeft">&#160;</td><td class="mdescRight">add Joints.  <br /></td></tr>
-<tr class="separator:adaeb5b0737077a6fca3c76787d1dca15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6df8ddf06f23eff71e3e2f3c402e33bb" id="r_a6df8ddf06f23eff71e3e2f3c402e33bb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a6df8ddf06f23eff71e3e2f3c402e33bb">enables</a> (std::vector&lt; u_int8_t &gt; driveCurrent_v, std::vector&lt; u_int8_t &gt; holdCurrent_v)</td></tr>
-<tr class="memdesc:a6df8ddf06f23eff71e3e2f3c402e33bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Engages the joints.  <br /></td></tr>
-<tr class="separator:a6df8ddf06f23eff71e3e2f3c402e33bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40a7c7b5eec013ba18f13dd0a5f10a89" id="r_a40a7c7b5eec013ba18f13dd0a5f10a89"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a40a7c7b5eec013ba18f13dd0a5f10a89">enables</a> (u_int8_t driveCurrent, u_int8_t holdCurrent)</td></tr>
-<tr class="memdesc:a40a7c7b5eec013ba18f13dd0a5f10a89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Engages the joints with the same current settings for all joints.  <br /></td></tr>
-<tr class="separator:a40a7c7b5eec013ba18f13dd0a5f10a89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4c326697889ad5ae1b317745d7311dd" id="r_ae4c326697889ad5ae1b317745d7311dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#ae4c326697889ad5ae1b317745d7311dd">addJoint</a> (const std::string name, const int address, const float reduction, const float offset)</td></tr>
+<tr class="memdesc:ae4c326697889ad5ae1b317745d7311dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">add a <a class="el" href="classJoint.html#a16b777e9bc6a7378126942d3d786dcfb" title="Create a Joint object.">Joint::Joint()</a> to the internal map storing all connected joints.  <br /></td></tr>
+<tr class="separator:ae4c326697889ad5ae1b317745d7311dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b7ffba61da6a62935f0d38aebc1d12f" id="r_a0b7ffba61da6a62935f0d38aebc1d12f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a0b7ffba61da6a62935f0d38aebc1d12f">removeJoint</a> (const std::string name)</td></tr>
+<tr class="memdesc:a0b7ffba61da6a62935f0d38aebc1d12f"><td class="mdescLeft">&#160;</td><td class="mdescRight">removes a joint.  <br /></td></tr>
+<tr class="separator:a0b7ffba61da6a62935f0d38aebc1d12f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd98b19b10733019f992630c2a074cbd" id="r_abd98b19b10733019f992630c2a074cbd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#abd98b19b10733019f992630c2a074cbd">removeJoints</a> (void)</td></tr>
+<tr class="memdesc:abd98b19b10733019f992630c2a074cbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">removes all joints from the communication object.  <br /></td></tr>
+<tr class="separator:abd98b19b10733019f992630c2a074cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a599b3ebff280fc959ed93377fdfe7dbd" id="r_a599b3ebff280fc959ed93377fdfe7dbd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a599b3ebff280fc959ed93377fdfe7dbd">enable</a> (const std::string name, const u_int8_t driveCurrent, const u_int8_t holdCurrent)</td></tr>
+<tr class="memdesc:a599b3ebff280fc959ed93377fdfe7dbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Engage a joint by name.  <br /></td></tr>
+<tr class="separator:a599b3ebff280fc959ed93377fdfe7dbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa73b0604f5ccddc66eee71ad787e87d6" id="r_aa73b0604f5ccddc66eee71ad787e87d6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#aa73b0604f5ccddc66eee71ad787e87d6">disables</a> (void)</td></tr>
-<tr class="memdesc:aa73b0604f5ccddc66eee71ad787e87d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disenganges the joint without closing i2c handle.  <br /></td></tr>
+<tr class="memdesc:aa73b0604f5ccddc66eee71ad787e87d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disenganges all joints without closing i2c handle.  <br /></td></tr>
 <tr class="separator:aa73b0604f5ccddc66eee71ad787e87d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a3b670a7ca2a6b6937610ec8de7a66f" id="r_a9a3b670a7ca2a6b6937610ec8de7a66f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a9a3b670a7ca2a6b6937610ec8de7a66f">home</a> (std::string name, u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t current)</td></tr>
-<tr class="memdesc:a9a3b670a7ca2a6b6937610ec8de7a66f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the homing sequence of a joint.  <br /></td></tr>
-<tr class="separator:a9a3b670a7ca2a6b6937610ec8de7a66f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13063eb3c00e125d81463768810d9935" id="r_a13063eb3c00e125d81463768810d9935"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a13063eb3c00e125d81463768810d9935">getPositions</a> (std::vector&lt; float &gt; &amp;angle_v)</td></tr>
-<tr class="memdesc:a13063eb3c00e125d81463768810d9935"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the positions of all joints.  <br /></td></tr>
-<tr class="separator:a13063eb3c00e125d81463768810d9935"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab139b8554e2210ecf9bd3c6e131d7b41" id="r_ab139b8554e2210ecf9bd3c6e131d7b41"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#ab139b8554e2210ecf9bd3c6e131d7b41">setPositions</a> (std::vector&lt; float &gt; angle_v)</td></tr>
-<tr class="memdesc:ab139b8554e2210ecf9bd3c6e131d7b41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the positions of all joints.  <br /></td></tr>
-<tr class="separator:ab139b8554e2210ecf9bd3c6e131d7b41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e0dfe4b08d03a87316f17a140ea6422" id="r_a5e0dfe4b08d03a87316f17a140ea6422"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a5e0dfe4b08d03a87316f17a140ea6422">getVelocities</a> (std::vector&lt; float &gt; &amp;degps_v)</td></tr>
-<tr class="memdesc:a5e0dfe4b08d03a87316f17a140ea6422"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the velocities of all joints.  <br /></td></tr>
-<tr class="separator:a5e0dfe4b08d03a87316f17a140ea6422"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a735045751a7c6eca41a65ae3432378fa" id="r_a735045751a7c6eca41a65ae3432378fa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a735045751a7c6eca41a65ae3432378fa">setVelocities</a> (std::vector&lt; float &gt; degps_v)</td></tr>
-<tr class="memdesc:a735045751a7c6eca41a65ae3432378fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the velocities of all joints.  <br /></td></tr>
-<tr class="separator:a735045751a7c6eca41a65ae3432378fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19be151ecaeb7e02ea1578e14c910c7b" id="r_a19be151ecaeb7e02ea1578e14c910c7b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a19be151ecaeb7e02ea1578e14c910c7b">checkOrientations</a> (std::vector&lt; float &gt; angle_v)</td></tr>
-<tr class="memdesc:a19be151ecaeb7e02ea1578e14c910c7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sequentially checks the orientations of each joint.  <br /></td></tr>
-<tr class="separator:a19be151ecaeb7e02ea1578e14c910c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab65b3f7f87bc71fe950c4e230db41700" id="r_ab65b3f7f87bc71fe950c4e230db41700"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#ab65b3f7f87bc71fe950c4e230db41700">home</a> (const std::string name, const u_int8_t direction, const u_int8_t rpm, const u_int8_t sensitivity, const u_int8_t current)</td></tr>
+<tr class="memdesc:ab65b3f7f87bc71fe950c4e230db41700"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes the homing sequence of a joint.  <br /></td></tr>
+<tr class="separator:ab65b3f7f87bc71fe950c4e230db41700"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52111b43be808874a6b005ef0ddb99e0" id="r_a52111b43be808874a6b005ef0ddb99e0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a52111b43be808874a6b005ef0ddb99e0">getPosition</a> (const std::string name, float &amp;angle)</td></tr>
+<tr class="memdesc:a52111b43be808874a6b005ef0ddb99e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the position of the joint by name.  <br /></td></tr>
+<tr class="separator:a52111b43be808874a6b005ef0ddb99e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9306d7e5217617e70d9da955e19075c" id="r_ae9306d7e5217617e70d9da955e19075c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#ae9306d7e5217617e70d9da955e19075c">setPosition</a> (const std::string name, const float angle)</td></tr>
+<tr class="memdesc:ae9306d7e5217617e70d9da955e19075c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the position of the joint by name.  <br /></td></tr>
+<tr class="separator:ae9306d7e5217617e70d9da955e19075c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a725b200cfb9f1926f65ce6ce59e94993" id="r_a725b200cfb9f1926f65ce6ce59e94993"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a725b200cfb9f1926f65ce6ce59e94993">getVelocity</a> (const std::string name, float &amp;degps)</td></tr>
+<tr class="memdesc:a725b200cfb9f1926f65ce6ce59e94993"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the velocity of a joint by name.  <br /></td></tr>
+<tr class="separator:a725b200cfb9f1926f65ce6ce59e94993"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6919e5270073edef2561ab6d83974070" id="r_a6919e5270073edef2561ab6d83974070"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a6919e5270073edef2561ab6d83974070">setVelocity</a> (const std::string name, float degps)</td></tr>
+<tr class="memdesc:a6919e5270073edef2561ab6d83974070"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the velocity of a joint by name.  <br /></td></tr>
+<tr class="separator:a6919e5270073edef2561ab6d83974070"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57039c36082111c78f765eb2ce359da0" id="r_a57039c36082111c78f765eb2ce359da0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a57039c36082111c78f765eb2ce359da0">checkOrientations</a> (float angle=10.0)</td></tr>
-<tr class="memdesc:a57039c36082111c78f765eb2ce359da0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload to use standard angle of 10 degrees.  <br /></td></tr>
+<tr class="memdesc:a57039c36082111c78f765eb2ce359da0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sequentially checks the orientations of each joint.  <br /></td></tr>
 <tr class="separator:a57039c36082111c78f765eb2ce359da0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad62ed11a6454d39fc21072c188734bac" id="r_ad62ed11a6454d39fc21072c188734bac"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#ad62ed11a6454d39fc21072c188734bac">checkOrientation</a> (const std::string name, float angle=10.0)</td></tr>
+<tr class="memdesc:ad62ed11a6454d39fc21072c188734bac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks the orientations of the specified joint. This function is automatically called when homing a joint.  <br /></td></tr>
+<tr class="separator:ad62ed11a6454d39fc21072c188734bac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f56abc43ef3054ec7b0295b10df4d1c" id="r_a3f56abc43ef3054ec7b0295b10df4d1c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a3f56abc43ef3054ec7b0295b10df4d1c">stops</a> (bool mode)</td></tr>
 <tr class="memdesc:a3f56abc43ef3054ec7b0295b10df4d1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops the motors.  <br /></td></tr>
 <tr class="separator:a3f56abc43ef3054ec7b0295b10df4d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90a68c4257c1b6f5eb79f542500de57c" id="r_a90a68c4257c1b6f5eb79f542500de57c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a90a68c4257c1b6f5eb79f542500de57c">disableCLs</a> (void)</td></tr>
-<tr class="memdesc:a90a68c4257c1b6f5eb79f542500de57c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables the Closed-Loop PID Controllers.  <br /></td></tr>
-<tr class="separator:a90a68c4257c1b6f5eb79f542500de57c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0871d435dbba6a648d7601c77345aa14" id="r_a0871d435dbba6a648d7601c77345aa14"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a0871d435dbba6a648d7601c77345aa14">setDriveCurrents</a> (std::vector&lt; u_int8_t &gt; current)</td></tr>
-<tr class="memdesc:a0871d435dbba6a648d7601c77345aa14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the drive Currents.  <br /></td></tr>
-<tr class="separator:a0871d435dbba6a648d7601c77345aa14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11671ff7bd1fe19e159006a6846e3d8f" id="r_a11671ff7bd1fe19e159006a6846e3d8f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a11671ff7bd1fe19e159006a6846e3d8f">setDriveCurrents</a> (u_int8_t current)</td></tr>
-<tr class="memdesc:a11671ff7bd1fe19e159006a6846e3d8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload to set all drive currents to the same value.  <br /></td></tr>
-<tr class="separator:a11671ff7bd1fe19e159006a6846e3d8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d876a22e7e9675613e3c007ac97b262" id="r_a3d876a22e7e9675613e3c007ac97b262"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a3d876a22e7e9675613e3c007ac97b262">setHoldCurrents</a> (std::vector&lt; u_int8_t &gt; current)</td></tr>
-<tr class="memdesc:a3d876a22e7e9675613e3c007ac97b262"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Hold Currents.  <br /></td></tr>
-<tr class="separator:a3d876a22e7e9675613e3c007ac97b262"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa2a7ec7988ebf6c5b3a81f9ffd5e367" id="r_aaa2a7ec7988ebf6c5b3a81f9ffd5e367"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#aaa2a7ec7988ebf6c5b3a81f9ffd5e367">setHoldCurrents</a> (u_int8_t current)</td></tr>
-<tr class="memdesc:aaa2a7ec7988ebf6c5b3a81f9ffd5e367"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload to set all hold currents to the same value.  <br /></td></tr>
-<tr class="separator:aaa2a7ec7988ebf6c5b3a81f9ffd5e367"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4f77985b4bbcaa99b7b2b83b3c1cf8f" id="r_ae4f77985b4bbcaa99b7b2b83b3c1cf8f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#ae4f77985b4bbcaa99b7b2b83b3c1cf8f">setBrakeModes</a> (u_int8_t mode)</td></tr>
-<tr class="memdesc:ae4f77985b4bbcaa99b7b2b83b3c1cf8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set Brake Modes.  <br /></td></tr>
-<tr class="separator:ae4f77985b4bbcaa99b7b2b83b3c1cf8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24e10dc20814532ec5326084448c8039" id="r_a24e10dc20814532ec5326084448c8039"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a24e10dc20814532ec5326084448c8039">enableStallguards</a> (std::vector&lt; u_int8_t &gt; thresholds)</td></tr>
-<tr class="memdesc:a24e10dc20814532ec5326084448c8039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable encoder stall detection.  <br /></td></tr>
-<tr class="separator:a24e10dc20814532ec5326084448c8039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dba3b967385486f74392b656f663cec" id="r_a9dba3b967385486f74392b656f663cec"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a9dba3b967385486f74392b656f663cec">enableStallguard</a> (const std::string name, const u_int8_t threshold)</td></tr>
+<tr class="memdesc:a9dba3b967385486f74392b656f663cec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable encoder stall detection of specified joint.  <br /></td></tr>
+<tr class="separator:a9dba3b967385486f74392b656f663cec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af09d72794cb0d7b3bf79be3eeaad53f2" id="r_af09d72794cb0d7b3bf79be3eeaad53f2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#af09d72794cb0d7b3bf79be3eeaad53f2">setMaxAcceleration</a> (const std::string name, float maxAccel)</td></tr>
+<tr class="memdesc:af09d72794cb0d7b3bf79be3eeaad53f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the maximum permitted joint acceleration (and deceleration) in deg/s^2 or mm/s^2 for cylindrical and prismatic joints respectively.  <br /></td></tr>
+<tr class="separator:af09d72794cb0d7b3bf79be3eeaad53f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad87fd8a32ab2788b871046fc492c6f2e" id="r_ad87fd8a32ab2788b871046fc492c6f2e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#ad87fd8a32ab2788b871046fc492c6f2e">setMaxVelocity</a> (const std::string name, float maxVel)</td></tr>
+<tr class="memdesc:ad87fd8a32ab2788b871046fc492c6f2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the maximum permitted joint velocity in deg/s or mm/s for cylindrical and prismatic joints respectively.  <br /></td></tr>
+<tr class="separator:ad87fd8a32ab2788b871046fc492c6f2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aa86717eaea6a3a52f6f61f9895dd4473" id="r_aa86717eaea6a3a52f6f61f9895dd4473"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classJoint.html">Joint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#aa86717eaea6a3a52f6f61f9895dd4473">joints</a></td></tr>
-<tr class="memdesc:aa86717eaea6a3a52f6f61f9895dd4473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal vector storing the <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> objects.  <br /></td></tr>
-<tr class="separator:aa86717eaea6a3a52f6f61f9895dd4473"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a560da87e376b60b95192bbedf8197447" id="r_a560da87e376b60b95192bbedf8197447"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, <a class="el" href="classJoint.html">Joint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint__comms.html#a560da87e376b60b95192bbedf8197447">joints</a></td></tr>
+<tr class="memdesc:a560da87e376b60b95192bbedf8197447"><td class="mdescLeft">&#160;</td><td class="mdescRight">unordered map storing the <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> objects.  <br /></td></tr>
+<tr class="separator:a560da87e376b60b95192bbedf8197447"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Communication object for all joints. </p>
-<p>CLass handling interfacing with the joints. </p>
+<p>Class handling interfacing with the joints.</p>
+<p>The methods of this class are optimized for easy use in the ROS2_control hardware interface methods. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6a36596ce18384695b30409d3844349a" name="a6a36596ce18384695b30409d3844349a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6a36596ce18384695b30409d3844349a">&#9670;&#160;</a></span>Joint_comms()</h2>
@@ -200,8 +192,8 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="adaeb5b0737077a6fca3c76787d1dca15" name="adaeb5b0737077a6fca3c76787d1dca15"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adaeb5b0737077a6fca3c76787d1dca15">&#9670;&#160;</a></span>addJoint()</h2>
+<a id="ae4c326697889ad5ae1b317745d7311dd" name="ae4c326697889ad5ae1b317745d7311dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4c326697889ad5ae1b317745d7311dd">&#9670;&#160;</a></span>addJoint()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -209,20 +201,20 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">void Joint_comms::addJoint </td>
           <td>(</td>
-          <td class="paramtype">const int&#160;</td>
-          <td class="paramname"><em>address</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">const std::string&#160;</td>
           <td class="paramname"><em>name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>address</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const float&#160;</td>
-          <td class="paramname"><em>gearRatio</em>, </td>
+          <td class="paramname"><em>reduction</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -238,26 +230,77 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>add Joints. </p>
-<p>Appends a joint to internal vector. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>add a <a class="el" href="classJoint.html#a16b777e9bc6a7378126942d3d786dcfb" title="Create a Joint object.">Joint::Joint()</a> to the internal map storing all connected joints. </p>
+<p>The <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> object represents a single joint and its actuator. Each <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> has a transmission with the following relationship: <br  />
+ </p><blockquote class="doxtable">
+<p>&zwj;actuator position = (joint position - offset) * reduction <br  />
+joint position = actuator position / reduction + offset </p>
+</blockquote>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">addresses</td><td>1-byte I2C device adress (0x11 ... 0x14) for J1 ... J4 </td></tr>
-    <tr><td class="paramname">names</td><td>string device name for output logs </td></tr>
-    <tr><td class="paramname">gearRatio</td><td>gear ratio of joint. This is used to transform position and velocity commands in joint units to the stepper units. Signed: sign depends if homed CW or CCW. J1: 35; J2: -360/4 (4 mm per revolution); J3: 24; J4: 12; </td></tr>
-    <tr><td class="paramname">offset</td><td>offset between encoder zero and joint zero (in joint units). J1: TBD; J2: -TBD (negative because homed at top); J3: TBD; J4: TBD; </td></tr>
+    <tr><td class="paramname">name</td><td>string device name for identification </td></tr>
+    <tr><td class="paramname">address</td><td>1-byte I2C device adress (0x11 ... 0x14) for J1 ... J4 </td></tr>
+    <tr><td class="paramname">reduction</td><td>gear reduction of the joint. This is used to transform position and velocity values between in joint units and actuator (stepper) units. The sign depends on the direction is turning. Adjust such that the joint moves in the positive direction on on positive joint commands. Cable polarity has no effect since the motors automatically adjust to always run in the 'right' direction from their point of view. <br  />
+J1: 35 <br  />
+J2: -2*pi/0.004 (4 mm linear movement per stepper revolution) <br  />
+J3: 24 <br  />
+J4: 12 </td></tr>
+    <tr><td class="paramname">offset</td><td>offset between actuator zero and joint zero (in joint units). Set this to the angle the joint is at when is is homed. F.x. since J2 is homing at the top the offset shall be a positive numer. <br  />
+J1: (-)3.04647 <br  />
+J2: 0.34935 <br  />
+J3: (-)2.62672 <br  />
+J4: (-)3.01069 </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd><ul>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd><ul>
 <li>Measure joint ranges</li>
-<li>Investigate if possible to make independent of homing</li>
+<li>Investigate if possible to make independent of homing </li>
 </ul>
 </dd></dl>
 
 </div>
 </div>
+<a id="ad62ed11a6454d39fc21072c188734bac" name="ad62ed11a6454d39fc21072c188734bac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad62ed11a6454d39fc21072c188734bac">&#9670;&#160;</a></span>checkOrientation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Joint_comms::checkOrientation </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>angle</em> = <code>10.0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks the orientations of the specified joint. This function is automatically called when homing a joint. </p>
+<p>When checking the orientation the motor moves a few degrees and compares the encoder output. It then internally saves the direction it is wired. This function should only be called after the joint has just been powered up. This function must be called after the joint has been enabled with <a class="el" href="classJoint__comms.html#a599b3ebff280fc959ed93377fdfe7dbd" title="Engage a joint by name.">enable()</a> and before any movement. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>name of the joint to check the orientation. </td></tr>
+    <tr><td class="paramname">angle</td><td>degrees in motor units to rotate to check the orientation. Should be small values of a few degrees. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
+
+</div>
+</div>
 <a id="a57039c36082111c78f765eb2ce359da0" name="a57039c36082111c78f765eb2ce359da0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57039c36082111c78f765eb2ce359da0">&#9670;&#160;</a></span>checkOrientations() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a57039c36082111c78f765eb2ce359da0">&#9670;&#160;</a></span>checkOrientations()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -272,36 +315,15 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Overload to use standard angle of 10 degrees. </p>
-<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
-
-</div>
-</div>
-<a id="a19be151ecaeb7e02ea1578e14c910c7b" name="a19be151ecaeb7e02ea1578e14c910c7b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19be151ecaeb7e02ea1578e14c910c7b">&#9670;&#160;</a></span>checkOrientations() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Joint_comms::checkOrientations </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; float &gt;&#160;</td>
-          <td class="paramname"><em>angle_v</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
 <p>Sequentially checks the orientations of each joint. </p>
-<p>This function must only be called after the joint has been powered down. This function must be called after the joint has been enabled with <a class="el" href="classJoint__comms.html#a6df8ddf06f23eff71e3e2f3c402e33bb" title="Engages the joints.">enables()</a> and before any movement. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>This function should only be called after the joint has just been powered up. This function must be called after the joint has been enabled with enables() and before any movement. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">angle_v</td><td>vector of degrees to rotate to check the orientation. Should be small values of a few degrees. </td></tr>
+    <tr><td class="paramname">angle</td><td>degrees in motor units to rotate to check the orientation. Should be small values of a few degrees. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd><ul>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd><ul>
 <li>Only execute if not performed before</li>
 <li>save in private flag and inhibit movement if this has not been executed. </li>
 </ul>
@@ -325,30 +347,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Frees all joints from the I2C bus. </p>
+<p>Disconnects all joints from the I2C bus using the <a class="el" href="classJoint.html#a5d3de221dc515ba43c8ae3a1d08751d6" title="Disconnects from a joint.">Joint::deinit()</a> function. </p>
 <p>Deinitializes all joints by removing them from the I2C bus.</p>
 <dl class="section return"><dt>Returns</dt><dd>0 on success, non-zero otherwise </dd></dl>
-
-</div>
-</div>
-<a id="a90a68c4257c1b6f5eb79f542500de57c" name="a90a68c4257c1b6f5eb79f542500de57c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90a68c4257c1b6f5eb79f542500de57c">&#9670;&#160;</a></span>disableCLs()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Joint_comms::disableCLs </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Disables the Closed-Loop PID Controllers. </p>
-<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
 
 </div>
 </div>
@@ -368,66 +369,33 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Disenganges the joint without closing i2c handle. </p>
-<p>Call this function when the joint should be in freedrive mode. </p><dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
+<p>Disenganges all joints without closing i2c handle. </p>
+<p>Call this function when the joints should be in freedrive mode. </p><dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
 
 </div>
 </div>
-<a id="a6df8ddf06f23eff71e3e2f3c402e33bb" name="a6df8ddf06f23eff71e3e2f3c402e33bb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6df8ddf06f23eff71e3e2f3c402e33bb">&#9670;&#160;</a></span>enables() <span class="overload">[1/2]</span></h2>
+<a id="a599b3ebff280fc959ed93377fdfe7dbd" name="a599b3ebff280fc959ed93377fdfe7dbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a599b3ebff280fc959ed93377fdfe7dbd">&#9670;&#160;</a></span>enable()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Joint_comms::enables </td>
+          <td class="memname">int Joint_comms::enable </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; u_int8_t &gt;&#160;</td>
-          <td class="paramname"><em>driveCurrent_v</em>, </td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; u_int8_t &gt;&#160;</td>
-          <td class="paramname"><em>holdCurrent_v</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Engages the joints. </p>
-<p>Sets the drive and hold currents for each joint and engages the motor. Currents are in percent of driver max. output (2.5A, check with datasheet)</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">driveCurrent_v</td><td>vector of drive currents 0-100. the i'th vector entry sets the current for the i'th added joint. </td></tr>
-    <tr><td class="paramname">holdCurrent_v</td><td>vector of hold currents 0-100. the i'th vector entry sets the current for the i'th added joint.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
-
-</div>
-</div>
-<a id="a40a7c7b5eec013ba18f13dd0a5f10a89" name="a40a7c7b5eec013ba18f13dd0a5f10a89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40a7c7b5eec013ba18f13dd0a5f10a89">&#9670;&#160;</a></span>enables() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Joint_comms::enables </td>
-          <td>(</td>
-          <td class="paramtype">u_int8_t&#160;</td>
+          <td class="paramtype">const u_int8_t&#160;</td>
           <td class="paramname"><em>driveCurrent</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">u_int8_t&#160;</td>
+          <td class="paramtype">const u_int8_t&#160;</td>
           <td class="paramname"><em>holdCurrent</em>&#160;</td>
         </tr>
         <tr>
@@ -438,65 +406,89 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Engages the joints with the same current settings for all joints. </p>
-<p>In this overload the same drive and hold currents are written to every joint. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Engage a joint by name. </p>
+<p>This function prepares the motor for movement. After successfull execution the joint is ready to accept <a class="el" href="classJoint__comms.html#ae9306d7e5217617e70d9da955e19075c" title="Set the position of the joint by name.">setPosition()</a> and <a class="el" href="classJoint__comms.html#a6919e5270073edef2561ab6d83974070" title="Set the velocity of a joint by name.">setVelocity()</a> commands. <br  />
+ The function ets the drive and hold current for the specified joint and engages the motor. The currents are in percent of driver max. output (2.5A, check with TMC5130 datasheet or Ustepper documentation) </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">driveCurrent</td><td>drive current 0-100. </td></tr>
-    <tr><td class="paramname">holdCurrent</td><td>hold current 0-100. </td></tr>
+    <tr><td class="paramname">driveCurrent</td><td>drive current in 0-100 % of 2.5A output (check uStepper doc.) </td></tr>
+    <tr><td class="paramname">holdCurrent</td><td>hold current in 0-100 % of 2.5A output (check uStepper doc.) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, -1 on communication error, -3 when the motor is not enabled.   </dd>
+<dd>
+0 on success, -1 on error, -2 if the specified joint is not found. </dd></dl>
 
 </div>
 </div>
-<a id="a24e10dc20814532ec5326084448c8039" name="a24e10dc20814532ec5326084448c8039"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24e10dc20814532ec5326084448c8039">&#9670;&#160;</a></span>enableStallguards()</h2>
+<a id="a9dba3b967385486f74392b656f663cec" name="a9dba3b967385486f74392b656f663cec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dba3b967385486f74392b656f663cec">&#9670;&#160;</a></span>enableStallguard()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Joint_comms::enableStallguards </td>
+          <td class="memname">int Joint_comms::enableStallguard </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; u_int8_t &gt;&#160;</td>
-          <td class="paramname"><em>thresholds</em></td><td>)</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const u_int8_t&#160;</td>
+          <td class="paramname"><em>threshold</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Enable encoder stall detection. </p>
+<p>Enable encoder stall detection of specified joint. </p>
 <p>If the PID error exceeds the set threshold a stall is triggered and the motor disabled. A detected stall can be reset by homeing. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">thresholds</td><td>Vector of thresholds. 0 - 255 where lower is more sensitive. </td></tr>
+    <tr><td class="paramname">name</td><td>name of joint to enable stall detection </td></tr>
+    <tr><td class="paramname">thresholds</td><td>value of threshold. 0 - 255 where lower is more sensitive. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a13063eb3c00e125d81463768810d9935" name="a13063eb3c00e125d81463768810d9935"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13063eb3c00e125d81463768810d9935">&#9670;&#160;</a></span>getPositions()</h2>
+<a id="a52111b43be808874a6b005ef0ddb99e0" name="a52111b43be808874a6b005ef0ddb99e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52111b43be808874a6b005ef0ddb99e0">&#9670;&#160;</a></span>getPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Joint_comms::getPositions </td>
+          <td class="memname">int Joint_comms::getPosition </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; float &gt; &amp;&#160;</td>
-          <td class="paramname"><em>angle_v</em></td><td>)</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>angle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get the positions of all joints. </p>
-<p>The current positions of all joints are returned. The units are degrees and mm for revolute and prismatic joints respectively.</p>
+<p>Get the position of the joint by name. </p>
+<p>The current positions of the joint specified by the name is returned. The units are degrees and mm for revolute and prismatic joints respectively. <a class="el" href="classJoint.html#abcda66b87fdca763475cf1cd7d309b1c" title="get the current joint position in radians or m for cylindrical and prismatic joints respectively.">Joint::getPosition()</a></p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">angle_v</td><td>Reference to allocated vector of appropriate size to hold all joint positions. </td></tr>
+    <tr><td class="paramname">angle</td><td>Reference to allocated variable to hold the joint position. </td></tr>
   </table>
   </dd>
 </dl>
@@ -504,27 +496,37 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a5e0dfe4b08d03a87316f17a140ea6422" name="a5e0dfe4b08d03a87316f17a140ea6422"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e0dfe4b08d03a87316f17a140ea6422">&#9670;&#160;</a></span>getVelocities()</h2>
+<a id="a725b200cfb9f1926f65ce6ce59e94993" name="a725b200cfb9f1926f65ce6ce59e94993"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a725b200cfb9f1926f65ce6ce59e94993">&#9670;&#160;</a></span>getVelocity()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Joint_comms::getVelocities </td>
+          <td class="memname">int Joint_comms::getVelocity </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; float &gt; &amp;&#160;</td>
-          <td class="paramname"><em>degps_v</em></td><td>)</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">float &amp;&#160;</td>
+          <td class="paramname"><em>degps</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get the velocities of all joints. </p>
-<p>The current velocities of all joints are returned. The units are degrees/s and mm/s for revolute and prismatic joints respectively.</p>
+<p>Get the velocity of a joint by name. </p>
+<p>The current velocity of the specified joint is returned. The units are degrees/s and mm/s for revolute and prismatic joints respectively.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">degps_v</td><td>Reference to allocated vector of appropriate size to hold all joint velocities. </td></tr>
+    <tr><td class="paramname">degps</td><td>Reference to variable to hold all the joint velocity. </td></tr>
   </table>
   </dd>
 </dl>
@@ -532,8 +534,8 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a9a3b670a7ca2a6b6937610ec8de7a66f" name="a9a3b670a7ca2a6b6937610ec8de7a66f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a3b670a7ca2a6b6937610ec8de7a66f">&#9670;&#160;</a></span>home()</h2>
+<a id="ab65b3f7f87bc71fe950c4e230db41700" name="ab65b3f7f87bc71fe950c4e230db41700"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab65b3f7f87bc71fe950c4e230db41700">&#9670;&#160;</a></span>home()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -541,31 +543,31 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">int Joint_comms::home </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string&#160;</td>
           <td class="paramname"><em>name</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">u_int8_t&#160;</td>
+          <td class="paramtype">const u_int8_t&#160;</td>
           <td class="paramname"><em>direction</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">u_int8_t&#160;</td>
+          <td class="paramtype">const u_int8_t&#160;</td>
           <td class="paramname"><em>rpm</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">u_int8_t&#160;</td>
+          <td class="paramtype">const u_int8_t&#160;</td>
           <td class="paramname"><em>sensitivity</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">u_int8_t&#160;</td>
+          <td class="paramtype">const u_int8_t&#160;</td>
           <td class="paramname"><em>current</em>&#160;</td>
         </tr>
         <tr>
@@ -608,32 +610,164 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes all joints. </p>
-<dl class="section warning"><dt>Warning</dt><dd>Add some joints using <a class="el" href="classJoint__comms.html#adaeb5b0737077a6fca3c76787d1dca15" title="add Joints.">addJoint()</a> before calling this function. Iterates over all joints and initializes them on the I2C bus and tests if they are responsive.</dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>0 on success, non-zero otherwise </dd></dl>
+<p>Connects to all joints using the <a class="el" href="classJoint.html#ab62f504bb7a06ced79c24c54e254349e" title="Established connection to a joint via I2C.">Joint::init()</a> function. </p>
+<p>Iterates over all joints and connects to them on the I2C bus and tests if they are responsive.</p>
+<dl class="section warning"><dt>Warning</dt><dd>Add some joints using <a class="el" href="classJoint__comms.html#ae4c326697889ad5ae1b317745d7311dd" title="add a Joint::Joint() to the internal map storing all connected joints.">addJoint()</a> before calling this function.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, -1 on error. </dd></dl>
 
 </div>
 </div>
-<a id="ae4f77985b4bbcaa99b7b2b83b3c1cf8f" name="ae4f77985b4bbcaa99b7b2b83b3c1cf8f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4f77985b4bbcaa99b7b2b83b3c1cf8f">&#9670;&#160;</a></span>setBrakeModes()</h2>
+<a id="a0b7ffba61da6a62935f0d38aebc1d12f" name="a0b7ffba61da6a62935f0d38aebc1d12f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b7ffba61da6a62935f0d38aebc1d12f">&#9670;&#160;</a></span>removeJoint()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Joint_comms::setBrakeModes </td>
+          <td class="memname">void Joint_comms::removeJoint </td>
           <td>(</td>
-          <td class="paramtype">u_int8_t&#160;</td>
-          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set Brake Modes. </p>
-<p>Applies the same brake modes to all joints. usefull to disengage all motors. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>removes a joint. </p>
+<p>removes a joint from the internal map by name. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>Freewheel: 0, Coolbrake: 1, Hardbrake: 2 </td></tr>
+    <tr><td class="paramname">name</td><td>string device name of the joint to remove </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="abd98b19b10733019f992630c2a074cbd" name="abd98b19b10733019f992630c2a074cbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd98b19b10733019f992630c2a074cbd">&#9670;&#160;</a></span>removeJoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Joint_comms::removeJoints </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>removes all joints from the communication object. </p>
+
+</div>
+</div>
+<a id="af09d72794cb0d7b3bf79be3eeaad53f2" name="af09d72794cb0d7b3bf79be3eeaad53f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af09d72794cb0d7b3bf79be3eeaad53f2">&#9670;&#160;</a></span>setMaxAcceleration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Joint_comms::setMaxAcceleration </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>maxAccel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the maximum permitted joint acceleration (and deceleration) in deg/s^2 or mm/s^2 for cylindrical and prismatic joints respectively. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">maxAccel</td><td>maximum joint acceleration. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>error code </dd></dl>
+
+</div>
+</div>
+<a id="ad87fd8a32ab2788b871046fc492c6f2e" name="ad87fd8a32ab2788b871046fc492c6f2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad87fd8a32ab2788b871046fc492c6f2e">&#9670;&#160;</a></span>setMaxVelocity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Joint_comms::setMaxVelocity </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>maxVel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the maximum permitted joint velocity in deg/s or mm/s for cylindrical and prismatic joints respectively. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">maxVel</td><td>maximum joint velocity. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>error code </dd></dl>
+
+</div>
+</div>
+<a id="ae9306d7e5217617e70d9da955e19075c" name="ae9306d7e5217617e70d9da955e19075c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9306d7e5217617e70d9da955e19075c">&#9670;&#160;</a></span>setPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Joint_comms::setPosition </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const float&#160;</td>
+          <td class="paramname"><em>angle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the position of the joint by name. </p>
+<p>Set new target positons of the specified joint. The units are degrees and mm for revolute and prismatic joints respectively.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">angle</td><td>value of new target positions. </td></tr>
   </table>
   </dd>
 </dl>
@@ -641,167 +775,37 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a0871d435dbba6a648d7601c77345aa14" name="a0871d435dbba6a648d7601c77345aa14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0871d435dbba6a648d7601c77345aa14">&#9670;&#160;</a></span>setDriveCurrents() <span class="overload">[1/2]</span></h2>
+<a id="a6919e5270073edef2561ab6d83974070" name="a6919e5270073edef2561ab6d83974070"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6919e5270073edef2561ab6d83974070">&#9670;&#160;</a></span>setVelocity()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Joint_comms::setDriveCurrents </td>
+          <td class="memname">int Joint_comms::setVelocity </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; u_int8_t &gt;&#160;</td>
-          <td class="paramname"><em>current</em></td><td>)</td>
-          <td></td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
         </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set the drive Currents. </p>
-<dl class="section warning"><dt>Warning</dt><dd>This function is unreliable and not well tested. Use <a class="el" href="classJoint__comms.html#a6df8ddf06f23eff71e3e2f3c402e33bb" title="Engages the joints.">enables()</a> instead!</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">current</td><td>0% - 100% of driver current </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
-
-</div>
-</div>
-<a id="a11671ff7bd1fe19e159006a6846e3d8f" name="a11671ff7bd1fe19e159006a6846e3d8f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11671ff7bd1fe19e159006a6846e3d8f">&#9670;&#160;</a></span>setDriveCurrents() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
         <tr>
-          <td class="memname">int Joint_comms::setDriveCurrents </td>
-          <td>(</td>
-          <td class="paramtype">u_int8_t&#160;</td>
-          <td class="paramname"><em>current</em></td><td>)</td>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>degps</em>&#160;</td>
         </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Overload to set all drive currents to the same value. </p>
-<dl class="section warning"><dt>Warning</dt><dd>This function is unreliable and not well tested. Use <a class="el" href="classJoint__comms.html#a6df8ddf06f23eff71e3e2f3c402e33bb" title="Engages the joints.">enables()</a> instead!</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">current</td><td>0% - 100% of driver current </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
-
-</div>
-</div>
-<a id="a3d876a22e7e9675613e3c007ac97b262" name="a3d876a22e7e9675613e3c007ac97b262"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d876a22e7e9675613e3c007ac97b262">&#9670;&#160;</a></span>setHoldCurrents() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
         <tr>
-          <td class="memname">int Joint_comms::setHoldCurrents </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; u_int8_t &gt;&#160;</td>
-          <td class="paramname"><em>current</em></td><td>)</td>
           <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set the Hold Currents. </p>
-<dl class="section warning"><dt>Warning</dt><dd>This function is unreliable and not well tested. Use <a class="el" href="classJoint__comms.html#a6df8ddf06f23eff71e3e2f3c402e33bb" title="Engages the joints.">enables()</a> instead!</dd></dl>
+<p>Set the velocity of a joint by name. </p>
+<p>Set the new target velocity of the specified joint. The units are degrees/s and mm/s for revolute and prismatic joints respectively.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">current</td><td>0% - 100% of driver current </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
-
-</div>
-</div>
-<a id="aaa2a7ec7988ebf6c5b3a81f9ffd5e367" name="aaa2a7ec7988ebf6c5b3a81f9ffd5e367"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa2a7ec7988ebf6c5b3a81f9ffd5e367">&#9670;&#160;</a></span>setHoldCurrents() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Joint_comms::setHoldCurrents </td>
-          <td>(</td>
-          <td class="paramtype">u_int8_t&#160;</td>
-          <td class="paramname"><em>current</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Overload to set all hold currents to the same value. </p>
-<dl class="section warning"><dt>Warning</dt><dd>This function is unreliable and not well tested. Use <a class="el" href="classJoint__comms.html#a6df8ddf06f23eff71e3e2f3c402e33bb" title="Engages the joints.">enables()</a> instead!</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">current</td><td>0% - 100% of driver current </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
-
-</div>
-</div>
-<a id="ab139b8554e2210ecf9bd3c6e131d7b41" name="ab139b8554e2210ecf9bd3c6e131d7b41"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab139b8554e2210ecf9bd3c6e131d7b41">&#9670;&#160;</a></span>setPositions()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Joint_comms::setPositions </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; float &gt;&#160;</td>
-          <td class="paramname"><em>angle_v</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set the positions of all joints. </p>
-<p>Set new target positons of all joints. The units are degrees and mm for revolute and prismatic joints respectively.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">angle_v</td><td>Vector of new target positions. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
-
-</div>
-</div>
-<a id="a735045751a7c6eca41a65ae3432378fa" name="a735045751a7c6eca41a65ae3432378fa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a735045751a7c6eca41a65ae3432378fa">&#9670;&#160;</a></span>setVelocities()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Joint_comms::setVelocities </td>
-          <td>(</td>
-          <td class="paramtype">std::vector&lt; float &gt;&#160;</td>
-          <td class="paramname"><em>degps_v</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set the velocities of all joints. </p>
-<p>Set new target positons of all joints. The units are degrees and mm for revolute and prismatic joints respectively.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">degps_v</td><td>Vector of new target velocities. </td></tr>
+    <tr><td class="paramname">degps</td><td>New target velocity. </td></tr>
   </table>
   </dd>
 </dl>
@@ -837,26 +841,27 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="aa86717eaea6a3a52f6f61f9895dd4473" name="aa86717eaea6a3a52f6f61f9895dd4473"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa86717eaea6a3a52f6f61f9895dd4473">&#9670;&#160;</a></span>joints</h2>
+<a id="a560da87e376b60b95192bbedf8197447" name="a560da87e376b60b95192bbedf8197447"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a560da87e376b60b95192bbedf8197447">&#9670;&#160;</a></span>joints</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="classJoint.html">Joint</a>&gt; Joint_comms::joints</td>
+          <td class="memname">std::unordered_map&lt;std::string, <a class="el" href="classJoint.html">Joint</a>&gt; Joint_comms::joints</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Internal vector storing the <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> objects. </p>
-<p>A <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> can be added by invoking <a class="el" href="classJoint__comms.html#adaeb5b0737077a6fca3c76787d1dca15" title="add Joints.">addJoint()</a> </p>
+<p>unordered map storing the <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> objects. </p>
+<p>an unordered map is chosen to simplify acces via the joint name, as this conforms well with the ROS2_control hardware interface The map does not need to be ordered. Search, insertion, and removal of elements have average constant-time complexity.</p>
+<p>A <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> can be added by invoking <a class="el" href="classJoint__comms.html#ae4c326697889ad5ae1b317745d7311dd" title="add a Joint::Joint() to the internal map storing all connected joints.">addJoint()</a> A joint can be removed by invoking remvoveJoint() </p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/<a class="el" href="mJointCom_8h_source.html">mJointCom.h</a></li>
-<li>ROS2/ros2_scara_ws/src/joint_communication/src/<a class="el" href="mJointCom_8cpp.html">mJointCom.cpp</a></li>
+<li>ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/<a class="el" href="mJointCom_8h_source.html">mJointCom.h</a></li>
+<li>ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/src/<a class="el" href="mJointCom_8cpp.html">mJointCom.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

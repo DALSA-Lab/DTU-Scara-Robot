@@ -1,20 +1,26 @@
-<map id="ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/uI2C.h" name="ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/uI2C.h">
-<area shape="rect" id="Node000001" title="Low level utility for I2C communication on Raspberry Pi using lgpio library." alt="" coords="227,5,485,60"/>
-<area shape="rect" id="Node000002" href="$mJoint_8hpp.html" title="Templated functions for the Joint class." alt="" coords="177,108,391,177"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="333,73,309,109,304,106,328,70"/>
-<area shape="rect" id="Node000006" href="$mJointCom_8cpp.html" title=" " alt="" coords="5,460,192,515"/>
-<area shape="poly" id="edge9_Node000001_Node000006" title=" " alt="" coords="221,68,191,86,166,110,138,152,118,199,105,248,97,298,93,391,98,459,92,460,88,391,92,298,100,247,113,197,134,149,162,106,188,82,219,64"/>
-<area shape="rect" id="Node000007" href="$mJoint_8cpp.html" title=" " alt="" coords="376,350,563,405"/>
-<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="385,70,405,107,429,174,447,241,468,349,463,350,442,243,424,175,400,109,381,73"/>
-<area shape="rect" id="Node000008" href="$uI2C_8cpp.html" title=" " alt="" coords="467,115,653,170"/>
-<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="419,64,511,113,509,118,417,69"/>
-<area shape="rect" id="Node000003" href="$mJoint_8h.html" title="File including the Joint class." alt="" coords="177,225,391,295"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="278,191,278,225,273,225,272,191"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="290,212,290,178,295,178,296,212"/>
-<area shape="rect" id="Node000004" href="$mJointCom_8h.html" title="File containing the Joint_comms class." alt="" coords="137,343,351,412"/>
-<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="270,309,258,343,253,342,265,307"/>
-<area shape="poly" id="edge7_Node000003_Node000007" title=" " alt="" coords="351,300,429,348,426,352,348,304"/>
-<area shape="rect" id="Node000005" href="$joint__comm__node_8cpp.html" title=" " alt="" coords="216,460,408,515"/>
-<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="275,422,298,458,293,461,270,425"/>
-<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="189,422,136,462,133,458,186,418"/>
+<map id="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/uI2C.h" name="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/uI2C.h">
+<area shape="rect" id="Node000001" title="Low level utility for I2C communication on Raspberry Pi using lgpio library." alt="" coords="355,5,555,89"/>
+<area shape="rect" id="Node000002" href="$mJoint_8hpp.html" title="Templated functions for the Joint class." alt="" coords="287,137,487,221"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="429,103,411,138,406,136,424,100"/>
+<area shape="rect" id="Node000006" href="$mJointCom_8cpp.html" title=" " alt="" coords="5,541,200,610"/>
+<area shape="poly" id="edge12_Node000001_Node000006" title=" " alt="" coords="344,90,308,112,277,139,238,188,206,242,178,298,157,356,126,462,110,541,105,540,121,461,151,354,174,296,201,239,234,185,273,135,305,108,341,86"/>
+<area shape="rect" id="Node000010" href="$mJoint_8cpp.html" title=" " alt="" coords="469,409,664,478"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="486,101,501,136,524,211,542,287,565,408,559,409,537,288,519,213,496,138,481,103"/>
+<area shape="rect" id="Node000011" href="$uI2C_8cpp.html" title=" " alt="" coords="561,145,756,214"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="532,94,607,142,604,147,529,99"/>
+<area shape="rect" id="Node000003" href="$mJoint_8h.html" title="File including the Joint class." alt="" coords="287,269,487,353"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="380,235,381,269,376,269,375,235"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="393,255,392,222,398,222,398,255"/>
+<area shape="rect" id="Node000004" href="$mJointCom_8h.html" title="File containing the Joint_comms class." alt="" coords="245,401,445,485"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="372,367,361,402,356,400,367,366"/>
+<area shape="poly" id="edge10_Node000003_Node000010" title=" " alt="" coords="456,359,521,406,518,410,453,364"/>
+<area shape="rect" id="Node000005" href="$joint__comm__node_8cpp.html" title=" " alt="" coords="699,541,893,610"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="460,483,524,498,575,507,625,515,687,531,711,538,709,543,686,536,624,521,574,512,523,503,459,488"/>
+<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="258,494,167,543,164,538,255,490"/>
+<area shape="rect" id="Node000007" href="$bioscara__hardware_8hpp.html" title=" " alt="" coords="224,533,467,617"/>
+<area shape="poly" id="edge7_Node000004_Node000007" title=" " alt="" coords="348,499,348,533,343,533,343,499"/>
+<area shape="rect" id="Node000009" href="$main_8cpp.html" title=" " alt="" coords="491,548,674,603"/>
+<area shape="poly" id="edge9_Node000004_Node000009" title=" " alt="" coords="434,490,536,546,534,550,431,495"/>
+<area shape="rect" id="Node000008" href="$bioscara__hardware_8cpp.html" title=" " alt="" coords="238,665,453,735"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="348,631,348,665,343,665,343,631"/>
 </map>

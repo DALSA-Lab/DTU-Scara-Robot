@@ -1,6 +1,6 @@
 #include <signal.h>
 #include <unistd.h>
-#include "joint_communication/mGripper.h"
+#include "bioscara_hardware_driver/mGripper.h"
 
 using namespace std;
 

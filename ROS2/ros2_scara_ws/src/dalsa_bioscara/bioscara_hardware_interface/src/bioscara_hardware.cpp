@@ -39,7 +39,7 @@ namespace bioscara_hardware_interface
 
     /**
      * Loop over all joints decribed in the hardware description file, check if they have only the position command
-     * and state interface defined and finally add them to the internal joints_ list
+     * and state interface defined and finally add them to the internal Joints_ list
      *
      */
     for (const hardware_interface::ComponentInfo &joint : info_.joints)
@@ -80,6 +80,27 @@ namespace bioscara_hardware_interface
             joint.state_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION);
         return hardware_interface::CallbackReturn::ERROR;
       }
+
+      // add joint one by one reading parameters from urdf
+
+      joint_config_t cfg;
+      cfg.i2c_address = std::stoi(joint.parameters.at("i2c_address"), nullptr, 16),
+      cfg.reduction = std::stof(joint.parameters.at("reduction")),
+      cfg.offset = std::stof(joint.parameters.at("offset")),
+      cfg.stall_threshold = std::stoi(joint.parameters.at("stall_threshold")),
+      cfg.hold_current = std::stoi(joint.parameters.at("hold_current")),
+      cfg.drive_current = std::stoi(joint.parameters.at("drive_current")),
+      cfg.max_acceleration = std::stof(joint.parameters.at("max_acceleration")),
+      cfg.max_velocity = std::stof(joint.parameters.at("max_velocity")),
+
+      _joint_cfg.insert({joint.name, cfg});
+
+      _joints.insert({joint.name,
+                      Joint(
+                          joint.name,
+                          cfg.i2c_address,
+                          cfg.reduction,
+                          cfg.offset)});
     }
 
     /**
@@ -121,28 +142,24 @@ namespace bioscara_hardware_interface
     //   return hardware_interface::CallbackReturn::ERROR;
     // }
 
-    // add joint one by one reading parameters from urdf
-    joints_.addJoint(
-        std::stoi(joint.parameters.at("i2c_address")),
-        joint.name,
-        std::stof(joint.parameters.at("gear_ratio")),
-        std::stof(joint.parameters.at("offset")));
-
-    // drive_currents.push_back(std::stoi(joint.parameters.at("drive_current")));
-    // hold_currents.push_back(std::stoi(joint.parameters.at("hold_current")));
-
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
   /**
-   * @todo
-   * - delete joints from comm object
+   * @brief Called on transition to FINALIZED state
+   *
+   * Removes all joints from the com object.
+   *
+   * @todo Research in ROS2_control source code if this is ever called from any state other than
+   * UNCONFIGURED
    *
    */
   hardware_interface::CallbackReturn BioscaraHardwareInterface::on_shutdown(
       const rclcpp_lifecycle::State & /*previous_state*/)
   {
-
+    RCLCPP_INFO(get_logger(), "Shutting down ...please wait...");
+    _joints.clear();
+    RCLCPP_INFO(get_logger(), "Shut down");
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
@@ -151,16 +168,30 @@ namespace bioscara_hardware_interface
   {
     RCLCPP_INFO(get_logger(), "Configuring ...please wait...");
 
-    /**
-     * Connect to the joints and throw error if it fails
-     *
-     */
-    if (joints_.init() != 0)
+    // Init each joint and test connection to each joint by pinging
+    for (auto &[name, joint] : _joints)
     {
-      RCLCPP_FATAL(
-          get_logger(),
-          "Failed to connect to a joint. Check error output for more information");
-      return CallbackReturn::ERROR;
+      int rc = joint.init();
+      if (rc < 0)
+      {
+        std::string reason = "";
+        switch (rc)
+        {
+        case -1:
+          reason = "Joint added to I2C bus but no ACK received back from the joint when pinged";
+          break;
+        case -2:
+          reason = "I2C error";
+          break;
+
+        default:
+          reason = "Unkown Reason " + std::to_string(rc);
+        }
+        RCLCPP_FATAL(
+            get_logger(),
+            "Failed to connect to joint '%s'. Reason: %s", name.c_str(), reason.c_str());
+        return CallbackReturn::ERROR;
+      }
     }
 
     // reset values always when configuring hardware
@@ -188,17 +219,33 @@ namespace bioscara_hardware_interface
   hardware_interface::CallbackReturn BioscaraHardwareInterface::on_cleanup(
       const rclcpp_lifecycle::State & /*previous_state*/)
   {
+    RCLCPP_INFO(get_logger(), "Cleaning up ...please wait...");
+
     /**
      * Disconnect from the joints and throw error if it fails
      *
      */
-    if (joints_.deinit() != 0)
+    for (auto &[name, joint] : _joints)
     {
-      RCLCPP_FATAL(
-          get_logger(),
-          "Failed to disconnect from a joint. Check error output for more information");
-      return CallbackReturn::ERROR;
+      int rc = joint.deinit();
+      if (rc < 0)
+      {
+        std::string reason = "";
+        switch (rc)
+        {
+        case -1:
+          reason = "I2C error";
+          break;
+        default:
+          reason = "Unkown Reason " + std::to_string(rc);
+        }
+        RCLCPP_FATAL(
+            get_logger(),
+            "Failed to disconnect from joint '%s'. Reason: %s", name.c_str(), reason.c_str());
+        return CallbackReturn::ERROR;
+      }
     }
+    RCLCPP_INFO(get_logger(), "Successfully cleaned up!");
     return CallbackReturn::SUCCESS;
   }
 
@@ -207,21 +254,107 @@ namespace bioscara_hardware_interface
   {
     RCLCPP_INFO(get_logger(), "Activating ...please wait...");
 
-    // joints_.enables(drive_currents, hold_currents);
-    for (const auto &[name, descr] : joint_command_interfaces_)
+    for (auto &[name, joint] : _joints)
     {
-      /**
-       * @todo
-       * - Implement methods by joint name
-       */
-      joints_.enable(name,
-                     descr.interface_info.parameters["drive_current"],
-                     descr.interface_info.parameters["hold_current"])
+      joint_config_t cfg = _joint_cfg[name];
+
+      // enable motor
+      int rc = joint.enable(cfg.drive_current, cfg.hold_current);
+      if (rc < 0)
+      {
+        std::string reason = "";
+        switch (rc)
+        {
+        case -1:
+          reason = "communication error";
+          break;
+        case -3:
+          reason = "motor failed to enable";
+          break;
+        default:
+          reason = "Unkown Reason " + std::to_string(rc);
+        }
+        RCLCPP_FATAL(
+            get_logger(),
+            "Failed to enable joint '%s'. Reason: %s", name.c_str(), reason.c_str());
+        return CallbackReturn::ERROR;
+      }
+
+      // enable stall detection
+      rc = joint.enableStallguard(cfg.stall_threshold);
+      if (rc < 0)
+      {
+        std::string reason = "";
+        switch (rc)
+        {
+        case -1:
+          reason = "communication error";
+          break;
+
+        default:
+          reason = "Unkown Reason " + std::to_string(rc);
+        }
+        RCLCPP_FATAL(
+            get_logger(),
+            "Failed to enable stall protection of joint '%s'. Reason: %s", name.c_str(), reason.c_str());
+        return CallbackReturn::ERROR;
+      }
+
+      // set max acceleration
+      rc = joint.setMaxAcceleration(cfg.max_acceleration);
+      if (rc < 0)
+      {
+        std::string reason = "";
+        switch (rc)
+        {
+        case -1:
+          reason = "communication error";
+          break;
+
+        default:
+          reason = "Unkown Reason " + std::to_string(rc);
+        }
+        RCLCPP_FATAL(
+            get_logger(),
+            "Failed to set maximum acceleration of joint '%s'. Reason: %s", name.c_str(), reason.c_str());
+        return CallbackReturn::ERROR;
+      }
+
+      // set max velocity
+      rc = joint.setMaxVelocity(cfg.max_velocity);
+      if (rc < 0)
+      {
+        std::string reason = "";
+        switch (rc)
+        {
+        case -1:
+          reason = "communication error";
+          break;
+
+        default:
+          reason = "Unkown Reason " + std::to_string(rc);
+        }
+        RCLCPP_FATAL(
+            get_logger(),
+            "Failed to set maximum velocity of joint '%s'. Reason: %s", name.c_str(), reason.c_str());
+        return CallbackReturn::ERROR;
+      }
+    }
+
+    /**
+     * Below a workaround to force a read cycle of all joints to get inital values for the state interfaces.
+     * These will be copied to the command interface to prevent movement at startup.
+     */
+    rclcpp::Time t(0);
+    rclcpp::Duration d(0, 0);
+    if(read(t, d) != hardware_interface::return_type::OK){
+      return hardware_interface::CallbackReturn::ERROR;
     }
 
     // command and state should be equal when starting
-    for (const auto &[name, descr] : joint_state_interfaces_)
+    for (const auto &[name, descr] : joint_command_interfaces_)
     {
+      RCLCPP_INFO(get_logger(), "Set %s, to %f", name.c_str(), get_state(name));
       set_command(name, get_state(name));
     }
     // for (const auto &[name, descr] : gpio_command_interfaces_)
@@ -237,29 +370,76 @@ namespace bioscara_hardware_interface
   hardware_interface::CallbackReturn BioscaraHardwareInterface::on_deactivate(
       const rclcpp_lifecycle::State & /*previous_state*/)
   {
-    RCLCPP_INFO(get_logger(), "Activating ...please wait...");
-    joints_.disables();
+    RCLCPP_INFO(get_logger(), "Deactivating ...please wait...");
+
+    /**
+     * disable the joints and throw error if it fails
+     *
+     */
+    for (auto &[name, joint] : _joints)
+    {
+      int rc = joint.disable();
+      if (rc < 0)
+      {
+        std::string reason = "";
+        switch (rc)
+        {
+        case -1:
+          reason = "communication error";
+          break;
+        default:
+          reason = "Unkown Reason " + std::to_string(rc);
+        }
+        RCLCPP_FATAL(
+            get_logger(),
+            "Failed to disable joint '%s'. Reason: %s", name.c_str(), reason.c_str());
+        return CallbackReturn::ERROR;
+      }
+    }
     RCLCPP_INFO(get_logger(), "Successfully deactivated!");
-    return hardware_interface::CallbackReturn::SUCCESS;
+    return CallbackReturn::SUCCESS;
   }
 
   hardware_interface::return_type BioscaraHardwareInterface::read(
       const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
-    // std::stringstream ss;
-    // ss << "Reading states:";
-
     for (const auto &[name, descr] : joint_state_interfaces_)
     {
       float v;
-      if (joints_.getPosition(name, v) != 0)
+      int rc = 1;
+
+      if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
+        rc = _joints.at(descr.prefix_name).getPosition(v);
+      }
+      else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
+      {
+        rc = _joints.at(descr.prefix_name).getVelocity(v);
+      }
+      // use != 0 here since 1 for no compatible interface type
+      if (rc != 0)
+      {
+        std::string reason = "";
+        switch (rc)
+        {
+        case 1:
+          reason = "no compatible command to read " + descr.interface_info.name;
+          break;
+        case -1:
+          reason = "communication error";
+          break;
+        case -2:
+          reason = "joint not homed, can not read " + descr.interface_info.name;
+          break;
+        default:
+          reason = "Unkown Reason " + std::to_string(rc);
+        }
         RCLCPP_FATAL(
             get_logger(),
-            "Failed to read position from joint. Check error output for more information");
+            "Failed to read %s of joint '%s'. Reason: %s", descr.interface_info.name.c_str(), name.c_str(), reason.c_str());
         return hardware_interface::return_type::ERROR;
       }
-      set_state(name, v);
+      set_state(name, (double)v);
     }
 
     // for (const auto &[name, descr] : gpio_command_interfaces_)
@@ -291,14 +471,44 @@ namespace bioscara_hardware_interface
   hardware_interface::return_type BioscaraHardwareInterface::write(
       const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
-
     for (const auto &[name, descr] : joint_command_interfaces_)
     {
-      if (joints_.setPosition(name, get_command(name)) != 0)
+      int rc = 1;
+      if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
+        rc = _joints.at(descr.prefix_name).setPosition((float)get_command(name));
+      }
+      else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
+      {
+        rc = _joints.at(descr.prefix_name).setVelocity((float)get_command(name));
+      }
+      // use != 0 here since 1 for no compatible interface type
+      if (rc != 0)
+      {
+        std::string reason = "";
+        switch (rc)
+        {
+        case 1:
+          reason = "no compatible command to read " + descr.interface_info.name;
+          break;
+        case -1:
+          reason = "communication error";
+          break;
+        case -2:
+          reason = "joint not homed, can not set " + descr.interface_info.name;
+          break;
+        case -3:
+          reason = "joint not enabled, can not set " + descr.interface_info.name;
+          break;
+        case -4:
+          reason = "joint stalled, can not set " + descr.interface_info.name;
+          break;
+        default:
+          reason = "Unkown Reason " + std::to_string(rc);
+        }
         RCLCPP_FATAL(
             get_logger(),
-            "Failed to set position for joint. Check error output for more information");
+            "Failed to set %s of joint '%s'. Reason: %s", descr.interface_info.name.c_str(), name.c_str(), reason.c_str());
         return hardware_interface::return_type::ERROR;
       }
     }
@@ -312,6 +522,38 @@ namespace bioscara_hardware_interface
     // RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 500, "%s", ss.str().c_str());
 
     return hardware_interface::return_type::OK;
+  }
+
+  hardware_interface::CallbackReturn BioscaraHardwareInterface::on_error(
+      const rclcpp_lifecycle::State & previous_state)
+  {
+    /**
+     * Call the deactivation method. If the robot successfully deactivates the hardware remains in the unconfigured state,
+     * and is able to be activated again. Otherwise the hardware goes to the finalized state and can not be recovered.
+     * 
+     * @todo implement a more fine tuned error handling.
+     */
+
+    RCLCPP_INFO(get_logger(), "Previous State: %s",previous_state.label().c_str()); 
+    // states: "active", "finalized",...
+    if(previous_state.label() == "active"){
+      hardware_interface::CallbackReturn cr = on_deactivate(previous_state);
+      if(cr != CallbackReturn::SUCCESS){
+        return cr;
+      }
+
+      /* since the hardware goes to "unconfigured state if an error is caugth and the on_error function returns SUCCESS
+      we also have to manually call the on_cleanup function */
+      cr = on_deactivate(previous_state);
+      if(cr != CallbackReturn::SUCCESS){
+        return cr;
+      }
+      return CallbackReturn::SUCCESS;
+      
+    }
+    return CallbackReturn::ERROR;
+    
+    
   }
 
 } // namespace bioscara_hardware_interface

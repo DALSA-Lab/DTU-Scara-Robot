@@ -1,0 +1,2 @@
+# Testing the setMaxAccel and setMaxVel functions
+The aim of this test is to verify that the setting of maximum acceleration and velocity values is correct, including their conversion through the transmission.

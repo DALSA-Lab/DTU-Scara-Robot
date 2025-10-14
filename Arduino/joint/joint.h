@@ -77,7 +77,6 @@ enum stp_reg_t
   ENABLESTALLGUARD = 0x1E,    ///< W; Size: 1; [(uint8) threshold]
   DISABLESTALLGUARD = 0x1F,   ///<
   CLEARSTALL = 0x20,          ///<
-  ISSTALLED = 0x21,           ///< R; Size: 1; [(uint8) isStalled]
   SETBRAKEMODE = 0x22,        ///< W; Size: 1; [(uint8) mode]
   ENABLEPID = 0x23,           ///<
   DISABLEPID = 0x24,          ///<
@@ -90,8 +89,6 @@ enum stp_reg_t
   CHECKORIENTATION = 0x2B,    ///< W; Size: 4; [(float) degrees]
   GETENCODERRPM = 0x2C,       ///< R; Size: 4; [(float) RPM]
   HOME = 0x2D,                ///< W; Size: 4; [(uint8) current, (uint8) sensitivity, (uint8) speed, (uint8) direction]
-  ISHOMED = 0x2E,             ///< R; Size: 1; [(uint8) isStalled]
-  ISSETUP = 0x2F              ///< R; Size: 1; [(uint8) isStalled]
 };
 
 /**

@@ -19,7 +19,7 @@
 #include <string>
 #include <vector>
 
-#include "bioscara_hardware_driver/mJointCom.h"
+#include "bioscara_hardware_driver/mJoint.h"
 
 #include "hardware_interface/handle.hpp"
 #include "hardware_interface/hardware_info.hpp"
@@ -31,44 +31,69 @@
 
 namespace bioscara_hardware_interface
 {
-  class BioscaraHardwareInterface : public hardware_interface::SystemInterface
-  {
-  public:
-    RCLCPP_SHARED_PTR_DEFINITIONS(BioscaraHardwareInterface)
+    class BioscaraHardwareInterface : public hardware_interface::SystemInterface
+    {
+    public:
+        RCLCPP_SHARED_PTR_DEFINITIONS(BioscaraHardwareInterface)
 
-    hardware_interface::CallbackReturn on_init(
-        const hardware_interface::HardwareInfo &info) override;
+        hardware_interface::CallbackReturn on_init(
+            const hardware_interface::HardwareInfo &info) override;
 
-    hardware_interface::CallbackReturn on_shutdown(
-        const rclcpp_lifecycle::State &previous_state) override;
+        hardware_interface::CallbackReturn on_shutdown(
+            const rclcpp_lifecycle::State &previous_state) override;
 
-    hardware_interface::CallbackReturn on_configure(
-        const rclcpp_lifecycle::State &previous_state) override;
+        hardware_interface::CallbackReturn on_configure(
+            const rclcpp_lifecycle::State &previous_state) override;
 
-    hardware_interface::CallbackReturn on_cleanup(
-        const rclcpp_lifecycle::State &previous_state) override;
+        hardware_interface::CallbackReturn on_cleanup(
+            const rclcpp_lifecycle::State &previous_state) override;
 
-    hardware_interface::CallbackReturn on_activate(
-        const rclcpp_lifecycle::State &previous_state) override;
+        hardware_interface::CallbackReturn on_activate(
+            const rclcpp_lifecycle::State &previous_state) override;
 
-    hardware_interface::CallbackReturn on_deactivate(
-        const rclcpp_lifecycle::State &previous_state) override;
+        hardware_interface::CallbackReturn on_deactivate(
+            const rclcpp_lifecycle::State &previous_state) override;
 
-    hardware_interface::return_type read(
-        const rclcpp::Time &time, const rclcpp::Duration &period) override;
+        hardware_interface::return_type read(
+            const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
-    hardware_interface::return_type write(
-        const rclcpp::Time &time, const rclcpp::Duration &period) override;
+        hardware_interface::return_type write(
+            const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
-  private:
-    /*
-     * Communication object containing all joints of the robot
-     */
-    Joint_comms joints_;
+        hardware_interface::CallbackReturn on_error(
+            const rclcpp_lifecycle::State &previous_state) override;
 
-    // std::vector<u_int8_t> drive_currents;
-    // std::vector<u_int8_t> hold_currents;
-  };
+    private:
+        struct joint_config_t
+        {
+            int i2c_address;
+            float reduction = 1;
+            float offset = 0;
+            u_int8_t drive_current;
+            u_int8_t hold_current;
+            u_int8_t stall_threshold;
+            float max_velocity;
+            float max_acceleration;
+        };
+
+        /**
+         * @brief unordered map storing the Joint objects.
+         *
+         * an unordered map is chosen to simplify acces via the joint name, as this conforms well with the ROS2_control hardware interface
+         * The map does not need to be ordered. Search, insertion, and removal of elements have average constant-time complexity.
+         *
+         */
+        std::unordered_map<std::string, Joint> _joints;
+
+        /**
+         * @brief unordered map storing the configuration struct of the joints.
+         *
+         * an unordered map is chosen to simplify acces via the joint name, as this conforms well with the ROS2_control hardware interface
+         * The map does not need to be ordered. Search, insertion, and removal of elements have average constant-time complexity.
+         *
+         */
+        std::unordered_map<std::string, joint_config_t> _joint_cfg;
+    };
 
 } // namespace bioscara_hardware_interface
 

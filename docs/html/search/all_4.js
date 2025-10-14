@@ -1,10 +1,18 @@
 var searchData=
 [
-  ['enable_0',['enable',['../classGripper.html#aa65e70728b2b1dc6dbdee2147354366b',1,'Gripper::enable()'],['../classJoint.html#a3714c35d4488d03280a7c2dc9e415ee0',1,'Joint::enable()'],['../classRPI__PWM.html#aa023cdb54ae0945f74c454d70d654a58',1,'RPI_PWM::enable()']]],
-  ['enableclosedloop_1',['enableclosedloop',['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a156ef7be500b4e86e397cdbd7fb798ff',1,'Joint::ENABLECLOSEDLOOP'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227adf27eff58b369b9beca8e31805c2431c',1,'ENABLECLOSEDLOOP:&#160;joint.h']]],
-  ['enablepid_2',['enablepid',['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a808e1cfabc9285982e126715258f7650',1,'Joint::ENABLEPID'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a399fd338684eda1dedbb11aeb03f8e2f',1,'ENABLEPID:&#160;joint.h']]],
-  ['enables_3',['enables',['../classJoint__comms.html#a6df8ddf06f23eff71e3e2f3c402e33bb',1,'Joint_comms::enables(std::vector&lt; u_int8_t &gt; driveCurrent_v, std::vector&lt; u_int8_t &gt; holdCurrent_v)'],['../classJoint__comms.html#a40a7c7b5eec013ba18f13dd0a5f10a89',1,'Joint_comms::enables(u_int8_t driveCurrent, u_int8_t holdCurrent)']]],
-  ['enablestallguard_4',['enablestallguard',['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a4289e8f46427f607ec5c42d3c453552c',1,'Joint::ENABLESTALLGUARD'],['../classJoint.html#a4269e05eca7c3d773d5ea2e7c25c2300',1,'Joint::enableStallguard(u_int8_t sensitivity)'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a1a150e10a4aaeffee9bff2ba1356b27f',1,'ENABLESTALLGUARD:&#160;joint.h']]],
-  ['enablestallguards_5',['enableStallguards',['../classJoint__comms.html#a24e10dc20814532ec5326084448c8039',1,'Joint_comms']]],
-  ['encoder2jointangle_6',['ENCODER2JOINTANGLE',['../mJoint_8h.html#aced582cd8a452a0d03e11b52416acc1d',1,'mJoint.h']]]
+  ['data_5ffiles_0',['data_files',['../namespacesetup.html#ad027a8e9452da003dca32bf7467bd16e',1,'setup']]],
+  ['deg2rad_1',['DEG2RAD',['../mJoint_8h.html#aa3616a5af1a14b0a5a1b2f542066ae45',1,'mJoint.h']]],
+  ['deinit_2',['deinit',['../classGripper.html#ad52210917d2e1736384372699473147c',1,'Gripper::deinit()'],['../classJoint.html#a5d3de221dc515ba43c8ae3a1d08751d6',1,'Joint::deinit()'],['../classJoint__comms.html#ae25646f0c0d4ee0d4b256580747eab2e',1,'Joint_comms::deinit()']]],
+  ['description_3',['description',['../namespacesetup.html#aedf461ec52a946bda975938ba0b93ec0',1,'setup']]],
+  ['disable_4',['disable',['../classGripper.html#a37aa55b9a63550fd2eb3c516f2adcfc5',1,'Gripper::disable()'],['../classJoint.html#ac591f5aaee3d8afb2768a67e5f0e4f38',1,'Joint::disable()'],['../classRPI__PWM.html#ade7c53f4c16b0dc40e8e8f38eb151a89',1,'RPI_PWM::disable()']]],
+  ['disablecl_5',['disableCL',['../classJoint.html#ac35fe15f5bbaf68a9751f02b9c5ee93d',1,'Joint']]],
+  ['disableclosedloop_6',['disableclosedloop',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227aeac2084745674097d6e6f35d9be7a168',1,'DISABLECLOSEDLOOP:&#160;joint.h'],['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a5cd1d217ad26bf47859a1f33f73088a5',1,'Joint::DISABLECLOSEDLOOP']]],
+  ['disablepid_7',['disablepid',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227aaf95a712e56303c0583c3fefa2b54557',1,'DISABLEPID:&#160;joint.h'],['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18adb96e473112b918eadc29e0aac92514e',1,'Joint::DISABLEPID']]],
+  ['disables_8',['disables',['../classJoint__comms.html#aa73b0604f5ccddc66eee71ad787e87d6',1,'Joint_comms']]],
+  ['disablestallguard_9',['disablestallguard',['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a266ba21402387fe0d25a356060b3894d',1,'DISABLESTALLGUARD:&#160;joint.h'],['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a25c58b5388feba1494c04db8c6268bdc',1,'Joint::DISABLESTALLGUARD']]],
+  ['display_10',['display',['../namespacedisplay.html',1,'']]],
+  ['display_2elaunch_2epy_11',['display.launch.py',['../display_8launch_8py.html',1,'']]],
+  ['docs_5freadme_2emd_12',['DOCS_README.md',['../DOCS__README_8md.html',1,'']]],
+  ['documentation_13',['Documentation',['../index.html',1,'']]],
+  ['dump_5fbuffer_14',['dump_buffer',['../joint_8h.html#a292ca54fa46995e81a58e6432a23a114',1,'DUMP_BUFFER:&#160;joint.h'],['../common_8h.html#a292ca54fa46995e81a58e6432a23a114',1,'DUMP_BUFFER:&#160;common.h']]]
 ];

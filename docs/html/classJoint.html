@@ -89,26 +89,37 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aad1752d1c481a3d00fc494529e470c51" id="r_aad1752d1c481a3d00fc494529e470c51"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#aad1752d1c481a3d00fc494529e470c51">Joint</a> (const int <a class="el" href="classJoint.html#a7acd5a4c4b870de8674167b48504c95c">address</a>, const std::string <a class="el" href="classJoint.html#a57e3afaab4abae515d5053018e3cc886">name</a>, const float <a class="el" href="classJoint.html#ab0e71cda03c816424f2ab1c222ef8f39">gearRatio</a>, const float <a class="el" href="classJoint.html#a83ba15eb990b4a47501fc7377b5093ff">offset</a>)</td></tr>
-<tr class="separator:aad1752d1c481a3d00fc494529e470c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16b777e9bc6a7378126942d3d786dcfb" id="r_a16b777e9bc6a7378126942d3d786dcfb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a16b777e9bc6a7378126942d3d786dcfb">Joint</a> (const int <a class="el" href="classJoint.html#a7acd5a4c4b870de8674167b48504c95c">address</a>, const std::string <a class="el" href="classJoint.html#a57e3afaab4abae515d5053018e3cc886">name</a>, const float <a class="el" href="classJoint.html#a8388570a9824deb1631cb6feec908335">reduction</a>, const float <a class="el" href="classJoint.html#a83ba15eb990b4a47501fc7377b5093ff">offset</a>)</td></tr>
+<tr class="memdesc:a16b777e9bc6a7378126942d3d786dcfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> object.  <br /></td></tr>
+<tr class="separator:a16b777e9bc6a7378126942d3d786dcfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab62f504bb7a06ced79c24c54e254349e" id="r_ab62f504bb7a06ced79c24c54e254349e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ab62f504bb7a06ced79c24c54e254349e">init</a> (void)</td></tr>
+<tr class="memdesc:ab62f504bb7a06ced79c24c54e254349e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Established connection to a joint via I2C.  <br /></td></tr>
 <tr class="separator:ab62f504bb7a06ced79c24c54e254349e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d3de221dc515ba43c8ae3a1d08751d6" id="r_a5d3de221dc515ba43c8ae3a1d08751d6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a5d3de221dc515ba43c8ae3a1d08751d6">deinit</a> (void)</td></tr>
+<tr class="memdesc:a5d3de221dc515ba43c8ae3a1d08751d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disconnects from a joint.  <br /></td></tr>
 <tr class="separator:a5d3de221dc515ba43c8ae3a1d08751d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc0fef67c332a238cc0897c06d157a22" id="r_abc0fef67c332a238cc0897c06d157a22"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#abc0fef67c332a238cc0897c06d157a22">printInfo</a> (void)</td></tr>
 <tr class="separator:abc0fef67c332a238cc0897c06d157a22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c2a2062565554b7130a1076766ebd33" id="r_a6c2a2062565554b7130a1076766ebd33"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a6c2a2062565554b7130a1076766ebd33">getPosition</a> (float &amp;angle)</td></tr>
-<tr class="separator:a6c2a2062565554b7130a1076766ebd33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7c0d34338e87cfde6eea8ac905f8051" id="r_ab7c0d34338e87cfde6eea8ac905f8051"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ab7c0d34338e87cfde6eea8ac905f8051">setPosition</a> (float angle)</td></tr>
-<tr class="separator:ab7c0d34338e87cfde6eea8ac905f8051"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbaebc69eec8a3282dc2e9b1de19cbde" id="r_acbaebc69eec8a3282dc2e9b1de19cbde"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#acbaebc69eec8a3282dc2e9b1de19cbde">getVelocity</a> (float &amp;degps)</td></tr>
-<tr class="separator:acbaebc69eec8a3282dc2e9b1de19cbde"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab002b54b54bb4a7009bf0920dff60e88" id="r_ab002b54b54bb4a7009bf0920dff60e88"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ab002b54b54bb4a7009bf0920dff60e88">setVelocity</a> (float degps)</td></tr>
-<tr class="separator:ab002b54b54bb4a7009bf0920dff60e88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcda66b87fdca763475cf1cd7d309b1c" id="r_abcda66b87fdca763475cf1cd7d309b1c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#abcda66b87fdca763475cf1cd7d309b1c">getPosition</a> (float &amp;pos)</td></tr>
+<tr class="memdesc:abcda66b87fdca763475cf1cd7d309b1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the current joint position in radians or m for cylindrical and prismatic joints respectively.  <br /></td></tr>
+<tr class="separator:abcda66b87fdca763475cf1cd7d309b1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a365628f72a742bb383f6e495b7d9f74a" id="r_a365628f72a742bb383f6e495b7d9f74a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a365628f72a742bb383f6e495b7d9f74a">setPosition</a> (float pos)</td></tr>
+<tr class="memdesc:a365628f72a742bb383f6e495b7d9f74a"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the current joint position in radians or m for cylindrical and prismatic joints respectively.  <br /></td></tr>
+<tr class="separator:a365628f72a742bb383f6e495b7d9f74a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a833014ec8a9c7d9cf888c54bda13f644" id="r_a833014ec8a9c7d9cf888c54bda13f644"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a833014ec8a9c7d9cf888c54bda13f644">moveSteps</a> (int32_t steps)</td></tr>
+<tr class="memdesc:a833014ec8a9c7d9cf888c54bda13f644"><td class="mdescLeft">&#160;</td><td class="mdescRight">Move full steps.  <br /></td></tr>
+<tr class="separator:a833014ec8a9c7d9cf888c54bda13f644"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afce77655c67f0b8ce75acc4e0cfdd016" id="r_afce77655c67f0b8ce75acc4e0cfdd016"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#afce77655c67f0b8ce75acc4e0cfdd016">getVelocity</a> (float &amp;vel)</td></tr>
+<tr class="memdesc:afce77655c67f0b8ce75acc4e0cfdd016"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the current joint velocity in radians/s or m/s for cylindrical and prismatic joints respectively.  <br /></td></tr>
+<tr class="separator:afce77655c67f0b8ce75acc4e0cfdd016"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dbda9cbf3b38d85bc693a742998bbe0" id="r_a3dbda9cbf3b38d85bc693a742998bbe0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a3dbda9cbf3b38d85bc693a742998bbe0">setVelocity</a> (float vel)</td></tr>
+<tr class="memdesc:a3dbda9cbf3b38d85bc693a742998bbe0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the current joint velocity in radians/s or m/s for cylindrical and prismatic joints respectively.  <br /></td></tr>
+<tr class="separator:a3dbda9cbf3b38d85bc693a742998bbe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80055657a0ece2c9212eec16774d2789" id="r_a80055657a0ece2c9212eec16774d2789"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a80055657a0ece2c9212eec16774d2789">checkOrientation</a> (float angle=10.0)</td></tr>
+<tr class="memdesc:a80055657a0ece2c9212eec16774d2789"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the checkOrientation method of the motor. Checks in which direction the motor is turning.  <br /></td></tr>
 <tr class="separator:a80055657a0ece2c9212eec16774d2789"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3714c35d4488d03280a7c2dc9e415ee0" id="r_a3714c35d4488d03280a7c2dc9e415ee0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a3714c35d4488d03280a7c2dc9e415ee0">enable</a> (u_int8_t driveCurrent, u_int8_t holdCurrent)</td></tr>
-<tr class="memdesc:a3714c35d4488d03280a7c2dc9e415ee0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the joint and engages motor.  <br /></td></tr>
+<tr class="memdesc:a3714c35d4488d03280a7c2dc9e415ee0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Setup the joint and engages motor.  <br /></td></tr>
 <tr class="separator:a3714c35d4488d03280a7c2dc9e415ee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac591f5aaee3d8afb2768a67e5f0e4f38" id="r_ac591f5aaee3d8afb2768a67e5f0e4f38"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ac591f5aaee3d8afb2768a67e5f0e4f38">disable</a> (void)</td></tr>
 <tr class="memdesc:ac591f5aaee3d8afb2768a67e5f0e4f38"><td class="mdescLeft">&#160;</td><td class="mdescRight">disenganges the joint motor without closing i2c handle  <br /></td></tr>
@@ -131,31 +142,24 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ace371fa42a397f96ac6bef7e2faffbbd" id="r_ace371fa42a397f96ac6bef7e2faffbbd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ace371fa42a397f96ac6bef7e2faffbbd">setBrakeMode</a> (u_int8_t mode)</td></tr>
 <tr class="memdesc:ace371fa42a397f96ac6bef7e2faffbbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set Brake Mode.  <br /></td></tr>
 <tr class="separator:ace371fa42a397f96ac6bef7e2faffbbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a0b1b4e2e54aaddb24d97a2228b0414" id="r_a4a0b1b4e2e54aaddb24d97a2228b0414"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a4a0b1b4e2e54aaddb24d97a2228b0414">getStall</a> (u_int8_t &amp;stall)</td></tr>
-<tr class="memdesc:a4a0b1b4e2e54aaddb24d97a2228b0414"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if the motor is stalled  <br /></td></tr>
-<tr class="separator:a4a0b1b4e2e54aaddb24d97a2228b0414"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace6f23fd07b18c93a5bfa0eb3b169ead" id="r_ace6f23fd07b18c93a5bfa0eb3b169ead"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ace6f23fd07b18c93a5bfa0eb3b169ead">setMaxAcceleration</a> (float maxAccel)</td></tr>
+<tr class="memdesc:ace6f23fd07b18c93a5bfa0eb3b169ead"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the maximum permitted joint acceleration (and deceleration) in rad/s^2 or m/s^2 for cylindrical and prismatic joints respectively.  <br /></td></tr>
+<tr class="separator:ace6f23fd07b18c93a5bfa0eb3b169ead"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d0f0be9bc855b75ae88e88043f4bfa4" id="r_a4d0f0be9bc855b75ae88e88043f4bfa4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a4d0f0be9bc855b75ae88e88043f4bfa4">setMaxVelocity</a> (float maxVel)</td></tr>
+<tr class="memdesc:a4d0f0be9bc855b75ae88e88043f4bfa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the maximum permitted joint velocity in rad/s or m/s for cylindrical and prismatic joints respectively.  <br /></td></tr>
+<tr class="separator:a4d0f0be9bc855b75ae88e88043f4bfa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4269e05eca7c3d773d5ea2e7c25c2300" id="r_a4269e05eca7c3d773d5ea2e7c25c2300"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a4269e05eca7c3d773d5ea2e7c25c2300">enableStallguard</a> (u_int8_t sensitivity)</td></tr>
 <tr class="memdesc:a4269e05eca7c3d773d5ea2e7c25c2300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable encoder stall detection. A detected stall can be reset by homeing.  <br /></td></tr>
 <tr class="separator:a4269e05eca7c3d773d5ea2e7c25c2300"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bf67b44a935b4903bbd629d6ec11214" id="r_a8bf67b44a935b4903bbd629d6ec11214"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a8bf67b44a935b4903bbd629d6ec11214">getIsHomed</a> (u_int8_t &amp;homed)</td></tr>
-<tr class="memdesc:a8bf67b44a935b4903bbd629d6ec11214"><td class="mdescLeft">&#160;</td><td class="mdescRight">retrieves the status flags from the joint and checks if the joint is homed.  <br /></td></tr>
-<tr class="separator:a8bf67b44a935b4903bbd629d6ec11214"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8067e61c6ae21cd3d3992d742d440ebf" id="r_a8067e61c6ae21cd3d3992d742d440ebf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a8067e61c6ae21cd3d3992d742d440ebf">getIsHomed</a> (void)</td></tr>
-<tr class="memdesc:a8067e61c6ae21cd3d3992d742d440ebf"><td class="mdescLeft">&#160;</td><td class="mdescRight">retrieves the status flags from the joint.  <br /></td></tr>
-<tr class="separator:a8067e61c6ae21cd3d3992d742d440ebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace70cee21bf7ff76ba85199a1d3f8d73" id="r_ace70cee21bf7ff76ba85199a1d3f8d73"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ace70cee21bf7ff76ba85199a1d3f8d73">isHomed</a> (void)</td></tr>
-<tr class="memdesc:ace70cee21bf7ff76ba85199a1d3f8d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the isHomed state variable saved locally.  <br /></td></tr>
+<tr class="memdesc:ace70cee21bf7ff76ba85199a1d3f8d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks the state if the motor is homed.  <br /></td></tr>
 <tr class="separator:ace70cee21bf7ff76ba85199a1d3f8d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4058415328951d6ca96492df3e9c59f8" id="r_a4058415328951d6ca96492df3e9c59f8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a4058415328951d6ca96492df3e9c59f8">getIsSetup</a> (u_int8_t &amp;<a class="el" href="joint_8ino.html#a7dfd9b79bc5a37d7df40207afbc5431f">setup</a>)</td></tr>
-<tr class="memdesc:a4058415328951d6ca96492df3e9c59f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if the joint is setup from the joint  <br /></td></tr>
-<tr class="separator:a4058415328951d6ca96492df3e9c59f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a131ffd9c9b75fec6cb65b9b28ab4c800" id="r_a131ffd9c9b75fec6cb65b9b28ab4c800"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a131ffd9c9b75fec6cb65b9b28ab4c800">getIsSetup</a> (void)</td></tr>
-<tr class="memdesc:a131ffd9c9b75fec6cb65b9b28ab4c800"><td class="mdescLeft">&#160;</td><td class="mdescRight">checks if the joint is setup from the joint  <br /></td></tr>
-<tr class="separator:a131ffd9c9b75fec6cb65b9b28ab4c800"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac19ea5052bff39f7d8aa432aaa063557" id="r_ac19ea5052bff39f7d8aa432aaa063557"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ac19ea5052bff39f7d8aa432aaa063557">isSetup</a> (void)</td></tr>
-<tr class="separator:ac19ea5052bff39f7d8aa432aaa063557"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a833014ec8a9c7d9cf888c54bda13f644" id="r_a833014ec8a9c7d9cf888c54bda13f644"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a833014ec8a9c7d9cf888c54bda13f644">moveSteps</a> (int32_t steps)</td></tr>
-<tr class="separator:a833014ec8a9c7d9cf888c54bda13f644"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21992c45ebb98f82de4af9620d6b3db2" id="r_a21992c45ebb98f82de4af9620d6b3db2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a21992c45ebb98f82de4af9620d6b3db2">isEnabled</a> (void)</td></tr>
+<tr class="memdesc:a21992c45ebb98f82de4af9620d6b3db2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks the state if the motor is enabled.  <br /></td></tr>
+<tr class="separator:a21992c45ebb98f82de4af9620d6b3db2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59b50f0bbd3dec54cc03ebd844078208" id="r_a59b50f0bbd3dec54cc03ebd844078208"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a59b50f0bbd3dec54cc03ebd844078208">isStalled</a> (void)</td></tr>
+<tr class="memdesc:a59b50f0bbd3dec54cc03ebd844078208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the motor is stalled.  <br /></td></tr>
+<tr class="separator:a59b50f0bbd3dec54cc03ebd844078208"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a8ab4b5a0cf027c7f433c744c956c5a" id="r_a9a8ab4b5a0cf027c7f433c744c956c5a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a9a8ab4b5a0cf027c7f433c744c956c5a">checkCom</a> (void)</td></tr>
 <tr class="separator:a9a8ab4b5a0cf027c7f433c744c956c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acaabb82e69a71afd9d4822ed38d36bcc" id="r_acaabb82e69a71afd9d4822ed38d36bcc"><td class="memItemLeft" align="right" valign="top">u_int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#acaabb82e69a71afd9d4822ed38d36bcc">getFlags</a> (void)</td></tr>
@@ -231,20 +235,14 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:ac6a4b19a9a677e36deeaee7afd148497" id="r_ac6a4b19a9a677e36deeaee7afd148497"><td class="memItemLeft" align="right" valign="top">u_int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ac6a4b19a9a677e36deeaee7afd148497">flags</a> = 0x00</td></tr>
 <tr class="memdesc:ac6a4b19a9a677e36deeaee7afd148497"><td class="mdescLeft">&#160;</td><td class="mdescRight">State flags transmitted with every I2C transaction.  <br /></td></tr>
 <tr class="separator:ac6a4b19a9a677e36deeaee7afd148497"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1afa9a4c5c9cf617a305e93bbc6fd7f" id="r_ac1afa9a4c5c9cf617a305e93bbc6fd7f"><td class="memItemLeft" align="right" valign="top">u_int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ac1afa9a4c5c9cf617a305e93bbc6fd7f">ishomed</a> = 0</td></tr>
-<tr class="memdesc:ac1afa9a4c5c9cf617a305e93bbc6fd7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">flag if homed  <br /></td></tr>
-<tr class="separator:ac1afa9a4c5c9cf617a305e93bbc6fd7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad400b4eed6d3b47819ad39de7f41a37a" id="r_ad400b4eed6d3b47819ad39de7f41a37a"><td class="memItemLeft" align="right" valign="top">u_int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ad400b4eed6d3b47819ad39de7f41a37a">issetup</a> = 0</td></tr>
-<tr class="memdesc:ad400b4eed6d3b47819ad39de7f41a37a"><td class="mdescLeft">&#160;</td><td class="mdescRight">flag is setup  <br /></td></tr>
-<tr class="separator:ad400b4eed6d3b47819ad39de7f41a37a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7acd5a4c4b870de8674167b48504c95c" id="r_a7acd5a4c4b870de8674167b48504c95c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a7acd5a4c4b870de8674167b48504c95c">address</a></td></tr>
 <tr class="memdesc:a7acd5a4c4b870de8674167b48504c95c"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C adress.  <br /></td></tr>
 <tr class="separator:a7acd5a4c4b870de8674167b48504c95c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab0e71cda03c816424f2ab1c222ef8f39" id="r_ab0e71cda03c816424f2ab1c222ef8f39"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#ab0e71cda03c816424f2ab1c222ef8f39">gearRatio</a> = 1</td></tr>
-<tr class="memdesc:ab0e71cda03c816424f2ab1c222ef8f39"><td class="mdescLeft">&#160;</td><td class="mdescRight">gear ratio from encoder units to joint units  <br /></td></tr>
-<tr class="separator:ab0e71cda03c816424f2ab1c222ef8f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8388570a9824deb1631cb6feec908335" id="r_a8388570a9824deb1631cb6feec908335"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a8388570a9824deb1631cb6feec908335">reduction</a> = 1</td></tr>
+<tr class="memdesc:a8388570a9824deb1631cb6feec908335"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> to actuator reduction ratio.  <br /></td></tr>
+<tr class="separator:a8388570a9824deb1631cb6feec908335"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83ba15eb990b4a47501fc7377b5093ff" id="r_a83ba15eb990b4a47501fc7377b5093ff"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#a83ba15eb990b4a47501fc7377b5093ff">offset</a> = 0</td></tr>
-<tr class="memdesc:a83ba15eb990b4a47501fc7377b5093ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">offset in degrees or mm from encoder zero to joint zero.  <br /></td></tr>
+<tr class="memdesc:a83ba15eb990b4a47501fc7377b5093ff"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> position offset.  <br /></td></tr>
 <tr class="separator:a83ba15eb990b4a47501fc7377b5093ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afae800e0e291c5833c10d625c90e19a5" id="r_afae800e0e291c5833c10d625c90e19a5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classJoint.html#afae800e0e291c5833c10d625c90e19a5">handle</a> = -1</td></tr>
 <tr class="memdesc:afae800e0e291c5833c10d625c90e19a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C bus handle.  <br /></td></tr>
@@ -332,8 +330,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aad1752d1c481a3d00fc494529e470c51" name="aad1752d1c481a3d00fc494529e470c51"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad1752d1c481a3d00fc494529e470c51">&#9670;&#160;</a></span>Joint()</h2>
+<a id="a16b777e9bc6a7378126942d3d786dcfb" name="a16b777e9bc6a7378126942d3d786dcfb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16b777e9bc6a7378126942d3d786dcfb">&#9670;&#160;</a></span>Joint()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -354,7 +352,7 @@ Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const float&#160;</td>
-          <td class="paramname"><em>gearRatio</em>, </td>
+          <td class="paramname"><em>reduction</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -369,6 +367,35 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Create a <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> object. </p>
+<p>The <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> object represents a single joint and its actuator. Each <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> has a transmission with the following relationship: <br  />
+ </p><blockquote class="doxtable">
+<p>&zwj;actuator position = (joint position - offset) * reduction <br  />
+joint position = actuator position / reduction + offset </p>
+</blockquote>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>string device name for identification </td></tr>
+    <tr><td class="paramname">address</td><td>1-byte I2C device adress (0x11 ... 0x14) for J1 ... J4 </td></tr>
+    <tr><td class="paramname">reduction</td><td>gear reduction of the joint. This is used to transform position and velocity values between in joint units and actuator (stepper) units. The sign depends on the direction is turning. Adjust such that the joint moves in the positive direction on on positive joint commands. Cable polarity has no effect since the motors automatically adjust to always run in the 'right' direction from their point of view. <br  />
+J1: 35 <br  />
+J2: -2*pi/0.004 (4 mm linear movement per stepper revolution) <br  />
+J3: 24 <br  />
+J4: 12 </td></tr>
+    <tr><td class="paramname">offset</td><td>offset between actuator zero and joint zero (in joint units). Set this to the angle the joint is at when is is homed. F.x. since J2 is homing at the top the offset shall be a positive numer. <br  />
+J1: (-)3.04647 <br  />
+J2: 0.34935 <br  />
+J3: (-)2.62672 <br  />
+J4: (-)3.01069 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd><ul>
+<li>Measure joint ranges</li>
+<li>Investigate if possible to make independent of homing </li>
+</ul>
+</dd></dl>
 
 </div>
 </div>
@@ -407,6 +434,16 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Calls the checkOrientation method of the motor. Checks in which direction the motor is turning. </p>
+<p>As the orientation check is blocking on the motor, this this function returns when the isBusy flag is clear again.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">angle</td><td>degrees how much the motor should turn. A few degrees is sufficient. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, -1 on communication error, -3 when the motor is not enabled, -4 when the motor is stalled. </dd></dl>
+
 </div>
 </div>
 <a id="a5d3de221dc515ba43c8ae3a1d08751d6" name="a5d3de221dc515ba43c8ae3a1d08751d6"></a>
@@ -424,6 +461,10 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Disconnects from a joint. </p>
+<p>Removes the joint from the I2C bus.</p>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, -1 when the joint could not be removed due to an I2C error. </dd></dl>
 
 </div>
 </div>
@@ -495,15 +536,16 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initialize the joint and engages motor. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Setup the joint and engages motor. </p>
+<p>This function prepares the motor for movement. After successfull execution the joint is ready to accept <a class="el" href="classJoint.html#a365628f72a742bb383f6e495b7d9f74a" title="get the current joint position in radians or m for cylindrical and prismatic joints respectively.">setPosition()</a> and <a class="el" href="classJoint.html#a3dbda9cbf3b38d85bc693a742998bbe0" title="Set the current joint velocity in radians/s or m/s for cylindrical and prismatic joints respectively.">setVelocity()</a> commands. <br  />
+ The function ets the drive and hold current for the specified joint and engages the motor. The currents are in percent of driver max. output (2.5A, check with TMC5130 datasheet or Ustepper documentation) </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">driveCurrent</td><td>drive current in 0-100 % of 2.5A output (check uStepper doc.) </td></tr>
     <tr><td class="paramname">holdCurrent</td><td>hold current in 0-100 % of 2.5A output (check uStepper doc.) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, -1 on communication error, -3 when the motor is not enabled. </dd></dl>
 
 </div>
 </div>
@@ -552,104 +594,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a8bf67b44a935b4903bbd629d6ec11214" name="a8bf67b44a935b4903bbd629d6ec11214"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bf67b44a935b4903bbd629d6ec11214">&#9670;&#160;</a></span>getIsHomed() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Joint::getIsHomed </td>
-          <td>(</td>
-          <td class="paramtype">u_int8_t &amp;&#160;</td>
-          <td class="paramname"><em>homed</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>retrieves the status flags from the joint and checks if the joint is homed. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">homed</td><td>not homed: 0, homed: 1 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
-
-</div>
-</div>
-<a id="a8067e61c6ae21cd3d3992d742d440ebf" name="a8067e61c6ae21cd3d3992d742d440ebf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8067e61c6ae21cd3d3992d742d440ebf">&#9670;&#160;</a></span>getIsHomed() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Joint::getIsHomed </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>retrieves the status flags from the joint. </p>
-<p>This overload does not return the value of isHomed variable, use <a class="el" href="classJoint.html#ace70cee21bf7ff76ba85199a1d3f8d73" title="Get the isHomed state variable saved locally.">Joint::isHomed()</a> instead. </p><dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
-
-</div>
-</div>
-<a id="a4058415328951d6ca96492df3e9c59f8" name="a4058415328951d6ca96492df3e9c59f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4058415328951d6ca96492df3e9c59f8">&#9670;&#160;</a></span>getIsSetup() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Joint::getIsSetup </td>
-          <td>(</td>
-          <td class="paramtype">u_int8_t &amp;&#160;</td>
-          <td class="paramname"><em>setup</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>checks if the joint is setup from the joint </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">setup</td><td>not setup: 0, setup: 1 </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
-
-</div>
-</div>
-<a id="a131ffd9c9b75fec6cb65b9b28ab4c800" name="a131ffd9c9b75fec6cb65b9b28ab4c800"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a131ffd9c9b75fec6cb65b9b28ab4c800">&#9670;&#160;</a></span>getIsSetup() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Joint::getIsSetup </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>checks if the joint is setup from the joint </p>
-<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
-
-</div>
-</div>
-<a id="a6c2a2062565554b7130a1076766ebd33" name="a6c2a2062565554b7130a1076766ebd33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c2a2062565554b7130a1076766ebd33">&#9670;&#160;</a></span>getPosition()</h2>
+<a id="abcda66b87fdca763475cf1cd7d309b1c" name="abcda66b87fdca763475cf1cd7d309b1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcda66b87fdca763475cf1cd7d309b1c">&#9670;&#160;</a></span>getPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -658,43 +604,25 @@ Private Attributes</h2></td></tr>
           <td class="memname">int Joint::getPosition </td>
           <td>(</td>
           <td class="paramtype">float &amp;&#160;</td>
-          <td class="paramname"><em>angle</em></td><td>)</td>
+          <td class="paramname"><em>pos</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="a4a0b1b4e2e54aaddb24d97a2228b0414" name="a4a0b1b4e2e54aaddb24d97a2228b0414"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a0b1b4e2e54aaddb24d97a2228b0414">&#9670;&#160;</a></span>getStall()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Joint::getStall </td>
-          <td>(</td>
-          <td class="paramtype">u_int8_t &amp;&#160;</td>
-          <td class="paramname"><em>stall</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>checks if the motor is stalled </p>
+<p>get the current joint position in radians or m for cylindrical and prismatic joints respectively. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">stall</td><td>not stalled: 0, stalled: 1 </td></tr>
+    <tr><td class="paramname">pos</td><td></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>error code </dd></dl>
 
 </div>
 </div>
-<a id="acbaebc69eec8a3282dc2e9b1de19cbde" name="acbaebc69eec8a3282dc2e9b1de19cbde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbaebc69eec8a3282dc2e9b1de19cbde">&#9670;&#160;</a></span>getVelocity()</h2>
+<a id="afce77655c67f0b8ce75acc4e0cfdd016" name="afce77655c67f0b8ce75acc4e0cfdd016"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afce77655c67f0b8ce75acc4e0cfdd016">&#9670;&#160;</a></span>getVelocity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -703,11 +631,20 @@ Private Attributes</h2></td></tr>
           <td class="memname">int Joint::getVelocity </td>
           <td>(</td>
           <td class="paramtype">float &amp;&#160;</td>
-          <td class="paramname"><em>degps</em></td><td>)</td>
+          <td class="paramname"><em>vel</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>get the current joint velocity in radians/s or m/s for cylindrical and prismatic joints respectively. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vel</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>error code </dd></dl>
 
 </div>
 </div>
@@ -759,7 +696,7 @@ Private Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>error code. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, -1 on communication error, -2 when not homed succesfull (isHomed flag still not set), -3 when the motor is not enabled. </dd></dl>
 
 </div>
 </div>
@@ -779,6 +716,32 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Established connection to a joint via I2C. </p>
+<p>Adds the joint to the I2C bus and tests if is responsive by sending a PING.</p>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, -1 on when no ACK is received from the joint, -2 if the I2C device could not be opened given the joint address. </dd></dl>
+
+</div>
+</div>
+<a id="a21992c45ebb98f82de4af9620d6b3db2" name="a21992c45ebb98f82de4af9620d6b3db2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21992c45ebb98f82de4af9620d6b3db2">&#9670;&#160;</a></span>isEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Joint::isEnabled </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks the state if the motor is enabled. </p>
+<p>Reads the internal state flags from the last transmission. If an update is neccessary call <a class="el" href="classJoint.html#acaabb82e69a71afd9d4822ed38d36bcc">getFlags()</a> before invoking this function. If the motor actually can move depends on the state of the STALLED flag which can be checked using <a class="el" href="classJoint.html#a59b50f0bbd3dec54cc03ebd844078208" title="Checks if the motor is stalled.">isStalled()</a>.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if the motor is enabled, false if not. </dd></dl>
+
 </div>
 </div>
 <a id="ace70cee21bf7ff76ba85199a1d3f8d73" name="ace70cee21bf7ff76ba85199a1d3f8d73"></a>
@@ -797,19 +760,20 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get the isHomed state variable saved locally. </p>
-<p>To retrieve the actual state call <a class="el" href="classJoint.html#a8067e61c6ae21cd3d3992d742d440ebf" title="retrieves the status flags from the joint.">Joint::getIsHomed()</a> </p><dl class="section return"><dt>Returns</dt><dd>local isHomed state variable. </dd></dl>
+<p>Checks the state if the motor is homed. </p>
+<p>Reads the internal state flags from the last transmission. If an update is neccessary call <a class="el" href="classJoint.html#acaabb82e69a71afd9d4822ed38d36bcc">getFlags()</a> before invoking this function.</p>
+<dl class="section return"><dt>Returns</dt><dd>true if the motor is homed, false if not. </dd></dl>
 
 </div>
 </div>
-<a id="ac19ea5052bff39f7d8aa432aaa063557" name="ac19ea5052bff39f7d8aa432aaa063557"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac19ea5052bff39f7d8aa432aaa063557">&#9670;&#160;</a></span>isSetup()</h2>
+<a id="a59b50f0bbd3dec54cc03ebd844078208" name="a59b50f0bbd3dec54cc03ebd844078208"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59b50f0bbd3dec54cc03ebd844078208">&#9670;&#160;</a></span>isStalled()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool Joint::isSetup </td>
+          <td class="memname">bool Joint::isStalled </td>
           <td>(</td>
           <td class="paramtype">void&#160;</td>
           <td class="paramname"></td><td>)</td>
@@ -817,7 +781,9 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>the isSetup state variable. </dd></dl>
+
+<p>Checks if the motor is stalled. </p>
+<p>Reads the internal state flags from the last transmission. If an update is neccessary call <a class="el" href="classJoint.html#acaabb82e69a71afd9d4822ed38d36bcc">getFlags()</a> before invoking this function. </p><dl class="section return"><dt>Returns</dt><dd>true if the motor is stalled, false if not. </dd></dl>
 
 </div>
 </div>
@@ -836,6 +802,16 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Move full steps. </p>
+<p>This function can be called even when not homed.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">steps</td><td>number of full steps </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, -1 on communication error, -3 when the motor is not enabled, -4 when the motor is stalled. </dd></dl>
 
 </div>
 </div>
@@ -967,7 +943,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Set the Drive Current. </p>
-<dl class="section warning"><dt>Warning</dt><dd>This function is unreliable and not well tested. Use <a class="el" href="classJoint.html#a3714c35d4488d03280a7c2dc9e415ee0" title="Initialize the joint and engages motor.">enable()</a> instead! </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>This function is unreliable and not well tested. Use <a class="el" href="classJoint.html#a3714c35d4488d03280a7c2dc9e415ee0" title="Setup the joint and engages motor.">enable()</a> instead! </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">current</td><td>0% - 100% of driver current </td></tr>
@@ -995,7 +971,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Set the Hold Current. </p>
-<dl class="section warning"><dt>Warning</dt><dd>This function is unreliable and not well tested. Use <a class="el" href="classJoint.html#a3714c35d4488d03280a7c2dc9e415ee0" title="Initialize the joint and engages motor.">enable()</a> instead! </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>This function is unreliable and not well tested. Use <a class="el" href="classJoint.html#a3714c35d4488d03280a7c2dc9e415ee0" title="Setup the joint and engages motor.">enable()</a> instead! </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">current</td><td>0% - 100% of driver current </td></tr>
@@ -1006,8 +982,62 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="ab7c0d34338e87cfde6eea8ac905f8051" name="ab7c0d34338e87cfde6eea8ac905f8051"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7c0d34338e87cfde6eea8ac905f8051">&#9670;&#160;</a></span>setPosition()</h2>
+<a id="ace6f23fd07b18c93a5bfa0eb3b169ead" name="ace6f23fd07b18c93a5bfa0eb3b169ead"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace6f23fd07b18c93a5bfa0eb3b169ead">&#9670;&#160;</a></span>setMaxAcceleration()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Joint::setMaxAcceleration </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>maxAccel</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the maximum permitted joint acceleration (and deceleration) in rad/s^2 or m/s^2 for cylindrical and prismatic joints respectively. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">maxAccel</td><td>maximum joint acceleration. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>error code </dd></dl>
+
+</div>
+</div>
+<a id="a4d0f0be9bc855b75ae88e88043f4bfa4" name="a4d0f0be9bc855b75ae88e88043f4bfa4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d0f0be9bc855b75ae88e88043f4bfa4">&#9670;&#160;</a></span>setMaxVelocity()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Joint::setMaxVelocity </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>maxVel</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the maximum permitted joint velocity in rad/s or m/s for cylindrical and prismatic joints respectively. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">maxVel</td><td>maximum joint velocity. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>error code </dd></dl>
+
+</div>
+</div>
+<a id="a365628f72a742bb383f6e495b7d9f74a" name="a365628f72a742bb383f6e495b7d9f74a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a365628f72a742bb383f6e495b7d9f74a">&#9670;&#160;</a></span>setPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1016,16 +1046,25 @@ template&lt;typename T &gt; </div>
           <td class="memname">int Joint::setPosition </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>angle</em></td><td>)</td>
+          <td class="paramname"><em>pos</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
+<p>get the current joint position in radians or m for cylindrical and prismatic joints respectively. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pos</td><td>in rad or m </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, -1 on communication error, -2 when not homed, -3 when the motor is not enabled, -4 when the motor is stalled. </dd></dl>
+
 </div>
 </div>
-<a id="ab002b54b54bb4a7009bf0920dff60e88" name="ab002b54b54bb4a7009bf0920dff60e88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab002b54b54bb4a7009bf0920dff60e88">&#9670;&#160;</a></span>setVelocity()</h2>
+<a id="a3dbda9cbf3b38d85bc693a742998bbe0" name="a3dbda9cbf3b38d85bc693a742998bbe0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3dbda9cbf3b38d85bc693a742998bbe0">&#9670;&#160;</a></span>setVelocity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1034,11 +1073,20 @@ template&lt;typename T &gt; </div>
           <td class="memname">int Joint::setVelocity </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>degps</em></td><td>)</td>
+          <td class="paramname"><em>vel</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Set the current joint velocity in radians/s or m/s for cylindrical and prismatic joints respectively. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">vel</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, -1 on communication error, -2 when not homed, -3 when the motor is not enabled, -4 when the motor is stalled. </dd></dl>
 
 </div>
 </div>
@@ -1183,36 +1231,12 @@ template&lt;typename T &gt; </div>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">BIT7   </th><th class="markdownTableHeadNone">BIT6   </th><th class="markdownTableHeadNone">BIT5   </th><th class="markdownTableHeadNone">BIT4   </th><th class="markdownTableHeadNone">BIT3   </th><th class="markdownTableHeadNone">BIT2   </th><th class="markdownTableHeadNone">BIT1   </th><th class="markdownTableHeadNone">BIT0    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">reserved   </td><td class="markdownTableBodyNone">reserved   </td><td class="markdownTableBodyNone">reserved   </td><td class="markdownTableBodyNone">reserved   </td><td class="markdownTableBodyNone">SETUP   </td><td class="markdownTableBodyNone">HOMED   </td><td class="markdownTableBodyNone">BUSY   </td><td class="markdownTableBodyNone">STALL   </td></tr>
+<td class="markdownTableBodyNone">reserved   </td><td class="markdownTableBodyNone">reserved   </td><td class="markdownTableBodyNone">reserved   </td><td class="markdownTableBodyNone">reserved   </td><td class="markdownTableBodyNone">ENABLED   </td><td class="markdownTableBodyNone">HOMED   </td><td class="markdownTableBodyNone">BUSY   </td><td class="markdownTableBodyNone">STALL   </td></tr>
 </table>
-<p><b>STALL</b> is set if a stall from the stall detection is sensed and the joint is stopped. The flag is cleared when the joint is homed. <br  />
+<p><b>STALL</b> is set if a stall from the stall detection is sensed and the joint is stopped. The flag is cleared when the joint is homed or the Stallguard enabled. <br  />
 <b>BUSY</b> is set if the slave is busy processing a previous command. <br  />
-<b>HOMED</b> is set if the joint is homed. Movement is only allowed if this flag is clear <br  />
-<b>SETUP</b> is set if the joint is setup after calling <a class="el" href="classJoint.html#a3714c35d4488d03280a7c2dc9e415ee0" title="Initialize the joint and engages motor.">Joint::enable()</a> </p>
-
-</div>
-</div>
-<a id="ab0e71cda03c816424f2ab1c222ef8f39" name="ab0e71cda03c816424f2ab1c222ef8f39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab0e71cda03c816424f2ab1c222ef8f39">&#9670;&#160;</a></span>gearRatio</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">float Joint::gearRatio = 1</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>gear ratio from encoder units to joint units </p>
+<b>HOMED</b> is cleared if the joint is homed. Movement is only allowed if this flag is clear <br  />
+<b>ENABLED</b> is cleared if the joint is enabled after calling <a class="el" href="classJoint.html#a3714c35d4488d03280a7c2dc9e415ee0" title="Setup the joint and engages motor.">Joint::enable()</a> </p>
 
 </div>
 </div>
@@ -1237,54 +1261,6 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>I2C bus handle. </p>
-
-</div>
-</div>
-<a id="ac1afa9a4c5c9cf617a305e93bbc6fd7f" name="ac1afa9a4c5c9cf617a305e93bbc6fd7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac1afa9a4c5c9cf617a305e93bbc6fd7f">&#9670;&#160;</a></span>ishomed</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">u_int8_t Joint::ishomed = 0</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>flag if homed </p>
-
-</div>
-</div>
-<a id="ad400b4eed6d3b47819ad39de7f41a37a" name="ad400b4eed6d3b47819ad39de7f41a37a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad400b4eed6d3b47819ad39de7f41a37a">&#9670;&#160;</a></span>issetup</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">u_int8_t Joint::issetup = 0</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>flag is setup </p>
 
 </div>
 </div>
@@ -1322,14 +1298,38 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>offset in degrees or mm from encoder zero to joint zero. </p>
+<p><a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> position offset. </p>
+
+</div>
+</div>
+<a id="a8388570a9824deb1631cb6feec908335" name="a8388570a9824deb1631cb6feec908335"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8388570a9824deb1631cb6feec908335">&#9670;&#160;</a></span>reduction</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Joint::reduction = 1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> to actuator reduction ratio. </p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/<a class="el" href="mJoint_8h_source.html">mJoint.h</a></li>
-<li>ROS2/ros2_scara_ws/src/joint_communication/include/joint_communication/<a class="el" href="mJoint_8hpp_source.html">mJoint.hpp</a></li>
-<li>ROS2/ros2_scara_ws/src/joint_communication/src/<a class="el" href="mJoint_8cpp.html">mJoint.cpp</a></li>
+<li>ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/<a class="el" href="mJoint_8h_source.html">mJoint.h</a></li>
+<li>ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/<a class="el" href="mJoint_8hpp_source.html">mJoint.hpp</a></li>
+<li>ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/src/<a class="el" href="mJoint_8cpp.html">mJoint.cpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

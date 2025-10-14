@@ -1,22 +1,19 @@
 #include <signal.h>
 #include <unistd.h>
-#include <chrono>
-#include <thread>
-#include "bioscara_hardware_driver/mJointCom.h"
-
-// #include <cstdio>
-// #include <cstdlib>
-
+#include "bioscara_hardware_driver/mJoint.h"
+#include <vector>
 #include <cmath>
 
 using namespace std;
 
-Joint_comms _Joints;
+Joint J1("j1", 0x11, 35, -3.04647);
+Joint J2("j2", 0x12, -2 * M_PI / 0.004, 0.338);
+Joint J3("j3", 0x13, 24, -2.62672);
+Joint J4("j4", 0x14, 12, -3.01069);
 
 void INT_handler(int s)
 {
   printf("Caught signal %d\n", s);
-  _Joints.disables();
   exit(0);
 }
 
@@ -27,91 +24,115 @@ int main(int argc, char **argv)
   (void)argc;
   (void)argv;
 
-  _Joints.addJoint("j4", 0x14, 1 /*12*/, 0 /*345/2*/);
+  J1.init();
+  J2.init();
+  J3.init();
+  J4.init();
 
-  if (_Joints.init())
+  if (!J1.isHomed())
   {
-    cerr << "Could not establish connection to joints" << endl;
+    cout << "Homing J1...\n";
+    J1.enable(20, 20);
+    J1.home(0, 20, 30, 15);
+  }
+  J1.disable();
+  cout << "Press Enter to Continue...";
+  cin.ignore();
+
+  if (!J2.isHomed())
+  {
+    cout << "Homing J2...\n";
+    J2.enable(20, 20);
+    J2.setMaxAcceleration(0.01);
+    J2.home(0, 80, 50, 30);
+  }
+  J2.disable();
+  cout << "Press Enter to Continue...";
+  cin.ignore();
+
+  if (!J4.isHomed())
+  {
+    cout << "Homing J4...\n";
+    J4.enable(20, 20);
+
+    J4.home(0, 10, 30, 10);
+  }
+  J4.disable();
+  cout << "Press Enter to Continue...";
+  cin.ignore();
+
+  if (!J3.isHomed())
+  {
+    cout << "Homing J3...\n";
+    J3.enable(20, 20);
+
+    J3.home(0, 10, 30, 10);
+  }
+  J3.disable();
+
+  return 0;
+
+  cout << "Press Enter to Continue...";
+  cin.ignore();
+
+  // J2.disable();
+  J2.enableStallguard(5);
+
+  vector<float> q = {0.0};
+  vector<float> qd = {0.0};
+  vector<float> q_set = {0.0};
+  vector<float> qd_set = {0.0};
+  float t = 0;
+  int period_ms = 100;
+
+  q_set[0] = 0.1;
+  J2.setMaxAcceleration(0.01);
+  J2.setMaxVelocity(0.01);
+  // if (J2.setPosition(q_set[0]) < 0)
+  // {
+  //   return -1;
+  // }
+  if (J2.setVelocity(DEG2RAD(10)) < 0)
+  {
     return -1;
   }
+  // J2.disable();
 
-  _Joints.enable("j4", 20, 20);
-  sleep(1);
-
-  _Joints.home("j4", 0, 10, 5, 10); // very low threshold -> should trigger immediatly
-
-  sleep(1);
-
-  _Joints.enableStallguard("j4", 20);
-  _Joints.setPosition("j4", 0);
-  sleep(1);
-
-  vector<float> q = {0.0, 0.0};  // pos_k, pos_(k-1)
-  vector<float> qd = {0.0, 0.0}; // vel_k, vel_(k-1)
-  vector<float> q_set = {100.0, 0, -100, 0};
-
-  float maxAccel = 5000.0;
-  float maxVel = 10000.0;
-
-  _Joints.setMaxAcceleration("j4", maxAccel);
-  _Joints.setMaxVelocity("j4", maxVel);
-  sleep(1);
-
-  char file[0x100];
-  // snprintf(file, sizeof(file), "/home/scara/bioscara/test/accel_test_%.0f_%.0f.csv", maxAccel,maxVel);
-  snprintf(file, sizeof(file), "/home/scara/bioscara/test/accel_test_%.0f_%.0f_online_change.csv", maxAccel,maxVel);
-  FILE *fp = std::fopen(file, "w"); // Open file for writing
-  fprintf(fp,"maxAccel: %f\n", maxAccel);
-  fprintf(fp,"maxVel: %f\n", maxVel);
-  fprintf(fp,"time, position, velocity, accleration\n");
-  float angle = 360*100;
-  _Joints.setPosition("j4", angle);
-
-  auto last_measurement = std::chrono::high_resolution_clock::now();
-  float t = -1.0;
-  do
+  while (1)
   {
-    _Joints.getPosition("j4", q[0]);
-    _Joints.getVelocity("j4", qd[0]);
-    auto now = std::chrono::high_resolution_clock::now();
-    float acc;
-    if (t >= 0)
+
+    qd_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 1000;
+    // q_set[0] = (float)sin(0.2 * 2 * M_PI * t) * 90;
+    // q_set[2] = (float)sin(0.2 * 2 * M_PI * t) * 10;
+    // q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 10+15;
+
+    // q_set[1] = (float)sin(0.2 * 2 * M_PI * t) * 360;
+
+    // if (J2.setVelocity(DEG2RAD(qd_set[0])) < 0)
+    // {
+    //   break;
+    // }
+
+    if (J2.getPosition(q[0]) == 0)
     {
-      const std::chrono::duration<float> elapsed = now - last_measurement;
-      last_measurement = now;
-      float dt = elapsed.count();
-      acc = (qd[0] - qd[1]) / dt;
-      t += dt;
+      cout << "Positions: ";
+      for (float n : q)
+      {
+        cout << n / 2 << '\t';
+      }
+      cout << endl;
     }
     else
     {
-      acc = 0.0;
-      t = 0.0;
+      break;
     }
-    q[1] = q[0];
-    qd[1] = qd[0];
-    fprintf(fp,"%f, %f, %f, %f\n", t, q[0], qd[0], acc);
-
-    std::this_thread::sleep_for(10ms);
-
-    if (t>1 && maxAccel != -1)
+    if (J2.isStalled())
     {
-      _Joints.setMaxAcceleration("j4", 2000);
-      maxAccel = -1;
+      J2.disable();
     }
-    if (t>2 && maxVel != -1)
-    {
-      _Joints.setMaxVelocity("j4", 5000);
-      maxVel = -1;
-    }
-    
 
-  } while (abs(q[0] - angle) > 1);
-
-  // std::cout << "Press Enter to Continue...";
-  // std::cin.ignore();
-
-  _Joints.disables();
-  fclose(fp);
+    usleep(period_ms * 1000);
+    t += period_ms * 1.0 / 1000;
+  }
   return 0;
 }
