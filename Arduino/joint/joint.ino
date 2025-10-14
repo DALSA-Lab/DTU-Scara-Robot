@@ -16,12 +16,15 @@
 #include <Wire.h>
 #include "joint.h"
 
+#include <chrono>
+
+
 /**
  * @brief Define either joint that is to be flashed
  * 
  * Define either J1, J2, J3 or J4 and subsequently include configuration.h 
  */
-#define J2
+#define J4
 #include "configuration.h"
 
 
@@ -102,6 +105,7 @@ void requestEvent() {
   // Serial.print("Register: ");
   // Serial.println(reg);
 
+  unsigned long start = micros();
   non_blocking_handler(reg);
   uint8_t state = 0x00;
   state |= (isStalled << 0);
@@ -115,6 +119,13 @@ void requestEvent() {
   // Serial.print("tx_buf: \t");
   // DUMP_BUFFER(tx_buf, tx_length);
   Wire.write(tx_buf, tx_length);
+  unsigned long now = micros();
+  Serial.print("requestEvent, rx_length: ");
+  Serial.print(rx_length);
+  Serial.print(", tx_length: ");
+  Serial.print(tx_length);
+  Serial.print(", took: ");
+  Serial.println(now-start);
 }
 
 /**
@@ -131,7 +142,7 @@ void blocking_handler(uint8_t reg) {
   switch (reg) {
     case SETUP:
       {
-        // Serial.print("Executing SETUP\n");
+        Serial.print("Executing SETUP\n");
         memcpy(&driveCurrent, rx_buf, 1);
         memcpy(&holdCurrent, rx_buf + 1, 1);
         if (!stepperSetup) {
@@ -158,7 +169,7 @@ void blocking_handler(uint8_t reg) {
 
     case CHECKORIENTATION:
       {
-        // Serial.print("Executing CHECKORIENTATION\n");
+        Serial.print("Executing CHECKORIENTATION\n");
         float v;
         readValue<float>(v, rx_buf, rx_length);
         stepper.checkOrientation(v);
@@ -167,7 +178,7 @@ void blocking_handler(uint8_t reg) {
 
     case HOME:
       {
-        // Serial.print("Executing HOME\n");
+        Serial.print("Executing HOME\n");
         uint8_t dir;
         uint8_t speed;
         uint8_t sensitivity;
@@ -443,25 +454,25 @@ void loop(void) {
 
   if (isStallguardEnabled && !isStalled) {
     err = abs(stepper.getPidError());
-    Serial.print(err);
-    Serial.print("\t");
-    Serial.print(stallguardThreshold);
-    Serial.print("\t");
-    Serial.print(q);
-    Serial.print("\t");
-    Serial.print(q_set);
-    Serial.print("\t");
-    Serial.print(qd * 6);
-    Serial.print("\t");
-    Serial.print(qd_set * 6);
-    Serial.print("\t");
+    // Serial.print(err);
+    // Serial.print("\t");
+    // Serial.print(stallguardThreshold);
+    // Serial.print("\t");
+    // Serial.print(q);
+    // Serial.print("\t");
+    // Serial.print(q_set);
+    // Serial.print("\t");
+    // Serial.print(qd * 6);
+    // Serial.print("\t");
+    // Serial.print(qd_set * 6);
+    // Serial.print("\t");
     if (err > stallguardThreshold && last_err > stallguardThreshold) {
-      Serial.println(1);
+      // Serial.println(1);
       isStalled = 1;
       stepper.stop(HARD);
       last_err = 0;
     } else {
-      Serial.println(0);
+      // Serial.println(0);
       last_err = err;
     }
   }
