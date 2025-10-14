@@ -2,6 +2,7 @@
 <robot name="bioscara" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:arg name="use_mock_hardware" default="false"/>
+  <xacro:arg name="command_interface" default="position"/>
   <xacro:arg name="prefix" default=""/>
 
   <xacro:property name="config_file" value="$(find bioscara_description)/config/bioscara_parameters.yaml" />
@@ -12,7 +13,7 @@
   <xacro:include filename="$(find bioscara_description)/urdf/bioscara.gazebo" />
 
   <xacro:include filename="$(find bioscara_description)/urdf/bioscara.ros2control" />
-  <xacro:bioscara_ros2_control prefix="$(arg prefix)" parameters="${params}" use_mock_hardware="$(arg use_mock_hardware)"/>
+  <xacro:bioscara_ros2_control prefix="$(arg prefix)" parameters="${params}" use_mock_hardware="$(arg use_mock_hardware)" command_interface="$(arg command_interface)"/>
 
   <!-- Used for fixing robot -->
   <link name="world"/>

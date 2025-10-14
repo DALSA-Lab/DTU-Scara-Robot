@@ -53,31 +53,36 @@ namespace bioscara_hardware_interface
         return hardware_interface::CallbackReturn::ERROR;
       }
 
-      // expect the command interface to be position
-      if (joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION)
+      // expect the command interface to be position or velocity
+      if (joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION &&
+          joint.command_interfaces[0].name != hardware_interface::HW_IF_VELOCITY)
       {
         RCLCPP_FATAL(
-            get_logger(), "Joint '%s' have %s command interfaces found. '%s' expected.",
+            get_logger(), "Joint '%s' have %s command interfaces found. '%s' or '%s' expected.",
             joint.name.c_str(), joint.command_interfaces[0].name.c_str(),
-            hardware_interface::HW_IF_POSITION);
+            hardware_interface::HW_IF_POSITION,
+            hardware_interface::HW_IF_VELOCITY);
         return hardware_interface::CallbackReturn::ERROR;
       }
 
       // expect only one state interface
-      if (joint.state_interfaces.size() != 1)
+      if (joint.state_interfaces.size() > 2)
       {
         RCLCPP_FATAL(
-            get_logger(), "Joint '%s' has %zu state interface. 1 expected.", joint.name.c_str(),
+            get_logger(), "Joint '%s' has %zu state interface. 2 or less expected.", joint.name.c_str(),
             joint.state_interfaces.size());
         return hardware_interface::CallbackReturn::ERROR;
       }
 
-      // expect state interface to be position
-      if (joint.state_interfaces[0].name != hardware_interface::HW_IF_POSITION)
+      // expect state interface to be position or velocity
+      if (joint.state_interfaces[0].name != hardware_interface::HW_IF_POSITION &&
+          joint.state_interfaces[0].name != hardware_interface::HW_IF_VELOCITY)
       {
         RCLCPP_FATAL(
-            get_logger(), "Joint '%s' have %s state interface. '%s' expected.", joint.name.c_str(),
-            joint.state_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION);
+            get_logger(), "Joint '%s' have %s state interfaces found. '%s' or '%s' expected.",
+            joint.name.c_str(), joint.state_interfaces[0].name.c_str(),
+            hardware_interface::HW_IF_POSITION,
+            hardware_interface::HW_IF_VELOCITY);
         return hardware_interface::CallbackReturn::ERROR;
       }
 
@@ -347,7 +352,8 @@ namespace bioscara_hardware_interface
      */
     rclcpp::Time t(0);
     rclcpp::Duration d(0, 0);
-    if(read(t, d) != hardware_interface::return_type::OK){
+    if (read(t, d) != hardware_interface::return_type::OK)
+    {
       return hardware_interface::CallbackReturn::ERROR;
     }
 
@@ -525,35 +531,35 @@ namespace bioscara_hardware_interface
   }
 
   hardware_interface::CallbackReturn BioscaraHardwareInterface::on_error(
-      const rclcpp_lifecycle::State & previous_state)
+      const rclcpp_lifecycle::State &previous_state)
   {
     /**
      * Call the deactivation method. If the robot successfully deactivates the hardware remains in the unconfigured state,
      * and is able to be activated again. Otherwise the hardware goes to the finalized state and can not be recovered.
-     * 
+     *
      * @todo implement a more fine tuned error handling.
      */
 
-    RCLCPP_INFO(get_logger(), "Previous State: %s",previous_state.label().c_str()); 
+    RCLCPP_INFO(get_logger(), "Previous State: %s", previous_state.label().c_str());
     // states: "active", "finalized",...
-    if(previous_state.label() == "active"){
+    if (previous_state.label() == "active")
+    {
       hardware_interface::CallbackReturn cr = on_deactivate(previous_state);
-      if(cr != CallbackReturn::SUCCESS){
+      if (cr != CallbackReturn::SUCCESS)
+      {
         return cr;
       }
 
       /* since the hardware goes to "unconfigured state if an error is caugth and the on_error function returns SUCCESS
       we also have to manually call the on_cleanup function */
       cr = on_deactivate(previous_state);
-      if(cr != CallbackReturn::SUCCESS){
+      if (cr != CallbackReturn::SUCCESS)
+      {
         return cr;
       }
       return CallbackReturn::SUCCESS;
-      
     }
     return CallbackReturn::ERROR;
-    
-    
   }
 
 } // namespace bioscara_hardware_interface
