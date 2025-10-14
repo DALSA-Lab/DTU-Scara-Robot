@@ -57,7 +57,7 @@ int Joint::enable(u_int8_t driveCurrent, u_int8_t holdCurrent)
 
     if (!this->isEnabled())
     {
-        return -3; // NOT HOMED
+        return -3;
     }
     return 0;
 }
@@ -275,7 +275,7 @@ int Joint::stop(void)
     {
         return -5;
     }
-    return this->write(STOP, 0x00, this->flags) < 0 ? -1 : 0;
+    return this->write(STOP, (u_int8_t)0x00, this->flags) < 0 ? -1 : 0;
 }
 
 int Joint::disableCL(void)
