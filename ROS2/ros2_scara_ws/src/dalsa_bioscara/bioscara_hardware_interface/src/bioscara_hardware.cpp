@@ -264,17 +264,22 @@ namespace bioscara_hardware_interface
       joint_config_t cfg = _joint_cfg[name];
 
       /* First get the flags. they must all be zero to indicate that the joint is operational.
-      Below code does not look great*/      
+      Below code does not look great*/
       int flags = joint.getFlags();
       if (flags < 0 || !joint.isHomed())
       {
         std::string reason = "";
-        if(flags < 0){
+        if (flags < 0)
+        {
           reason = "communication error";
-        }else if(!joint.isHomed()){
+        }
+        else if (!joint.isHomed())
+        {
           reason = "not homed";
-        }else{
-          reason = "Unkown Reason ("+std::to_string(flags)+")";
+        }
+        else
+        {
+          reason = "Unkown Reason (" + std::to_string(flags) + ")";
         }
         RCLCPP_FATAL(
             get_logger(),
@@ -379,8 +384,17 @@ namespace bioscara_hardware_interface
     // command and state should be equal when starting
     for (const auto &[name, descr] : joint_command_interfaces_)
     {
-      RCLCPP_INFO(get_logger(), "Set %s, to %f", name.c_str(), get_state(name));
-      set_command(name, get_state(name));
+      /* Check if position or velocity. Set position to current position and velocity to 0.0 */
+      if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
+      {
+        RCLCPP_INFO(get_logger(), "Set %s, to %f", name.c_str(), get_state(name));
+        set_command(name, get_state(name));
+      }
+      else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
+      {
+        RCLCPP_INFO(get_logger(), "Set %s, to 0.0", name.c_str());
+        set_command(name, 0.0);
+      }
     }
     // for (const auto &[name, descr] : gpio_command_interfaces_)
     // {
