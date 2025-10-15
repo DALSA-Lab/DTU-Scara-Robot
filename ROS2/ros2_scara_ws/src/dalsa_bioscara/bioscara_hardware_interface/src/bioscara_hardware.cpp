@@ -542,7 +542,12 @@ namespace bioscara_hardware_interface
 
     RCLCPP_INFO(get_logger(), "Previous State: %s", previous_state.label().c_str());
     // states: "active", "finalized",...
-    if (previous_state.label() == "active")
+
+    /**
+     * call the deactivate function anyway regardless if state was active or inactive. For example if the on_activate function fails
+     * the joint might still be enabled, to disable them invoke on_deactivate().
+     */
+    if (previous_state.label() == "active" || previous_state.label() == "inactive")
     {
       hardware_interface::CallbackReturn cr = on_deactivate(previous_state);
       if (cr != CallbackReturn::SUCCESS)
@@ -550,15 +555,16 @@ namespace bioscara_hardware_interface
         return cr;
       }
 
-      /* since the hardware goes to "unconfigured state if an error is caugth and the on_error function returns SUCCESS
+      /* since the hardware goes to "unconfigured state if an error is caught and the on_error function returns SUCCESS
       we also have to manually call the on_cleanup function */
-      cr = on_deactivate(previous_state);
+      cr = on_cleanup(previous_state);
       if (cr != CallbackReturn::SUCCESS)
       {
         return cr;
       }
       return CallbackReturn::SUCCESS;
     }
+
     return CallbackReturn::ERROR;
   }
 
