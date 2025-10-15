@@ -2,12 +2,13 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
 <!-- TODO: find out how to "macro-fy the joints, lots of repitition there" -->
-  <xacro:macro name="bioscara_ros2_control" params="prefix parameters use_mock_hardware">
+  <xacro:macro name="bioscara_ros2_control" params="prefix parameters use_mock_hardware command_interface">
 
     <ros2_control name="bioscara" type="system">
       <xacro:if value="${use_mock_hardware}">
         <hardware>
           <plugin>mock_components/GenericSystem</plugin>
+          <param name="calculate_dynamics">true</param>
         </hardware>
       </xacro:if>
       <xacro:unless value="${use_mock_hardware}">
@@ -17,8 +18,9 @@
       </xacro:unless>
       
       <joint name="${prefix}j1">
-        <command_interface name="position"/>
+        <command_interface name="${command_interface}"/>
         <state_interface name="position"/>
+        <state_interface name="velocity"/>
         <param name="i2c_address">${parameters['j1']['i2c_address']}</param>
         <param name="reduction">${parameters['j1']['reduction']}</param>
         <param name="offset">${parameters['j1']['offset']}</param>
@@ -29,8 +31,9 @@
         <param name="max_velocity">${parameters['j1']['max_velocity']}</param>
       </joint>
       <joint name="${prefix}j2">
-        <command_interface name="position"/>
+        <command_interface name="${command_interface}"/>
         <state_interface name="position"/>
+        <state_interface name="velocity"/>
         <param name="i2c_address">${parameters['j2']['i2c_address']}</param>
         <param name="reduction">${parameters['j2']['reduction']}</param>
         <param name="offset">${parameters['j2']['offset']}</param>
@@ -41,8 +44,9 @@
         <param name="max_velocity">${parameters['j2']['max_velocity']}</param>
       </joint>
       <joint name="${prefix}j3">
-        <command_interface name="position"/>
+        <command_interface name="${command_interface}"/>
         <state_interface name="position"/>
+        <state_interface name="velocity"/>
         <param name="i2c_address">${parameters['j3']['i2c_address']}</param>
         <param name="reduction">${parameters['j3']['reduction']}</param>
         <param name="offset">${parameters['j3']['offset']}</param>
@@ -53,8 +57,9 @@
         <param name="max_velocity">${parameters['j3']['max_velocity']}</param>
       </joint>
       <joint name="${prefix}j4">
-        <command_interface name="position"/>
+        <command_interface name="${command_interface}"/>
         <state_interface name="position"/>
+        <state_interface name="velocity"/>
         <param name="i2c_address">${parameters['j4']['i2c_address']}</param>
         <param name="reduction">${parameters['j4']['reduction']}</param>
         <param name="offset">${parameters['j4']['offset']}</param>

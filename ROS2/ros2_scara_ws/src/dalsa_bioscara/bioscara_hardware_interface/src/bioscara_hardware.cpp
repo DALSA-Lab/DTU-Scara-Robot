@@ -28,10 +28,10 @@
 namespace bioscara_hardware_interface
 {
   hardware_interface::CallbackReturn BioscaraHardwareInterface::on_init(
-      const hardware_interface::HardwareInfo &info)
+      const hardware_interface::HardwareComponentInterfaceParams &params)
   {
     if (
-        hardware_interface::SystemInterface::on_init(info) !=
+        hardware_interface::SystemInterface::on_init(params) !=
         hardware_interface::CallbackReturn::SUCCESS)
     {
       return hardware_interface::CallbackReturn::ERROR;
@@ -53,31 +53,36 @@ namespace bioscara_hardware_interface
         return hardware_interface::CallbackReturn::ERROR;
       }
 
-      // expect the command interface to be position
-      if (joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION)
+      // expect the command interface to be position or velocity
+      if (joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION &&
+          joint.command_interfaces[0].name != hardware_interface::HW_IF_VELOCITY)
       {
         RCLCPP_FATAL(
-            get_logger(), "Joint '%s' have %s command interfaces found. '%s' expected.",
+            get_logger(), "Joint '%s' have %s command interfaces found. '%s' or '%s' expected.",
             joint.name.c_str(), joint.command_interfaces[0].name.c_str(),
-            hardware_interface::HW_IF_POSITION);
+            hardware_interface::HW_IF_POSITION,
+            hardware_interface::HW_IF_VELOCITY);
         return hardware_interface::CallbackReturn::ERROR;
       }
 
       // expect only one state interface
-      if (joint.state_interfaces.size() != 1)
+      if (joint.state_interfaces.size() > 2)
       {
         RCLCPP_FATAL(
-            get_logger(), "Joint '%s' has %zu state interface. 1 expected.", joint.name.c_str(),
+            get_logger(), "Joint '%s' has %zu state interface. 2 or less expected.", joint.name.c_str(),
             joint.state_interfaces.size());
         return hardware_interface::CallbackReturn::ERROR;
       }
 
-      // expect state interface to be position
-      if (joint.state_interfaces[0].name != hardware_interface::HW_IF_POSITION)
+      // expect state interface to be position or velocity
+      if (joint.state_interfaces[0].name != hardware_interface::HW_IF_POSITION &&
+          joint.state_interfaces[0].name != hardware_interface::HW_IF_VELOCITY)
       {
         RCLCPP_FATAL(
-            get_logger(), "Joint '%s' have %s state interface. '%s' expected.", joint.name.c_str(),
-            joint.state_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION);
+            get_logger(), "Joint '%s' have %s state interfaces found. '%s' or '%s' expected.",
+            joint.name.c_str(), joint.state_interfaces[0].name.c_str(),
+            hardware_interface::HW_IF_POSITION,
+            hardware_interface::HW_IF_VELOCITY);
         return hardware_interface::CallbackReturn::ERROR;
       }
 
@@ -258,6 +263,30 @@ namespace bioscara_hardware_interface
     {
       joint_config_t cfg = _joint_cfg[name];
 
+      /* First get the flags. they must all be zero to indicate that the joint is operational.
+      Below code does not look great*/
+      int flags = joint.getFlags();
+      if (flags < 0 || !joint.isHomed())
+      {
+        std::string reason = "";
+        if (flags < 0)
+        {
+          reason = "communication error";
+        }
+        else if (!joint.isHomed())
+        {
+          reason = "not homed";
+        }
+        else
+        {
+          reason = "Unkown Reason (" + std::to_string(flags) + ")";
+        }
+        RCLCPP_FATAL(
+            get_logger(),
+            "Failed to enable joint '%s'. Reason: %s", name.c_str(), reason.c_str());
+        return CallbackReturn::ERROR;
+      }
+
       // enable motor
       int rc = joint.enable(cfg.drive_current, cfg.hold_current);
       if (rc < 0)
@@ -272,7 +301,7 @@ namespace bioscara_hardware_interface
           reason = "motor failed to enable";
           break;
         default:
-          reason = "Unkown Reason " + std::to_string(rc);
+          reason = "Unkown Reason" + std::to_string(rc);
         }
         RCLCPP_FATAL(
             get_logger(),
@@ -347,15 +376,25 @@ namespace bioscara_hardware_interface
      */
     rclcpp::Time t(0);
     rclcpp::Duration d(0, 0);
-    if(read(t, d) != hardware_interface::return_type::OK){
+    if (read(t, d) != hardware_interface::return_type::OK)
+    {
       return hardware_interface::CallbackReturn::ERROR;
     }
 
     // command and state should be equal when starting
     for (const auto &[name, descr] : joint_command_interfaces_)
     {
-      RCLCPP_INFO(get_logger(), "Set %s, to %f", name.c_str(), get_state(name));
-      set_command(name, get_state(name));
+      /* Check if position or velocity. Set position to current position and velocity to 0.0 */
+      if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
+      {
+        RCLCPP_INFO(get_logger(), "Set %s, to %f", name.c_str(), get_state(name));
+        set_command(name, get_state(name));
+      }
+      else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
+      {
+        RCLCPP_INFO(get_logger(), "Set %s, to 0.0", name.c_str());
+        set_command(name, 0.0);
+      }
     }
     // for (const auto &[name, descr] : gpio_command_interfaces_)
     // {
@@ -525,35 +564,41 @@ namespace bioscara_hardware_interface
   }
 
   hardware_interface::CallbackReturn BioscaraHardwareInterface::on_error(
-      const rclcpp_lifecycle::State & previous_state)
+      const rclcpp_lifecycle::State &previous_state)
   {
     /**
      * Call the deactivation method. If the robot successfully deactivates the hardware remains in the unconfigured state,
      * and is able to be activated again. Otherwise the hardware goes to the finalized state and can not be recovered.
-     * 
+     *
      * @todo implement a more fine tuned error handling.
      */
 
-    RCLCPP_INFO(get_logger(), "Previous State: %s",previous_state.label().c_str()); 
+    RCLCPP_INFO(get_logger(), "Previous State: %s", previous_state.label().c_str());
     // states: "active", "finalized",...
-    if(previous_state.label() == "active"){
+
+    /**
+     * call the deactivate function anyway regardless if state was active or inactive. For example if the on_activate function fails
+     * the joint might still be enabled, to disable them invoke on_deactivate().
+     */
+    if (previous_state.label() == "active" || previous_state.label() == "inactive")
+    {
       hardware_interface::CallbackReturn cr = on_deactivate(previous_state);
-      if(cr != CallbackReturn::SUCCESS){
+      if (cr != CallbackReturn::SUCCESS)
+      {
         return cr;
       }
 
-      /* since the hardware goes to "unconfigured state if an error is caugth and the on_error function returns SUCCESS
+      /* since the hardware goes to "unconfigured state if an error is caught and the on_error function returns SUCCESS
       we also have to manually call the on_cleanup function */
-      cr = on_deactivate(previous_state);
-      if(cr != CallbackReturn::SUCCESS){
+      cr = on_cleanup(previous_state);
+      if (cr != CallbackReturn::SUCCESS)
+      {
         return cr;
       }
       return CallbackReturn::SUCCESS;
-      
     }
+
     return CallbackReturn::ERROR;
-    
-    
   }
 
 } // namespace bioscara_hardware_interface

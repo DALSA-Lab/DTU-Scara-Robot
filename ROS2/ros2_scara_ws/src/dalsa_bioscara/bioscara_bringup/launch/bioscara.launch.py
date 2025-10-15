@@ -15,7 +15,7 @@ from launch.substitutions import (
 )
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-
+from launch.substitutions import PythonExpression
 
 def generate_launch_description():
     # Declare arguments
@@ -66,12 +66,21 @@ def generate_launch_description():
             description="Start robot with fake hardware mirroring command to its states.",
         )
     )
+    # TODO
     declared_arguments.append(
         DeclareLaunchArgument(
             "robot_controller",
-            default_value="joint_trajectory_controller",
-            choices=["forward_position_controller", "joint_trajectory_controller"],
+            default_value="velocity_joint_trajectory_controller",
+            choices=["velocity_joint_trajectory_controller", "position_joint_trajectory_controller"],
             description="Robot controller to start.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "command_interface",
+            default_value="position",
+            choices=["velocity", "position"],
+            description="Use position or velocity as command interface of the joint trajectory controller",
         )
     )
 
@@ -82,7 +91,10 @@ def generate_launch_description():
     description_file = LaunchConfiguration("description_file")
     prefix = LaunchConfiguration("prefix")
     use_mock_hardware = LaunchConfiguration("use_mock_hardware")
+    command_interface = LaunchConfiguration("command_interface")
     robot_controller = LaunchConfiguration("robot_controller")
+    # robot_controller = PythonExpression([control_mode,'+_joint_trajectory_controller'])
+    # robot_controller = PythonExpression(["'position_joint_trajectory_controller' if ", control_mode, "=='position' else 'velocity_joint_trajectory_controller'"])
 
     # Get URDF via xacro
     robot_description_content = Command(
@@ -98,6 +110,9 @@ def generate_launch_description():
             " ",
             "use_mock_hardware:=",
             use_mock_hardware,
+            " ",
+            "command_interface:=",
+            command_interface,
         ]
     )
 
@@ -188,7 +203,7 @@ def generate_launch_description():
         event_handler=OnProcessExit(
             target_action=joint_state_broadcaster_spawner,
             on_exit=[
-            rviz_node,
+            # rviz_node,
             rqt_joint_trajectory_controller_node,
             ],
         )
