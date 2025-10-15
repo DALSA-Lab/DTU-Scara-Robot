@@ -15,6 +15,7 @@
 
 #include <Wire.h>
 #include "joint.h"
+#include "filters.h"
 
 /**
  * @brief Define either joint that is to be flashed
@@ -26,6 +27,8 @@
 
 
 UstepperS32 stepper;
+static Lowpass lp(1, 0.01, 0.1);
+
 static uint8_t driveCurrent, holdCurrent;
 static uint8_t notHomed = 1;
 static uint8_t isStalled = 0;
@@ -143,7 +146,7 @@ void blocking_handler(uint8_t reg) {
         stepper.setMaxAcceleration(maxAccel);
         stepper.setMaxDeceleration(maxAccel);
         stepper.setMaxVelocity(maxVel);
-        stepper.setControlThreshold(15);  //Adjust the control threshold - here set to 15 microsteps before making corrective action
+        stepper.setControlThreshold(15);
         stepper.setCurrent(driveCurrent);
         stepper.setHoldCurrent(holdCurrent);
         stepper.moveToAngle(stepper.angleMoved());
@@ -426,11 +429,12 @@ void setup(void) {
 
   Wire.onReceive(receiveEvent);
   Wire.onRequest(requestEvent);
+
 }
 
 
-static float last_err = 0;
-static float err = 0;
+static float last_err = 0, last_err_fil = 0;
+static float err = 0, err_fil = 0;
 /**
  * @brief Main loop
 
@@ -443,26 +447,35 @@ void loop(void) {
 
   if (isStallguardEnabled && !isStalled) {
     err = abs(stepper.getPidError());
-    // Serial.print(err);
-    // Serial.print("\t");
-    // Serial.print(stallguardThreshold);
-    // Serial.print("\t");
-    // Serial.print(q);
-    // Serial.print("\t");
-    // Serial.print(q_set);
-    // Serial.print("\t");
-    // Serial.print(qd * 6);
-    // Serial.print("\t");
-    // Serial.print(qd_set * 6);
-    // Serial.print("\t");
+    if(err-last_err > 500){
+      err = last_err;
+    }
+    Serial.print(err);
+    Serial.print("\t");
+    err_fil = lp.updateState(err);
+    Serial.print(err_fil);
+    Serial.print("\t");
+    Serial.print(err_fil-last_err_fil);
+    Serial.print("\t");
+    Serial.print(abs(qd)*0.1+20);
+    Serial.print("\t");
+    Serial.print(q);
+    Serial.print("\t");
+    Serial.print(q_set);
+    Serial.print("\t");
+    Serial.print(qd * 6);
+    Serial.print("\t");
+    Serial.print(qd_set * 6);
+    Serial.print("\t");
     if (err > stallguardThreshold && last_err > stallguardThreshold) {
-      // Serial.println(1);
-      isStalled = 1;
-      stepper.stop(HARD);
-      last_err = 0;
+      Serial.println(1);
+      // isStalled = 1;
+      // stepper.stop(HARD);
+      // last_err = 0;
     } else {
-      // Serial.println(0);
+      Serial.println(0);
       last_err = err;
+      last_err_fil = err_fil;
     }
   }
 
