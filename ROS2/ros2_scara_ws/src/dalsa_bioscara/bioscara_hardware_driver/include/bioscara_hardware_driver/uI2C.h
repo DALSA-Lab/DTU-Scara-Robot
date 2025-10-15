@@ -80,7 +80,7 @@ int writeToI2CDev(const int dev_handle, const int reg, char *tx_buffer, const in
  * @param dev_handle device handle obtained from `openI2CDevHandle`
  * @return 0 on OK, negative on error.
  */
-int closeI2CDevHandle(const int dev_handle);
+int closeI2CDevHandle(int &dev_handle);
 
 
 #endif
