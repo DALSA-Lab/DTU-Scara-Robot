@@ -467,9 +467,9 @@ namespace bioscara_hardware_interface
         case -1:
           reason = "communication error";
           break;
-        case -2:
-          reason = "joint not homed, can not read " + descr.interface_info.name;
-          break;
+        // case -2:
+        //   reason = "joint not homed";
+        //   break;
         default:
           reason = "Unkown Reason " + std::to_string(rc);
         }

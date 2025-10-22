@@ -132,10 +132,10 @@ int Joint::getPosition(float &pos)
     {
         return -5;
     }
-    if (!this->isHomed())
-    {
-        return -2; // not homed
-    }
+    // if (!this->isHomed())
+    // {
+    //     return -2; // not homed
+    // }
     int rc = this->read(ANGLEMOVED, pos, this->flags);
     pos = ACTUATOR2JOINT(DEG2RAD(pos), this->reduction, this->offset);
     return rc < 0 ? -1 : 0;
@@ -200,10 +200,10 @@ int Joint::getVelocity(float &vel)
     {
         return -5;
     }
-    if (!this->isHomed())
-    {
-        return -2; // not homed
-    }
+    // if (!this->isHomed())
+    // {
+    //     return -2; // not homed
+    // }
     int rc = this->read(GETENCODERRPM, vel, this->flags);
     vel = ACTUATOR2JOINT(DEG2RAD(vel), this->reduction, 0);
     vel *= 6.0; // convert from rpm to rad/s
