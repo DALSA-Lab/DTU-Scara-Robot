@@ -1,5 +1,4 @@
-CH1 1.0V  ,CH2 1.0V  ,1.0uS
-Probe:X1 ,Probe:X1 ,
+SDA,SCL,1.0uS
 172,175,
 173,176,
 181,182,
