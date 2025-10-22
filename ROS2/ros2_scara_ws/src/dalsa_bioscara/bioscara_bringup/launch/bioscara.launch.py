@@ -78,7 +78,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "command_interface",
-            default_value="position",
+            default_value="velocity",
             choices=["velocity", "position"],
             description="Use position or velocity as command interface of the joint trajectory controller",
         )
@@ -168,7 +168,6 @@ def generate_launch_description():
             "joint_state_broadcaster",
             "--controller-manager",
             "/controller_manager",
-            "--inactive"
         ],
     )
 
