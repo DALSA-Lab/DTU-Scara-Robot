@@ -168,6 +168,7 @@ def generate_launch_description():
             "joint_state_broadcaster",
             "--controller-manager",
             "/controller_manager",
+            "--inactive"
         ],
     )
 
@@ -179,7 +180,7 @@ def generate_launch_description():
             Node(
                 package="controller_manager",
                 executable="spawner",
-                arguments=[controller, "-c", "/controller_manager"],
+                arguments=[controller, "-c", "/controller_manager","--inactive"],
             )
         ]
 
