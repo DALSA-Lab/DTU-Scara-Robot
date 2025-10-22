@@ -46,7 +46,7 @@ The overhead of my code is negligbe since the average of the pure zip command is
 lgI2cZip, tx size: 4, rx size: 1, took: 1205.260<br>
 lgI2cZip, tx size: 4, rx size: 1, took: 1178.963<br>
 lgI2cZip, tx size: 4, rx size: 1, took: 1182.500<br>
-...
+... <br>
 lgI2cZip, tx size: 4, rx size: 1, took: 1211.500<br>
 lgI2cZip, tx size: 4, rx size: 1, took: 1214.593<br>
   
@@ -65,15 +65,16 @@ average execution times in the request handler ISR (where the set and getPositio
 Read t_total avg: 5.2 us
 write t_total avg 353.1 us
 
-this means:
-t_total (meas) = t_transmission (calc) + t_exec (meas) + t_overhead +t_noise
+this means:<br>
+t_total (meas) = t_transmission (calc) + t_exec (meas) + t_overhead +t_noise <br>
+t_overhead + t_noise  = t_total (meas) - t_exec (meas) - t_transmission (calc) 
 
-For 100 kHz:
-write: t_overhead + t_noise = 1216 us - 750 us - 353.1 us = 113 us
+For 100 kHz:<br>
+write: t_overhead + t_noise = 1216 us - 750 us - 353.1 us = 113 us <br>
 read: t_overhead + t_noise = 860 us - 750 us - 5.2 us = 105 us
 
-For 100 kHz:
-write: t_overhead + t_noise = 624.7 us - 187.5 us - 353.1 us = 84 us
+For 400 kHz: <br>
+write: t_overhead + t_noise = 624.7 us - 187.5 us - 353.1 us = 84 us <br>
 read: t_overhead + t_noise = 270.7 us - 187.5 us - 5.2 us = 78 us
 
 --> This shows the remaining overhead is consistent between the calls the biggest contribution to the slow execution is in the firmware.
@@ -105,4 +106,3 @@ Can we use setVelocity, getPosition and getVelocity (thats whats needed for velo
 | 4 joint **total** | 10,472 | 4,844  |
 
 Peaks might still occur, it would be interesting though if they might be reduced when called from higher priority thread.
-For now continue with 400 kHz, 100 Hz update rate and measure i2c waveform with oscilloscope.
