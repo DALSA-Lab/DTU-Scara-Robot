@@ -47,6 +47,8 @@ bool rx_data_ready = 0;
 size_t tx_length = 0;
 size_t rx_length = 0;
 
+static uint32_t deadman = 0;
+
 
 void blocking_handler(uint8_t reg);
 void non_blocking_handler(uint8_t reg);
@@ -115,6 +117,7 @@ void requestEvent() {
   // Serial.print("tx_buf: \t");
   // DUMP_BUFFER(tx_buf, tx_length);
   Wire.write(tx_buf, tx_length);
+  deadman = millis();
 }
 
 /**
@@ -153,6 +156,7 @@ void blocking_handler(uint8_t reg) {
         isStallguardEnabled = 0;
         notEnabled = 0;
         isStalled = 0;
+        qd_set = 0; //reset here so that no matter how long it takes after the enable call for the next command to arrive, we dont trigger the watchdog
         break;
       }
 
@@ -226,14 +230,14 @@ void non_blocking_handler(uint8_t reg) {
   switch (reg) {
     case PING:
       {
-        Serial.print("Executing PING\n");
+        // Serial.print("Executing PING\n");
         writeValue<char>(ACK, tx_buf, tx_length);
         tx_data_ready = true;
         break;
       }
 
     case GETDRIVERRPM:
-      Serial.print("Executing GETDRIVERRPM\n");
+      // Serial.print("Executing GETDRIVERRPM\n");
       break;
 
 
@@ -322,7 +326,7 @@ void non_blocking_handler(uint8_t reg) {
       }
 
       // case SETMAXDECELERATION:
-      Serial.print("Executing SETMAXDECELERATION\n");
+      // Serial.print("Executing SETMAXDECELERATION\n");
       //   break;
 
     case SETMAXVELOCITY:
@@ -353,11 +357,11 @@ void non_blocking_handler(uint8_t reg) {
       }
 
       // case DISABLESTALLGUARD:
-      Serial.print("Executing DISABLESTALLGUARD\n");
+      // Serial.print("Executing DISABLESTALLGUARD\n");
       //   break;
 
       // case CLEARSTALL:
-      Serial.print("Executing CLEARSTALL\n");
+      // Serial.print("Executing CLEARSTALL\n");
       //   break;
 
     case SETBRAKEMODE:
@@ -370,11 +374,11 @@ void non_blocking_handler(uint8_t reg) {
       }
 
       // case ENABLEPID:
-      Serial.print("Executing ENABLEPID\n");
+      // Serial.print("Executing ENABLEPID\n");
       //   break;
 
       // case DISABLEPID:
-      Serial.print("Executing DISABLEPID\n");
+      // Serial.print("Executing DISABLEPID\n");
       //   break;
 
 
@@ -440,7 +444,6 @@ static float err = 0;
  * Clear isBusy flag to indicate device is no longer busy \n 
  */
 void loop(void) {
-
   if (isStallguardEnabled && !isStalled) {
     err = abs(stepper.getPidError());
     // Serial.print(err);
@@ -471,6 +474,16 @@ void loop(void) {
     isBusy = 1;  // set is busy flag
     blocking_handler(reg);
     isBusy = 0;  // reset is busy flag
+  }
+
+  uint32_t now = millis();
+  /* Take potential overflow of millis() into account (50 days) and calculate the difference according to this */
+  uint32_t diff = (now >= deadman) ? (now - deadman) : (std::numeric_limits<uint32_t>::max() + 1 - (deadman - now));
+  // Serial.println(diff);
+  if(diff > 50 && !notEnabled && qd_set){
+    Serial.println("Deadman switch triggered");
+    stepper.setRPM(0);
+    notEnabled = 1;
   }
 
   delay(10);
