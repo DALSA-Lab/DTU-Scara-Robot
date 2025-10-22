@@ -149,11 +149,11 @@
     <joint name="${prefix}tool_joint" type="fixed">
       <origin xyz="0 0 0" rpy="${pi} 0 0" />
       <parent link="${prefix}link_4"/>
-      <child link="${prefix}tool0" />
+      <child link="${prefix}tool_flange" />
     </joint>
 
     <!-- Tool Link -->
-    <link name="${prefix}tool0"/>
+    <link name="${prefix}tool_flange"/>
 
   </xacro:macro>
 

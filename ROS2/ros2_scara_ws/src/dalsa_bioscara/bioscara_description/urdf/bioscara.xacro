@@ -4,7 +4,28 @@
   <xacro:arg name="use_mock_hardware" default="false"/>
   <xacro:arg name="command_interface" default="position"/>
   <xacro:arg name="prefix" default=""/>
+  <xacro:arg name="gripper_package_name" default="" />
+  <xacro:arg name="gripper_macro_path" default="/urdf/gripper.xacro" />
 
+
+  <xacro:include filename="$(find bioscara_description)/urdf/bioscara_robot.xacro" />
+
+  <!-- Used for fixing robot -->
+  <link name="world"/>
+
+  <!-- Include the robot macro which assembles the arm and the gripper -->
+  <xacro:load_robot 
+    parent="world" 
+    prefix="$(arg prefix)" 
+    use_mock_hardware="$(arg use_mock_hardware)"
+    command_interface="$(arg command_interface)"
+    gripper_package_name="$(arg gripper_package_name)"
+    gripper_macro_path="$(arg gripper_macro_path)">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:load_robot>
+
+
+<!-- 
   <xacro:property name="config_file" value="$(find bioscara_description)/config/bioscara_parameters.yaml" />
   <xacro:property name="params" value="${xacro.load_yaml(config_file)}"/>
 
@@ -15,12 +36,7 @@
   <xacro:include filename="$(find bioscara_description)/urdf/bioscara.ros2control" />
   <xacro:bioscara_ros2_control prefix="$(arg prefix)" parameters="${params}" use_mock_hardware="$(arg use_mock_hardware)" command_interface="$(arg command_interface)"/>
 
-  <!-- Used for fixing robot -->
-  <link name="world"/>
-
-  <xacro:bioscara parent="world" prefix="$(arg prefix)" parameters="${params}">
-    <origin xyz="0 0 0" rpy="0 0 0" />
-  </xacro:bioscara>
+   -->
 
 
 </robot>

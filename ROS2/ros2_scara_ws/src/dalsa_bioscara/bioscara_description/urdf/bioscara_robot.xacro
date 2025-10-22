@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<robot name="bioscara" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="load_robot" params="
+    parent
+    *origin
+    use_mock_hardware
+    command_interface
+    prefix
+    gripper_package_name
+    gripper_macro_path">
+
+    <xacro:load_arm 
+      parent="${parent}" 
+      prefix="${prefix}" 
+      use_mock_hardware="${use_mock_hardware}" 
+      command_interface="${command_interface}">
+      <xacro:insert_block name="origin" />
+    </xacro:load_arm>
+
+    <!-- If no gripper, define tool frame here. The last arm link must be "tool_flange" -->
+    <xacro:if value="${not gripper_package_name}">
+      <link name="${prefix}tool"/>
+      <joint name="${prefix}tool_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="${prefix}tool_flange" />
+        <child link="${prefix}tool" />
+        <axis xyz="0 0 0" />
+      </joint>
+    </xacro:if>
+
+    <!-- Include and load the gripper if defined -->
+    <xacro:unless value="${not gripper_package_name}">
+    <!-- TODO: Check if the include works without "$(find <package>)" -->
+      <xacro:include filename="package://${gripper_package_name}${gripper_macro_path}"/>
+      <xacro:load_gripper
+        parent="${prefix}tool_flange"
+        prefix="${prefix}"
+        use_mock_hardware="${use_mock_hardware}"/>
+    </xacro:unless>
+
+  </xacro:macro>
+</robot>
