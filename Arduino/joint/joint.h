@@ -89,6 +89,7 @@ enum stp_reg_t
   CHECKORIENTATION = 0x2B,    ///< W; Size: 4; [(float) degrees]
   GETENCODERRPM = 0x2C,       ///< R; Size: 4; [(float) RPM]
   HOME = 0x2D,                ///< W; Size: 4; [(uint8) current, (uint8) sensitivity, (uint8) speed, (uint8) direction]
+  HOMEOFFSET = 0x2E,       ///< R/W; Size: 4; [(float) -]
 };
 
 /**
