@@ -149,7 +149,7 @@ public:
    * At this point the stepper stops and zeros the encoder.
    * @param velocity  signed velocity in rad/s or m/s. Must be between 1.0 < RAD2DEG(JOINT2ACTUATOR(velocity, reduction, 0)) / 6 < 250.0
    * @param sensitivity Encoder pid error threshold 0 to 255.
-   * @param current homeing current, determines how easy it is to stop the motor and thereby provoke a stall
+   * @param current homing current, determines how easy it is to stop the motor and thereby provoke a stall
 
    * @return 0 on success,
     -1 on communication error,
@@ -312,7 +312,7 @@ public:
    * @brief Enable encoder stall detection of the joint.
    *
    * If the PID error exceeds the set threshold a stall is triggered and the motor disabled.
-   * A detected stall can be reset by homeing or by reenabling the stall guard.
+   * A detected stall can be reset by homing or by reenabling the stall guard.
    * @param thresholds value of threshold. 0 - 255 where lower is more sensitive.
    * @return 0 on success, -1 on communication error,
     -5 if the joint is not initialized.

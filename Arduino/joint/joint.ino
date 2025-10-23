@@ -194,7 +194,7 @@ void blocking_handler(uint8_t reg) {
         } while (abs(err) < sensitivity && isBusy);
 
         /**
-        * Homeing has been cancled from ISR (f.x. STOP)
+        * Homing has been cancled from ISR (f.x. STOP)
         */
         if (!isBusy) {
           break;
@@ -343,7 +343,7 @@ void non_blocking_handler(uint8_t reg) {
       {
         // Serial.print("Executing ENABLESTALLGUARD\n");
 
-        // Very simple workaround for stall detection, since the built-in encoder stall-detection is tricky to work with in particular in combination with homeing since it can not be reset.
+        // Very simple workaround for stall detection, since the built-in encoder stall-detection is tricky to work with in particular in combination with homing since it can not be reset.
         uint8_t sensitivity;
         readValue<uint8_t>(sensitivity, rx_buf, rx_length);
         stallguardThreshold = sensitivity * 10;
