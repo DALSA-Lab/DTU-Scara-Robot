@@ -1,12 +1,14 @@
 #include "bioscara_hardware_driver/uI2C.h"
 #include "bioscara_hardware_driver/mJoint.h"
+#include <cmath>
 
-Joint::Joint(const std::string name, const int address, const float reduction, const float offset)
+Joint::Joint(const std::string name, const int address, const float reduction, const float min, const float max)
 {
     this->address = address;
     this->name = name;
     this->reduction = reduction;
-    this->offset = offset;
+    this->min = min;
+    this->max = max;
 }
 
 Joint::~Joint(void)
@@ -23,7 +25,28 @@ int Joint::init(void)
     {
         return -2;
     }
-    return checkCom();
+
+    /* Check if communication can be established */
+    int rc = checkCom();
+    if (rc < 0)
+    {
+        return rc;
+    }
+
+    /* If joint is homed, retrieve the homing position stored on the joint */
+    if (this->isHomed())
+    {
+        float offset;
+        rc = this->getHomingOffset(offset);
+        std::cout << "[DEBUG] Homing Offset: " << offset << std::endl;
+        if (rc < 0)
+        {
+            return rc;
+        }
+        this->offset = offset;
+    }
+
+    return 0;
 }
 
 int Joint::deinit(void)
@@ -80,7 +103,7 @@ int Joint::disable(void)
     return rc < 0 ? -1 : 0;
 }
 
-int Joint::home(u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t current)
+int Joint::home(float velocity, u_int8_t sensitivity, u_int8_t current)
 {
     if (this->handle < 0)
     {
@@ -96,6 +119,30 @@ int Joint::home(u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t
     {
         return rc;
     }
+
+    velocity = RAD2DEG(JOINT2ACTUATOR(velocity, this->reduction, 0)) / 6;
+    if (velocity == 0)
+    {
+        return -101;
+    }
+    if (fabs(velocity) > 250.0 || fabs(velocity) < 1.0)
+    {
+        return -102;
+    }
+
+    u_int8_t direction = 0, rpm = 0;
+    if (velocity > 0)
+    {
+        this->offset = this->max;
+        direction = 1;
+    }
+    else
+    {
+        this->offset = this->min;
+        direction = 0;
+    }
+    velocity = fabs(velocity);
+    rpm = static_cast<u_int8_t>(velocity);
 
     u_int32_t buf = 0;
     buf |= (direction & 0xFF);
@@ -117,6 +164,14 @@ int Joint::home(u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t
     {
         return -2; // NOT HOMED
     }
+
+    /* If the joint is successfully homed save the homing position stored on the joint */
+    rc = this->setHomingOffset(this->offset);
+    if (rc < 0)
+    {
+        return rc;
+    }
+
     return 0;
 }
 
@@ -384,4 +439,32 @@ u_int8_t Joint::getFlags(void)
     u_int8_t buf;
     this->read(PING, buf, this->flags);
     return this->flags;
+}
+
+int Joint::getHomingOffset(float &offset)
+{
+    if (this->handle < 0)
+    {
+        return -5;
+    }
+    if (!this->isHomed())
+    {
+        return -2; // NOT HOMED
+    }
+
+    return this->read(HOMEOFFSET, offset, this->flags) < 0 ? -1 : 0;
+}
+
+int Joint::setHomingOffset(const float offset)
+{
+    if (this->handle < 0)
+    {
+        return -5;
+    }
+    if (!this->isHomed())
+    {
+        return -2; // NOT HOMED
+    }
+
+    return this->write(HOMEOFFSET, offset, this->flags) < 0 ? -1 : 0;
 }

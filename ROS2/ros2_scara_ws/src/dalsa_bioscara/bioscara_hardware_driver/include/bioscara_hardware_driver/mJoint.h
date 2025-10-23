@@ -80,18 +80,18 @@ public:
    * J2: -2*pi/0.004 (4 mm linear movement per stepper revolution) \n
    * J3: 24 \n
    * J4: 12
-   * @param offset offset between actuator zero and joint zero (in joint units).
-   * Set this to the angle the joint is at when is is homed. F.x. since J2 is homing at the top the
-   * offset shall be a positive numer. All other joints are homed at the most negative position, hence the offset is negative. \n
+   * @param min lower joint limit in joint units. \n
    * J1: -3.04647 \n
-   * J2: 0.3380 \n
+   * J2: -0.0016 \n
    * J3: -2.62672 \n
    * J4: -3.01069
-   * @todo
-   * - Measure joint ranges
-   * - Investigate if possible to make independent of homing
+   * @param max upper joint limit in joint units. \n
+   * J1: 3.04647 \n
+   * J2: 0.3380 \n
+   * J3: 2.62672 \n
+   * J4: 3.01069
    */
-  Joint(const std::string name, const int address, const float reduction, const float offset);
+  Joint(const std::string name, const int address, const float reduction, const float min, const float max);
   ~Joint(void);
 
   /**
@@ -147,8 +147,7 @@ public:
    * with the specified speed
    * until a resistance which drives the PID error above the specified threshold is encountered.
    * At this point the stepper stops and zeros the encoder.
-   * @param direction  CCW: 0, CW: 1.
-   * @param rpm  speed of motor in rpm.
+   * @param velocity  signed velocity in rad/s or m/s. Must be between 1.0 < RAD2DEG(JOINT2ACTUATOR(velocity, reduction, 0)) / 6 < 250.0
    * @param sensitivity Encoder pid error threshold 0 to 255.
    * @param current homeing current, determines how easy it is to stop the motor and thereby provoke a stall
 
@@ -156,9 +155,11 @@ public:
     -1 on communication error,
     -2 when not homed succesfull (isHomed flag still not set),
     -3 when the motor is not enabled,
-    -5 if the joint is not initialized.
+    -5 if the joint is not initialized,
+    -101 if the velocity is zero,
+    -102 if absolute value of the velocity is outside the specified limits.
    */
-  int home(u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t current);
+  int home(float velocity, u_int8_t sensitivity, u_int8_t current);
 
   int printInfo(void);
 
@@ -365,6 +366,30 @@ public:
    */
   u_int8_t getFlags(void);
 
+  /**
+   * @brief Retrieves the homing position from the last homing.
+   *
+   * The homing position is stored on the joint to make it persistent as long as the joint is powered up.
+   *
+   * @return 0 on success,
+   * -1 on communication error,
+   * -2 when not homed,
+   * -5 if the joint is not initialized.
+   */
+  int getHomingOffset(float &offset);
+
+    /**
+   * @brief Stores the homing position on the joint.
+   *
+   * The homing position is stored on the joint to make it persistent as long as the joint is powered up.
+   *
+   * @return 0 on success,
+   * -1 on communication error,
+   * -2 when not homed,
+   * -5 if the joint is not initialized.
+   */
+  int setHomingOffset(const float offset);
+
   std::string name;
 
 protected:
@@ -381,7 +406,7 @@ private:
   enum stp_reg_t
   {
     PING = 0x0f,                ///< R; Size: 1; [(char) ACK]
-    SETUP = 0x10,              ///< W; Size: 2; [(uint8) holdCurrent, (uint8) driveCurrent]
+    SETUP = 0x10,               ///< W; Size: 2; [(uint8) holdCurrent, (uint8) driveCurrent]
     SETRPM = 0x11,              ///< W; Size: 4; [(float) RPM]
     GETDRIVERRPM = 0x12,        ///<
     MOVESTEPS = 0x13,           ///< W; Size: 4; [(int32) steps]
@@ -410,6 +435,7 @@ private:
     CHECKORIENTATION = 0x2B,    ///< W; Size: 4; [(float) degrees]
     GETENCODERRPM = 0x2C,       ///< R; Size: 4; [(float) RPM]
     HOME = 0x2D,                ///< W; Size: 4; [(uint8) current, (int8) sensitivity, (uint8) speed, (uint8) direction]
+    HOMEOFFSET = 0x2E,          ///< R/W; Size: 4; [(float) -]
   };
 
   template <typename T>
@@ -441,6 +467,8 @@ private:
   int address;         ///< I2C adress
   float reduction = 1; ///< Joint to actuator reduction ratio
   float offset = 0;    ///< Joint position offset
+  float min = 0;       ///< Joint lower limit
+  float max = 0;       ///< Joint upper limit
 
   int handle = -1; ///< I2C bus handle
 };

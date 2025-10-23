@@ -22,7 +22,7 @@ find_library(LGPIO_LIBRARY lgpio)
 add_library(
   ${PROJECT_NAME} 
   SHARED 
-  src/uI2C.cpp src/mJoint.cpp src/mJointCom.cpp src/mGripper.cpp
+  src/uI2C.cpp src/mJoint.cpp src/mGripper.cpp
 )
 
 target_include_directories(
