@@ -37,6 +37,7 @@ static int stallguardThreshold = 100;
 static float q_set, q, qd_set, qd;
 static float maxAccel = MAXACCEL;
 static float maxVel = MAXVEL;
+static float homingOffset = 0;
 
 uint8_t reg = 0;
 uint8_t rx_buf[MAX_BUFFER] = { 0 };
@@ -156,7 +157,7 @@ void blocking_handler(uint8_t reg) {
         isStallguardEnabled = 0;
         notEnabled = 0;
         isStalled = 0;
-        qd_set = 0; //reset here so that no matter how long it takes after the enable call for the next command to arrive, we dont trigger the watchdog
+        qd_set = 0;  //reset here so that no matter how long it takes after the enable call for the next command to arrive, we dont trigger the watchdog
         break;
       }
 
@@ -407,6 +408,19 @@ void non_blocking_handler(uint8_t reg) {
         break;
       }
 
+    case HOMEOFFSET:
+      {
+        Serial.print("Executing HOMEOFFSET\n");
+        if (rx_length) {
+          readValue<float>(homingOffset, rx_buf, rx_length);
+        } else {
+          writeValue<float>(homingOffset, tx_buf, tx_length);
+          tx_data_ready = 1;
+        }
+        break;
+      }
+
+
     default:
       // Serial.println("No data to write, sending flags");
       // If the received register is not a Write register (handled in this handler), it must be a Read register, hence set
@@ -480,7 +494,7 @@ void loop(void) {
   /* Take potential overflow of millis() into account (50 days) and calculate the difference according to this */
   uint32_t diff = (now >= deadman) ? (now - deadman) : (std::numeric_limits<uint32_t>::max() + 1 - (deadman - now));
   // Serial.println(diff);
-  if(diff > 50 && !notEnabled && qd_set){
+  if (diff > 50 && !notEnabled && qd_set) {
     Serial.println("Deadman switch triggered");
     stepper.setRPM(0);
     notEnabled = 1;
