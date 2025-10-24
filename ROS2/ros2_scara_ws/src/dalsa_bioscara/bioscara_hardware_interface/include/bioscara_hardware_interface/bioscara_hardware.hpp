@@ -64,13 +64,23 @@ namespace bioscara_hardware_interface
             const rclcpp::Time &time, 
             const rclcpp::Duration &period) override;
 
-            /**
-             * @brief 
-             * @todo this
-             * @param start_interfaces 
-             * @param stop_interfaces 
-             * @return hardware_interface::return_type 
-             */
+        /**
+         * @brief Performs checks and book keeping of the active control mode when changing controllers.
+         * 
+         * For safe operation only one controller may interact with the hardware at the time.
+         * For example if the velocity JTC is active and has claimed the velocity command interfaces it is technically possible to 
+         * activate the position JTC (or a homing controller, or others) that claim a different command interface (position in this case).
+         * However if both controllers are active they start writing to the hardware simultaneously which is to be avoided.
+         * For this reason a book keeping mechanism has been implemented which stores the currently active command interfaces for each joint in the
+         * _joint_command_modes member. Each joint has a set of active command interfaces. When a controller switch is performed first the interfaces that should be stopped are removed from
+         * each joint set, then the one that should be started are added, if they are already present an error is thrown. Lastly
+         * a validation is performed. Currently the validation is simple since each joint may only have one command interface. The validation can be expanded for furture use cases that require
+         * a combination of active command interfaces per joint for example.
+         * 
+         * @param start_interfaces command interfaces that should be started in the form "joint/interface"
+         * @param stop_interfaces command interfaces that should be stopped in the form "joint/interface" 
+         * @return hardware_interface::return_type 
+         */
         hardware_interface::return_type prepare_command_mode_switch(
             const std::vector<std::string> &start_interfaces,
             const std::vector<std::string> &stop_interfaces) override;
@@ -98,20 +108,6 @@ namespace bioscara_hardware_interface
             float max_acceleration;
         };
 
-        // /**
-        //  * @brief Saves a defined list of possible command modes
-        //  *
-        //  */
-        // enum command_mode_t : std::uint8_t
-        // {
-        //     UNDEFINED = 0,
-        //     POSITION = 1,
-        //     VELOCITY = 2,
-        //     ACCELERATION = 3,
-        //     HOMING = 4,
-        //     DIFFPOSITION = 5
-        // };
-
         /**
          * @brief unordered map storing the Joint objects.
          *
@@ -136,7 +132,9 @@ namespace bioscara_hardware_interface
          * an unordered map is chosen to simplify acces via the joint name, as this conforms well with the ROS2_control hardware interface
          * The map does not need to be ordered. Search, insertion, and removal of elements have average constant-time complexity. Each joint can have a set
          * of active joint interfaces. This type of structure is chosen to group interfaces by joint. In the write() function the interface name can simply be constructed
-         * by concatenating joint name with interface name.
+         * by concatenating joint name with interface name. Although currently only one active command interface is allowed at the time, a set can be used to store multiple
+         * command interfaces that are acceptable to be combined, for example if it would be acceptable to set velocity and driver current and hence that would be an allowable
+         * combination.
          *
          */
         std::unordered_map<std::string,std::set<std::string>> _joint_command_modes;

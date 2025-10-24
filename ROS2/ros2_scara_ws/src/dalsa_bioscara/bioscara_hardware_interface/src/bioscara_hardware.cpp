@@ -273,6 +273,9 @@ namespace bioscara_hardware_interface
 
     for (auto &[name, joint] : _joints)
     {
+      /* Clear the active command modes. Controllers can only be activated after the hardware is activated. */
+      _joint_command_modes[name] = {};
+
       joint_config_t cfg = _joint_cfg[name];
 
       /* First get the flags. they must all be zero to indicate that the joint is operational.
@@ -522,45 +525,52 @@ namespace bioscara_hardware_interface
   hardware_interface::return_type BioscaraHardwareInterface::write(
       const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
-    for (const auto &[name, descr] : joint_command_interfaces_)
+
+    /* Loop over all active command interfaces for each joint and write the command to the hardware.
+    Previously the command was written to every command interface specified in the ros2_control urdf. This causes conflicts. */
+    for (const auto &[name, interfaces] : _joint_command_modes)
     {
-      int rc = 1;
-      if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
+      for (std::string interface : interfaces)
       {
-        rc = _joints.at(descr.prefix_name).setPosition((float)get_command(name));
-      }
-      else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
-      {
-        rc = _joints.at(descr.prefix_name).setVelocity((float)get_command(name));
-      }
-      // use != 0 here since 1 for no compatible interface type
-      if (rc != 0)
-      {
-        std::string reason = "";
-        switch (rc)
+        std::string CIF_name = name+"/"+interface;
+        int rc = 1;
+        if (interface == hardware_interface::HW_IF_POSITION)
         {
-        case 1:
-          reason = "no compatible command to read " + descr.interface_info.name;
-          break;
-        case -1:
-          reason = "communication error";
-          break;
-        case -2:
-          reason = "joint not homed, can not set " + descr.interface_info.name;
-          break;
-        case -3:
-          reason = "joint not enabled, can not set " + descr.interface_info.name;
-          break;
-        case -4:
-          reason = "joint stalled, can not set " + descr.interface_info.name;
-          break;
-        default:
-          reason = "Unkown Reason " + std::to_string(rc);
+          rc = _joints.at(name).setPosition((float)get_command(CIF_name));
         }
-        RCLCPP_FATAL(
-            get_logger(),
-            "Failed to set %s of joint '%s'. Reason: %s", descr.interface_info.name.c_str(), name.c_str(), reason.c_str());
-        return hardware_interface::return_type::ERROR;
+        else if (interface == hardware_interface::HW_IF_VELOCITY)
+        {
+          rc = _joints.at(name).setVelocity((float)get_command(CIF_name));
+        }
+        // use != 0 here since 1 for no compatible interface type
+        if (rc != 0)
+        {
+          std::string reason = "";
+          switch (rc)
+          {
+          case 1:
+            reason = "no compatible command to read " + interface;
+            break;
+          case -1:
+            reason = "communication error";
+            break;
+          case -2:
+            reason = "joint not homed, can not set " + interface;
+            break;
+          case -3:
+            reason = "joint not enabled, can not set " + interface;
+            break;
+          case -4:
+            reason = "joint stalled, can not set " + interface;
+            break;
+          default:
+            reason = "Unkown Reason " + std::to_string(rc);
+          }
+          RCLCPP_FATAL(
+              get_logger(),
+              "Failed to set %s of joint '%s'. Reason: %s", CIF_name.c_str(), name.c_str(), reason.c_str());
+          return hardware_interface::return_type::ERROR;
+        }
       }
     }
 
@@ -580,7 +590,7 @@ namespace bioscara_hardware_interface
       const std::vector<std::string> &stop_interfaces)
   {
 
-    std::unordered_map<std::string, std::set<std::string>> new_active_interfaces = this->_joint_command_modes;
+    std::unordered_map<std::string, std::set<std::string>> new_active_interfaces = _joint_command_modes;
 
     /* First remove all stopped interfaces from the active set */
     for (std::string interface : stop_interfaces)
@@ -596,7 +606,6 @@ namespace bioscara_hardware_interface
         RCLCPP_WARN(
             get_logger(),
             "The controller tried to stop the interface '%s' of '%s' but it has not been started.", interface.c_str(), joint.c_str());
-        // return hardware_interface::return_type::ERROR;
       }
     }
 
@@ -628,70 +637,33 @@ namespace bioscara_hardware_interface
         std::string active_if = "";
         for (auto interface : interfaces)
         {
-          active_if += (interface + ",");
+          active_if += (interface + "\n");
         }
         RCLCPP_FATAL(
             get_logger(),
-            "The controller tries to start multiple command interfaces for '%s'. The following interfaces are active or are trying to be active:\
-             '%s'.", name.c_str(), active_if.c_str());
+            "The controller tries to start multiple command interfaces for '%s'. The following interfaces are active or are trying to be active:\n%s.",
+            name.c_str(), active_if.c_str());
         return hardware_interface::return_type::ERROR;
       }
     }
 
-    // // Prepare for new command modes
-    // std::vector<command_mode_t> new_modes = {};
-    // for (std::string key : start_interfaces)
-    // {
-
-    //   for (std::size_t i = 0; i < info_.joints.size(); i++)
-    //   {
-    //     if (key == info_.joints[i].name + "/" + hardware_interface::HW_IF_POSITION)
-    //     {
-    //       new_modes.push_back(command_mode_t::POSITION);
-    //     }
-    //     if (key == info_.joints[i].name + "/" + hardware_interface::HW_IF_VELOCITY)
-    //     {
-    //       new_modes.push_back(command_mode_t::VELOCITY);
-    //     }
-    //     if (key == info_.joints[i].name + "/" + hardware_interface::HW_IF_ACCELERATION)
-    //     {
-    //       new_modes.push_back(command_mode_t::ACCELERATION);
-    //     }
-    //   }
-    // }
-    // // Example criteria: All joints must be given new command mode at the same time
-    // if (new_modes.size() != info_.joints.size())
-    // {
-    //   return hardware_interface::return_type::ERROR;
-    // }
-    // // Example criteria: All joints must have the same command mode
-    // if (!std::all_of(
-    //         new_modes.begin() + 1, new_modes.end(),
-    //         [&](command_mode_t mode)
-    //         { return mode == new_modes[0]; }))
-    // {
-    //   return hardware_interface::return_type::ERROR;
-    // }
-
-    // // Stop motion on all relevant joints that are stopping
-    // for (std::string key : stop_interfaces)
-    // {
-    //   for (std::size_t i = 0; i < info_.joints.size(); i++)
-    //   {
-    //     if (key.find(info_.joints[i].name) != std::string::npos)
-    //     {
-    //       set_command(
-    //           info_.joints[i].name + "/" + hardware_interface::HW_IF_POSITION,
-    //           get_state(info_.joints[i].name + "/" + hardware_interface::HW_IF_POSITION));
-    //       set_command(info_.joints[i].name + "/" + hardware_interface::HW_IF_VELOCITY, 0.0);
-    //       set_command(info_.joints[i].name + "/" + hardware_interface::HW_IF_ACCELERATION, 0.0);
-    //       _joint_command_mode[i] = command_mode_t::UNDEFINED; // Revert to undefined
-    //     }
-    //   }
-    // }
-
     /* If the command mode switch was successfull save the new active interfaces */
     _joint_command_modes = new_active_interfaces;
+
+    std::string active_if = "";
+    for (const auto &[name, interfaces] : new_active_interfaces)
+    {
+      active_if += (name+":\n[\n");
+      for (std::string interface : interfaces)
+      {
+        active_if += ("\t"+interface+"\n");
+      }
+      active_if += ("]\n");
+    }
+
+    RCLCPP_INFO(
+        get_logger(),
+        "New active command modes:\n%s",active_if.c_str());
 
     return hardware_interface::return_type::OK;
   }
