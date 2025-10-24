@@ -58,7 +58,7 @@ namespace bioscara_hardware_interface
       {
         RCLCPP_FATAL(
             get_logger(), "Joint '%s' have %s command interfaces found. '%s' expected.",
-            joint.name.c_str(), 
+            joint.name.c_str(),
             joint.command_interfaces[0].name.c_str(),
             hardware_interface::HW_IF_POSITION);
         return hardware_interface::CallbackReturn::ERROR;
@@ -69,7 +69,7 @@ namespace bioscara_hardware_interface
       {
         RCLCPP_FATAL(
             get_logger(), "Joint '%s' have %s command interfaces found. '%s' expected.",
-            joint.name.c_str(), 
+            joint.name.c_str(),
             joint.command_interfaces[0].name.c_str(),
             hardware_interface::HW_IF_VELOCITY);
         return hardware_interface::CallbackReturn::ERROR;
@@ -117,7 +117,7 @@ namespace bioscara_hardware_interface
                           cfg.i2c_address,
                           cfg.reduction,
                           cfg.min,
-                        cfg.max)});
+                          cfg.max)});
     }
 
     /**
@@ -571,6 +571,127 @@ namespace bioscara_hardware_interface
     //      << "\t" << get_command(name) << " for GPIO output '" << name << "'";
     // }
     // RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 500, "%s", ss.str().c_str());
+
+    return hardware_interface::return_type::OK;
+  }
+
+  hardware_interface::return_type BioscaraHardwareInterface::prepare_command_mode_switch(
+      const std::vector<std::string> &start_interfaces,
+      const std::vector<std::string> &stop_interfaces)
+  {
+
+    std::unordered_map<std::string, std::set<std::string>> new_active_interfaces = this->_joint_command_modes;
+
+    /* First remove all stopped interfaces from the active set */
+    for (std::string interface : stop_interfaces)
+    {
+      /* split 'joint/interface to 'joint' and 'interface' */
+      std::string delimiter = "/";
+      size_t pos = interface.find(delimiter);
+      std::string joint = interface.substr(0, pos);
+      interface.erase(0, pos + delimiter.length());
+
+      if (new_active_interfaces.at(joint).erase(interface) == 0)
+      {
+        RCLCPP_WARN(
+            get_logger(),
+            "The controller tried to stop the interface '%s' of '%s' but it has not been started.", interface.c_str(), joint.c_str());
+        // return hardware_interface::return_type::ERROR;
+      }
+    }
+
+    /* Then add all new interfaces to the active set */
+    for (std::string interface : start_interfaces)
+    {
+      /* split 'joint/interface to 'joint' and 'interface' */
+      std::string delimiter = "/";
+      size_t pos = interface.find(delimiter);
+      std::string joint = interface.substr(0, pos);
+      interface.erase(0, pos + delimiter.length());
+
+      std::pair rc = new_active_interfaces.at(joint).insert(interface);
+      if (rc.second == 0)
+      {
+        RCLCPP_FATAL(
+            get_logger(),
+            "The controller tried to start the interface '%s' of '%s' but it has already been started by another controller.", interface.c_str(), joint.c_str());
+        return hardware_interface::return_type::ERROR;
+      }
+    }
+
+    /* Validation. Currently the validation is very simple, for every joint only one active interface must exist.*/
+    for (auto &[name, interfaces] : new_active_interfaces)
+    {
+      size_t size = interfaces.size();
+      if (size > 1)
+      {
+        std::string active_if = "";
+        for (auto interface : interfaces)
+        {
+          active_if += (interface + ",");
+        }
+        RCLCPP_FATAL(
+            get_logger(),
+            "The controller tries to start multiple command interfaces for '%s'. The following interfaces are active or are trying to be active:\
+             '%s'.", name.c_str(), active_if.c_str());
+        return hardware_interface::return_type::ERROR;
+      }
+    }
+
+    // // Prepare for new command modes
+    // std::vector<command_mode_t> new_modes = {};
+    // for (std::string key : start_interfaces)
+    // {
+
+    //   for (std::size_t i = 0; i < info_.joints.size(); i++)
+    //   {
+    //     if (key == info_.joints[i].name + "/" + hardware_interface::HW_IF_POSITION)
+    //     {
+    //       new_modes.push_back(command_mode_t::POSITION);
+    //     }
+    //     if (key == info_.joints[i].name + "/" + hardware_interface::HW_IF_VELOCITY)
+    //     {
+    //       new_modes.push_back(command_mode_t::VELOCITY);
+    //     }
+    //     if (key == info_.joints[i].name + "/" + hardware_interface::HW_IF_ACCELERATION)
+    //     {
+    //       new_modes.push_back(command_mode_t::ACCELERATION);
+    //     }
+    //   }
+    // }
+    // // Example criteria: All joints must be given new command mode at the same time
+    // if (new_modes.size() != info_.joints.size())
+    // {
+    //   return hardware_interface::return_type::ERROR;
+    // }
+    // // Example criteria: All joints must have the same command mode
+    // if (!std::all_of(
+    //         new_modes.begin() + 1, new_modes.end(),
+    //         [&](command_mode_t mode)
+    //         { return mode == new_modes[0]; }))
+    // {
+    //   return hardware_interface::return_type::ERROR;
+    // }
+
+    // // Stop motion on all relevant joints that are stopping
+    // for (std::string key : stop_interfaces)
+    // {
+    //   for (std::size_t i = 0; i < info_.joints.size(); i++)
+    //   {
+    //     if (key.find(info_.joints[i].name) != std::string::npos)
+    //     {
+    //       set_command(
+    //           info_.joints[i].name + "/" + hardware_interface::HW_IF_POSITION,
+    //           get_state(info_.joints[i].name + "/" + hardware_interface::HW_IF_POSITION));
+    //       set_command(info_.joints[i].name + "/" + hardware_interface::HW_IF_VELOCITY, 0.0);
+    //       set_command(info_.joints[i].name + "/" + hardware_interface::HW_IF_ACCELERATION, 0.0);
+    //       _joint_command_mode[i] = command_mode_t::UNDEFINED; // Revert to undefined
+    //     }
+    //   }
+    // }
+
+    /* If the command mode switch was successfull save the new active interfaces */
+    _joint_command_modes = new_active_interfaces;
 
     return hardware_interface::return_type::OK;
   }
