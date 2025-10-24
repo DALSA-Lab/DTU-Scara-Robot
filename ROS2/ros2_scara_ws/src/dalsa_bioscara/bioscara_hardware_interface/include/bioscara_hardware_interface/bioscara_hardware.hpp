@@ -68,7 +68,8 @@ namespace bioscara_hardware_interface
         {
             int i2c_address;
             float reduction = 1;
-            float offset = 0;
+            float min;
+            float max;
             u_int8_t drive_current;
             u_int8_t hold_current;
             u_int8_t stall_threshold;

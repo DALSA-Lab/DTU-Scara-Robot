@@ -91,7 +91,8 @@ namespace bioscara_hardware_interface
       joint_config_t cfg;
       cfg.i2c_address = std::stoi(joint.parameters.at("i2c_address"), nullptr, 16),
       cfg.reduction = std::stof(joint.parameters.at("reduction")),
-      cfg.offset = std::stof(joint.parameters.at("offset")),
+      cfg.min = std::stof(joint.parameters.at("min")),
+      cfg.max = std::stof(joint.parameters.at("max")),
       cfg.stall_threshold = std::stoi(joint.parameters.at("stall_threshold")),
       cfg.hold_current = std::stoi(joint.parameters.at("hold_current")),
       cfg.drive_current = std::stoi(joint.parameters.at("drive_current")),
@@ -105,7 +106,8 @@ namespace bioscara_hardware_interface
                           joint.name,
                           cfg.i2c_address,
                           cfg.reduction,
-                          cfg.offset)});
+                          cfg.min,
+                        cfg.max)});
     }
 
     /**

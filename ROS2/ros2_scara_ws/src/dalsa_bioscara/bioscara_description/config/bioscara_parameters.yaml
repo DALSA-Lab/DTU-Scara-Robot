@@ -1,8 +1,8 @@
 j1:
-  offset: -3.04647
   i2c_address: '0x11'
   reduction: 35
-  offset: -3.04647
+  min: -3.04647
+  max: 3.04647
   stall_threshold: 12
   hold_current: 20
   drive_current: 20
@@ -11,7 +11,8 @@ j1:
 j2:
   i2c_address: '0x12'
   reduction: -1570.79632679 # -2*pi/0.004
-  offset: 0.338
+  min: -0.0016
+  max: 0.338
   stall_threshold: 6
   hold_current: 40
   drive_current: 40
@@ -20,7 +21,8 @@ j2:
 j3:
   i2c_address: '0x13'
   reduction: 24
-  offset: -2.62672
+  min: -2.62672
+  max: 2.62672
   stall_threshold: 6
   hold_current: 20
   drive_current: 20
@@ -29,7 +31,8 @@ j3:
 j4:
   i2c_address: '0x14'
   reduction: 12
-  offset: -3.01069
+  min: -3.01069
+  max: 3.01069
   stall_threshold: 6
   hold_current: 20
   drive_current: 20

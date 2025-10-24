@@ -23,7 +23,8 @@
         <state_interface name="velocity"/>
         <param name="i2c_address">${parameters['j1']['i2c_address']}</param>
         <param name="reduction">${parameters['j1']['reduction']}</param>
-        <param name="offset">${parameters['j1']['offset']}</param>
+        <param name="min">${parameters['j1']['min']}</param>
+        <param name="max">${parameters['j1']['max']}</param>
         <param name="stall_threshold">${parameters['j1']['stall_threshold']}</param>
         <param name="hold_current">${parameters['j1']['hold_current']}</param>
         <param name="drive_current">${parameters['j1']['drive_current']}</param>
@@ -36,7 +37,8 @@
         <state_interface name="velocity"/>
         <param name="i2c_address">${parameters['j2']['i2c_address']}</param>
         <param name="reduction">${parameters['j2']['reduction']}</param>
-        <param name="offset">${parameters['j2']['offset']}</param>
+        <param name="min">${parameters['j2']['min']}</param>
+        <param name="max">${parameters['j2']['max']}</param>
         <param name="stall_threshold">${parameters['j2']['stall_threshold']}</param>
         <param name="hold_current">${parameters['j2']['hold_current']}</param>
         <param name="drive_current">${parameters['j2']['drive_current']}</param>
@@ -49,7 +51,8 @@
         <state_interface name="velocity"/>
         <param name="i2c_address">${parameters['j3']['i2c_address']}</param>
         <param name="reduction">${parameters['j3']['reduction']}</param>
-        <param name="offset">${parameters['j3']['offset']}</param>
+        <param name="min">${parameters['j3']['min']}</param>
+        <param name="max">${parameters['j3']['max']}</param>
         <param name="stall_threshold">${parameters['j3']['stall_threshold']}</param>
         <param name="hold_current">${parameters['j3']['hold_current']}</param>
         <param name="drive_current">${parameters['j3']['drive_current']}</param>
@@ -62,7 +65,8 @@
         <state_interface name="velocity"/>
         <param name="i2c_address">${parameters['j4']['i2c_address']}</param>
         <param name="reduction">${parameters['j4']['reduction']}</param>
-        <param name="offset">${parameters['j4']['offset']}</param>
+        <param name="min">${parameters['j4']['min']}</param>
+        <param name="max">${parameters['j4']['max']}</param>
         <param name="stall_threshold">${parameters['j4']['stall_threshold']}</param>
         <param name="hold_current">${parameters['j4']['hold_current']}</param>
         <param name="drive_current">${parameters['j4']['drive_current']}</param>
