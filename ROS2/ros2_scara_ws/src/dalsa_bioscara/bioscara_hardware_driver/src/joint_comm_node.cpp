@@ -25,10 +25,10 @@ int main(int argc, char **argv)
   (void)argv;
 
 
-  cout << J1.init() << endl;
-  cout << J2.init() << endl;
-  cout << J3.init() << endl;
-  cout << J4.init() << endl;
+  J1.init();
+  J2.init();
+  J3.init();
+  J4.init();
 
   if (!J2.isHomed())
   {
