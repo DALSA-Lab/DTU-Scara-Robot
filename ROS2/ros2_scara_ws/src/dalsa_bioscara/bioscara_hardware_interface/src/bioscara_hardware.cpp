@@ -45,22 +45,32 @@ namespace bioscara_hardware_interface
     for (const hardware_interface::ComponentInfo &joint : info_.joints)
     {
       // expect only one command interface
-      if (joint.command_interfaces.size() != 1)
+      if (joint.command_interfaces.size() != 2)
       {
         RCLCPP_FATAL(
-            get_logger(), "Joint '%s' has %zu command interfaces found. 1 expected.",
+            get_logger(), "Joint '%s' has %zu command interfaces found. 2 expected.",
             joint.name.c_str(), joint.command_interfaces.size());
         return hardware_interface::CallbackReturn::ERROR;
       }
 
-      // expect the command interface to be position or velocity
-      if (joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION &&
-          joint.command_interfaces[0].name != hardware_interface::HW_IF_VELOCITY)
+      // expect the first command interface to be position
+      if (joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION)
       {
         RCLCPP_FATAL(
-            get_logger(), "Joint '%s' have %s command interfaces found. '%s' or '%s' expected.",
-            joint.name.c_str(), joint.command_interfaces[0].name.c_str(),
-            hardware_interface::HW_IF_POSITION,
+            get_logger(), "Joint '%s' have %s command interfaces found. '%s' expected.",
+            joint.name.c_str(), 
+            joint.command_interfaces[0].name.c_str(),
+            hardware_interface::HW_IF_POSITION);
+        return hardware_interface::CallbackReturn::ERROR;
+      }
+
+      // expect the second command interface to be velocity
+      if (joint.command_interfaces[1].name != hardware_interface::HW_IF_VELOCITY)
+      {
+        RCLCPP_FATAL(
+            get_logger(), "Joint '%s' have %s command interfaces found. '%s' expected.",
+            joint.name.c_str(), 
+            joint.command_interfaces[0].name.c_str(),
             hardware_interface::HW_IF_VELOCITY);
         return hardware_interface::CallbackReturn::ERROR;
       }
