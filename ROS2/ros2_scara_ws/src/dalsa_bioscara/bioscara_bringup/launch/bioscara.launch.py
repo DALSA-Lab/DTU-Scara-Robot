@@ -85,8 +85,6 @@ def generate_launch_description():
     prefix = LaunchConfiguration("prefix")
     use_mock_hardware = LaunchConfiguration("use_mock_hardware")
     robot_controller = LaunchConfiguration("robot_controller")
-    # robot_controller = PythonExpression([control_mode,'+_joint_trajectory_controller'])
-    # robot_controller = PythonExpression(["'position_joint_trajectory_controller' if ", control_mode, "=='position' else 'velocity_joint_trajectory_controller'"])
 
     # Get URDF via xacro
     robot_description_content = Command(
@@ -161,7 +159,7 @@ def generate_launch_description():
     )
 
     # spawn the controller manager using the controller manager spawner.
-    robot_controllers = [robot_controller]
+    robot_controllers = [robot_controller, "homing_controller"]
     robot_controller_spawners = []
     for controller in robot_controllers:
         robot_controller_spawners += [

@@ -33,6 +33,8 @@
 
 namespace bioscara_hardware_interface
 {
+    constexpr char HW_IF_HOME[] = "home";
+
     class BioscaraHardwareInterface : public hardware_interface::SystemInterface
     {
     public:
@@ -89,6 +91,21 @@ namespace bioscara_hardware_interface
             const rclcpp_lifecycle::State &previous_state) override;
 
     private:
+
+        /**
+         * @brief configuration structure holding the passed homing paramters from the ros2_control urdf
+         *
+         * Saving all parameters on initialization in a structure allows for quick access during runtime.
+         *
+         */
+        struct joint_homing_config_t
+        {
+            float speed = 0;
+            u_int8_t threshold = 10;
+            u_int8_t current = 10;
+            float acceleration = 0.01;
+        };
+
         /**
          * @brief configuration structure holding the passed paramters from the ros2_control urdf
          *
@@ -106,6 +123,7 @@ namespace bioscara_hardware_interface
             u_int8_t stall_threshold;
             float max_velocity;
             float max_acceleration;
+            joint_homing_config_t homing;
         };
 
         /**
