@@ -83,35 +83,39 @@
       just like "position" or "velocity". This is necessary since all of them are mutually exclusively activated. -->
 
       <gpio name="${prefix}j1">
-        <command_interface name="home"/>
+        <command_interface name="home">
           <param name="current">${parameters['j1']['homing']['current']}</param>
           <param name="threshold">${parameters['j1']['homing']['threshold']}</param>
           <param name="speed">${parameters['j1']['homing']['speed']}</param>
           <param name="acceleration">${parameters['j1']['homing']['acceleration']}</param>
+          </command_interface>
         <state_interface name="home"/>
       </gpio>
       <gpio name="${prefix}j2">
-        <command_interface name="home"/>
+        <command_interface name="home">
           <param name="current">${parameters['j2']['homing']['current']}</param>
           <param name="threshold">${parameters['j2']['homing']['threshold']}</param>
           <param name="speed">${parameters['j2']['homing']['speed']}</param>
           <param name="acceleration">${parameters['j2']['homing']['acceleration']}</param>
+          </command_interface>
         <state_interface name="home"/>
       </gpio>
       <gpio name="${prefix}j3">
-        <command_interface name="home"/>
+        <command_interface name="home">
           <param name="current">${parameters['j3']['homing']['current']}</param>
           <param name="threshold">${parameters['j3']['homing']['threshold']}</param>
           <param name="speed">${parameters['j3']['homing']['speed']}</param>
           <param name="acceleration">${parameters['j3']['homing']['acceleration']}</param>
+          </command_interface>
         <state_interface name="home"/>
       </gpio>
       <gpio name="${prefix}j4">
-        <command_interface name="home"/>
+        <command_interface name="home">
           <param name="current">${parameters['j4']['homing']['current']}</param>
           <param name="threshold">${parameters['j4']['homing']['threshold']}</param>
           <param name="speed">${parameters['j4']['homing']['speed']}</param>
           <param name="acceleration">${parameters['j4']['homing']['acceleration']}</param>
+          </command_interface>
         <state_interface name="home"/>
       </gpio>      
       <!-- <gpio name="home">
