@@ -99,15 +99,25 @@ namespace bioscara_hardware_interface
       // add joint one by one reading parameters from urdf
 
       joint_config_t cfg;
-      cfg.i2c_address = std::stoi(joint.parameters.at("i2c_address"), nullptr, 16);
-      cfg.reduction = std::stof(joint.parameters.at("reduction"));
-      cfg.min = std::stof(joint.parameters.at("min"));
-      cfg.max = std::stof(joint.parameters.at("max"));
-      cfg.stall_threshold = std::stoi(joint.parameters.at("stall_threshold"));
-      cfg.hold_current = std::stoi(joint.parameters.at("hold_current"));
-      cfg.drive_current = std::stoi(joint.parameters.at("drive_current"));
-      cfg.max_acceleration = std::stof(joint.parameters.at("max_acceleration"));
-      cfg.max_velocity = std::stof(joint.parameters.at("max_velocity"));
+      try
+      {
+        cfg.i2c_address = std::stoi(joint.parameters.at("i2c_address"), nullptr, 16);
+        cfg.reduction = std::stof(joint.parameters.at("reduction"));
+        cfg.min = std::stof(joint.parameters.at("min"));
+        cfg.max = std::stof(joint.parameters.at("max"));
+        cfg.stall_threshold = std::stoi(joint.parameters.at("stall_threshold"));
+        cfg.hold_current = std::stoi(joint.parameters.at("hold_current"));
+        cfg.drive_current = std::stoi(joint.parameters.at("drive_current"));
+        cfg.max_acceleration = std::stof(joint.parameters.at("max_acceleration"));
+        cfg.max_velocity = std::stof(joint.parameters.at("max_velocity"));
+      }
+      catch (...)
+      {
+        RCLCPP_FATAL(
+            get_logger(), "Joint '%s' is missing one of the following parameters: i2c_address, reduction, min, max, stall_threshold, hold_current, drive_current, max_acceleration, max_velocity",
+            joint.name.c_str());
+        return hardware_interface::CallbackReturn::ERROR;
+      }
 
       _joint_cfg.insert({joint.name, cfg});
 
@@ -183,14 +193,24 @@ namespace bioscara_hardware_interface
         return hardware_interface::CallbackReturn::ERROR;
       }
 
-
       /**
        * @todo threshold and current are uint8_t, if a number larger outside 0 < n < 255 is passed as a parameters it will overflow.
        */
       joint_homing_config_t cfg;
-      cfg.speed = std::stof(gpio.command_interfaces[0].parameters.at("speed"));
-      cfg.threshold = std::stoi(gpio.command_interfaces[0].parameters.at("threshold"));
-      cfg.current = std::stoi(gpio.command_interfaces[0].parameters.at("current"));
+      try
+      {
+        cfg.speed = std::stof(gpio.command_interfaces[0].parameters.at("speed"));
+        cfg.threshold = std::stoi(gpio.command_interfaces[0].parameters.at("threshold"));
+        cfg.current = std::stoi(gpio.command_interfaces[0].parameters.at("current"));
+        cfg.acceleration = std::stof(gpio.command_interfaces[0].parameters.at("acceleration"));
+      }
+      catch (...)
+      {
+        RCLCPP_FATAL(
+            get_logger(), "GPIO '%s' is missing one of the following parameters in 'home' command_interface: speed, threshold, current, acceleration",
+            gpio.name.c_str());
+        return hardware_interface::CallbackReturn::ERROR;
+      }
 
       _joint_cfg[gpio.name].homing = cfg;
     }
@@ -581,14 +601,17 @@ namespace bioscara_hardware_interface
         {
           joint_config_t cfg = _joint_cfg[name];
           float velocity = get_command(CIF_name);
-          if(velocity == 0.0){
+          if (velocity == 0.0)
+          {
             _joints.at(name).setMaxAcceleration(cfg.max_acceleration);
             rc = _joints.at(name).stop();
-          }else{
+          }
+          else
+          {
             float speed = velocity > 0.0 ? cfg.homing.speed : -cfg.homing.speed;
             _joints.at(name).setMaxAcceleration(cfg.homing.acceleration);
-            rc = _joints.at(name).home(speed ,cfg.homing.threshold,cfg.homing.current);
-          }          
+            rc = _joints.at(name).home(speed, cfg.homing.threshold, cfg.homing.current);
+          }
         }
         // use != 0 here since 1 for no compatible interface type
         if (rc != 0)
