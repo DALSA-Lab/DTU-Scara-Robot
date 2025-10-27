@@ -143,7 +143,8 @@ public:
   /**
    * @brief Executes the homing sequence of a joint.
    *
-   * The joint will drive in the specified direction (from the motor perspective, not joint CW or CCW)
+   * First the joint will check the motor wiring by executing the checkOrientation internally. The it
+   * will drive in the specified direction (from the motor perspective, not joint CW or CCW)
    * with the specified speed
    * until a resistance which drives the PID error above the specified threshold is encountered.
    * At this point the stepper stops and zeros the encoder.
@@ -349,6 +350,15 @@ public:
    */
   bool isStalled(void);
 
+    /**
+   * @brief Checks if the joint controller is busy processing a blocking command.
+   *
+   * Reads the internal state flags from the last transmission. If an update is neccessary call getFlags() before invoking this function.
+   * @return true if a blocking command is currently executing,
+   * false if not.
+   */
+  bool isBusy(void);
+
   /**
    * @brief Check if communication to the joint is established
    *
@@ -443,6 +453,8 @@ private:
 
   template <typename T>
   int write(const stp_reg_t reg, T data, u_int8_t &flags);
+
+  void wait_while_busy(const float period_ms);
 
   /**
    * @brief State flags transmitted with every I2C transaction.

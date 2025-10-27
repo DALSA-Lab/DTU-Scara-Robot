@@ -72,10 +72,7 @@ int Joint::enable(u_int8_t driveCurrent, u_int8_t holdCurrent)
     {
         return -1;
     }
-    do
-    {
-        usleep(10 * 1000);
-    } while (this->getFlags() & (1 << 1));
+    this->wait_while_busy(10.0);
 
     if (!this->isEnabled())
     {
@@ -113,12 +110,6 @@ int Joint::home(float velocity, u_int8_t sensitivity, u_int8_t current)
         return -3;
     }
 
-    int rc = this->checkOrientation(1.0);
-    if (rc < 0)
-    {
-        return rc;
-    }
-
     velocity = RAD2DEG(JOINT2ACTUATOR(velocity, this->reduction, 0)) / 6;
     if (velocity == 0)
     {
@@ -149,16 +140,13 @@ int Joint::home(float velocity, u_int8_t sensitivity, u_int8_t current)
     buf |= ((sensitivity & 0xFF) << 16);
     buf |= ((current & 0xFF) << 24);
 
-    rc = this->write(HOME, buf, this->flags);
+    int rc = this->write(HOME, buf, this->flags);
     if (rc < 0)
     {
         return -1;
     }
-    usleep(100 * 1000);
-    while (this->getFlags() & (1 << 1))
-    {
-        usleep(10 * 1000);
-    }
+    this->wait_while_busy(100.0);
+
     if (!this->isHomed())
     {
         return -2; // NOT HOMED
@@ -309,11 +297,7 @@ int Joint::checkOrientation(float angle)
     {
         return -1;
     }
-    usleep(10 * 1000);
-    while (this->getFlags() & (1 << 1))
-    {
-        usleep(10 * 1000);
-    }
+    this->wait_while_busy(10.0);
 
     if (this->isStalled())
     {
@@ -413,6 +397,11 @@ bool Joint::isStalled(void)
     return this->flags & (1 << 0);
 }
 
+bool Joint::isBusy(void)
+{
+    return this->flags & (1 << 1);
+}
+
 int Joint::checkCom(void)
 {
     if (this->handle < 0)
@@ -466,4 +455,13 @@ int Joint::setHomingOffset(const float offset)
     }
 
     return this->write(HOMEOFFSET, offset, this->flags) < 0 ? -1 : 0;
+}
+
+void Joint::wait_while_busy(const float period_ms)
+{
+    do
+    {
+        usleep(period_ms * 1000);
+        this->getFlags();
+    } while (this->isBusy());
 }
