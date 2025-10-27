@@ -537,9 +537,9 @@ namespace bioscara_hardware_interface
         case -1:
           reason = "communication error";
           break;
-        // case -2:
-        //   reason = "joint not homed";
-        //   break;
+        case -2:
+          reason = "joint not homed";
+          break;
         default:
           reason = "Unkown Reason " + std::to_string(rc);
         }
@@ -551,28 +551,56 @@ namespace bioscara_hardware_interface
       set_state(name, (double)v);
     }
 
-    // for (const auto &[name, descr] : gpio_command_interfaces_)
-    // {
-    //   // mirror GPIOs back
-    //   set_state(name, get_command(name));
-    // }
+    for (const auto &[name, descr] : gpio_state_interfaces_)
+    {
+      float v;
+      int rc = 1;
 
-    // // random inputs analog_input1 and analog_input2
-    // unsigned int seed = static_cast<unsigned int>(time(NULL)) + 1;
-    // set_state(
-    //     info_.gpios[0].name + "/" + info_.gpios[0].state_interfaces[1].name,
-    //     static_cast<double>(rand_r(&seed)));
-    // seed = static_cast<unsigned int>(time(NULL)) + 2;
-    // set_state(
-    //     info_.gpios[0].name + "/" + info_.gpios[0].state_interfaces[2].name,
-    //     static_cast<double>(rand_r(&seed)));
+      if (descr.interface_info.name == bioscara_hardware_interface::HW_IF_HOME)
+      {
+        /* Reset the return code. All following functions do not return an error code */
+        rc = 0;
 
-    // for (const auto &[name, descr] : gpio_state_interfaces_)
-    // {
-    //   ss << std::fixed << std::setprecision(2) << std::endl
-    //      << "\t" << get_state(name) << " from GPIO input '" << name << "'";
-    // }
-    // RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 500, "%s", ss.str().c_str());
+        /* We can assume that the previous calls to read the joint state interfaces
+        gave us the latest flags. Hence we can simply retrieve the HOMED flag by calling isHomed().
+        This does not generate additional communication trafic.  */
+        v = _joints.at(descr.prefix_name).isHomed() * 1.0;
+
+        /* If the homing has been activated (through the command interface) the device signals BUSY
+        as long as it is still homing. If the BUSY flag is reset while the current command is still HOME
+        we can assume the homing has finished. Then reset the command interface to 0, which will stop the homing (
+        perform cleanup tasks) at the next write cycle. */
+        if (_joints.at(descr.prefix_name).getCurrentBCmd() == Joint::HOME &&
+            !_joints.at(descr.prefix_name).isBusy())
+        {
+          set_command(name, 0.0);
+        }
+      }
+      // use != 0 here since 1 for no compatible interface type
+      if (rc != 0)
+      {
+        std::string reason = "";
+        switch (rc)
+        {
+        case 1:
+          reason = "no compatible command to read " + descr.interface_info.name;
+          break;
+        case -1:
+          reason = "communication error";
+          break;
+        case -2:
+          reason = "joint not homed";
+          break;
+        default:
+          reason = "Unkown Reason " + std::to_string(rc);
+        }
+        RCLCPP_FATAL(
+            get_logger(),
+            "Failed to read %s of GPIO '%s'. Reason: %s", descr.interface_info.name.c_str(), name.c_str(), reason.c_str());
+        return hardware_interface::return_type::ERROR;
+      }
+      set_state(name, (double)v);
+    }
 
     return hardware_interface::return_type::OK;
   }
@@ -601,16 +629,34 @@ namespace bioscara_hardware_interface
         {
           joint_config_t cfg = _joint_cfg[name];
           float velocity = get_command(CIF_name);
+          Joint::stp_reg_t current_cmd = _joints.at(name).getCurrentBCmd();
+
+          /* If the joint is currently executing a homing call and the velocity is set to 0.0,
+          stop the homing. This could be either because the user interrupts the homing or the homing is finished.*/
           if (velocity == 0.0)
           {
-            _joints.at(name).setMaxAcceleration(cfg.max_acceleration);
-            rc = _joints.at(name).stop();
+            if (current_cmd == Joint::HOME)
+            {
+              /* Stop the homing. Reset acceleration and perform the postHoming cleanup */
+              _joints.at(name).setMaxAcceleration(cfg.max_acceleration);
+              _joints.at(name).postHoming();
+              rc = _joints.at(name).stop();
+            }
           }
+
+          /* If the command is != 0.0 and the joint is currently not executing a blocking command, 
+          most likely the homing itself from a previous call, start the homing sequence. */
           else
           {
-            float speed = velocity > 0.0 ? cfg.homing.speed : -cfg.homing.speed;
-            _joints.at(name).setMaxAcceleration(cfg.homing.acceleration);
-            rc = _joints.at(name).home(speed, cfg.homing.threshold, cfg.homing.current);
+            if (current_cmd == Joint::NONE)
+            {
+              float speed = velocity > 0.0 ? cfg.homing.speed : -cfg.homing.speed;
+              _joints.at(name).setMaxAcceleration(cfg.homing.acceleration);
+              rc = _joints.at(name).startHoming(speed, cfg.homing.threshold, cfg.homing.current);
+            }
+            else if (current_cmd != Joint::HOME){
+              rc = -109;
+            }
           }
         }
         // use != 0 here since 1 for no compatible interface type
@@ -634,6 +680,9 @@ namespace bioscara_hardware_interface
           case -4:
             reason = "joint stalled, can not set " + interface;
             break;
+          case -109:
+            reason = "joint busy processing another blocking command";
+            break;
           default:
             reason = "Unkown Reason " + std::to_string(rc);
           }
@@ -644,14 +693,6 @@ namespace bioscara_hardware_interface
         }
       }
     }
-
-    // for (const auto &[name, descr] : gpio_command_interfaces_)
-    // {
-    //   // Simulate sending commands to the hardware
-    //   ss << std::fixed << std::setprecision(2) << std::endl
-    //      << "\t" << get_command(name) << " for GPIO output '" << name << "'";
-    // }
-    // RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 500, "%s", ss.str().c_str());
 
     return hardware_interface::return_type::OK;
   }

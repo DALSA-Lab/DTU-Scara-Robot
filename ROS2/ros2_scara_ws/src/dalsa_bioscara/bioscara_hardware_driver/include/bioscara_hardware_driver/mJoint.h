@@ -60,6 +60,51 @@ class Joint
 {
 public:
   /**
+   *
+   * @brief register and command definitions
+   *
+   * a register can be read (R) or written (W), each register has a size in bytes.
+   * The payload can be split into multiple values or just be a single value.
+   * Note that not all functions are implemented.
+   *
+   */
+  enum stp_reg_t
+  {
+    NONE = 0x00,                ///< Used for signalling purposes
+    PING = 0x0f,                ///< R; Size: 1; [(char) ACK]
+    SETUP = 0x10,               ///< W; Size: 2; [(uint8) holdCurrent, (uint8) driveCurrent]
+    SETRPM = 0x11,              ///< W; Size: 4; [(float) RPM]
+    GETDRIVERRPM = 0x12,        ///<
+    MOVESTEPS = 0x13,           ///< W; Size: 4; [(int32) steps]
+    MOVEANGLE = 0x14,           ///<
+    MOVETOANGLE = 0x15,         ///< W; Size: 4; [(float) degrees]
+    GETMOTORSTATE = 0x16,       ///<
+    RUNCOTINOUS = 0x17,         ///<
+    ANGLEMOVED = 0x18,          ///< R; Size: 4; [(float) degrees]
+    SETCURRENT = 0x19,          ///< W; Size: 1; [(uint8) driveCurrent]
+    SETHOLDCURRENT = 0x1A,      ///< W; Size: 1; [(uint8) holdCurrent]
+    SETMAXACCELERATION = 0x1B,  ///<
+    SETMAXDECELERATION = 0x1C,  ///<
+    SETMAXVELOCITY = 0x1D,      ///<
+    ENABLESTALLGUARD = 0x1E,    ///< W; Size: 1; [(uint8) threshold]
+    DISABLESTALLGUARD = 0x1F,   ///<
+    CLEARSTALL = 0x20,          ///<
+    SETBRAKEMODE = 0x22,        ///< W; Size: 1; [(uint8) mode]
+    ENABLEPID = 0x23,           ///<
+    DISABLEPID = 0x24,          ///<
+    ENABLECLOSEDLOOP = 0x25,    ///<
+    DISABLECLOSEDLOOP = 0x26,   ///< W; Size: 1; [(uint8) 0]
+    SETCONTROLTHRESHOLD = 0x27, ///<
+    MOVETOEND = 0x28,           ///<
+    STOP = 0x29,                ///< W; Size: 1; [(uint8) mode]
+    GETPIDERROR = 0x2A,         ///<
+    CHECKORIENTATION = 0x2B,    ///< W; Size: 4; [(float) degrees]
+    GETENCODERRPM = 0x2C,       ///< R; Size: 4; [(float) RPM]
+    HOME = 0x2D,                ///< W; Size: 4; [(uint8) current, (int8) sensitivity, (uint8) speed, (uint8) direction]
+    HOMEOFFSET = 0x2E,          ///< R/W; Size: 4; [(float) -]
+  };
+
+  /**
    * @brief Create a Joint object
    *
    * The Joint object represents a single joint and its actuator.
@@ -142,34 +187,54 @@ public:
 
   /**
    * @brief Blocking implementation to home the joint.
-   * 
+   *
    * A blocking implementation which only returns after the the joint is no longer BUSY. See Joint::_home() for documentation.
    *
-   * Additionally this method returns:    
-   * @return -2 when not homed succesfull (isHomed flag still not set).
+   * Additionally this method returns:
+   * @return -2 when not homed succesfull (isHomed flag still not set),
+   * -109 if the joint is already currently homing (for example from a call to Joint::startHoming()).
    */
   int home(float velocity, u_int8_t sensitivity, u_int8_t current);
 
   /**
    * @brief non-blocking implementation to home the joint.
-   * 
-   * See Joint::_home() for documentation.
-   * This method returns immediatly aftet starting the homing sequence. This should be used when the blocking implementation is not acceptable. 
-   * For example in the update loop of the bioscara_hardware_interface::BioscaraHardwareInterface::write(). 
+   *
+   * See Joint::_home() for documentation. The current_b_cmd flag is set to HOME
+   * This method returns immediatly after starting the homing sequence. This should be used when the blocking implementation is not acceptable.
+   * For example in the update loop of the bioscara_hardware_interface::BioscaraHardwareInterface::write().
+
+   * Additionally this method returns:
+   * @return -109 if the joint is already currently homing (for example from a call to Joint::startHoming()).
+   */
+  int startHoming(float velocity, u_int8_t sensitivity, u_int8_t current);
+
+  /**
+   * @brief perform tasks after a non-blocking homing.
+   *
+   * This method resets the current_b_cmd to NONE, checks if the joint is homed,
+   * and saves the homing offset to the joint.
+   *
+   * @return 0 on success,
+   * -109 if the current_b_cmd is not HOME,
+   * -1 on communication error,
+   * -2 when not homed,
+   * -5 if the joint is not initialized.
    *
    */
-  int non_blocking_home(float velocity, u_int8_t sensitivity, u_int8_t current);
+  int postHoming(void);
 
   int printInfo(void);
 
   /**
    * @brief get the current joint position in radians or m for
    * cylindrical and prismatic joints respectively.
+   * 
+   * @warning If the joint is not homed this method does not return an error.
+   * Instead `pos` will be 0.0.
    *
    * @param pos
    * @return 0 on success,
     -1 on communication error,
-    -2 when not homed,
     -5 if the joint is not initialized.
    */
   int getPosition(float &pos);
@@ -209,7 +274,6 @@ public:
    * @param vel
    * @return 0 on success,
     -1 on communication error,
-    -2 when not homed,
     -5 if the joint is not initialized.
    */
   int getVelocity(float &vel);
@@ -393,58 +457,22 @@ public:
    *
    * @return 0 on success,
    * -1 on communication error,
+   * -2 if not homed,
    * -5 if the joint is not initialized.
    */
   int setHomingOffset(const float offset);
+
+  /**
+   * @brief get the currently active blocking command
+   *
+   * @return The the command of type stp_reg_t
+   */
+  stp_reg_t getCurrentBCmd(void);
 
   std::string name;
 
 protected:
 private:
-  /**
-   *
-   * @brief register and command definitions
-   *
-   * a register can be read (R) or written (W), each register has a size in bytes.
-   * The payload can be split into multiple values or just be a single value.
-   * Note that not all functions are implemented.
-   *
-   */
-  enum stp_reg_t
-  {
-    PING = 0x0f,                ///< R; Size: 1; [(char) ACK]
-    SETUP = 0x10,               ///< W; Size: 2; [(uint8) holdCurrent, (uint8) driveCurrent]
-    SETRPM = 0x11,              ///< W; Size: 4; [(float) RPM]
-    GETDRIVERRPM = 0x12,        ///<
-    MOVESTEPS = 0x13,           ///< W; Size: 4; [(int32) steps]
-    MOVEANGLE = 0x14,           ///<
-    MOVETOANGLE = 0x15,         ///< W; Size: 4; [(float) degrees]
-    GETMOTORSTATE = 0x16,       ///<
-    RUNCOTINOUS = 0x17,         ///<
-    ANGLEMOVED = 0x18,          ///< R; Size: 4; [(float) degrees]
-    SETCURRENT = 0x19,          ///< W; Size: 1; [(uint8) driveCurrent]
-    SETHOLDCURRENT = 0x1A,      ///< W; Size: 1; [(uint8) holdCurrent]
-    SETMAXACCELERATION = 0x1B,  ///<
-    SETMAXDECELERATION = 0x1C,  ///<
-    SETMAXVELOCITY = 0x1D,      ///<
-    ENABLESTALLGUARD = 0x1E,    ///< W; Size: 1; [(uint8) threshold]
-    DISABLESTALLGUARD = 0x1F,   ///<
-    CLEARSTALL = 0x20,          ///<
-    SETBRAKEMODE = 0x22,        ///< W; Size: 1; [(uint8) mode]
-    ENABLEPID = 0x23,           ///<
-    DISABLEPID = 0x24,          ///<
-    ENABLECLOSEDLOOP = 0x25,    ///<
-    DISABLECLOSEDLOOP = 0x26,   ///< W; Size: 1; [(uint8) 0]
-    SETCONTROLTHRESHOLD = 0x27, ///<
-    MOVETOEND = 0x28,           ///<
-    STOP = 0x29,                ///< W; Size: 1; [(uint8) mode]
-    GETPIDERROR = 0x2A,         ///<
-    CHECKORIENTATION = 0x2B,    ///< W; Size: 4; [(float) degrees]
-    GETENCODERRPM = 0x2C,       ///< R; Size: 4; [(float) RPM]
-    HOME = 0x2D,                ///< W; Size: 4; [(uint8) current, (int8) sensitivity, (uint8) speed, (uint8) direction]
-    HOMEOFFSET = 0x2E,          ///< R/W; Size: 4; [(float) -]
-  };
-
   template <typename T>
   int read(const stp_reg_t reg, T &data, u_int8_t &flags);
 
@@ -502,6 +530,8 @@ private:
   float offset = 0;    ///< Joint position offset
   float min = 0;       ///< Joint lower limit
   float max = 0;       ///< Joint upper limit
+
+  stp_reg_t current_b_cmd = NONE; ///< Keeps track if a blocking command is being executed
 
   int handle = -1; ///< I2C bus handle
 };

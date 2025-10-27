@@ -101,24 +101,59 @@ int Joint::disable(void)
 
 int Joint::home(float velocity, u_int8_t sensitivity, u_int8_t current)
 {
-    int rc = this->_home(velocity, sensitivity, current);
+    int rc = this->startHoming(velocity, sensitivity, current);
     if (rc < 0)
     {
         return rc;
     }
     this->wait_while_busy(100.0);
+    rc = this->postHoming();
+    if (rc < 0)
+    {
+        return rc;
+    }
+    return 0;
+}
 
+int Joint::startHoming(float velocity, u_int8_t sensitivity, u_int8_t current)
+{
+    if (this->current_b_cmd != NONE)
+    {
+        return -109; // INCORRECT STATE
+    }
+    int rc = this->_home(velocity, sensitivity, current);
+    if (rc < 0)
+    {
+        this->current_b_cmd = NONE;
+        return rc;
+    }
+    this->current_b_cmd = HOME;
+    return 0;
+}
+
+int Joint::postHoming(void)
+{
+    if (this->current_b_cmd != HOME)
+    {
+        return -109; // INCORRECT STATE
+    }
+    this->current_b_cmd = NONE;
+    int rc = this->getFlags();
+    if (rc < 0)
+    {
+        return rc;
+    }
     if (!this->isHomed())
     {
         return -2; // NOT HOMED
     }
-
+    /* Save the homing position stored on the joint.*/
+    rc = this->setHomingOffset(this->offset);
+    if (rc < 0)
+    {
+        return rc;
+    }
     return 0;
-}
-
-int Joint::non_blocking_home(float velocity, u_int8_t sensitivity, u_int8_t current)
-{
-    return this->_home(velocity, sensitivity, current);
 }
 
 int Joint::_home(float velocity, u_int8_t sensitivity, u_int8_t current)
@@ -130,15 +165,6 @@ int Joint::_home(float velocity, u_int8_t sensitivity, u_int8_t current)
     if (!this->isEnabled())
     {
         return -3;
-    }
-
-    /* Save the homing position stored on the joint. It is acceptable to call this before calling the actual home function, because even if homing fails
-    access to the homing Offset is denied when the joint is nothomed. Saving the offset before allows to having to remember to store it afterwards when homing is called as 
-    non-blocking. */
-    int rc = this->setHomingOffset(this->offset);
-    if (rc < 0)
-    {
-        return rc;
     }
 
     velocity = RAD2DEG(JOINT2ACTUATOR(velocity, this->reduction, 0)) / 6;
@@ -171,7 +197,7 @@ int Joint::_home(float velocity, u_int8_t sensitivity, u_int8_t current)
     buf |= ((sensitivity & 0xFF) << 16);
     buf |= ((current & 0xFF) << 24);
 
-    rc = this->write(HOME, buf, this->flags);
+    int rc = this->write(HOME, buf, this->flags);
     if (rc < 0)
     {
         return -1;
@@ -190,12 +216,13 @@ int Joint::getPosition(float &pos)
     {
         return -5;
     }
-    // if (!this->isHomed())
-    // {
-    //     return -2; // not homed
-    // }
+
     int rc = this->read(ANGLEMOVED, pos, this->flags);
     pos = ACTUATOR2JOINT(DEG2RAD(pos), this->reduction, this->offset);
+    if (!this->isHomed())
+    {
+        pos = 0.0;
+    }
     return rc < 0 ? -1 : 0;
 }
 
@@ -258,10 +285,7 @@ int Joint::getVelocity(float &vel)
     {
         return -5;
     }
-    // if (!this->isHomed())
-    // {
-    //     return -2; // not homed
-    // }
+
     int rc = this->read(GETENCODERRPM, vel, this->flags);
     vel = ACTUATOR2JOINT(DEG2RAD(vel), this->reduction, 0);
     vel *= 6.0; // convert from rpm to rad/s
@@ -465,8 +489,17 @@ int Joint::setHomingOffset(const float offset)
     {
         return -5;
     }
+    if (!this->isHomed())
+    {
+        return -2; // NOT HOMED
+    }
 
     return this->write(HOMEOFFSET, offset, this->flags) < 0 ? -1 : 0;
+}
+
+Joint::stp_reg_t Joint::getCurrentBCmd(void)
+{
+    return this->current_b_cmd;
 }
 
 void Joint::wait_while_busy(const float period_ms)
