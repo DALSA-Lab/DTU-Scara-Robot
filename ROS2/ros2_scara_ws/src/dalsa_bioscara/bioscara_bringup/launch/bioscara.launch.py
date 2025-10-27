@@ -15,7 +15,7 @@ from launch.substitutions import (
 )
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-from launch.substitutions import PythonExpression
+from launch.conditions import IfCondition
 
 def generate_launch_description():
     # Declare arguments
@@ -66,13 +66,19 @@ def generate_launch_description():
             description="Start robot with fake hardware mirroring command to its states.",
         )
     )
-    # TODO
     declared_arguments.append(
         DeclareLaunchArgument(
             "robot_controller",
             default_value="velocity_joint_trajectory_controller",
             choices=["velocity_joint_trajectory_controller", "position_joint_trajectory_controller"],
             description="Robot controller to start.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "rviz",
+            default_value="True",
+            description="Start Rviz.",
         )
     )
     
@@ -85,6 +91,7 @@ def generate_launch_description():
     prefix = LaunchConfiguration("prefix")
     use_mock_hardware = LaunchConfiguration("use_mock_hardware")
     robot_controller = LaunchConfiguration("robot_controller")
+    rviz = LaunchConfiguration('rviz')
 
     # Get URDF via xacro
     robot_description_content = Command(
@@ -120,6 +127,8 @@ def generate_launch_description():
         executable="ros2_control_node",
         output="both",
         parameters=[robot_description, robot_controllers],
+        # prefix=['gdbserver localhost:3000']
+        # prefix=['xterm -e gdb -ex run --args']
     )
 
     # start the robot state publisher node which gets the robot description file as paramter
@@ -130,6 +139,7 @@ def generate_launch_description():
         parameters=[robot_description],
     )
     rviz_node = Node(
+        condition=IfCondition(rviz),
         package="rviz2",
         executable="rviz2",
         name="rviz2",
@@ -140,7 +150,7 @@ def generate_launch_description():
     rqt_joint_trajectory_controller_node = Node(
         package="rqt_joint_trajectory_controller",
         executable="rqt_joint_trajectory_controller",
-        # name="rviz2",
+        name="rqt_joint_trajectory_controller_node",
         output="log",
     )
 
@@ -190,7 +200,7 @@ def generate_launch_description():
         event_handler=OnProcessExit(
             target_action=joint_state_broadcaster_spawner,
             on_exit=[
-            # rviz_node,
+            rviz_node,
             rqt_joint_trajectory_controller_node,
             ],
         )
