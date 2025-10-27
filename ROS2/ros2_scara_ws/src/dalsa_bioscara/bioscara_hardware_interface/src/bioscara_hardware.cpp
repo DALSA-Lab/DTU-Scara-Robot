@@ -217,19 +217,28 @@ namespace bioscara_hardware_interface
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
-  /**
-   * @brief Called on transition to FINALIZED state
-   *
-   * Removes all joints from the com object.
-   *
-   * @todo Research in ROS2_control source code if this is ever called from any state other than
-   * UNCONFIGURED
-   *
-   */
   hardware_interface::CallbackReturn BioscaraHardwareInterface::on_shutdown(
-      const rclcpp_lifecycle::State & /*previous_state*/)
+      const rclcpp_lifecycle::State &previous_state)
   {
     RCLCPP_INFO(get_logger(), "Shutting down ...please wait...");
+
+    hardware_interface::CallbackReturn cr = CallbackReturn::SUCCESS;
+    switch (previous_state.id())
+    {
+      /* Joints already deinitialized */
+    case lifecycle_msgs::msg::State::PRIMARY_STATE_UNCONFIGURED:
+      break;
+
+      /* Deinitialize joints first */
+    case lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE:
+    case lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE:
+      cr = on_cleanup(previous_state);
+      break;
+    }
+    if (cr != CallbackReturn::SUCCESS)
+    {
+      return CallbackReturn::ERROR;
+    }
     _joints.clear();
     RCLCPP_INFO(get_logger(), "Shut down");
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -275,14 +284,14 @@ namespace bioscara_hardware_interface
     {
       set_command(name, 0.0);
     }
-    // for (const auto &[name, descr] : gpio_state_interfaces_)
-    // {
-    //   set_state(name, 0.0);
-    // }
-    // for (const auto &[name, descr] : gpio_command_interfaces_)
-    // {
-    //   set_command(name, 0.0);
-    // }
+    for (const auto &[name, descr] : gpio_state_interfaces_)
+    {
+      set_state(name, 0.0);
+    }
+    for (const auto &[name, descr] : gpio_command_interfaces_)
+    {
+      set_command(name, 0.0);
+    }
     RCLCPP_INFO(get_logger(), "Successfully configured!");
 
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -295,7 +304,6 @@ namespace bioscara_hardware_interface
 
     /**
      * Disconnect from the joints and throw error if it fails
-     *
      */
     for (auto &[name, joint] : _joints)
     {
