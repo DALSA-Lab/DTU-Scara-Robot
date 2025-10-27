@@ -644,7 +644,7 @@ namespace bioscara_hardware_interface
             }
           }
 
-          /* If the command is != 0.0 and the joint is currently not executing a blocking command, 
+          /* If the command is != 0.0 and the joint is currently not executing a blocking command,
           most likely the homing itself from a previous call, start the homing sequence. */
           else
           {
@@ -654,7 +654,8 @@ namespace bioscara_hardware_interface
               _joints.at(name).setMaxAcceleration(cfg.homing.acceleration);
               rc = _joints.at(name).startHoming(speed, cfg.homing.threshold, cfg.homing.current);
             }
-            else if (current_cmd != Joint::HOME){
+            else if (current_cmd != Joint::HOME)
+            {
               rc = -109;
             }
           }
@@ -707,11 +708,32 @@ namespace bioscara_hardware_interface
     /* First remove all stopped interfaces from the active set */
     for (std::string interface : stop_interfaces)
     {
+      std::string full_interface = interface;
       /* split 'joint/interface to 'joint' and 'interface' */
       std::string delimiter = "/";
       size_t pos = interface.find(delimiter);
       std::string joint = interface.substr(0, pos);
       interface.erase(0, pos + delimiter.length());
+
+      /* If the interface that is to be stopped is the homing interface, check that no current homing command is active */
+      if (interface == bioscara_hardware_interface::HW_IF_HOME &&
+          _joints.at(joint).getCurrentBCmd() == Joint::HOME)
+      {
+        RCLCPP_FATAL(
+            get_logger(),
+            "The controller tried to deactivate '%s' of '%s' but homing is still ongoing.", interface.c_str(), joint.c_str());
+        return hardware_interface::return_type::ERROR;
+      }
+
+      /* If the interface that is to be stopped is the velocity interface, check that the velocity is 0.0 */
+      if (interface == hardware_interface::HW_IF_VELOCITY &&
+          get_command(full_interface) != 0.0)
+      {
+        RCLCPP_FATAL(
+            get_logger(),
+            "The controller tried to deactivate '%s' of '%s' but the velocity is not 0.0", interface.c_str(), joint.c_str());
+        return hardware_interface::return_type::ERROR;
+      }
 
       if (new_active_interfaces.at(joint).erase(interface) == 0)
       {
