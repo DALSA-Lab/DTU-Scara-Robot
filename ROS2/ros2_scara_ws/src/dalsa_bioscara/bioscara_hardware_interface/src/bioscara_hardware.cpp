@@ -729,10 +729,9 @@ namespace bioscara_hardware_interface
       if (interface == hardware_interface::HW_IF_VELOCITY &&
           get_command(full_interface) != 0.0)
       {
-        RCLCPP_FATAL(
+        RCLCPP_WARN(
             get_logger(),
             "The controller tried to deactivate '%s' of '%s' but the velocity is not 0.0", interface.c_str(), joint.c_str());
-        return hardware_interface::return_type::ERROR;
       }
 
       if (new_active_interfaces.at(joint).erase(interface) == 0)
@@ -805,17 +804,14 @@ namespace bioscara_hardware_interface
   hardware_interface::CallbackReturn BioscaraHardwareInterface::on_error(
       const rclcpp_lifecycle::State &previous_state)
   {
-    /**
+    /*
      * Call the deactivation method. If the robot successfully deactivates the hardware remains in the unconfigured state,
      * and is able to be activated again. Otherwise the hardware goes to the finalized state and can not be recovered.
-     *
-     * @todo implement a more fine tuned error handling.
      */
-
     RCLCPP_INFO(get_logger(), "Previous State: %s", previous_state.label().c_str());
     // states: "active", "finalized",...
 
-    /**
+    /*
      * call the deactivate function anyway regardless if state was active or inactive. For example if the on_activate function fails
      * the joint might still be enabled, to disable them invoke on_deactivate().
      */
