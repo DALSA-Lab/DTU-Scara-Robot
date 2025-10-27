@@ -38,38 +38,48 @@ namespace bioscara_hardware_interface
     }
 
     /**
-     * Loop over all joints decribed in the hardware description file, check if they have only the position command
-     * and state interface defined and finally add them to the internal Joints_ list
+     * Loop over all joints decribed in the hardware description file, check if they have the position and velocity command
+     * and state interface defined and finally add them to the internal _joints list
      *
      */
     for (const hardware_interface::ComponentInfo &joint : info_.joints)
     {
-      // expect only one command interface
-      if (joint.command_interfaces.size() != 1)
+      // expect exactly two command interface
+      if (joint.command_interfaces.size() != 2)
       {
         RCLCPP_FATAL(
-            get_logger(), "Joint '%s' has %zu command interfaces found. 1 expected.",
+            get_logger(), "Joint '%s' has %zu command interfaces found. 2 expected.",
             joint.name.c_str(), joint.command_interfaces.size());
         return hardware_interface::CallbackReturn::ERROR;
       }
 
-      // expect the command interface to be position or velocity
-      if (joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION &&
-          joint.command_interfaces[0].name != hardware_interface::HW_IF_VELOCITY)
+      // expect the first command interface to be position
+      if (joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION)
       {
         RCLCPP_FATAL(
-            get_logger(), "Joint '%s' have %s command interfaces found. '%s' or '%s' expected.",
-            joint.name.c_str(), joint.command_interfaces[0].name.c_str(),
-            hardware_interface::HW_IF_POSITION,
+            get_logger(), "Joint '%s' have %s command interfaces found. '%s' expected.",
+            joint.name.c_str(),
+            joint.command_interfaces[0].name.c_str(),
+            hardware_interface::HW_IF_POSITION);
+        return hardware_interface::CallbackReturn::ERROR;
+      }
+
+      // expect the second command interface to be velocity
+      if (joint.command_interfaces[1].name != hardware_interface::HW_IF_VELOCITY)
+      {
+        RCLCPP_FATAL(
+            get_logger(), "Joint '%s' have %s command interfaces found. '%s' expected.",
+            joint.name.c_str(),
+            joint.command_interfaces[0].name.c_str(),
             hardware_interface::HW_IF_VELOCITY);
         return hardware_interface::CallbackReturn::ERROR;
       }
 
-      // expect only one state interface
-      if (joint.state_interfaces.size() > 2)
+      // expect exactly two state interfaces
+      if (joint.state_interfaces.size() != 2)
       {
         RCLCPP_FATAL(
-            get_logger(), "Joint '%s' has %zu state interface. 2 or less expected.", joint.name.c_str(),
+            get_logger(), "Joint '%s' has %zu state interface. 2 expected.", joint.name.c_str(),
             joint.state_interfaces.size());
         return hardware_interface::CallbackReturn::ERROR;
       }
@@ -79,7 +89,7 @@ namespace bioscara_hardware_interface
           joint.state_interfaces[0].name != hardware_interface::HW_IF_VELOCITY)
       {
         RCLCPP_FATAL(
-            get_logger(), "Joint '%s' have %s state interfaces found. '%s' or '%s' expected.",
+            get_logger(), "Joint '%s' have %s state interfaces found. '%s' and '%s' expected.",
             joint.name.c_str(), joint.state_interfaces[0].name.c_str(),
             hardware_interface::HW_IF_POSITION,
             hardware_interface::HW_IF_VELOCITY);
@@ -89,14 +99,15 @@ namespace bioscara_hardware_interface
       // add joint one by one reading parameters from urdf
 
       joint_config_t cfg;
-      cfg.i2c_address = std::stoi(joint.parameters.at("i2c_address"), nullptr, 16),
-      cfg.reduction = std::stof(joint.parameters.at("reduction")),
-      cfg.offset = std::stof(joint.parameters.at("offset")),
-      cfg.stall_threshold = std::stoi(joint.parameters.at("stall_threshold")),
-      cfg.hold_current = std::stoi(joint.parameters.at("hold_current")),
-      cfg.drive_current = std::stoi(joint.parameters.at("drive_current")),
-      cfg.max_acceleration = std::stof(joint.parameters.at("max_acceleration")),
-      cfg.max_velocity = std::stof(joint.parameters.at("max_velocity")),
+      cfg.i2c_address = std::stoi(joint.parameters.at("i2c_address"), nullptr, 16);
+      cfg.reduction = std::stof(joint.parameters.at("reduction"));
+      cfg.min = std::stof(joint.parameters.at("min"));
+      cfg.max = std::stof(joint.parameters.at("max"));
+      cfg.stall_threshold = std::stoi(joint.parameters.at("stall_threshold"));
+      cfg.hold_current = std::stoi(joint.parameters.at("hold_current"));
+      cfg.drive_current = std::stoi(joint.parameters.at("drive_current"));
+      cfg.max_acceleration = std::stof(joint.parameters.at("max_acceleration"));
+      cfg.max_velocity = std::stof(joint.parameters.at("max_velocity"));
 
       _joint_cfg.insert({joint.name, cfg});
 
@@ -105,48 +116,84 @@ namespace bioscara_hardware_interface
                           joint.name,
                           cfg.i2c_address,
                           cfg.reduction,
-                          cfg.offset)});
+                          cfg.min,
+                          cfg.max)});
     }
 
     /**
-     * @todo
-     * - Implement sensors and GPIO
+     * Loop over all GPIOs decribed in the hardware description file, check if they have the home command
+     * and state interface defined.
+     *
      */
-    // // GPIO components
-    // if (info_.gpios.size() != 2)
-    // {
-    //   RCLCPP_FATAL(
-    //       get_logger(), "BioscaraHardwareInterface has '%ld' GPIO components, '%d' expected.",
-    //       info_.gpios.size(), 2);
-    //   return hardware_interface::CallbackReturn::ERROR;
-    // }
-    // // with exactly 1 command interface
-    // for (int i = 0; i < 2; i++)
-    // {
-    //   if (info_.gpios[i].command_interfaces.size() != 1)
-    //   {
-    //     RCLCPP_FATAL(
-    //         get_logger(), "GPIO component %s has '%ld' command interfaces, '%d' expected.",
-    //         info_.gpios[i].name.c_str(), info_.gpios[i].command_interfaces.size(), 1);
-    //     return hardware_interface::CallbackReturn::ERROR;
-    //   }
-    // }
-    // // and 3/1 state interfaces, respectively
-    // if (info_.gpios[0].state_interfaces.size() != 3)
-    // {
-    //   RCLCPP_FATAL(
-    //       get_logger(), "GPIO component %s has '%ld' state interfaces, '%d' expected.",
-    //       info_.gpios[0].name.c_str(), info_.gpios[0].state_interfaces.size(), 3);
-    //   return hardware_interface::CallbackReturn::ERROR;
-    // }
-    // if (info_.gpios[1].state_interfaces.size() != 1)
-    // {
-    //   RCLCPP_FATAL(
-    //       get_logger(), "GPIO component %s has '%ld' state interfaces, '%d' expected.",
-    //       info_.gpios[1].name.c_str(), info_.gpios[1].state_interfaces.size(), 1);
-    //   return hardware_interface::CallbackReturn::ERROR;
-    // }
+    if (info_.gpios.size() != _joints.size())
+    {
+      RCLCPP_FATAL(
+          get_logger(), "BioscaraHardwareInterface has '%ld' GPIO components, '%lu' expected. Every joint needs a GPIO interface",
+          info_.gpios.size(), _joints.size());
+      return hardware_interface::CallbackReturn::ERROR;
+    }
 
+    for (const hardware_interface::ComponentInfo &gpio : info_.gpios)
+    {
+      // expect only one command interface
+      if (gpio.command_interfaces.size() != 1)
+      {
+        RCLCPP_FATAL(
+            get_logger(), "GPIO '%s' has %zu command interfaces found. 1 expected.",
+            gpio.name.c_str(), gpio.command_interfaces.size());
+        return hardware_interface::CallbackReturn::ERROR;
+      }
+
+      // expect the first command interface to be 'home'
+      if (gpio.command_interfaces[0].name != bioscara_hardware_interface::HW_IF_HOME)
+      {
+        RCLCPP_FATAL(
+            get_logger(), "GPIO '%s' have %s command interfaces found. '%s' expected.",
+            gpio.name.c_str(),
+            gpio.command_interfaces[0].name.c_str(),
+            bioscara_hardware_interface::HW_IF_HOME);
+        return hardware_interface::CallbackReturn::ERROR;
+      }
+
+      // expect only one state interface
+      if (gpio.state_interfaces.size() > 1)
+      {
+        RCLCPP_FATAL(
+            get_logger(), "GPIO '%s' has %zu state interface. 1 expected.", gpio.name.c_str(),
+            gpio.state_interfaces.size());
+        return hardware_interface::CallbackReturn::ERROR;
+      }
+
+      // expect state interface to be 'home'
+      if (gpio.state_interfaces[0].name != bioscara_hardware_interface::HW_IF_HOME)
+      {
+        RCLCPP_FATAL(
+            get_logger(), "GPIO '%s' have %s state interfaces found. '%s' expected.",
+            gpio.name.c_str(), gpio.state_interfaces[0].name.c_str(),
+            bioscara_hardware_interface::HW_IF_HOME);
+        return hardware_interface::CallbackReturn::ERROR;
+      }
+
+      // Check that a joint with the same name exists
+      if (_joints.find(gpio.name) == _joints.end())
+      {
+        RCLCPP_FATAL(
+            get_logger(), "No matching joint with the name '%s' found. Currently every GPIO needs to match a joint.",
+            gpio.name.c_str());
+        return hardware_interface::CallbackReturn::ERROR;
+      }
+
+
+      /**
+       * @todo threshold and current are uint8_t, if a number larger outside 0 < n < 255 is passed as a parameters it will overflow.
+       */
+      joint_homing_config_t cfg;
+      cfg.speed = std::stof(gpio.command_interfaces[0].parameters.at("speed"));
+      cfg.threshold = std::stoi(gpio.command_interfaces[0].parameters.at("threshold"));
+      cfg.current = std::stoi(gpio.command_interfaces[0].parameters.at("current"));
+
+      _joint_cfg[gpio.name].homing = cfg;
+    }
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
@@ -261,6 +308,9 @@ namespace bioscara_hardware_interface
 
     for (auto &[name, joint] : _joints)
     {
+      /* Clear the active command modes. Controllers can only be activated after the hardware is activated. */
+      _joint_command_modes[name] = {};
+
       joint_config_t cfg = _joint_cfg[name];
 
       /* First get the flags. they must all be zero to indicate that the joint is operational.
@@ -510,45 +560,65 @@ namespace bioscara_hardware_interface
   hardware_interface::return_type BioscaraHardwareInterface::write(
       const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
-    for (const auto &[name, descr] : joint_command_interfaces_)
+
+    /* Loop over all active command interfaces for each joint and write the command to the hardware.
+    Previously the command was written to every command interface specified in the ros2_control urdf. This causes conflicts. */
+    for (const auto &[name, interfaces] : _joint_command_modes)
     {
-      int rc = 1;
-      if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
+      for (std::string interface : interfaces)
       {
-        rc = _joints.at(descr.prefix_name).setPosition((float)get_command(name));
-      }
-      else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
-      {
-        rc = _joints.at(descr.prefix_name).setVelocity((float)get_command(name));
-      }
-      // use != 0 here since 1 for no compatible interface type
-      if (rc != 0)
-      {
-        std::string reason = "";
-        switch (rc)
+        std::string CIF_name = name + "/" + interface;
+        int rc = 1;
+        if (interface == hardware_interface::HW_IF_POSITION)
         {
-        case 1:
-          reason = "no compatible command to read " + descr.interface_info.name;
-          break;
-        case -1:
-          reason = "communication error";
-          break;
-        case -2:
-          reason = "joint not homed, can not set " + descr.interface_info.name;
-          break;
-        case -3:
-          reason = "joint not enabled, can not set " + descr.interface_info.name;
-          break;
-        case -4:
-          reason = "joint stalled, can not set " + descr.interface_info.name;
-          break;
-        default:
-          reason = "Unkown Reason " + std::to_string(rc);
+          rc = _joints.at(name).setPosition((float)get_command(CIF_name));
         }
-        RCLCPP_FATAL(
-            get_logger(),
-            "Failed to set %s of joint '%s'. Reason: %s", descr.interface_info.name.c_str(), name.c_str(), reason.c_str());
-        return hardware_interface::return_type::ERROR;
+        else if (interface == hardware_interface::HW_IF_VELOCITY)
+        {
+          rc = _joints.at(name).setVelocity((float)get_command(CIF_name));
+        }
+        else if (interface == bioscara_hardware_interface::HW_IF_HOME)
+        {
+          joint_config_t cfg = _joint_cfg[name];
+          float velocity = get_command(CIF_name);
+          if(velocity == 0.0){
+            _joints.at(name).setMaxAcceleration(cfg.max_acceleration);
+            rc = _joints.at(name).stop();
+          }else{
+            float speed = velocity > 0.0 ? cfg.homing.speed : -cfg.homing.speed;
+            _joints.at(name).setMaxAcceleration(cfg.homing.acceleration);
+            rc = _joints.at(name).home(speed ,cfg.homing.threshold,cfg.homing.current);
+          }          
+        }
+        // use != 0 here since 1 for no compatible interface type
+        if (rc != 0)
+        {
+          std::string reason = "";
+          switch (rc)
+          {
+          case 1:
+            reason = "no compatible command to read " + interface;
+            break;
+          case -1:
+            reason = "communication error";
+            break;
+          case -2:
+            reason = "joint not homed, can not set " + interface;
+            break;
+          case -3:
+            reason = "joint not enabled, can not set " + interface;
+            break;
+          case -4:
+            reason = "joint stalled, can not set " + interface;
+            break;
+          default:
+            reason = "Unkown Reason " + std::to_string(rc);
+          }
+          RCLCPP_FATAL(
+              get_logger(),
+              "Failed to set %s of joint '%s'. Reason: %s", CIF_name.c_str(), name.c_str(), reason.c_str());
+          return hardware_interface::return_type::ERROR;
+        }
       }
     }
 
@@ -559,6 +629,89 @@ namespace bioscara_hardware_interface
     //      << "\t" << get_command(name) << " for GPIO output '" << name << "'";
     // }
     // RCLCPP_INFO_THROTTLE(get_logger(), *get_clock(), 500, "%s", ss.str().c_str());
+
+    return hardware_interface::return_type::OK;
+  }
+
+  hardware_interface::return_type BioscaraHardwareInterface::prepare_command_mode_switch(
+      const std::vector<std::string> &start_interfaces,
+      const std::vector<std::string> &stop_interfaces)
+  {
+
+    std::unordered_map<std::string, std::set<std::string>> new_active_interfaces = _joint_command_modes;
+
+    /* First remove all stopped interfaces from the active set */
+    for (std::string interface : stop_interfaces)
+    {
+      /* split 'joint/interface to 'joint' and 'interface' */
+      std::string delimiter = "/";
+      size_t pos = interface.find(delimiter);
+      std::string joint = interface.substr(0, pos);
+      interface.erase(0, pos + delimiter.length());
+
+      if (new_active_interfaces.at(joint).erase(interface) == 0)
+      {
+        RCLCPP_WARN(
+            get_logger(),
+            "The controller tried to stop the interface '%s' of '%s' but it has not been started.", interface.c_str(), joint.c_str());
+      }
+    }
+
+    /* Then add all new interfaces to the active set */
+    for (std::string interface : start_interfaces)
+    {
+      /* split 'joint/interface to 'joint' and 'interface' */
+      std::string delimiter = "/";
+      size_t pos = interface.find(delimiter);
+      std::string joint = interface.substr(0, pos);
+      interface.erase(0, pos + delimiter.length());
+
+      std::pair rc = new_active_interfaces.at(joint).insert(interface);
+      if (rc.second == 0)
+      {
+        RCLCPP_FATAL(
+            get_logger(),
+            "The controller tried to start the interface '%s' of '%s' but it has already been started by another controller.", interface.c_str(), joint.c_str());
+        return hardware_interface::return_type::ERROR;
+      }
+    }
+
+    /* Validation. Currently the validation is very simple, for every joint only one active interface must exist.*/
+    for (auto &[name, interfaces] : new_active_interfaces)
+    {
+      size_t size = interfaces.size();
+      if (size > 1)
+      {
+        std::string active_if = "";
+        for (auto interface : interfaces)
+        {
+          active_if += (interface + "\n");
+        }
+        RCLCPP_FATAL(
+            get_logger(),
+            "The controller tries to start multiple command interfaces for '%s'. The following interfaces are active or are trying to be active:\n%s.",
+            name.c_str(), active_if.c_str());
+        return hardware_interface::return_type::ERROR;
+      }
+    }
+
+    /* If the command mode switch was successfull save the new active interfaces */
+    _joint_command_modes = new_active_interfaces;
+
+    std::string active_if = "";
+    for (const auto &[name, interfaces] : new_active_interfaces)
+    {
+      active_if += (name + ":\n[\n");
+      for (std::string interface : interfaces)
+      {
+        active_if += ("\t" + interface + "\n");
+      }
+      active_if += ("]\n");
+    }
+
+    RCLCPP_INFO(
+        get_logger(),
+        "New active command modes:\n%s", active_if.c_str());
 
     return hardware_interface::return_type::OK;
   }

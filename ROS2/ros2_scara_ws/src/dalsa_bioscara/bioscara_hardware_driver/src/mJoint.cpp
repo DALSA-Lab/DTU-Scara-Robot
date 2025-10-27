@@ -38,7 +38,6 @@ int Joint::init(void)
     {
         float offset;
         rc = this->getHomingOffset(offset);
-        std::cout << "[DEBUG] Homing Offset: " << offset << std::endl;
         if (rc < 0)
         {
             return rc;

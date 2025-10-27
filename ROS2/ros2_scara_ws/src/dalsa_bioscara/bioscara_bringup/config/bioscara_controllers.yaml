@@ -4,20 +4,26 @@ controller_manager:
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
     
-    position_joint_trajectory_controller:
-      type: joint_trajectory_controller/JointTrajectoryController
-    
+    # I need to specify the type here otherwise the following error message is thrown on controller activation:
+    #  "The 'type' param was not defined for 'velocity_joint_trajectory_controller'"
     velocity_joint_trajectory_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
+    position_joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+    
+    homing_controller:
+      type: gpio_controllers/GpioCommandController
+    
+
     update_rate: 50
 
-    hardware_components_initial_state:
-      inactive:
-        - "bioscara"
+    # hardware_components_initial_state:
+    #   inactive:
+    #     - "bioscara"
     
     defaults:
-      allow_controller_activation_with_inactive_hardware: true
+      allow_controller_activation_with_inactive_hardware: false
 
 position_joint_trajectory_controller:
   ros__parameters:
@@ -85,3 +91,25 @@ velocity_joint_trajectory_controller:
         # d: 0.0
         ff_velocity_scale: 1.0
         antiwindup_strategy: none
+      
+homing_controller:
+  ros__parameters:
+    type: gpio_controllers/GpioCommandController
+    gpios:
+      - j1
+      - j2
+      - j3
+      - j4
+    command_interfaces:
+      j1:
+        - interfaces:
+          - home
+      j2:
+        - interfaces:
+          - home
+      j3:
+        - interfaces:
+          - home
+      j4:
+        - interfaces:
+          - home
