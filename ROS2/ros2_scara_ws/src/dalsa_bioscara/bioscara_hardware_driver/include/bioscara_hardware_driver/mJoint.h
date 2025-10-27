@@ -120,7 +120,7 @@ public:
    * @brief Setup the joint and engages motor.
    *
    * This function prepares the motor for movement. After successfull execution the joint
-   * is ready to accept setPosition() and setVelocity() commands. \n
+   * is ready to accept Joint::setPosition() and Joint::setVelocity() commands. \n
    * The function ets the drive and hold current for the specified joint and engages the motor.
    * The currents are in percent of driver max. output (2.5A, check with TMC5130 datasheet or Ustepper documentation)
    * @param driveCurrent drive current in 0-100 % of 2.5A output (check uStepper doc.)
@@ -141,26 +141,24 @@ public:
   int disable(void);
 
   /**
-   * @brief Executes the homing sequence of a joint.
+   * @brief Blocking implementation to home the joint.
+   * 
+   * A blocking implementation which only returns after the the joint is no longer BUSY. See Joint::_home() for documentation.
    *
-   * First the joint will check the motor wiring by executing the checkOrientation internally. The it
-   * will drive in the specified direction (from the motor perspective, not joint CW or CCW)
-   * with the specified speed
-   * until a resistance which drives the PID error above the specified threshold is encountered.
-   * At this point the stepper stops and zeros the encoder.
-   * @param velocity  signed velocity in rad/s or m/s. Must be between 1.0 < RAD2DEG(JOINT2ACTUATOR(velocity, reduction, 0)) / 6 < 250.0
-   * @param sensitivity Encoder pid error threshold 0 to 255.
-   * @param current homing current, determines how easy it is to stop the motor and thereby provoke a stall
-
-   * @return 0 on success,
-    -1 on communication error,
-    -2 when not homed succesfull (isHomed flag still not set),
-    -3 when the motor is not enabled,
-    -5 if the joint is not initialized,
-    -101 if the velocity is zero,
-    -102 if absolute value of the velocity is outside the specified limits.
+   * Additionally this method returns:    
+   * @return -2 when not homed succesfull (isHomed flag still not set).
    */
   int home(float velocity, u_int8_t sensitivity, u_int8_t current);
+
+  /**
+   * @brief non-blocking implementation to home the joint.
+   * 
+   * See Joint::_home() for documentation.
+   * This method returns immediatly aftet starting the homing sequence. This should be used when the blocking implementation is not acceptable. 
+   * For example in the update loop of the bioscara_hardware_interface::BioscaraHardwareInterface::write(). 
+   *
+   */
+  int non_blocking_home(float velocity, u_int8_t sensitivity, u_int8_t current);
 
   int printInfo(void);
 
@@ -264,7 +262,7 @@ public:
 
   /**
    * @brief Set the Drive Current
-   * @warning This function is unreliable and not well tested. Use enable() instead!
+   * @warning This function is unreliable and not well tested. Use Joint::enable() instead!
    * @param current 0% - 100% of driver current
    * @return 0 on success, -1 on communication error,
     -5 if the joint is not initialized.
@@ -273,7 +271,7 @@ public:
 
   /**
    * @brief Set the Hold Current
-   * @warning This function is unreliable and not well tested. Use enable() instead!
+   * @warning This function is unreliable and not well tested. Use Joint::enable() instead!
    * @param current 0% - 100% of driver current
    * @return 0 on success,
    * -1 on communication error,
@@ -323,7 +321,7 @@ public:
   /**
    * @brief Checks the state if the motor is homed.
    *
-   * Reads the internal state flags from the last transmission. If an update is neccessary call getFlags() before invoking this function.
+   * Reads the internal state flags from the last transmission. If an update is neccessary call Joint::getFlags() before invoking this function.
    *
    * @return true if the motor is homed,
    * false if not.
@@ -333,8 +331,8 @@ public:
   /**
    * @brief Checks the state if the motor is enabled.
    *
-   * Reads the internal state flags from the last transmission. If an update is neccessary call getFlags() before invoking this function.
-   * If the motor actually can move depends on the state of the STALLED flag which can be checked using isStalled().
+   * Reads the internal state flags from the last transmission. If an update is neccessary call Joint::getFlags() before invoking this function.
+   * If the motor actually can move depends on the state of the STALLED flag which can be checked using Joint::isStalled().
    *
    * @return true if the motor is enabled,
    * false if not.
@@ -344,16 +342,16 @@ public:
   /**
    * @brief Checks if the motor is stalled.
    *
-   * Reads the internal state flags from the last transmission. If an update is neccessary call getFlags() before invoking this function.
+   * Reads the internal state flags from the last transmission. If an update is neccessary call Joint::getFlags() before invoking this function.
    * @return true if the motor is stalled,
    * false if not.
    */
   bool isStalled(void);
 
-    /**
+  /**
    * @brief Checks if the joint controller is busy processing a blocking command.
    *
-   * Reads the internal state flags from the last transmission. If an update is neccessary call getFlags() before invoking this function.
+   * Reads the internal state flags from the last transmission. If an update is neccessary call Joint::getFlags() before invoking this function.
    * @return true if a blocking command is currently executing,
    * false if not.
    */
@@ -388,14 +386,13 @@ public:
    */
   int getHomingOffset(float &offset);
 
-    /**
+  /**
    * @brief Stores the homing position on the joint.
    *
    * The homing position is stored on the joint to make it persistent as long as the joint is powered up.
    *
    * @return 0 on success,
    * -1 on communication error,
-   * -2 when not homed,
    * -5 if the joint is not initialized.
    */
   int setHomingOffset(const float offset);
@@ -454,7 +451,31 @@ private:
   template <typename T>
   int write(const stp_reg_t reg, T data, u_int8_t &flags);
 
+  /**
+   * @brief Blocking loop waiting for BUSY flag to reset.
+   *
+   * @param period_ms time in ms between polls.
+   */
   void wait_while_busy(const float period_ms);
+
+  /**
+ * @brief Call to start the homing sequence of a joint.
+ *
+ * First the joint will check the motor wiring by executing the checkOrientation internally. Then it will set the specified speed
+ * until a resistance which drives the PID error above the specified threshold is encountered.
+ * At this point the stepper stops and zeros the encoder.
+ * @param velocity  signed velocity in rad/s or m/s. Must be between 1.0 < RAD2DEG(JOINT2ACTUATOR(velocity, reduction, 0)) / 6 < 250.0
+ * @param sensitivity Encoder pid error threshold 0 to 255.
+ * @param current homing current, determines how easy it is to stop the motor and thereby provoke a stall
+
+ * @return 0 on success,
+  -1 on communication error,
+  -3 when the motor is not enabled,
+  -5 if the joint is not initialized,
+  -101 if the velocity is zero,
+  -102 if absolute value of the velocity is outside the specified limits.
+ */
+  int _home(float velocity, u_int8_t sensitivity, u_int8_t current);
 
   /**
    * @brief State flags transmitted with every I2C transaction.

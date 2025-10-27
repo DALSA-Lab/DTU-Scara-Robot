@@ -101,6 +101,28 @@ int Joint::disable(void)
 
 int Joint::home(float velocity, u_int8_t sensitivity, u_int8_t current)
 {
+    int rc = this->_home(velocity, sensitivity, current);
+    if (rc < 0)
+    {
+        return rc;
+    }
+    this->wait_while_busy(100.0);
+
+    if (!this->isHomed())
+    {
+        return -2; // NOT HOMED
+    }
+
+    return 0;
+}
+
+int Joint::non_blocking_home(float velocity, u_int8_t sensitivity, u_int8_t current)
+{
+    return this->_home(velocity, sensitivity, current);
+}
+
+int Joint::_home(float velocity, u_int8_t sensitivity, u_int8_t current)
+{
     if (this->handle < 0)
     {
         return -5;
@@ -108,6 +130,15 @@ int Joint::home(float velocity, u_int8_t sensitivity, u_int8_t current)
     if (!this->isEnabled())
     {
         return -3;
+    }
+
+    /* Save the homing position stored on the joint. It is acceptable to call this before calling the actual home function, because even if homing fails
+    access to the homing Offset is denied when the joint is nothomed. Saving the offset before allows to having to remember to store it afterwards when homing is called as 
+    non-blocking. */
+    int rc = this->setHomingOffset(this->offset);
+    if (rc < 0)
+    {
+        return rc;
     }
 
     velocity = RAD2DEG(JOINT2ACTUATOR(velocity, this->reduction, 0)) / 6;
@@ -140,26 +171,11 @@ int Joint::home(float velocity, u_int8_t sensitivity, u_int8_t current)
     buf |= ((sensitivity & 0xFF) << 16);
     buf |= ((current & 0xFF) << 24);
 
-    int rc = this->write(HOME, buf, this->flags);
+    rc = this->write(HOME, buf, this->flags);
     if (rc < 0)
     {
         return -1;
     }
-    this->wait_while_busy(100.0);
-
-    if (!this->isHomed())
-    {
-        return -2; // NOT HOMED
-    }
-
-    /* If the joint is successfully homed save the homing position stored on the joint */
-    rc = this->setHomingOffset(this->offset);
-    if (rc < 0)
-    {
-        return rc;
-    }
-
-    return 0;
 }
 
 int Joint::printInfo(void)
@@ -448,10 +464,6 @@ int Joint::setHomingOffset(const float offset)
     if (this->handle < 0)
     {
         return -5;
-    }
-    if (!this->isHomed())
-    {
-        return -2; // NOT HOMED
     }
 
     return this->write(HOMEOFFSET, offset, this->flags) < 0 ? -1 : 0;
