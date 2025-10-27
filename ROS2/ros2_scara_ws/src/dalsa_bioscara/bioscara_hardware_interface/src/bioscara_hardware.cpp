@@ -333,30 +333,6 @@ namespace bioscara_hardware_interface
 
       joint_config_t cfg = _joint_cfg[name];
 
-      /* First get the flags. they must all be zero to indicate that the joint is operational.
-      Below code does not look great*/
-      int flags = joint.getFlags();
-      if (flags < 0 || !joint.isHomed())
-      {
-        std::string reason = "";
-        if (flags < 0)
-        {
-          reason = "communication error";
-        }
-        else if (!joint.isHomed())
-        {
-          reason = "not homed";
-        }
-        else
-        {
-          reason = "Unkown Reason (" + std::to_string(flags) + ")";
-        }
-        RCLCPP_FATAL(
-            get_logger(),
-            "Failed to enable joint '%s'. Reason: %s", name.c_str(), reason.c_str());
-        return CallbackReturn::ERROR;
-      }
-
       // enable motor
       int rc = joint.enable(cfg.drive_current, cfg.hold_current);
       if (rc < 0)
