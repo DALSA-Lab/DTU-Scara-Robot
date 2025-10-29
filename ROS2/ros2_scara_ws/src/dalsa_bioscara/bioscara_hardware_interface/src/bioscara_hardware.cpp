@@ -557,7 +557,7 @@ namespace bioscara_hardware_interface
         if (_joints.at(descr.prefix_name).getCurrentBCmd() == Joint::HOME &&
             !_joints.at(descr.prefix_name).isBusy())
         {
-          set_command(name, 0.0);
+          set_command(name, 0.0); // this does not set the command to 0.0
         }
       }
       // use != 0 here since 1 for no compatible interface type
@@ -611,6 +611,7 @@ namespace bioscara_hardware_interface
         }
         else if (interface == bioscara_hardware_interface::HW_IF_HOME)
         {
+          rc = 0;
           joint_config_t cfg = _joint_cfg[name];
           float velocity = get_command(CIF_name);
           Joint::stp_reg_t current_cmd = _joints.at(name).getCurrentBCmd();
