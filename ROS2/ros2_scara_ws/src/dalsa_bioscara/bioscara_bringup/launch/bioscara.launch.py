@@ -120,6 +120,7 @@ def generate_launch_description():
         executable="ros2_control_node",
         output="both",
         parameters=[robot_description, robot_controllers],
+        prefix=['gdbserver localhost:3000']
     )
 
     # start the robot state publisher node which gets the robot description file as paramter
