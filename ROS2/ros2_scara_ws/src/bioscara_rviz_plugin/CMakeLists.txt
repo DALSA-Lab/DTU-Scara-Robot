@@ -10,6 +10,7 @@ find_package(ament_cmake_ros REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(rviz_common REQUIRED)
 find_package(controller_manager_msgs REQUIRED)
+find_package(control_msgs REQUIRED)
 
 
 set(CMAKE_AUTOMOC ON)
@@ -26,6 +27,7 @@ ament_target_dependencies(bioscara_panel
   pluginlib
   rviz_common
   controller_manager_msgs
+  control_msgs
 )
 install(TARGETS bioscara_panel
         EXPORT export_bioscara_rviz_plugin

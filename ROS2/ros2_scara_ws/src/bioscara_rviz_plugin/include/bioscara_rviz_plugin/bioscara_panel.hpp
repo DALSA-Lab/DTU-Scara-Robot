@@ -32,7 +32,7 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
 
-/* Author: David V. Lu!! */
+/* Author: David V. Lu!! and Sebastian Storz */
 
 #ifndef RVIZ_PANEL_TUTORIAL__DEMO_PANEL_HPP_
 #define RVIZ_PANEL_TUTORIAL__DEMO_PANEL_HPP_
@@ -46,6 +46,8 @@
 #include "controller_manager_msgs/msg/controller_manager_activity.hpp"
 #include "controller_manager_msgs/msg/named_lifecycle_state.hpp"
 #include "controller_manager_msgs/srv/list_controllers.hpp"
+#include "control_msgs/msg/dynamic_interface_group_values.hpp"
+#include "control_msgs/msg/interface_value.hpp"
 
 // #include <rclcpp/create_timer.hpp>
 
