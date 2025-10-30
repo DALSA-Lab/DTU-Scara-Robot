@@ -202,6 +202,8 @@ int Joint::_home(float velocity, u_int8_t sensitivity, u_int8_t current)
     {
         return -1;
     }
+
+    return 0;
 }
 
 int Joint::printInfo(void)

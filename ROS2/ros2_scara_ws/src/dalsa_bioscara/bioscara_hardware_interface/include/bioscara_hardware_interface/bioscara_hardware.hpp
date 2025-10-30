@@ -294,6 +294,12 @@ namespace bioscara_hardware_interface
          *
          */
         std::unordered_map<std::string, std::set<std::string>> _joint_command_modes;
+
+
+
+        int start_homing(const std::string name, float velocity);
+
+        int stop_homing(const std::string name);
     };
 
 } // namespace bioscara_hardware_interface

@@ -552,12 +552,11 @@ namespace bioscara_hardware_interface
 
         /* If the homing has been activated (through the command interface) the device signals BUSY
         as long as it is still homing. If the BUSY flag is reset while the current command is still HOME
-        we can assume the homing has finished. Then reset the command interface to 0, which will stop the homing (
-        perform cleanup tasks) at the next write cycle. */
+        we can assume the homing has finished. Then stop the homing. */
         if (_joints.at(descr.prefix_name).getCurrentBCmd() == Joint::HOME &&
             !_joints.at(descr.prefix_name).isBusy())
         {
-          set_command(name, 0.0);
+          stop_homing(descr.prefix_name);
         }
       }
       // use != 0 here since 1 for no compatible interface type
@@ -611,20 +610,25 @@ namespace bioscara_hardware_interface
         }
         else if (interface == bioscara_hardware_interface::HW_IF_HOME)
         {
-          joint_config_t cfg = _joint_cfg[name];
+          rc = 0;
+
           float velocity = get_command(CIF_name);
           Joint::stp_reg_t current_cmd = _joints.at(name).getCurrentBCmd();
 
           /* If the joint is currently executing a homing call and the velocity is set to 0.0,
-          stop the homing. This could be either because the user interrupts the homing or the homing is finished.*/
+          stop the homing. This indicates that the homing should be aborted. */
           if (velocity == 0.0)
           {
             if (current_cmd == Joint::HOME)
             {
-              /* Stop the homing. Reset acceleration and perform the postHoming cleanup */
-              _joints.at(name).setMaxAcceleration(cfg.max_acceleration);
-              _joints.at(name).postHoming();
-              rc = _joints.at(name).stop();
+              rc = stop_homing(name);
+
+              /* In this case, if the homing is manually stopped,
+              we expect stop_homing() to return -2 (not homed). Hence this is not an error. */
+              if (rc == -2)
+              {
+                rc = 0;
+              }
             }
           }
 
@@ -634,9 +638,7 @@ namespace bioscara_hardware_interface
           {
             if (current_cmd == Joint::NONE)
             {
-              float speed = velocity > 0.0 ? cfg.homing.speed : -cfg.homing.speed;
-              _joints.at(name).setMaxAcceleration(cfg.homing.acceleration);
-              rc = _joints.at(name).startHoming(speed, cfg.homing.threshold, cfg.homing.current);
+              rc = start_homing(name, velocity);
             }
             else if (current_cmd != Joint::HOME)
             {
@@ -818,6 +820,33 @@ namespace bioscara_hardware_interface
     }
 
     return CallbackReturn::ERROR;
+  }
+
+  int BioscaraHardwareInterface::start_homing(const std::string name, float velocity)
+  {
+    joint_config_t cfg = _joint_cfg[name];
+
+    float speed = velocity > 0.0 ? cfg.homing.speed : -cfg.homing.speed;
+    int rc = _joints.at(name).setMaxAcceleration(cfg.homing.acceleration);
+    if (rc < 0)
+    {
+      return rc;
+    }
+    return _joints.at(name).startHoming(speed, cfg.homing.threshold, cfg.homing.current);
+  }
+
+  int BioscaraHardwareInterface::stop_homing(const std::string name)
+  {
+    joint_config_t cfg = _joint_cfg[name];
+
+    /* Stop the homing. Reset acceleration and perform the postHoming cleanup */
+    int rc = _joints.at(name).setMaxAcceleration(cfg.max_acceleration);
+    if (rc < 0)
+    {
+      return rc;
+    }
+    _joints.at(name).postHoming();
+    return _joints.at(name).stop(); // disable?
   }
 
 } // namespace bioscara_hardware_interface
