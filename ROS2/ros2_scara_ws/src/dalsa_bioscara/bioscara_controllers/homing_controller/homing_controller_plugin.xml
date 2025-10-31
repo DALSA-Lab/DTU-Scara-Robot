@@ -1,7 +1,0 @@
-<library path="homing_controller">
-  <class name="homing_controller/HomingController" type="homing_controller::HomingController" base_class_type="controller_interface::ControllerInterface">
-  <description>
-    Derived from the GpioCommandController, the homing controller triggers homing of the joints.
-  </description>
-  </class>
-</library>

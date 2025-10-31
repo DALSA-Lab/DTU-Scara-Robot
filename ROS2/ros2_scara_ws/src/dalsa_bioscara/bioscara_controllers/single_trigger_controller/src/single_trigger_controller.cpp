@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "homing_controller/homing_controller.hpp"
+#include "single_trigger_controller/single_trigger_controller.hpp"
 
 #include <algorithm>
 
@@ -33,45 +33,52 @@ namespace
         }
     }
 
-    /* TODO: Modify this to joints instead of gpios */
-    std::vector<hardware_interface::ComponentInfo> extract_gpios_from_hardware_info(
-        const std::vector<hardware_interface::HardwareInfo> &hardware_infos)
-    {
-        std::vector<hardware_interface::ComponentInfo> result;
-        for (const auto &hardware_info : hardware_infos)
-        {
-            std::copy(
-                hardware_info.gpios.begin(), hardware_info.gpios.end(), std::back_insert_iterator(result));
-        }
-        return result;
-    }
+    // /* TODO: Modify this to joints instead of gpios */
+    // std::vector<hardware_interface::ComponentInfo> extract_gpios_from_hardware_info(
+    //     const std::vector<hardware_interface::HardwareInfo> &hardware_infos)
+    // {
+    //     std::vector<hardware_interface::ComponentInfo> result;
+    //     for (const auto &hardware_info : hardware_infos)
+    //     {
+    //         std::copy(
+    //             hardware_info.gpios.begin(), hardware_info.gpios.end(), std::back_insert_iterator(result));
+    //     }
+    //     return result;
+    // }
 } // namespace
 
-namespace homing_controller
+namespace single_trigger_controller
 {
 
-    HomingController::HomingController() : controller_interface::ControllerInterface() {}
+    SingleTriggerController::SingleTriggerController() : controller_interface::ControllerInterface() {}
 
-    CallbackReturn HomingController::on_init()
+    CallbackReturn SingleTriggerController::on_init()
+    {
+        try
+        {
+            param_listener_ = std::make_shared<single_trigger_controller_parameters::ParamListener>(get_node());
+            params_ = param_listener_->get_params();
+
+            return CallbackReturn::SUCCESS;
+        }
+        catch (const std::exception &e)
+        {
+            fprintf(stderr, "Exception thrown during init stage with message: %s \n", e.what());
+            return CallbackReturn::ERROR;
+        }
+    }
+
+    CallbackReturn SingleTriggerController::on_configure(const rclcpp_lifecycle::State &)
     try
     {
-        param_listener_ = std::make_shared<homing_controller_parameters::ParamListener>(get_node());
-        params_ = param_listener_->get_params();
-        return CallbackReturn::SUCCESS;
-    }
-    catch (const std::exception &e)
-    {
-        fprintf(stderr, "Exception thrown during init stage with message: %s \n", e.what());
-        return CallbackReturn::ERROR;
-    }
-
-    CallbackReturn HomingController::on_configure(const rclcpp_lifecycle::State &)
-    try
-    {
+        // Get latest controller parameter update
         if (!update_dynamic_map_parameters())
         {
             return controller_interface::CallbackReturn::ERROR;
         }
+
+        // Save all loaded hardware components as member
+        // _hardware_components = hardware_interface::parse_control_resources_from_urdf(get_robot_description());
 
         store_command_interface_types();
         store_state_interface_types();
@@ -84,18 +91,18 @@ namespace homing_controller
 
         if (!command_interface_types_.empty())
         {
-            gpios_command_subscriber_ = get_node()->create_subscription<CmdType>(
+            command_subscriber_ = get_node()->create_subscription<CmdType>(
                 "~/commands", rclcpp::SystemDefaultsQoS(),
-                std::bind(&HomingController::update_gpios_commands, this, std::placeholders::_1)
+                std::bind(&SingleTriggerController::update_commands, this, std::placeholders::_1)
                 // [this](const CmdType::SharedPtr msg) { rt_command_.set(*msg); }
             );
         }
 
-        gpio_state_publisher_ =
-            get_node()->create_publisher<StateType>("~/gpio_states", rclcpp::SystemDefaultsQoS());
+        state_publisher_ =
+            get_node()->create_publisher<StateType>("~/states", rclcpp::SystemDefaultsQoS());
 
-        realtime_gpio_state_publisher_ =
-            std::make_shared<realtime_tools::RealtimePublisher<StateType>>(gpio_state_publisher_);
+        realtime_state_publisher_ =
+            std::make_shared<realtime_tools::RealtimePublisher<StateType>>(state_publisher_);
         RCLCPP_INFO(get_node()->get_logger(), "configure successful");
         return CallbackReturn::SUCCESS;
     }
@@ -106,7 +113,7 @@ namespace homing_controller
     }
 
     controller_interface::InterfaceConfiguration
-    HomingController::command_interface_configuration() const
+    SingleTriggerController::command_interface_configuration() const
     {
         controller_interface::InterfaceConfiguration command_interfaces_config;
         command_interfaces_config.type = controller_interface::interface_configuration_type::INDIVIDUAL;
@@ -115,7 +122,7 @@ namespace homing_controller
         return command_interfaces_config;
     }
 
-    controller_interface::InterfaceConfiguration HomingController::state_interface_configuration()
+    controller_interface::InterfaceConfiguration SingleTriggerController::state_interface_configuration()
         const
     {
         controller_interface::InterfaceConfiguration state_interfaces_config;
@@ -125,7 +132,7 @@ namespace homing_controller
         return state_interfaces_config;
     }
 
-    CallbackReturn HomingController::on_activate(const rclcpp_lifecycle::State &)
+    CallbackReturn SingleTriggerController::on_activate(const rclcpp_lifecycle::State &)
     {
         command_interfaces_map_ =
             create_map_of_references_to_interfaces(command_interface_types_, command_interfaces_);
@@ -139,31 +146,30 @@ namespace homing_controller
             return CallbackReturn::ERROR;
         }
 
-        initialize_gpio_state_msg();
+        initialize_state_msg();
         // Set default value in command
         CmdType msg;
-        update_gpios_commands(msg);
+        update_commands(msg);
         RCLCPP_INFO(get_node()->get_logger(), "activate successful");
         return CallbackReturn::SUCCESS;
     }
 
-    CallbackReturn HomingController::on_deactivate(const rclcpp_lifecycle::State &)
+    CallbackReturn SingleTriggerController::on_deactivate(const rclcpp_lifecycle::State &)
     {
         // Set default value in command
         CmdType msg;
-        update_gpios_commands(msg);
+        update_commands(msg);
         return CallbackReturn::SUCCESS;
     }
 
-    controller_interface::return_type HomingController::update(
+    controller_interface::return_type SingleTriggerController::update(
         const rclcpp::Time &, const rclcpp::Duration &)
     {
-        update_gpios_states();
+        update_states();
         return controller_interface::return_type::OK;
-        // return update_gpios_commands();
     }
 
-    bool HomingController::update_dynamic_map_parameters()
+    bool SingleTriggerController::update_dynamic_map_parameters()
     {
         auto logger = get_node()->get_logger();
         // update the dynamic map parameters
@@ -173,9 +179,11 @@ namespace homing_controller
         return true;
     }
 
-    void HomingController::store_command_interface_types()
+    void SingleTriggerController::store_command_interface_types()
     {
-        for (const auto &[gpio_name, interfaces] : params_.command_interfaces.gpios_map)
+        // todo: do checks that either gpio and/or joints are defined
+
+        for (const auto &[gpio_name, interfaces] : params_.command_interfaces.gpios.gpios_map)
         {
             std::transform(
                 interfaces.interfaces.cbegin(), interfaces.interfaces.cend(),
@@ -183,61 +191,70 @@ namespace homing_controller
                 [&](const auto &interface_name)
                 { return gpio_name + "/" + interface_name; });
         }
-    }
 
-    bool HomingController::should_broadcast_all_interfaces_of_configured_gpios() const
-    {
-        auto are_interfaces_empty = [](const auto &interfaces)
-        { return interfaces.second.interfaces.empty(); };
-        return std::all_of(
-            params_.state_interfaces.gpios_map.cbegin(), params_.state_interfaces.gpios_map.cend(),
-            are_interfaces_empty);
-    }
-
-    std::vector<hardware_interface::ComponentInfo> HomingController::get_gpios_from_urdf() const
-    try
-    {
-        return extract_gpios_from_hardware_info(
-            hardware_interface::parse_control_resources_from_urdf(get_robot_description()));
-    }
-    catch (const std::exception &e)
-    {
-        fprintf(stderr, "Exception thrown during extracting gpios info from urdf %s \n", e.what());
-        return {};
-    }
-
-    void HomingController::set_all_state_interfaces_of_configured_gpios()
-    {
-        const auto gpios{get_gpios_from_urdf()};
-        for (const auto &gpio_name : params_.gpios)
+        for (const auto &[joint_name, interfaces] : params_.command_interfaces.joints.joints_map)
         {
-            for (const auto &gpio : gpios)
-            {
-                if (gpio_name == gpio.name)
-                {
-                    std::transform(
-                        gpio.state_interfaces.begin(), gpio.state_interfaces.end(),
-                        std::back_insert_iterator(state_interface_types_),
-                        [&gpio_name](const auto &interface_name)
-                        { return gpio_name + '/' + interface_name.name; });
-                }
-            }
+            std::transform(
+                interfaces.interfaces.cbegin(), interfaces.interfaces.cend(),
+                std::back_inserter(command_interface_types_),
+                [&](const auto &interface_name)
+                { return joint_name + "/" + interface_name; });
         }
     }
 
-    void HomingController::store_state_interface_types()
-    {
-        if (should_broadcast_all_interfaces_of_configured_gpios())
-        {
-            RCLCPP_INFO(
-                get_node()->get_logger(),
-                "State interfaces are not configured. All available interfaces of configured GPIOs will be "
-                "broadcasted.");
-            set_all_state_interfaces_of_configured_gpios();
-            return;
-        }
+    // bool SingleTriggerController::should_broadcast_all_interfaces_of_configured_gpios() const
+    // {
+    //     auto are_interfaces_empty = [](const auto &interfaces)
+    //     { return interfaces.second.interfaces.empty(); };
+    //     return std::all_of(
+    //         params_.state_interfaces.gpios_map.cbegin(), params_.state_interfaces.gpios_map.cend(),
+    //         are_interfaces_empty);
+    // }
 
-        for (const auto &[gpio_name, interfaces] : params_.state_interfaces.gpios_map)
+    // std::vector<hardware_interface::ComponentInfo> SingleTriggerController::get_gpios_from_urdf() const
+    // try
+    // {
+    //     return extract_gpios_from_hardware_info(
+    //         hardware_interface::parse_control_resources_from_urdf(get_robot_description()));
+    // }
+    // catch (const std::exception &e)
+    // {
+    //     fprintf(stderr, "Exception thrown during extracting gpios info from urdf %s \n", e.what());
+    //     return {};
+    // }
+
+    // void SingleTriggerController::set_all_state_interfaces_of_configured_gpios()
+    // {
+    //     const auto gpios{get_gpios_from_urdf()};
+    //     for (const auto &gpio_name : params_.gpios)
+    //     {
+    //         for (const auto &gpio : gpios)
+    //         {
+    //             if (gpio_name == gpio.name)
+    //             {
+    //                 std::transform(
+    //                     gpio.state_interfaces.begin(), gpio.state_interfaces.end(),
+    //                     std::back_insert_iterator(state_interface_types_),
+    //                     [&gpio_name](const auto &interface_name)
+    //                     { return gpio_name + '/' + interface_name.name; });
+    //             }
+    //         }
+    //     }
+    // }
+
+    void SingleTriggerController::store_state_interface_types()
+    {
+        // if (should_broadcast_all_interfaces_of_configured_gpios())
+        // {
+        //     RCLCPP_INFO(
+        //         get_node()->get_logger(),
+        //         "State interfaces are not configured. All available interfaces of configured GPIOs will be "
+        //         "broadcasted.");
+        //     set_all_state_interfaces_of_configured_gpios();
+        //     return;
+        // }
+
+        for (const auto &[gpio_name, interfaces] : params_.state_interfaces.gpios.gpios_map)
         {
             std::transform(
                 interfaces.interfaces.cbegin(), interfaces.interfaces.cend(),
@@ -245,34 +262,54 @@ namespace homing_controller
                 [&](const auto &interface_name)
                 { return gpio_name + "/" + interface_name; });
         }
+
+        for (const auto &[joint_name, interfaces] : params_.state_interfaces.joints.joints_map)
+        {
+            std::transform(
+                interfaces.interfaces.cbegin(), interfaces.interfaces.cend(),
+                std::back_inserter(state_interface_types_),
+                [&](const auto &interface_name)
+                { return joint_name + "/" + interface_name; });
+        }
     }
 
-    void HomingController::initialize_gpio_state_msg()
+    void SingleTriggerController::initialize_state_msg()
     {
-        gpio_state_msg_.header.stamp = get_node()->now();
-        gpio_state_msg_.interface_groups.resize(params_.gpios.size());
-        gpio_state_msg_.interface_values.resize(params_.gpios.size());
+        state_msg_.header.stamp = get_node()->now();
+        state_msg_.interface_groups.resize(params_.gpios.size() + params_.joints.size());
+        state_msg_.interface_values.resize(params_.gpios.size() + params_.joints.size());
 
         for (std::size_t gpio_index = 0; gpio_index < params_.gpios.size(); ++gpio_index)
         {
             const auto gpio_name = params_.gpios[gpio_index];
-            gpio_state_msg_.interface_groups[gpio_index] = gpio_name;
-            gpio_state_msg_.interface_values[gpio_index].interface_names =
-                get_gpios_state_interfaces_names(gpio_name);
-            gpio_state_msg_.interface_values[gpio_index].values = std::vector<double>(
-                gpio_state_msg_.interface_values[gpio_index].interface_names.size(),
+            state_msg_.interface_groups[gpio_index] = gpio_name;
+            state_msg_.interface_values[gpio_index].interface_names =
+                get_state_interfaces_names(gpio_name);
+            state_msg_.interface_values[gpio_index].values = std::vector<double>(
+                state_msg_.interface_values[gpio_index].interface_names.size(),
+                std::numeric_limits<double>::quiet_NaN());
+        }
+
+        for (std::size_t joint_index = 0; joint_index < params_.joints.size(); ++joint_index)
+        {
+            const auto joint_name = params_.joints[joint_index];
+            state_msg_.interface_groups[joint_index] = joint_name;
+            state_msg_.interface_values[joint_index].interface_names =
+                get_state_interfaces_names(joint_name);
+            state_msg_.interface_values[joint_index].values = std::vector<double>(
+                state_msg_.interface_values[joint_index].interface_names.size(),
                 std::numeric_limits<double>::quiet_NaN());
         }
     }
 
-    InterfacesNames HomingController::get_gpios_state_interfaces_names(
-        const std::string &gpio_name) const
+    InterfacesNames SingleTriggerController::get_state_interfaces_names(
+        const std::string &name) const
     {
         InterfacesNames result;
         for (const auto &interface_name : state_interface_types_)
         {
             const auto it = state_interfaces_map_.find(interface_name);
-            if (it != state_interfaces_map_.cend() && it->second.get().get_prefix_name() == gpio_name)
+            if (it != state_interfaces_map_.cend() && it->second.get().get_prefix_name() == name)
             {
                 result.emplace_back(it->second.get().get_interface_name());
             }
@@ -282,7 +319,7 @@ namespace homing_controller
 
     template <typename T>
     std::unordered_map<std::string, std::reference_wrapper<T>>
-    HomingController::create_map_of_references_to_interfaces(
+    SingleTriggerController::create_map_of_references_to_interfaces(
         const InterfacesNames &interfaces_from_params, std::vector<T> &configured_interfaces)
     {
         std::unordered_map<std::string, std::reference_wrapper<T>> map;
@@ -304,7 +341,7 @@ namespace homing_controller
     }
 
     template <typename T>
-    bool HomingController::check_if_configured_interfaces_matches_received(
+    bool SingleTriggerController::check_if_configured_interfaces_matches_received(
         const InterfacesNames &interfaces_from_params, const T &configured_interfaces)
     {
         if (!(configured_interfaces.size() == interfaces_from_params.size()))
@@ -322,7 +359,7 @@ namespace homing_controller
         return true;
     }
 
-    controller_interface::return_type HomingController::update_gpios_commands(const CmdType &gpio_commands)
+    controller_interface::return_type SingleTriggerController::update_commands(const CmdType &commands)
     {
         /* control_msgs::msg::DynamicInterfaceGroupValues has following structure:
         {
@@ -353,24 +390,24 @@ namespace homing_controller
         }
         */
 
-        if (gpio_commands.interface_groups.empty() || gpio_commands.interface_values.empty())
+        if (commands.interface_groups.empty() || commands.interface_values.empty())
         {
             // if the interfaces are empty, set all command interfaces to 0.0
             for (auto full_command_interface_name : command_interface_types_)
             {
                 std::ignore = command_interfaces_map_.at(full_command_interface_name).get().set_value(0.0);
             }
-            
+
             return controller_interface::return_type::OK;
         }
 
-        for (std::size_t gpio_index = 0; gpio_index < gpio_commands.interface_groups.size();
+        for (std::size_t gpio_index = 0; gpio_index < commands.interface_groups.size();
              ++gpio_index)
         {
-            const auto &gpio_name = gpio_commands.interface_groups[gpio_index];
+            const auto &gpio_name = commands.interface_groups[gpio_index];
             if (
-                gpio_commands.interface_values[gpio_index].values.size() !=
-                gpio_commands.interface_values[gpio_index].interface_names.size())
+                commands.interface_values[gpio_index].values.size() !=
+                commands.interface_values[gpio_index].interface_names.size())
             {
                 RCLCPP_ERROR(
                     get_node()->get_logger(), "For gpio %s interfaces_names do not match values",
@@ -378,24 +415,24 @@ namespace homing_controller
                 return controller_interface::return_type::ERROR;
             }
             for (std::size_t command_interface_index = 0;
-                 command_interface_index < gpio_commands.interface_values[gpio_index].values.size();
+                 command_interface_index < commands.interface_values[gpio_index].values.size();
                  ++command_interface_index)
             {
-                apply_command(gpio_commands, gpio_index, command_interface_index);
+                apply_command(commands, gpio_index, command_interface_index);
             }
         }
         return controller_interface::return_type::OK;
     }
 
-    void HomingController::apply_command(
-        const CmdType &gpio_commands, std::size_t gpio_index, std::size_t command_interface_index) const
+    void SingleTriggerController::apply_command(
+        const CmdType &commands, std::size_t index, std::size_t command_interface_index) const
     {
         const auto full_command_interface_name =
-            gpio_commands.interface_groups[gpio_index] + '/' +
-            gpio_commands.interface_values[gpio_index].interface_names[command_interface_index];
+            commands.interface_groups[index] + '/' +
+            commands.interface_values[index].interface_names[command_interface_index];
 
         const auto &command_value =
-            gpio_commands.interface_values[gpio_index].values[command_interface_index];
+            commands.interface_values[index].values[command_interface_index];
 
         try
         {
@@ -414,33 +451,33 @@ namespace homing_controller
         }
     }
 
-    void HomingController::update_gpios_states()
+    void SingleTriggerController::update_states()
     {
-        if (!realtime_gpio_state_publisher_)
+        if (!realtime_state_publisher_)
         {
             return;
         }
 
-        gpio_state_msg_.header.stamp = get_node()->now();
-        for (std::size_t gpio_index = 0; gpio_index < gpio_state_msg_.interface_groups.size();
-             ++gpio_index)
+        state_msg_.header.stamp = get_node()->now();
+        for (std::size_t index = 0; index < state_msg_.interface_groups.size();
+             ++index)
         {
             for (std::size_t interface_index = 0;
-                 interface_index < gpio_state_msg_.interface_values[gpio_index].interface_names.size();
+                 interface_index < state_msg_.interface_values[index].interface_names.size();
                  ++interface_index)
             {
-                apply_state_value(gpio_state_msg_, gpio_index, interface_index);
+                apply_state_value(state_msg_, index, interface_index);
             }
         }
-        realtime_gpio_state_publisher_->try_publish(gpio_state_msg_);
+        realtime_state_publisher_->try_publish(state_msg_);
     }
 
-    void HomingController::apply_state_value(
-        StateType &state_msg, std::size_t gpio_index, std::size_t interface_index) const
+    void SingleTriggerController::apply_state_value(
+        StateType &state_msg, std::size_t index, std::size_t interface_index) const
     {
         const auto interface_name =
-            state_msg.interface_groups[gpio_index] + '/' +
-            state_msg.interface_values[gpio_index].interface_names[interface_index];
+            state_msg.interface_groups[index] + '/' +
+            state_msg.interface_values[index].interface_names[interface_index];
         try
         {
             auto state_msg_interface_value_op =
@@ -454,7 +491,7 @@ namespace homing_controller
             }
             else
             {
-                state_msg.interface_values[gpio_index].values[interface_index] =
+                state_msg.interface_values[index].values[interface_index] =
                     state_msg_interface_value_op.value();
             }
         }
@@ -464,9 +501,9 @@ namespace homing_controller
         }
     }
 
-} // namespace homing_controller
+} // namespace single_trigger_controller
 
 #include "pluginlib/class_list_macros.hpp"
 
 PLUGINLIB_EXPORT_CLASS(
-    homing_controller::HomingController, controller_interface::ControllerInterface)
+    single_trigger_controller::SingleTriggerController, controller_interface::ControllerInterface)
