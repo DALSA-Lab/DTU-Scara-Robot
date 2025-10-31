@@ -94,7 +94,7 @@ velocity_joint_trajectory_controller:
       
 homing_controller:
   ros__parameters:
-    type: homing_controller/HomingController
+    type: single_trigger_controller/SingleTriggerController
     gpios:
       - j1
       - j2

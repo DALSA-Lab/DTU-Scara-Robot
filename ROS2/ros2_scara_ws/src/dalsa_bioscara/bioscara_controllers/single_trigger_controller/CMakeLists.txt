@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(homing_controller)
+project(single_trigger_controller)
 
 find_package(ros2_control_cmake REQUIRED)
 set_compiler_options()
@@ -16,17 +16,17 @@ find_package(realtime_tools REQUIRED)
 find_package(generate_parameter_library REQUIRED)
 find_package(control_msgs REQUIRED)
 
-generate_parameter_library(homing_controller_parameters
-  src/homing_controller_parameters.yaml
+generate_parameter_library(single_trigger_controller_parameters
+  src/single_trigger_controller_parameters.yaml
 )
 
-add_library(homing_controller
+add_library(single_trigger_controller
   SHARED
-  src/homing_controller.cpp
+  src/single_trigger_controller.cpp
 )
-target_include_directories(homing_controller PRIVATE include)
-target_link_libraries(homing_controller PUBLIC
-                      homing_controller_parameters
+target_include_directories(single_trigger_controller PRIVATE include)
+target_link_libraries(single_trigger_controller PUBLIC
+                      single_trigger_controller_parameters
                       controller_interface::controller_interface
                       hardware_interface::hardware_interface
                       pluginlib::pluginlib
@@ -45,7 +45,7 @@ install(
 
 install(
   TARGETS
-  homing_controller
+  single_trigger_controller
   RUNTIME DESTINATION bin
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
@@ -63,6 +63,6 @@ ament_export_include_directories(
   include
 )
 ament_export_libraries(
-  homing_controller
+  single_trigger_controller
 )
 ament_package()
