@@ -3,7 +3,7 @@
 <package format="3">
   <name>single_trigger_controller</name>
   <version>0.0.0</version>
-  <description>Controllers to interact with gpios.</description>
+  <description>Controllers write commands only once.</description>
 
   <maintainer email="s.storz01@gmail.com">Sebastian Storz</maintainer>
 
