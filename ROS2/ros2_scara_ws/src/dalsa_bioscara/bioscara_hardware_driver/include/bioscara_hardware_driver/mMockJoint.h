@@ -39,6 +39,8 @@ public:
 
   u_int8_t getFlags(void) override;
 
+  bool isHomed(void) override;
+
 protected:
   int _home(float velocity, u_int8_t sensitivity, u_int8_t current);
 

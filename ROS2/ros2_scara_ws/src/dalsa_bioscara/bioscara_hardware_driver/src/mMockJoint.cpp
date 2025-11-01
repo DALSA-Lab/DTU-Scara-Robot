@@ -8,14 +8,14 @@ MockJoint::MockJoint(const std::string name) : BaseJoint(name)
 int MockJoint::enable(u_int8_t driveCurrent, u_int8_t holdCurrent)
 {
     BaseJoint::enable(driveCurrent, holdCurrent);
-    this->flags |= (1 << 3);
+    this->flags &= ~(1 << 3);
     return 0;
 }
 
 int MockJoint::disable(void)
 {
     BaseJoint::disable();
-    this->flags &= ~(1 << 3);
+    this->flags |= (1 << 3);
     return 0;
 }
 
@@ -84,15 +84,21 @@ int MockJoint::_home(float /*velocity*/, u_int8_t /*sensitivity*/, u_int8_t /*cu
 
 u_int8_t MockJoint::getFlags(void)
 {
+    return BaseJoint::getFlags();
+}
 
+bool MockJoint::isHomed(void)
+{
     /* If we started homing, and more than 2 seconds have passed, simulate succesfull homing
     by resetting BUSY and NOTHOMED flag */
     if (getCurrentBCmd() == HOME && getDeltaT(async_start_time, false) >= 2.0)
     {
         this->flags &= ~(1 << 1); // reset BUSY
         this->flags &= ~(1 << 2); // reset NOTHOMED
+        return 1;
     }
-    return BaseJoint::getFlags();
+
+    return BaseJoint::isHomed();
 }
 
 float MockJoint::getDeltaT(std::chrono::_V2::system_clock::time_point &last_call,

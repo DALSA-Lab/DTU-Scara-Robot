@@ -401,7 +401,7 @@ protected:
    * \b NOTHOMED is cleared if the joint is homed. Movement is only allowed if this flag is clear \n
    * \b NOTENABLED is cleared if the joint is enabled after calling Joint::enable()
    */
-  u_int8_t flags = 0x00;
+  u_int8_t flags = 0b00001100;
 
 
   stp_reg_t current_b_cmd = NONE; ///< Keeps track if a blocking command is being executed
