@@ -5,18 +5,12 @@
   <xacro:macro name="bioscara_ros2_control" params="prefix parameters use_mock_hardware">
 
     <ros2_control name="bioscara" type="system">
-      <xacro:if value="${use_mock_hardware}">
-        <hardware>
-          <plugin>mock_components/GenericSystem</plugin>
-          <param name="calculate_dynamics">true</param>
-        </hardware>
-      </xacro:if>
-      <xacro:unless value="${use_mock_hardware}">
-        <hardware>
-          <plugin>bioscara_hardware_interface/BioscaraHardwareInterface</plugin>
-        </hardware>
-      </xacro:unless>
-      
+
+      <hardware>
+        <plugin>bioscara_hardware_interface/BioscaraHardwareInterface</plugin>
+        <param name="use_mock_hardware">${use_mock_hardware}</param>
+      </hardware>
+
       <joint name="${prefix}j1">
         <command_interface name="position"/>
         <command_interface name="velocity"/>
@@ -32,6 +26,7 @@
         <param name="max_acceleration">${parameters['j1']['max_acceleration']}</param>
         <param name="max_velocity">${parameters['j1']['max_velocity']}</param>
       </joint>
+
       <joint name="${prefix}j2">
         <command_interface name="position"/>
         <command_interface name="velocity"/>
@@ -47,6 +42,7 @@
         <param name="max_acceleration">${parameters['j2']['max_acceleration']}</param>
         <param name="max_velocity">${parameters['j2']['max_velocity']}</param>
       </joint>
+
       <joint name="${prefix}j3">
         <command_interface name="position"/>
         <command_interface name="velocity"/>
@@ -62,6 +58,7 @@
         <param name="max_acceleration">${parameters['j3']['max_acceleration']}</param>
         <param name="max_velocity">${parameters['j3']['max_velocity']}</param>
       </joint>
+
       <joint name="${prefix}j4">
         <command_interface name="position"/>
         <command_interface name="velocity"/>
@@ -91,6 +88,7 @@
           </command_interface>
         <state_interface name="home"/>
       </gpio>
+
       <gpio name="${prefix}j2">
         <command_interface name="home">
           <param name="current">${parameters['j2']['homing']['current']}</param>
@@ -100,6 +98,7 @@
           </command_interface>
         <state_interface name="home"/>
       </gpio>
+
       <gpio name="${prefix}j3">
         <command_interface name="home">
           <param name="current">${parameters['j3']['homing']['current']}</param>
@@ -109,6 +108,7 @@
           </command_interface>
         <state_interface name="home"/>
       </gpio>
+
       <gpio name="${prefix}j4">
         <command_interface name="home">
           <param name="current">${parameters['j4']['homing']['current']}</param>
@@ -117,17 +117,8 @@
           <param name="acceleration">${parameters['j4']['homing']['acceleration']}</param>
           </command_interface>
         <state_interface name="home"/>
-      </gpio>      
-      <!-- <gpio name="home">
-        <command_interface name="${prefix}j1"/>
-        <command_interface name="${prefix}j2"/>
-        <command_interface name="${prefix}j3"/>
-        <command_interface name="${prefix}j4"/>
-        <state_interface name="${prefix}j1"/>
-        <state_interface name="${prefix}j2"/>
-        <state_interface name="${prefix}j3"/>
-        <state_interface name="${prefix}j4"/>
-      </gpio> -->
+      </gpio> 
+
     </ros2_control>
 
   </xacro:macro>

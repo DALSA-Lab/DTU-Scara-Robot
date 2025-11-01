@@ -20,8 +20,11 @@
 #include <vector>
 #include <set>
 #include <unordered_map>
+#include <memory>
+
 
 #include "bioscara_hardware_driver/mJoint.h"
+#include "bioscara_hardware_driver/mMockJoint.h"
 
 #include "hardware_interface/handle.hpp"
 #include "hardware_interface/hardware_info.hpp"
@@ -263,13 +266,16 @@ namespace bioscara_hardware_interface
         };
 
         /**
-         * @brief unordered map storing the Joint objects.
+         * @brief unordered map storing the pointers to BaseJoint objects. This will either be a MockJoint or Joint.
          *
          * An unordered map is chosen to simplify acces via the joint name, as this conforms well with the ROS2_control hardware interface
          * The map does not need to be ordered. Search, insertion, and removal of elements have average constant-time complexity.
          *
+         * Since the BaseJoint methods are implemented as virtual, dynamic method dispatch can be utilized to call the correct
+         * implementation of a method. So either BaseJoint::foo() or Joint::foo()/MockJoint::foo() if foo() is overwritten in Joint or MockJoint.
+         * a smart pointer is used to guarantee destruction when the pointer is destructed. A unique pointer is used to prevent copying of the object.
          */
-        std::unordered_map<std::string, Joint> _joints;
+        std::unordered_map<std::string, std::unique_ptr<BaseJoint>> _joints;
 
         /**
          * @brief unordered map storing the configuration struct of the joints.

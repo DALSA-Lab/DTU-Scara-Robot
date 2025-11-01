@@ -13,6 +13,7 @@
 #define MJOINT_H
 
 #include <iostream>
+#include "bioscara_hardware_driver/mBaseJoint.h"
 
 /**
  * @brief Macro for a simple transmission from joint units to actuator units.
@@ -56,54 +57,9 @@
  * @brief Representing a single joint on the I2C bus
  *
  */
-class Joint
+class Joint : public BaseJoint
 {
 public:
-  /**
-   *
-   * @brief register and command definitions
-   *
-   * a register can be read (R) or written (W), each register has a size in bytes.
-   * The payload can be split into multiple values or just be a single value.
-   * Note that not all functions are implemented.
-   *
-   */
-  enum stp_reg_t
-  {
-    NONE = 0x00,                ///< Used for signalling purposes
-    PING = 0x0f,                ///< R; Size: 1; [(char) ACK]
-    SETUP = 0x10,               ///< W; Size: 2; [(uint8) holdCurrent, (uint8) driveCurrent]
-    SETRPM = 0x11,              ///< W; Size: 4; [(float) RPM]
-    GETDRIVERRPM = 0x12,        ///<
-    MOVESTEPS = 0x13,           ///< W; Size: 4; [(int32) steps]
-    MOVEANGLE = 0x14,           ///<
-    MOVETOANGLE = 0x15,         ///< W; Size: 4; [(float) degrees]
-    GETMOTORSTATE = 0x16,       ///<
-    RUNCOTINOUS = 0x17,         ///<
-    ANGLEMOVED = 0x18,          ///< R; Size: 4; [(float) degrees]
-    SETCURRENT = 0x19,          ///< W; Size: 1; [(uint8) driveCurrent]
-    SETHOLDCURRENT = 0x1A,      ///< W; Size: 1; [(uint8) holdCurrent]
-    SETMAXACCELERATION = 0x1B,  ///<
-    SETMAXDECELERATION = 0x1C,  ///<
-    SETMAXVELOCITY = 0x1D,      ///<
-    ENABLESTALLGUARD = 0x1E,    ///< W; Size: 1; [(uint8) threshold]
-    DISABLESTALLGUARD = 0x1F,   ///<
-    CLEARSTALL = 0x20,          ///<
-    SETBRAKEMODE = 0x22,        ///< W; Size: 1; [(uint8) mode]
-    ENABLEPID = 0x23,           ///<
-    DISABLEPID = 0x24,          ///<
-    ENABLECLOSEDLOOP = 0x25,    ///<
-    DISABLECLOSEDLOOP = 0x26,   ///< W; Size: 1; [(uint8) 0]
-    SETCONTROLTHRESHOLD = 0x27, ///<
-    MOVETOEND = 0x28,           ///<
-    STOP = 0x29,                ///< W; Size: 1; [(uint8) mode]
-    GETPIDERROR = 0x2A,         ///<
-    CHECKORIENTATION = 0x2B,    ///< W; Size: 4; [(float) degrees]
-    GETENCODERRPM = 0x2C,       ///< R; Size: 4; [(float) RPM]
-    HOME = 0x2D,                ///< W; Size: 4; [(uint8) current, (int8) sensitivity, (uint8) speed, (uint8) direction]
-    HOMEOFFSET = 0x2E,          ///< R/W; Size: 4; [(float) -]
-  };
-
   /**
    * @brief Create a Joint object
    *
@@ -148,7 +104,7 @@ public:
    *  -1 on when no ACK is received from the joint,
    *  -2 if the I2C device could not be opened given the joint address.
    */
-  int init(void);
+  int init(void) override;
 
   /**
    * @brief Disconnects from a joint.
@@ -159,7 +115,7 @@ public:
    *  -1 when the joint could not be removed due to an I2C error,
    *  -5 if the joint is not initialized.
    */
-  int deinit(void);
+  int deinit(void) override;
 
   /**
    * @brief Setup the joint and engages motor.
@@ -175,38 +131,38 @@ public:
     -3 when the motor is not enabled,
     -5 if the joint is not initialized.
    */
-  int enable(u_int8_t driveCurrent, u_int8_t holdCurrent);
+  int enable(u_int8_t driveCurrent, u_int8_t holdCurrent) override;
 
-  /**
-   * @brief disenganges the joint motor without closing i2c handle
-   * @return 0 on success,
-   * -1 on communication error,
-    -5 if the joint is not initialized.
-   */
-  int disable(void);
+  // /**
+  //  * @brief disenganges the joint motor without closing i2c handle
+  //  * @return 0 on success,
+  //  * -1 on communication error,
+  //   -5 if the joint is not initialized.
+  //  */
+  // int disable(void);
 
-  /**
-   * @brief Blocking implementation to home the joint.
-   *
-   * A blocking implementation which only returns after the the joint is no longer BUSY. See Joint::_home() for documentation.
-   *
-   * Additionally this method returns:
-   * @return -2 when not homed succesfull (isHomed flag still not set),
-   * -109 if the joint is already currently homing (for example from a call to Joint::startHoming()).
-   */
-  int home(float velocity, u_int8_t sensitivity, u_int8_t current);
+  // /**
+  //  * @brief Blocking implementation to home the joint.
+  //  *
+  //  * A blocking implementation which only returns after the the joint is no longer BUSY. See Joint::_home() for documentation.
+  //  *
+  //  * Additionally this method returns:
+  //  * @return -2 when not homed succesfull (isHomed flag still not set),
+  //  * -109 if the joint is already currently homing (for example from a call to Joint::startHoming()).
+  //  */
+  // int home(float velocity, u_int8_t sensitivity, u_int8_t current);
 
-  /**
-   * @brief non-blocking implementation to home the joint.
-   *
-   * See Joint::_home() for documentation. The current_b_cmd flag is set to HOME
-   * This method returns immediatly after starting the homing sequence. This should be used when the blocking implementation is not acceptable.
-   * For example in the update loop of the bioscara_hardware_interface::BioscaraHardwareInterface::write().
+  // /**
+  //  * @brief non-blocking implementation to home the joint.
+  //  *
+  //  * See Joint::_home() for documentation. The current_b_cmd flag is set to HOME
+  //  * This method returns immediatly after starting the homing sequence. This should be used when the blocking implementation is not acceptable.
+  //  * For example in the update loop of the bioscara_hardware_interface::BioscaraHardwareInterface::write().
 
-   * Additionally this method returns:
-   * @return -109 if the joint is already currently homing (for example from a call to Joint::startHoming()).
-   */
-  int startHoming(float velocity, u_int8_t sensitivity, u_int8_t current);
+  //  * Additionally this method returns:
+  //  * @return -109 if the joint is already currently homing (for example from a call to Joint::startHoming()).
+  //  */
+  // int startHoming(float velocity, u_int8_t sensitivity, u_int8_t current);
 
   /**
    * @brief perform tasks after a non-blocking homing.
@@ -221,14 +177,12 @@ public:
    * -5 if the joint is not initialized.
    *
    */
-  int postHoming(void);
-
-  int printInfo(void);
+  int postHoming(void) override;
 
   /**
    * @brief get the current joint position in radians or m for
    * cylindrical and prismatic joints respectively.
-   * 
+   *
    * @warning If the joint is not homed this method does not return an error.
    * Instead `pos` will be 0.0.
    *
@@ -237,7 +191,7 @@ public:
     -1 on communication error,
     -5 if the joint is not initialized.
    */
-  int getPosition(float &pos);
+  int getPosition(float &pos) override;
 
   /**
    * @brief get the current joint position in radians or m for
@@ -251,7 +205,7 @@ public:
     -4 when the motor is stalled,
     -5 if the joint is not initialized.
    */
-  int setPosition(float pos);
+  int setPosition(float pos) override;
 
   /**
    * @brief Move full steps.
@@ -265,7 +219,7 @@ public:
     -4 when the motor is stalled,
     -5 if the joint is not initialized.
    */
-  int moveSteps(int32_t steps);
+  int moveSteps(int32_t steps) override;
 
   /**
    * @brief get the current joint velocity in radians/s or m/s for
@@ -276,7 +230,7 @@ public:
     -1 on communication error,
     -5 if the joint is not initialized.
    */
-  int getVelocity(float &vel);
+  int getVelocity(float &vel) override;
 
   /**
    * @brief Set the current joint velocity in radians/s or m/s for
@@ -290,7 +244,7 @@ public:
     -4 when the motor is stalled,
     -5 if the joint is not initialized.
    */
-  int setVelocity(float vel);
+  int setVelocity(float vel) override;
 
   /**
    * @brief Calls the checkOrientation method of the motor. Checks in which direction the motor is turning.
@@ -304,7 +258,7 @@ public:
     -4 when the motor is stalled,
     -5 if the joint is not initialized.
    */
-  int checkOrientation(float angle = 10.0);
+  int checkOrientation(float angle = 10.0) override;
 
   /**
    * @brief Stops the motor.
@@ -316,13 +270,13 @@ public:
    * -1 on communication error,
    * -5 if the joint is not initialized.
    */
-  int stop(void);
+  int stop(void) override;
   /**
    * @brief Disables the Closed-Loop PID Controller
    * @return 0 on success, -1 on communication error,
     -5 if the joint is not initialized.
    */
-  int disableCL(void);
+  int disableCL(void) override;
 
   /**
    * @brief Set the Drive Current
@@ -331,7 +285,7 @@ public:
    * @return 0 on success, -1 on communication error,
     -5 if the joint is not initialized.
    */
-  int setDriveCurrent(u_int8_t current);
+  int setDriveCurrent(u_int8_t current) override;
 
   /**
    * @brief Set the Hold Current
@@ -341,7 +295,7 @@ public:
    * -1 on communication error,
     -5 if the joint is not initialized.
    */
-  int setHoldCurrent(u_int8_t current);
+  int setHoldCurrent(u_int8_t current) override;
 
   /**
    * @brief Set Brake Mode
@@ -349,7 +303,7 @@ public:
    * @return 0 on success, -1 on communication error,
     -5 if the joint is not initialized.
    */
-  int setBrakeMode(u_int8_t mode);
+  int setBrakeMode(u_int8_t mode) override;
 
   /**
    * @brief Set the maximum permitted joint acceleration (and deceleration) in rad/s^2 or m/s^2 for cylindrical
@@ -359,7 +313,7 @@ public:
    * @return 0 on success, -1 on communication error,
     -5 if the joint is not initialized.
    */
-  int setMaxAcceleration(float maxAccel);
+  int setMaxAcceleration(float maxAccel) override;
 
   /**
    * @brief Set the maximum permitted joint velocity in rad/s or m/s for cylindrical
@@ -369,7 +323,7 @@ public:
    * @return 0 on success, -1 on communication error,
     -5 if the joint is not initialized.
    */
-  int setMaxVelocity(float maxVel);
+  int setMaxVelocity(float maxVel) override;
 
   /**
    * @brief Enable encoder stall detection of the joint.
@@ -380,63 +334,53 @@ public:
    * @return 0 on success, -1 on communication error,
     -5 if the joint is not initialized.
    */
-  int enableStallguard(u_int8_t sensitivity);
+  int enableStallguard(u_int8_t sensitivity) override;
 
-  /**
-   * @brief Checks the state if the motor is homed.
-   *
-   * Reads the internal state flags from the last transmission. If an update is neccessary call Joint::getFlags() before invoking this function.
-   *
-   * @return true if the motor is homed,
-   * false if not.
-   */
-  bool isHomed(void);
+  // /**
+  //  * @brief Checks the state if the motor is homed.
+  //  *
+  //  * Reads the internal state flags from the last transmission. If an update is neccessary call Joint::getFlags() before invoking this function.
+  //  *
+  //  * @return true if the motor is homed,
+  //  * false if not.
+  //  */
+  // bool isHomed(void);
 
-  /**
-   * @brief Checks the state if the motor is enabled.
-   *
-   * Reads the internal state flags from the last transmission. If an update is neccessary call Joint::getFlags() before invoking this function.
-   * If the motor actually can move depends on the state of the STALLED flag which can be checked using Joint::isStalled().
-   *
-   * @return true if the motor is enabled,
-   * false if not.
-   */
-  bool isEnabled(void);
+  // /**
+  //  * @brief Checks the state if the motor is enabled.
+  //  *
+  //  * Reads the internal state flags from the last transmission. If an update is neccessary call Joint::getFlags() before invoking this function.
+  //  * If the motor actually can move depends on the state of the STALLED flag which can be checked using Joint::isStalled().
+  //  *
+  //  * @return true if the motor is enabled,
+  //  * false if not.
+  //  */
+  // bool isEnabled(void);
 
-  /**
-   * @brief Checks if the motor is stalled.
-   *
-   * Reads the internal state flags from the last transmission. If an update is neccessary call Joint::getFlags() before invoking this function.
-   * @return true if the motor is stalled,
-   * false if not.
-   */
-  bool isStalled(void);
+  // /**
+  //  * @brief Checks if the motor is stalled.
+  //  *
+  //  * Reads the internal state flags from the last transmission. If an update is neccessary call Joint::getFlags() before invoking this function.
+  //  * @return true if the motor is stalled,
+  //  * false if not.
+  //  */
+  // bool isStalled(void);
 
-  /**
-   * @brief Checks if the joint controller is busy processing a blocking command.
-   *
-   * Reads the internal state flags from the last transmission. If an update is neccessary call Joint::getFlags() before invoking this function.
-   * @return true if a blocking command is currently executing,
-   * false if not.
-   */
-  bool isBusy(void);
-
-  /**
-   * @brief Check if communication to the joint is established
-   *
-   * Sends a PING to and expects a ACK from the joint.
-   *
-   * @return 0 on success, -1 on communication error,
-    -5 if the joint is not initialized.
-   */
-  int checkCom(void);
+  // /**
+  //  * @brief Checks if the joint controller is busy processing a blocking command.
+  //  *
+  //  * Reads the internal state flags from the last transmission. If an update is neccessary call Joint::getFlags() before invoking this function.
+  //  * @return true if a blocking command is currently executing,
+  //  * false if not.
+  //  */
+  // bool isBusy(void);
 
   /**
    * get driver state flags
    * @return flags >= 0 on success,
     -5 if the joint is not initialized.
    */
-  u_int8_t getFlags(void);
+  u_int8_t getFlags(void) override;
 
   /**
    * @brief Retrieves the homing position from the last homing.
@@ -462,16 +406,79 @@ public:
    */
   int setHomingOffset(const float offset);
 
-  /**
-   * @brief get the currently active blocking command
-   *
-   * @return The the command of type stp_reg_t
-   */
-  stp_reg_t getCurrentBCmd(void);
+  // /**
+  //  * @brief get the currently active blocking command
+  //  *
+  //  * @return The the command of type stp_reg_t
+  //  */
+  // stp_reg_t getCurrentBCmd(void);
 
   std::string name;
 
 protected:
+  // /**
+  //  * @brief Blocking loop waiting for BUSY flag to reset.
+  //  *
+  //  * @param period_ms time in ms between polls.
+  //  */
+  // void wait_while_busy(const float period_ms);
+
+  /**
+   * @brief Call to start the homing sequence of a joint.
+   *
+   * First the joint will check the motor wiring by executing the checkOrientation internally. Then it will set the specified speed
+   * until a resistance which drives the PID error above the specified threshold is encountered.
+   * At this point the stepper stops and zeros the encoder.
+   * @param velocity  signed velocity in rad/s or m/s. Must be between 1.0 < RAD2DEG(JOINT2ACTUATOR(velocity, reduction, 0)) / 6 < 250.0
+   * @param sensitivity Encoder pid error threshold 0 to 255.
+   * @param current homing current, determines how easy it is to stop the motor and thereby provoke a stall
+   *
+   * @return 0 on success,
+    -1 on communication error,
+    -3 when the motor is not enabled,
+    -5 if the joint is not initialized,
+    -101 if the velocity is zero,
+    -102 if absolute value of the velocity is outside the specified limits.
+ */
+  int _home(float velocity, u_int8_t sensitivity, u_int8_t current);
+
+  /**
+   * @brief Check if communication to the joint is established
+   *
+   * Sends a PING to and expects a ACK from the joint.
+   *
+   * @return 0 on success, -1 on communication error,
+    -5 if the joint is not initialized.
+  */
+  int checkCom(void);
+
+  // /**
+  //  * @brief State flags transmitted with every I2C transaction.
+  //  *
+  //  * The transmission flags purpose are to transmit the joints current state.
+  //  * Note: They can not be used as error indication of the execution of a transmitted write command,
+  //  * since commands are executed after the I2C transaction is completed. The status flags are one
+  //  * byte with following structure: \n
+  //  *
+  //  * |BIT7|BIT6|BIT5|BIT4|BIT3|BIT2|BIT1|BIT0|
+  //  * | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+  //  * |reserved|reserved|reserved|reserved|NOTENABLED|NOTHOMED|BUSY|STALL|
+  //  *
+  //  * \b STALL is set if a stall from the stall detection is sensed and the joint is stopped.
+  //  * The flag is cleared when the joint is homed or the Stallguard enabled. \n
+  //  * \b BUSY is set if the slave is busy processing a previous command. \n
+  //  * \b NOTHOMED is cleared if the joint is homed. Movement is only allowed if this flag is clear \n
+  //  * \b NOTENABLED is cleared if the joint is enabled after calling Joint::enable()
+  //  */
+  // u_int8_t flags = 0x00;
+
+  float reduction = 1; ///< Joint to actuator reduction ratio
+  float offset = 0;    ///< Joint position offset
+  float min = 0;       ///< Joint lower limit
+  float max = 0;       ///< Joint upper limit
+
+  // stp_reg_t current_b_cmd = NONE; ///< Keeps track if a blocking command is being executed
+
 private:
   template <typename T>
   int read(const stp_reg_t reg, T &data, u_int8_t &flags);
@@ -479,60 +486,7 @@ private:
   template <typename T>
   int write(const stp_reg_t reg, T data, u_int8_t &flags);
 
-  /**
-   * @brief Blocking loop waiting for BUSY flag to reset.
-   *
-   * @param period_ms time in ms between polls.
-   */
-  void wait_while_busy(const float period_ms);
-
-  /**
- * @brief Call to start the homing sequence of a joint.
- *
- * First the joint will check the motor wiring by executing the checkOrientation internally. Then it will set the specified speed
- * until a resistance which drives the PID error above the specified threshold is encountered.
- * At this point the stepper stops and zeros the encoder.
- * @param velocity  signed velocity in rad/s or m/s. Must be between 1.0 < RAD2DEG(JOINT2ACTUATOR(velocity, reduction, 0)) / 6 < 250.0
- * @param sensitivity Encoder pid error threshold 0 to 255.
- * @param current homing current, determines how easy it is to stop the motor and thereby provoke a stall
-
- * @return 0 on success,
-  -1 on communication error,
-  -3 when the motor is not enabled,
-  -5 if the joint is not initialized,
-  -101 if the velocity is zero,
-  -102 if absolute value of the velocity is outside the specified limits.
- */
-  int _home(float velocity, u_int8_t sensitivity, u_int8_t current);
-
-  /**
-   * @brief State flags transmitted with every I2C transaction.
-   *
-   * The transmission flags purpose are to transmit the joints current state.
-   * Note: They can not be used as error indication of the execution of a transmitted write command,
-   * since commands are executed after the I2C transaction is completed. The status flags are one
-   * byte with following structure: \n
-   *
-   * |BIT7|BIT6|BIT5|BIT4|BIT3|BIT2|BIT1|BIT0|
-   * | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
-   * |reserved|reserved|reserved|reserved|NOTENABLED|NOTHOMED|BUSY|STALL|
-   *
-   * \b STALL is set if a stall from the stall detection is sensed and the joint is stopped.
-   * The flag is cleared when the joint is homed or the Stallguard enabled. \n
-   * \b BUSY is set if the slave is busy processing a previous command. \n
-   * \b NOTHOMED is cleared if the joint is homed. Movement is only allowed if this flag is clear \n
-   * \b NOTENABLED is cleared if the joint is enabled after calling Joint::enable()
-   */
-  u_int8_t flags = 0x00;
-
-  int address;         ///< I2C adress
-  float reduction = 1; ///< Joint to actuator reduction ratio
-  float offset = 0;    ///< Joint position offset
-  float min = 0;       ///< Joint lower limit
-  float max = 0;       ///< Joint upper limit
-
-  stp_reg_t current_b_cmd = NONE; ///< Keeps track if a blocking command is being executed
-
+  int address;     ///< I2C adress
   int handle = -1; ///< I2C bus handle
 };
 

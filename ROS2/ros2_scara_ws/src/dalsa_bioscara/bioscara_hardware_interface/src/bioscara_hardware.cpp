@@ -37,6 +37,8 @@ namespace bioscara_hardware_interface
       return hardware_interface::CallbackReturn::ERROR;
     }
 
+    std::string use_mock_hardware = info_.hardware_parameters["use_mock_hardware"];
+
     /**
      * Loop over all joints decribed in the hardware description file, check if they have the position and velocity command
      * and state interface defined and finally add them to the internal _joints list
@@ -121,13 +123,19 @@ namespace bioscara_hardware_interface
 
       _joint_cfg.insert({joint.name, cfg});
 
-      _joints.insert({joint.name,
-                      Joint(
-                          joint.name,
-                          cfg.i2c_address,
-                          cfg.reduction,
-                          cfg.min,
-                          cfg.max)});
+      if (use_mock_hardware == "true" || use_mock_hardware == "True")
+      {
+        /* construct the object directly in the map */
+        _joints.emplace(joint.name, std::make_unique<MockJoint>(joint.name));
+      }
+      else
+      {
+        _joints.emplace(joint.name, std::make_unique<Joint>(joint.name,
+                                                                cfg.i2c_address,
+                                                                cfg.reduction,
+                                                                cfg.min,
+                                                                cfg.max));
+      }
     }
 
     /**
@@ -252,7 +260,7 @@ namespace bioscara_hardware_interface
     // Init each joint and test connection to each joint by pinging
     for (auto &[name, joint] : _joints)
     {
-      int rc = joint.init();
+      int rc = joint->init();
       if (rc < 0)
       {
         std::string reason = "";
@@ -307,7 +315,7 @@ namespace bioscara_hardware_interface
      */
     for (auto &[name, joint] : _joints)
     {
-      int rc = joint.deinit();
+      int rc = joint->deinit();
       if (rc < 0)
       {
         std::string reason = "";
@@ -342,7 +350,7 @@ namespace bioscara_hardware_interface
       joint_config_t cfg = _joint_cfg[name];
 
       // enable motor
-      int rc = joint.enable(cfg.drive_current, cfg.hold_current);
+      int rc = joint->enable(cfg.drive_current, cfg.hold_current);
       if (rc < 0)
       {
         std::string reason = "";
@@ -364,7 +372,7 @@ namespace bioscara_hardware_interface
       }
 
       // enable stall detection
-      rc = joint.enableStallguard(cfg.stall_threshold);
+      rc = joint->enableStallguard(cfg.stall_threshold);
       if (rc < 0)
       {
         std::string reason = "";
@@ -384,7 +392,7 @@ namespace bioscara_hardware_interface
       }
 
       // set max acceleration
-      rc = joint.setMaxAcceleration(cfg.max_acceleration);
+      rc = joint->setMaxAcceleration(cfg.max_acceleration);
       if (rc < 0)
       {
         std::string reason = "";
@@ -404,7 +412,7 @@ namespace bioscara_hardware_interface
       }
 
       // set max velocity
-      rc = joint.setMaxVelocity(cfg.max_velocity);
+      rc = joint->setMaxVelocity(cfg.max_velocity);
       if (rc < 0)
       {
         std::string reason = "";
@@ -471,7 +479,7 @@ namespace bioscara_hardware_interface
      */
     for (auto &[name, joint] : _joints)
     {
-      int rc = joint.disable();
+      int rc = joint->disable();
       if (rc < 0)
       {
         std::string reason = "";
@@ -503,11 +511,11 @@ namespace bioscara_hardware_interface
 
       if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
-        rc = _joints.at(descr.prefix_name).getPosition(v);
+        rc = _joints.at(descr.prefix_name)->getPosition(v);
       }
       else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
       {
-        rc = _joints.at(descr.prefix_name).getVelocity(v);
+        rc = _joints.at(descr.prefix_name)->getVelocity(v);
       }
       // use != 0 here since 1 for no compatible interface type
       if (rc != 0)
@@ -548,13 +556,13 @@ namespace bioscara_hardware_interface
         /* We can assume that the previous calls to read the joint state interfaces
         gave us the latest flags. Hence we can simply retrieve the HOMED flag by calling isHomed().
         This does not generate additional communication trafic.  */
-        v = _joints.at(descr.prefix_name).isHomed() * 1.0;
+        v = _joints.at(descr.prefix_name)->isHomed() * 1.0;
 
         /* If the homing has been activated (through the command interface) the device signals BUSY
         as long as it is still homing. If the BUSY flag is reset while the current command is still HOME
         we can assume the homing has finished. Then stop the homing. */
-        if (_joints.at(descr.prefix_name).getCurrentBCmd() == Joint::HOME &&
-            !_joints.at(descr.prefix_name).isBusy())
+        if (_joints.at(descr.prefix_name)->getCurrentBCmd() == Joint::HOME &&
+            !_joints.at(descr.prefix_name)->isBusy())
         {
           stop_homing(descr.prefix_name);
         }
@@ -602,18 +610,18 @@ namespace bioscara_hardware_interface
         int rc = 1;
         if (interface == hardware_interface::HW_IF_POSITION)
         {
-          rc = _joints.at(name).setPosition((float)get_command(CIF_name));
+          rc = _joints.at(name)->setPosition((float)get_command(CIF_name));
         }
         else if (interface == hardware_interface::HW_IF_VELOCITY)
         {
-          rc = _joints.at(name).setVelocity((float)get_command(CIF_name));
+          rc = _joints.at(name)->setVelocity((float)get_command(CIF_name));
         }
         else if (interface == bioscara_hardware_interface::HW_IF_HOME)
         {
           rc = 0;
 
           float velocity = get_command(CIF_name);
-          Joint::stp_reg_t current_cmd = _joints.at(name).getCurrentBCmd();
+          Joint::stp_reg_t current_cmd = _joints.at(name)->getCurrentBCmd();
 
           /* If the joint is currently executing a homing call and the velocity is set to 0.0,
           stop the homing. This indicates that the homing should be aborted. */
@@ -703,7 +711,7 @@ namespace bioscara_hardware_interface
 
       /* If the interface that is to be stopped is the homing interface, check that no current homing command is active */
       if (interface == bioscara_hardware_interface::HW_IF_HOME &&
-          _joints.at(joint).getCurrentBCmd() == Joint::HOME)
+          _joints.at(joint)->getCurrentBCmd() == Joint::HOME)
       {
         RCLCPP_FATAL(
             get_logger(),
@@ -827,12 +835,12 @@ namespace bioscara_hardware_interface
     joint_config_t cfg = _joint_cfg[name];
 
     float speed = velocity > 0.0 ? cfg.homing.speed : -cfg.homing.speed;
-    int rc = _joints.at(name).setMaxAcceleration(cfg.homing.acceleration);
+    int rc = _joints.at(name)->setMaxAcceleration(cfg.homing.acceleration);
     if (rc < 0)
     {
       return rc;
     }
-    return _joints.at(name).startHoming(speed, cfg.homing.threshold, cfg.homing.current);
+    return _joints.at(name)->startHoming(speed, cfg.homing.threshold, cfg.homing.current);
   }
 
   int BioscaraHardwareInterface::stop_homing(const std::string name)
@@ -840,13 +848,13 @@ namespace bioscara_hardware_interface
     joint_config_t cfg = _joint_cfg[name];
 
     /* Stop the homing. Reset acceleration and perform the postHoming cleanup */
-    int rc = _joints.at(name).setMaxAcceleration(cfg.max_acceleration);
+    int rc = _joints.at(name)->setMaxAcceleration(cfg.max_acceleration);
     if (rc < 0)
     {
       return rc;
     }
-    _joints.at(name).postHoming();
-    return _joints.at(name).stop(); // disable?
+    _joints.at(name)->postHoming();
+    return _joints.at(name)->stop(); // disable?
   }
 
 } // namespace bioscara_hardware_interface

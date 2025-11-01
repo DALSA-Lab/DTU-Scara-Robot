@@ -2,10 +2,13 @@
 #include "bioscara_hardware_driver/mJoint.h"
 #include <cmath>
 
-Joint::Joint(const std::string name, const int address, const float reduction, const float min, const float max)
+Joint::Joint(const std::string name,
+             const int address,
+             const float reduction,
+             const float min,
+             const float max) : BaseJoint(name)
 {
     this->address = address;
-    this->name = name;
     this->reduction = reduction;
     this->min = min;
     this->max = max;
@@ -81,71 +84,53 @@ int Joint::enable(u_int8_t driveCurrent, u_int8_t holdCurrent)
     return 0;
 }
 
-int Joint::disable(void)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    int rc = 0;
-    rc |= this->stop();
-    usleep(100000);
-    rc |= this->disableCL();
-    usleep(10000);
-    rc |= this->setHoldCurrent(0);
-    usleep(10000);
-    rc |= this->setBrakeMode(0);
-    usleep(10000);
-    return rc < 0 ? -1 : 0;
-}
+// int Joint::disable(void)
+// {
+//     if (this->handle < 0)
+//     {
+//         return -5;
+//     }
+//     return BaseJoint::disable();
+// }
 
-int Joint::home(float velocity, u_int8_t sensitivity, u_int8_t current)
-{
-    int rc = this->startHoming(velocity, sensitivity, current);
-    if (rc < 0)
-    {
-        return rc;
-    }
-    this->wait_while_busy(100.0);
-    rc = this->postHoming();
-    if (rc < 0)
-    {
-        return rc;
-    }
-    return 0;
-}
+// int Joint::home(float velocity, u_int8_t sensitivity, u_int8_t current)
+// {
+//     int rc = this->startHoming(velocity, sensitivity, current);
+//     if (rc < 0)
+//     {
+//         return rc;
+//     }
+//     this->wait_while_busy(100.0);
+//     rc = this->postHoming();
+//     if (rc < 0)
+//     {
+//         return rc;
+//     }
+//     return 0;
+// }
 
-int Joint::startHoming(float velocity, u_int8_t sensitivity, u_int8_t current)
-{
-    if (this->current_b_cmd != NONE)
-    {
-        return -109; // INCORRECT STATE
-    }
-    int rc = this->_home(velocity, sensitivity, current);
-    if (rc < 0)
-    {
-        this->current_b_cmd = NONE;
-        return rc;
-    }
-    this->current_b_cmd = HOME;
-    return 0;
-}
+// int Joint::startHoming(float velocity, u_int8_t sensitivity, u_int8_t current)
+// {
+//     if (this->current_b_cmd != NONE)
+//     {
+//         return -109; // INCORRECT STATE
+//     }
+//     int rc = this->_home(velocity, sensitivity, current);
+//     if (rc < 0)
+//     {
+//         this->current_b_cmd = NONE;
+//         return rc;
+//     }
+//     this->current_b_cmd = HOME;
+//     return 0;
+// }
 
 int Joint::postHoming(void)
 {
-    if (this->current_b_cmd != HOME)
-    {
-        return -109; // INCORRECT STATE
-    }
-    this->current_b_cmd = NONE;
-    int rc = this->getFlags();
+    int rc = BaseJoint::postHoming();
     if (rc < 0)
     {
         return rc;
-    }
-    if (!this->isHomed())
-    {
-        return -2; // NOT HOMED
     }
     /* Save the homing position stored on the joint.*/
     rc = this->setHomingOffset(this->offset);
@@ -203,12 +188,6 @@ int Joint::_home(float velocity, u_int8_t sensitivity, u_int8_t current)
         return -1;
     }
 
-    return 0;
-}
-
-int Joint::printInfo(void)
-{
-    std::cout << "Name: " << this->name << " address: " << this->address << " handle: " << this->handle << std::endl;
     return 0;
 }
 
@@ -424,25 +403,25 @@ int Joint::enableStallguard(u_int8_t sensitivity)
     return this->write(ENABLESTALLGUARD, sensitivity, this->flags) < 0 ? -1 : 0;
 }
 
-bool Joint::isHomed(void)
-{
-    return ~this->flags & (1 << 2);
-}
+// bool Joint::isHomed(void)
+// {
+//     return ~this->flags & (1 << 2);
+// }
 
-bool Joint::isEnabled(void)
-{
-    return ~this->flags & (1 << 3);
-}
+// bool Joint::isEnabled(void)
+// {
+//     return ~this->flags & (1 << 3);
+// }
 
-bool Joint::isStalled(void)
-{
-    return this->flags & (1 << 0);
-}
+// bool Joint::isStalled(void)
+// {
+//     return this->flags & (1 << 0);
+// }
 
-bool Joint::isBusy(void)
-{
-    return this->flags & (1 << 1);
-}
+// bool Joint::isBusy(void)
+// {
+//     return this->flags & (1 << 1);
+// }
 
 int Joint::checkCom(void)
 {
@@ -499,16 +478,16 @@ int Joint::setHomingOffset(const float offset)
     return this->write(HOMEOFFSET, offset, this->flags) < 0 ? -1 : 0;
 }
 
-Joint::stp_reg_t Joint::getCurrentBCmd(void)
-{
-    return this->current_b_cmd;
-}
+// Joint::stp_reg_t Joint::getCurrentBCmd(void)
+// {
+//     return this->current_b_cmd;
+// }
 
-void Joint::wait_while_busy(const float period_ms)
-{
-    do
-    {
-        usleep(period_ms * 1000);
-        this->getFlags();
-    } while (this->isBusy());
-}
+// void Joint::wait_while_busy(const float period_ms)
+// {
+//     do
+//     {
+//         usleep(period_ms * 1000);
+//         this->getFlags();
+//     } while (this->isBusy());
+// }
