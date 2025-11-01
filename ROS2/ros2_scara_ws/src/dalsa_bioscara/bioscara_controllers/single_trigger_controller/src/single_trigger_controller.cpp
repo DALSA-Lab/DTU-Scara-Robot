@@ -77,9 +77,6 @@ namespace single_trigger_controller
             return controller_interface::CallbackReturn::ERROR;
         }
 
-        // Save all loaded hardware components as member
-        // _hardware_components = hardware_interface::parse_control_resources_from_urdf(get_robot_description());
-
         store_command_interface_types();
         store_state_interface_types();
 

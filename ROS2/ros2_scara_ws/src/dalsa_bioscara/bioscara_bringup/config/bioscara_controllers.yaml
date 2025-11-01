@@ -44,7 +44,7 @@ position_joint_trajectory_controller:
 
     allow_partial_joints_goal: false
     interpolate_from_desired_state: false
-  
+    
 velocity_joint_trajectory_controller:
   ros__parameters:
     type: joint_trajectory_controller/JointTrajectoryController
@@ -101,15 +101,16 @@ homing_controller:
       - j3
       - j4
     command_interfaces:
-      j1:
-        - interfaces:
-          - home
-      j2:
-        - interfaces:
-          - home
-      j3:
-        - interfaces:
-          - home
-      j4:
-        - interfaces:
-          - home
+      gpios:
+        j1:
+          - interfaces:
+            - home
+        j2:
+          - interfaces:
+            - home
+        j3:
+          - interfaces:
+            - home
+        j4:
+          - interfaces:
+            - home

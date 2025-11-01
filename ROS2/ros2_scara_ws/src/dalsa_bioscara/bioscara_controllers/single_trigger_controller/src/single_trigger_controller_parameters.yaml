@@ -5,7 +5,7 @@ single_trigger_controller_parameters:
     read_only: true,
     default_value: [],
     validation: {
-      # size_gt<>: [],
+      # size_gt<>: [0],
       unique<>: null
     }
   }

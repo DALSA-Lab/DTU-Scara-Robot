@@ -214,11 +214,6 @@ namespace single_trigger_controller
     std::shared_ptr<single_trigger_controller_parameters::ParamListener> param_listener_{};
     single_trigger_controller_parameters::Params params_;
 
-    /**
-     * @brief Vector of all loaded hardware components from ros2_control urdf
-     *
-     */
-    std::vector<hardware_interface::HardwareInfo> _hardware_components;
   };
 
 } // namespace single_trigger_controller
