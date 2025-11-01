@@ -565,6 +565,9 @@ namespace bioscara_hardware_interface
             !_joints.at(descr.prefix_name)->isBusy())
         {
           stop_homing(descr.prefix_name);
+          /* reset the command to not immediatly start a new homing. 
+          Only possible with a controller which updates the command only once (SingleTriggerController) */
+          set_command(name,0.0); 
         }
       }
       // use != 0 here since 1 for no compatible interface type
