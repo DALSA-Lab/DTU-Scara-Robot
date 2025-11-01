@@ -36,7 +36,7 @@ target_link_libraries(single_trigger_controller PUBLIC
                       ${control_msgs_TARGETS}
                       ${builtin_interfaces_TARGETS})
 
-pluginlib_export_plugin_description_file(controller_interface homing_controller_plugin.xml)
+pluginlib_export_plugin_description_file(controller_interface single_trigger_controller_plugin.xml)
 
 install(
   DIRECTORY include/

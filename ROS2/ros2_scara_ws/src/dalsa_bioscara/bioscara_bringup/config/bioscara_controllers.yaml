@@ -13,7 +13,7 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
     
     homing_controller:
-      type: gpio_controllers/GpioCommandController
+      type: single_trigger_controller/SingleTriggerController
     
 
     update_rate: 50

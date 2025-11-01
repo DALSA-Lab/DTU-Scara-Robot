@@ -3,6 +3,7 @@ single_trigger_controller_parameters:
     type: string_array,
     description: "List of gpios",
     read_only: true,
+    default_value: [],
     validation: {
       # size_gt<>: [],
       unique<>: null
@@ -13,6 +14,7 @@ single_trigger_controller_parameters:
     type: string_array,
     description: "List of joints",
     read_only: true,
+    default_value: [],
     validation: {
       # size_gt<>: [],
       unique<>: null
