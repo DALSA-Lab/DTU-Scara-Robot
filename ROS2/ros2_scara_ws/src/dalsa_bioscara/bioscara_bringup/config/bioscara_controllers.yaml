@@ -95,13 +95,28 @@ velocity_joint_trajectory_controller:
 homing_controller:
   ros__parameters:
     type: single_trigger_controller/SingleTriggerController
-    gpios:
+    joints:
       - j1
       - j2
       - j3
       - j4
     command_interfaces:
-      gpios:
+      joints:
+        j1:
+          - interfaces:
+            - home
+        j2:
+          - interfaces:
+            - home
+        j3:
+          - interfaces:
+            - home
+        j4:
+          - interfaces:
+            - home
+
+    state_interfaces:
+      joints:
         j1:
           - interfaces:
             - home
