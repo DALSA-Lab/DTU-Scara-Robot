@@ -14,7 +14,6 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# find_package(rclcpp REQUIRED) #???
 find_library(LGPIO_LIBRARY lgpio)
 
 
@@ -22,7 +21,7 @@ find_library(LGPIO_LIBRARY lgpio)
 add_library(
   ${PROJECT_NAME} 
   SHARED 
-  src/uI2C.cpp src/mJoint.cpp src/mGripper.cpp
+  src/uI2C.cpp src/mJoint.cpp src/mMockJoint.cpp src/mBaseJoint.cpp src/mGripper.cpp
 )
 
 target_include_directories(

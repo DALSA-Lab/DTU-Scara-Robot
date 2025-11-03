@@ -5,23 +5,24 @@
   <xacro:macro name="bioscara_ros2_control" params="prefix parameters use_mock_hardware">
 
     <ros2_control name="bioscara" type="system">
-      <xacro:if value="${use_mock_hardware}">
-        <hardware>
-          <plugin>mock_components/GenericSystem</plugin>
-          <param name="calculate_dynamics">true</param>
-        </hardware>
-      </xacro:if>
-      <xacro:unless value="${use_mock_hardware}">
-        <hardware>
-          <plugin>bioscara_hardware_interface/BioscaraHardwareInterface</plugin>
-        </hardware>
-      </xacro:unless>
-      
+
+      <hardware>
+        <plugin>bioscara_hardware_interface/BioscaraHardwareInterface</plugin>
+        <param name="use_mock_hardware">${use_mock_hardware}</param>
+      </hardware>
+
       <joint name="${prefix}j1">
         <command_interface name="position"/>
         <command_interface name="velocity"/>
+        <command_interface name="home">
+          <param name="current">${parameters['j1']['homing']['current']}</param>
+          <param name="threshold">${parameters['j1']['homing']['threshold']}</param>
+          <param name="speed">${parameters['j1']['homing']['speed']}</param>
+          <param name="acceleration">${parameters['j1']['homing']['acceleration']}</param>
+        </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
+        <state_interface name="home"/>
         <param name="i2c_address">${parameters['j1']['i2c_address']}</param>
         <param name="reduction">${parameters['j1']['reduction']}</param>
         <param name="min">${parameters['j1']['min']}</param>
@@ -32,11 +33,19 @@
         <param name="max_acceleration">${parameters['j1']['max_acceleration']}</param>
         <param name="max_velocity">${parameters['j1']['max_velocity']}</param>
       </joint>
+
       <joint name="${prefix}j2">
         <command_interface name="position"/>
         <command_interface name="velocity"/>
+        <command_interface name="home">
+          <param name="current">${parameters['j2']['homing']['current']}</param>
+          <param name="threshold">${parameters['j2']['homing']['threshold']}</param>
+          <param name="speed">${parameters['j2']['homing']['speed']}</param>
+          <param name="acceleration">${parameters['j2']['homing']['acceleration']}</param>
+        </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
+        <state_interface name="home"/>
         <param name="i2c_address">${parameters['j2']['i2c_address']}</param>
         <param name="reduction">${parameters['j2']['reduction']}</param>
         <param name="min">${parameters['j2']['min']}</param>
@@ -47,11 +56,19 @@
         <param name="max_acceleration">${parameters['j2']['max_acceleration']}</param>
         <param name="max_velocity">${parameters['j2']['max_velocity']}</param>
       </joint>
+
       <joint name="${prefix}j3">
         <command_interface name="position"/>
         <command_interface name="velocity"/>
+        <command_interface name="home">
+          <param name="current">${parameters['j3']['homing']['current']}</param>
+          <param name="threshold">${parameters['j3']['homing']['threshold']}</param>
+          <param name="speed">${parameters['j3']['homing']['speed']}</param>
+          <param name="acceleration">${parameters['j3']['homing']['acceleration']}</param>
+        </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
+        <state_interface name="home"/>
         <param name="i2c_address">${parameters['j3']['i2c_address']}</param>
         <param name="reduction">${parameters['j3']['reduction']}</param>
         <param name="min">${parameters['j3']['min']}</param>
@@ -62,11 +79,19 @@
         <param name="max_acceleration">${parameters['j3']['max_acceleration']}</param>
         <param name="max_velocity">${parameters['j3']['max_velocity']}</param>
       </joint>
+
       <joint name="${prefix}j4">
         <command_interface name="position"/>
         <command_interface name="velocity"/>
+        <command_interface name="home">
+          <param name="current">${parameters['j4']['homing']['current']}</param>
+          <param name="threshold">${parameters['j4']['homing']['threshold']}</param>
+          <param name="speed">${parameters['j4']['homing']['speed']}</param>
+          <param name="acceleration">${parameters['j4']['homing']['acceleration']}</param>
+        </command_interface>
         <state_interface name="position"/>
         <state_interface name="velocity"/>
+        <state_interface name="home"/>
         <param name="i2c_address">${parameters['j4']['i2c_address']}</param>
         <param name="reduction">${parameters['j4']['reduction']}</param>
         <param name="min">${parameters['j4']['min']}</param>
@@ -78,56 +103,6 @@
         <param name="max_velocity">${parameters['j4']['max_velocity']}</param>
       </joint>
 
-      <!-- Having each a GPIO for each joint with looks a bit weird but it conforms much better to the structure of the other controllers. 
-      When implementing the GPIOs this way the following command interfaces are exposed "jX/home", the controller book keeping can then use the "home" as a command interface
-      just like "position" or "velocity". This is necessary since all of them are mutually exclusively activated. -->
-
-      <gpio name="${prefix}j1">
-        <command_interface name="home">
-          <param name="current">${parameters['j1']['homing']['current']}</param>
-          <param name="threshold">${parameters['j1']['homing']['threshold']}</param>
-          <param name="speed">${parameters['j1']['homing']['speed']}</param>
-          <param name="acceleration">${parameters['j1']['homing']['acceleration']}</param>
-          </command_interface>
-        <state_interface name="home"/>
-      </gpio>
-      <gpio name="${prefix}j2">
-        <command_interface name="home">
-          <param name="current">${parameters['j2']['homing']['current']}</param>
-          <param name="threshold">${parameters['j2']['homing']['threshold']}</param>
-          <param name="speed">${parameters['j2']['homing']['speed']}</param>
-          <param name="acceleration">${parameters['j2']['homing']['acceleration']}</param>
-          </command_interface>
-        <state_interface name="home"/>
-      </gpio>
-      <gpio name="${prefix}j3">
-        <command_interface name="home">
-          <param name="current">${parameters['j3']['homing']['current']}</param>
-          <param name="threshold">${parameters['j3']['homing']['threshold']}</param>
-          <param name="speed">${parameters['j3']['homing']['speed']}</param>
-          <param name="acceleration">${parameters['j3']['homing']['acceleration']}</param>
-          </command_interface>
-        <state_interface name="home"/>
-      </gpio>
-      <gpio name="${prefix}j4">
-        <command_interface name="home">
-          <param name="current">${parameters['j4']['homing']['current']}</param>
-          <param name="threshold">${parameters['j4']['homing']['threshold']}</param>
-          <param name="speed">${parameters['j4']['homing']['speed']}</param>
-          <param name="acceleration">${parameters['j4']['homing']['acceleration']}</param>
-          </command_interface>
-        <state_interface name="home"/>
-      </gpio>      
-      <!-- <gpio name="home">
-        <command_interface name="${prefix}j1"/>
-        <command_interface name="${prefix}j2"/>
-        <command_interface name="${prefix}j3"/>
-        <command_interface name="${prefix}j4"/>
-        <state_interface name="${prefix}j1"/>
-        <state_interface name="${prefix}j2"/>
-        <state_interface name="${prefix}j3"/>
-        <state_interface name="${prefix}j4"/>
-      </gpio> -->
     </ros2_control>
 
   </xacro:macro>

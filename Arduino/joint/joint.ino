@@ -21,7 +21,7 @@
  * 
  * Define either J1, J2, J3 or J4 and subsequently include configuration.h 
  */
-#define J4
+#define J2
 #include "configuration.h"
 
 
@@ -182,16 +182,20 @@ void blocking_handler(uint8_t reg) {
         memcpy(&sensitivity, rx_buf + 2, 1);
         memcpy(&current, rx_buf + 3, 1);
 
-        stepper.stop();
+        stepper.stop(SOFT);
+
+        stepper.checkOrientation(1.0);
 
         stepper.setRPM(dir ? speed : -speed);
         stepper.setCurrent(current);
 
-        float err;
-        do {
-          err = stepper.getPidError();
+        while (isBusy) {
+          float err = stepper.getPidError();
+          if (abs(err) > sensitivity) {
+            break;
+          }
           delay(1);
-        } while (abs(err) < sensitivity && isBusy);
+        }
 
         /**
         * Homing has been cancled from ISR (f.x. STOP)
@@ -268,6 +272,7 @@ void non_blocking_handler(uint8_t reg) {
         readValue<float>(qd_set, rx_buf, rx_length);
         if (!isStalled) {
           stepper.setRPM(qd_set);
+          // Serial.println(qd_set,4);
         }
         break;
       }
@@ -287,6 +292,7 @@ void non_blocking_handler(uint8_t reg) {
         readValue<float>(q_set, rx_buf, rx_length);
         if (!isStalled) {
           stepper.moveToAngle(q_set);
+          // Serial.println(q_set,4);
         }
         break;
       }
@@ -410,7 +416,7 @@ void non_blocking_handler(uint8_t reg) {
 
     case HOMEOFFSET:
       {
-        Serial.print("Executing HOMEOFFSET\n");
+        // Serial.print("Executing HOMEOFFSET\n");
         if (rx_length) {
           readValue<float>(homingOffset, rx_buf, rx_length);
         } else {

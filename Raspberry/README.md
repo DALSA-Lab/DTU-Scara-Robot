@@ -56,23 +56,47 @@ sudo usermod -a -G realtime $(whoami)
 
 
 ## Network Configuration
-The dev-machine is connected to the robot via a local private network via a switch.
+The network architecure is as follows:
 ```mermaid
 graph TD;
+subgraph Wifi["Wifi"];
 
-    Switch<--Ethernet-->robot["Raspberry Pi 
-    hostname: scara"
-    ip: 10.10.10.2];
+laptop["Laptop
+hostname: -"]
 
-    Switch<--Ethernet-->dev["Dev Machine
-    hostname: scara-dev"
-    ip: 10.10.10.3];
+DTUsecure["DTUsecure
 
-    laptop["Laptop
-    hostname: -"
-    ip: -]<-.Wifi.->robot;
+hostname: -"]:::wifi
 
-    laptop<-.Wifi.->dev
+laptop<-."IP: 10.209.X.X".->DTUsecure
+
+end
+subgraph LAN["LAN"];
+
+robot["Raspberry Pi 
+hostname: scara"];
+
+dev["Dev Machine
+hostname: scara-dev"];
+
+Switch<--IP: 10.10.10.3-->dev
+Switch<--IP: 10.10.10.2-->robot
+
+end
+
+Switch<--IP: 10.10.10.4-->laptop
+dev<-."(optional)
+IP: 10.209.X.X".->DTUsecure
+robot<-."(optional)
+IP: 10.209.X.X".->DTUsecure
+dev<-."(optional)
+IP: 10.209.X.X".->laptop
+robot<-."(optional)
+IP: 192.168.137.X".->laptop
+
+classDef wifi stroke:#f00
+classDef bar stroke:#0f0
+classDef foobar stroke:#00f
 ```
 
 ### Assign a static IP
@@ -80,7 +104,7 @@ create the */etc/netplan/99_config.yaml* file with following content:
 ```yaml
 network:
   version: 2
-  renderer: networkd
+  renderer: NetworkManager
   ethernets:
     eth0:
       addresses:
@@ -88,7 +112,7 @@ network:
       routes:
         - to: default
           via: 10.10.10.1
-          metric: 700 # Increase the metric so that a the wifi connection (metric: 600) is preffered for internet traffic
+          metric: 700 # Increase the metric so that a the wifi connection (metric: 600) is prefered for internet traffic
       nameservers:
           addresses:
             - 8.8.8.8
@@ -102,7 +126,7 @@ sudo netplan apply
 ### Create a static hostname entry
 in the */etc/hosts* add the following line:
 ```
-10.10.10.3 scara-dev
+10.10.10.2 scara-scara
 ```
 
 ## Development Purposes:
@@ -115,4 +139,9 @@ sudo apt install ros-$ROS_DISTRO-plotjuggler-ros
 ### Install RQT tools
 ```bash
 sudo apt install ros-humble-rqt*
+```
+
+### For debugging
+```bash
+sudo apt install xterm gdb gdbserver
 ```
