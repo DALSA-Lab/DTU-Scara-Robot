@@ -152,6 +152,9 @@ int Joint::_home(float velocity, u_int8_t sensitivity, u_int8_t current)
         return -3;
     }
 
+    /* Set the offset to min or max, depending on the direction we are homing. */
+    this->offset = velocity > 0.0 ? this->max : this->min;
+
     velocity = RAD2DEG(JOINT2ACTUATOR(velocity, this->reduction, 0)) / 6;
     if (velocity == 0)
     {
@@ -162,19 +165,10 @@ int Joint::_home(float velocity, u_int8_t sensitivity, u_int8_t current)
         return -102;
     }
 
-    u_int8_t direction = 0, rpm = 0;
-    if (velocity > 0)
-    {
-        this->offset = this->max;
-        direction = 1;
-    }
-    else
-    {
-        this->offset = this->min;
-        direction = 0;
-    }
+    u_int8_t direction = velocity > 0.0 ? 1 : 0;
+
     velocity = fabs(velocity);
-    rpm = static_cast<u_int8_t>(velocity);
+    u_int8_t rpm = static_cast<u_int8_t>(velocity);
 
     u_int32_t buf = 0;
     buf |= (direction & 0xFF);

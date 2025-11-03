@@ -538,8 +538,6 @@ namespace bioscara_hardware_interface
     {
       float v;
       int rc = 1;
-      
-
       if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
         rc = _joints.at(descr.prefix_name)->getPosition(v);
