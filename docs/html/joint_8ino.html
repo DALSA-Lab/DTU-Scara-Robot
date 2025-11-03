@@ -204,6 +204,7 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
+<p>Homing has been cancled from ISR (f.x. STOP)</p>
 
 </div>
 </div>
@@ -226,9 +227,7 @@ Variables</h2></td></tr>
 <p>Main loop. </p>
 <p>Executes the following: <br  />
  1) if isStallguardEnabled: compares stepper.getPidError() with stallguardThreshold and sets isStalled flag. <br  />
- 2) sets/clears notHomed flag if the joint is homed or not. <br  />
- 3) sets/clears notSetup if the joint is setup or not. <br  />
- 4) if rx_data_ready: set isBusy flag to indicate device is busy. Invoke blocking_handler. Clear isBusy flag to indicate device is no longer busy <br  />
+ 2) if rx_data_ready: set isBusy flag to indicate device is busy. Invoke blocking_handler. Clear isBusy flag to indicate device is no longer busy <br  />
  </p>
 
 </div>

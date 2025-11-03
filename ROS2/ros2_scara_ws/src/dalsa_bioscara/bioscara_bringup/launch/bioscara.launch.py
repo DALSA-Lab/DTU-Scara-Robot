@@ -15,7 +15,7 @@ from launch.substitutions import (
 )
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-from launch.substitutions import PythonExpression
+from launch.conditions import IfCondition
 
 def generate_launch_description():
     # Declare arguments
@@ -77,12 +77,12 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "command_interface",
-            default_value="position",
-            choices=["velocity", "position"],
-            description="Use position or velocity as command interface of the joint trajectory controller",
+            "gui",
+            default_value="true",
+            description="Start RViz2 automatically with this launch file.",
         )
     )
+    
 
     # Initialize Arguments
     runtime_config_package = LaunchConfiguration("runtime_config_package")
@@ -91,10 +91,8 @@ def generate_launch_description():
     description_file = LaunchConfiguration("description_file")
     prefix = LaunchConfiguration("prefix")
     use_mock_hardware = LaunchConfiguration("use_mock_hardware")
-    command_interface = LaunchConfiguration("command_interface")
     robot_controller = LaunchConfiguration("robot_controller")
-    # robot_controller = PythonExpression([control_mode,'+_joint_trajectory_controller'])
-    # robot_controller = PythonExpression(["'position_joint_trajectory_controller' if ", control_mode, "=='position' else 'velocity_joint_trajectory_controller'"])
+    gui = LaunchConfiguration("gui")
 
     # Get URDF via xacro
     robot_description_content = Command(
@@ -110,9 +108,6 @@ def generate_launch_description():
             " ",
             "use_mock_hardware:=",
             use_mock_hardware,
-            " ",
-            "command_interface:=",
-            command_interface,
         ]
     )
 
@@ -133,6 +128,7 @@ def generate_launch_description():
         executable="ros2_control_node",
         output="both",
         parameters=[robot_description, robot_controllers],
+        # prefix=['gdbserver localhost:3000']
     )
 
     # start the robot state publisher node which gets the robot description file as paramter
@@ -148,6 +144,7 @@ def generate_launch_description():
         name="rviz2",
         output="log",
         arguments=["-d", rviz_config_file],
+        condition=IfCondition(gui),
     )
 
     rqt_joint_trajectory_controller_node = Node(
@@ -172,14 +169,14 @@ def generate_launch_description():
     )
 
     # spawn the controller manager using the controller manager spawner.
-    robot_controllers = [robot_controller]
+    robot_controllers = [robot_controller, "homing_controller"]
     robot_controller_spawners = []
     for controller in robot_controllers:
         robot_controller_spawners += [
             Node(
                 package="controller_manager",
                 executable="spawner",
-                arguments=[controller, "-c", "/controller_manager"],
+                arguments=[controller, "-c", "/controller_manager","--inactive"],
             )
         ]
 

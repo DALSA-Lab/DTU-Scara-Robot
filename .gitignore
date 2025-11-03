@@ -1,4 +1,6 @@
 .vscode/
+!.vscode/launch.json
+ROS2/ros2_scara_ws/.vscode
 devel/
 ROS2/ros2_scara_ws/logs/
 ROS2/ros2_scara_ws/log/

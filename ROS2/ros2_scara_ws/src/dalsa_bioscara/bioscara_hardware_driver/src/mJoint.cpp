@@ -1,12 +1,17 @@
 #include "bioscara_hardware_driver/uI2C.h"
 #include "bioscara_hardware_driver/mJoint.h"
+#include <cmath>
 
-Joint::Joint(const std::string name, const int address, const float reduction, const float offset)
+Joint::Joint(const std::string name,
+             const int address,
+             const float reduction,
+             const float min,
+             const float max) : BaseJoint(name)
 {
     this->address = address;
-    this->name = name;
     this->reduction = reduction;
-    this->offset = offset;
+    this->min = min;
+    this->max = max;
 }
 
 Joint::~Joint(void)
@@ -23,7 +28,27 @@ int Joint::init(void)
     {
         return -2;
     }
-    return checkCom();
+
+    /* Check if communication can be established */
+    int rc = checkCom();
+    if (rc < 0)
+    {
+        return rc;
+    }
+
+    /* If joint is homed, retrieve the homing position stored on the joint */
+    if (this->isHomed())
+    {
+        float offset;
+        rc = this->getHomingOffset(offset);
+        if (rc < 0)
+        {
+            return rc;
+        }
+        this->offset = offset;
+    }
+
+    return 0;
 }
 
 int Joint::deinit(void)
@@ -50,10 +75,7 @@ int Joint::enable(u_int8_t driveCurrent, u_int8_t holdCurrent)
     {
         return -1;
     }
-    do
-    {
-        usleep(10 * 1000);
-    } while (this->getFlags() & (1 << 1));
+    this->wait_while_busy(10.0);
 
     if (!this->isEnabled())
     {
@@ -62,25 +84,64 @@ int Joint::enable(u_int8_t driveCurrent, u_int8_t holdCurrent)
     return 0;
 }
 
-int Joint::disable(void)
+// int Joint::disable(void)
+// {
+//     if (this->handle < 0)
+//     {
+//         return -5;
+//     }
+//     return BaseJoint::disable();
+// }
+
+// int Joint::home(float velocity, u_int8_t sensitivity, u_int8_t current)
+// {
+//     int rc = this->startHoming(velocity, sensitivity, current);
+//     if (rc < 0)
+//     {
+//         return rc;
+//     }
+//     this->wait_while_busy(100.0);
+//     rc = this->postHoming();
+//     if (rc < 0)
+//     {
+//         return rc;
+//     }
+//     return 0;
+// }
+
+// int Joint::startHoming(float velocity, u_int8_t sensitivity, u_int8_t current)
+// {
+//     if (this->current_b_cmd != NONE)
+//     {
+//         return -109; // INCORRECT STATE
+//     }
+//     int rc = this->_home(velocity, sensitivity, current);
+//     if (rc < 0)
+//     {
+//         this->current_b_cmd = NONE;
+//         return rc;
+//     }
+//     this->current_b_cmd = HOME;
+//     return 0;
+// }
+
+int Joint::postHoming(void)
 {
-    if (this->handle < 0)
+    int rc = BaseJoint::postHoming();
+    if (rc < 0)
     {
-        return -5;
+        return rc;
     }
-    int rc = 0;
-    rc |= this->stop();
-    usleep(100000);
-    rc |= this->disableCL();
-    usleep(10000);
-    rc |= this->setHoldCurrent(0);
-    usleep(10000);
-    rc |= this->setBrakeMode(0);
-    usleep(10000);
-    return rc < 0 ? -1 : 0;
+    /* Save the homing position stored on the joint.*/
+    rc = this->setHomingOffset(this->offset);
+    if (rc < 0)
+    {
+        return rc;
+    }
+    return 0;
 }
 
-int Joint::home(u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t current)
+int Joint::_home(float velocity, u_int8_t sensitivity, u_int8_t current)
 {
     if (this->handle < 0)
     {
@@ -91,11 +152,23 @@ int Joint::home(u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t
         return -3;
     }
 
-    int rc = this->checkOrientation(1.0);
-    if (rc < 0)
+    /* Set the offset to min or max, depending on the direction we are homing. */
+    this->offset = velocity > 0.0 ? this->max : this->min;
+
+    velocity = RAD2DEG(JOINT2ACTUATOR(velocity, this->reduction, 0)) / 6;
+    if (velocity == 0)
     {
-        return rc;
+        return -101;
     }
+    if (fabs(velocity) > 250.0 || fabs(velocity) < 1.0)
+    {
+        return -102;
+    }
+
+    u_int8_t direction = velocity > 0.0 ? 1 : 0;
+
+    velocity = fabs(velocity);
+    u_int8_t rpm = static_cast<u_int8_t>(velocity);
 
     u_int32_t buf = 0;
     buf |= (direction & 0xFF);
@@ -103,26 +176,12 @@ int Joint::home(u_int8_t direction, u_int8_t rpm, u_int8_t sensitivity, u_int8_t
     buf |= ((sensitivity & 0xFF) << 16);
     buf |= ((current & 0xFF) << 24);
 
-    rc = this->write(HOME, buf, this->flags);
+    int rc = this->write(HOME, buf, this->flags);
     if (rc < 0)
     {
         return -1;
     }
-    usleep(100 * 1000);
-    while (this->getFlags() & (1 << 1))
-    {
-        usleep(10 * 1000);
-    }
-    if (!this->isHomed())
-    {
-        return -2; // NOT HOMED
-    }
-    return 0;
-}
 
-int Joint::printInfo(void)
-{
-    std::cout << "Name: " << this->name << " address: " << this->address << " handle: " << this->handle << std::endl;
     return 0;
 }
 
@@ -132,12 +191,13 @@ int Joint::getPosition(float &pos)
     {
         return -5;
     }
-    if (!this->isHomed())
-    {
-        return -2; // not homed
-    }
+
     int rc = this->read(ANGLEMOVED, pos, this->flags);
     pos = ACTUATOR2JOINT(DEG2RAD(pos), this->reduction, this->offset);
+    if (!this->isHomed())
+    {
+        pos = 0.0;
+    }
     return rc < 0 ? -1 : 0;
 }
 
@@ -200,10 +260,7 @@ int Joint::getVelocity(float &vel)
     {
         return -5;
     }
-    if (!this->isHomed())
-    {
-        return -2; // not homed
-    }
+
     int rc = this->read(GETENCODERRPM, vel, this->flags);
     vel = ACTUATOR2JOINT(DEG2RAD(vel), this->reduction, 0);
     vel *= 6.0; // convert from rpm to rad/s
@@ -255,11 +312,7 @@ int Joint::checkOrientation(float angle)
     {
         return -1;
     }
-    usleep(10 * 1000);
-    while (this->getFlags() & (1 << 1))
-    {
-        usleep(10 * 1000);
-    }
+    this->wait_while_busy(10.0);
 
     if (this->isStalled())
     {
@@ -344,20 +397,25 @@ int Joint::enableStallguard(u_int8_t sensitivity)
     return this->write(ENABLESTALLGUARD, sensitivity, this->flags) < 0 ? -1 : 0;
 }
 
-bool Joint::isHomed(void)
-{
-    return ~this->flags & (1 << 2);
-}
+// bool Joint::isHomed(void)
+// {
+//     return ~this->flags & (1 << 2);
+// }
 
-bool Joint::isEnabled(void)
-{
-    return ~this->flags & (1 << 3);
-}
+// bool Joint::isEnabled(void)
+// {
+//     return ~this->flags & (1 << 3);
+// }
 
-bool Joint::isStalled(void)
-{
-    return this->flags & (1 << 0);
-}
+// bool Joint::isStalled(void)
+// {
+//     return this->flags & (1 << 0);
+// }
+
+// bool Joint::isBusy(void)
+// {
+//     return this->flags & (1 << 1);
+// }
 
 int Joint::checkCom(void)
 {
@@ -385,3 +443,45 @@ u_int8_t Joint::getFlags(void)
     this->read(PING, buf, this->flags);
     return this->flags;
 }
+
+int Joint::getHomingOffset(float &offset)
+{
+    if (this->handle < 0)
+    {
+        return -5;
+    }
+    if (!this->isHomed())
+    {
+        return -2; // NOT HOMED
+    }
+
+    return this->read(HOMEOFFSET, offset, this->flags) < 0 ? -1 : 0;
+}
+
+int Joint::setHomingOffset(const float offset)
+{
+    if (this->handle < 0)
+    {
+        return -5;
+    }
+    if (!this->isHomed())
+    {
+        return -2; // NOT HOMED
+    }
+
+    return this->write(HOMEOFFSET, offset, this->flags) < 0 ? -1 : 0;
+}
+
+// Joint::stp_reg_t Joint::getCurrentBCmd(void)
+// {
+//     return this->current_b_cmd;
+// }
+
+// void Joint::wait_while_busy(const float period_ms)
+// {
+//     do
+//     {
+//         usleep(period_ms * 1000);
+//         this->getFlags();
+//     } while (this->isBusy());
+// }

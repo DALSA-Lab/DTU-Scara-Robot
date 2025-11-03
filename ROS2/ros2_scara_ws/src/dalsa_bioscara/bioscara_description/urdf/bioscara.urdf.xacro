@@ -35,7 +35,7 @@
       <parent link="${prefix}base_link"/>
       <child link="${prefix}link_1"/>
       <axis xyz="0.0 0.0 1.0"/>
-      <limit upper="${fabs(parameters['j1']['offset'])}" lower="${0-fabs(parameters['j1']['offset'])}" effort="100" velocity="${parameters['j1']['max_velocity']}"/>
+      <limit upper="${parameters['j1']['max']}" lower="${parameters['j1']['min']}" effort="100" velocity="${parameters['j1']['max_velocity']}"/>
     </joint>
 
     <link name="${prefix}link_1">
@@ -64,7 +64,7 @@
       <parent link="${prefix}link_1"/>
       <child link="${prefix}link_2"/>
       <axis xyz="0.0 0.0 1.0"/>
-      <limit upper="${parameters['j2']['offset']}" lower="0" effort="100" velocity="${parameters['j2']['max_velocity']}"/>
+      <limit upper="${parameters['j2']['max']}" lower="0" effort="100" velocity="${parameters['j2']['max_velocity']}"/>
     </joint>
 
     <link name="${prefix}link_2">
@@ -93,7 +93,7 @@
       <parent link="${prefix}link_2"/>
       <child link="${prefix}link_3"/>
       <axis xyz="0.0 0.0 1.0"/>
-      <limit upper="${fabs(parameters['j3']['offset'])}" lower="${0-fabs(parameters['j3']['offset'])}" effort="100" velocity="${parameters['j3']['max_velocity']}"/>
+      <limit upper="${parameters['j3']['max']}" lower="${parameters['j3']['min']}" effort="100" velocity="${parameters['j3']['max_velocity']}"/>
     </joint>
 
     <link name="${prefix}link_3">
@@ -122,7 +122,7 @@
       <parent link="${prefix}link_3"/>
       <child link="${prefix}link_4"/>
       <axis xyz="0.0 0.0 1.0"/>
-      <limit upper="${fabs(parameters['j4']['offset'])}" lower="${0-fabs(parameters['j4']['offset'])}" effort="100" velocity="${parameters['j4']['max_velocity']}"/>
+      <limit upper="${parameters['j4']['max']}" lower="${parameters['j4']['min']}" effort="100" velocity="${parameters['j4']['max_velocity']}"/>
     </joint>
 
     <link name="${prefix}link_4">

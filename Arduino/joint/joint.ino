@@ -21,7 +21,7 @@
  * 
  * Define either J1, J2, J3 or J4 and subsequently include configuration.h 
  */
-#define J4
+#define J2
 #include "configuration.h"
 
 
@@ -37,6 +37,7 @@ static int stallguardThreshold = 100;
 static float q_set, q, qd_set, qd;
 static float maxAccel = MAXACCEL;
 static float maxVel = MAXVEL;
+static float homingOffset = 0;
 
 uint8_t reg = 0;
 uint8_t rx_buf[MAX_BUFFER] = { 0 };
@@ -156,7 +157,7 @@ void blocking_handler(uint8_t reg) {
         isStallguardEnabled = 0;
         notEnabled = 0;
         isStalled = 0;
-        qd_set = 0; //reset here so that no matter how long it takes after the enable call for the next command to arrive, we dont trigger the watchdog
+        qd_set = 0;  //reset here so that no matter how long it takes after the enable call for the next command to arrive, we dont trigger the watchdog
         break;
       }
 
@@ -181,19 +182,23 @@ void blocking_handler(uint8_t reg) {
         memcpy(&sensitivity, rx_buf + 2, 1);
         memcpy(&current, rx_buf + 3, 1);
 
-        stepper.stop();
+        stepper.stop(SOFT);
+
+        stepper.checkOrientation(1.0);
 
         stepper.setRPM(dir ? speed : -speed);
         stepper.setCurrent(current);
 
-        float err;
-        do {
-          err = stepper.getPidError();
+        while (isBusy) {
+          float err = stepper.getPidError();
+          if (abs(err) > sensitivity) {
+            break;
+          }
           delay(1);
-        } while (abs(err) < sensitivity && isBusy);
+        }
 
         /**
-        * Homeing has been cancled from ISR (f.x. STOP)
+        * Homing has been cancled from ISR (f.x. STOP)
         */
         if (!isBusy) {
           break;
@@ -267,6 +272,7 @@ void non_blocking_handler(uint8_t reg) {
         readValue<float>(qd_set, rx_buf, rx_length);
         if (!isStalled) {
           stepper.setRPM(qd_set);
+          // Serial.println(qd_set,4);
         }
         break;
       }
@@ -286,6 +292,7 @@ void non_blocking_handler(uint8_t reg) {
         readValue<float>(q_set, rx_buf, rx_length);
         if (!isStalled) {
           stepper.moveToAngle(q_set);
+          // Serial.println(q_set,4);
         }
         break;
       }
@@ -342,7 +349,7 @@ void non_blocking_handler(uint8_t reg) {
       {
         // Serial.print("Executing ENABLESTALLGUARD\n");
 
-        // Very simple workaround for stall detection, since the built-in encoder stall-detection is tricky to work with in particular in combination with homeing since it can not be reset.
+        // Very simple workaround for stall detection, since the built-in encoder stall-detection is tricky to work with in particular in combination with homing since it can not be reset.
         uint8_t sensitivity;
         readValue<uint8_t>(sensitivity, rx_buf, rx_length);
         stallguardThreshold = sensitivity * 10;
@@ -406,6 +413,19 @@ void non_blocking_handler(uint8_t reg) {
         isBusy = 0;
         break;
       }
+
+    case HOMEOFFSET:
+      {
+        // Serial.print("Executing HOMEOFFSET\n");
+        if (rx_length) {
+          readValue<float>(homingOffset, rx_buf, rx_length);
+        } else {
+          writeValue<float>(homingOffset, tx_buf, tx_length);
+          tx_data_ready = 1;
+        }
+        break;
+      }
+
 
     default:
       // Serial.println("No data to write, sending flags");
@@ -480,7 +500,7 @@ void loop(void) {
   /* Take potential overflow of millis() into account (50 days) and calculate the difference according to this */
   uint32_t diff = (now >= deadman) ? (now - deadman) : (std::numeric_limits<uint32_t>::max() + 1 - (deadman - now));
   // Serial.println(diff);
-  if(diff > 50 && !notEnabled && qd_set){
+  if (diff > 50 && !notEnabled && qd_set) {
     Serial.println("Deadman switch triggered");
     stepper.setRPM(0);
     notEnabled = 1;
