@@ -42,7 +42,6 @@ static float homingOffset = 0;
 uint8_t reg = 0;
 uint8_t rx_buf[MAX_BUFFER] = { 0 };
 uint8_t tx_buf[MAX_BUFFER + RFLAGS_SIZE] = { 0 };
-bool tx_data_ready = 0;
 bool rx_data_ready = 0;
 
 size_t tx_length = 0;
@@ -237,7 +236,6 @@ void non_blocking_handler(uint8_t reg) {
       {
         // Serial.print("Executing PING\n");
         writeValue<char>(ACK, tx_buf, tx_length);
-        tx_data_ready = true;
         break;
       }
 
@@ -251,7 +249,6 @@ void non_blocking_handler(uint8_t reg) {
         // Serial.print("Executing ANGLEMOVED\n");
         q = stepper.angleMoved();
         writeValue<float>(q, tx_buf, tx_length);
-        tx_data_ready = 1;
         break;
       }
 
@@ -260,7 +257,6 @@ void non_blocking_handler(uint8_t reg) {
         // Serial.print("Executing GETENCODERRPM\n");
         qd = stepper.encoder.getRPM();
         writeValue<float>(qd, tx_buf, tx_length);
-        tx_data_ready = 1;
         break;
       }
 
@@ -421,11 +417,20 @@ void non_blocking_handler(uint8_t reg) {
           readValue<float>(homingOffset, rx_buf, rx_length);
         } else {
           writeValue<float>(homingOffset, tx_buf, tx_length);
-          tx_data_ready = 1;
         }
         break;
       }
 
+    case HOME:
+      {
+        /* Immediatly set the notHomed and isBusy flag.
+        This is neccessary since if homing command is received but the blocking_handler has not handled the command yet
+        a following read request might read isBusy and notHomed to be 0 leading to the false assumption homing has completed. */
+        notHomed = 1;
+        isBusy = 1;
+
+        // dont break, continue to 'default' to start the blocking_handler
+      }
 
     default:
       // Serial.println("No data to write, sending flags");
