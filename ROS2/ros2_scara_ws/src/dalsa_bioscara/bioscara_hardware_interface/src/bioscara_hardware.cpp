@@ -856,8 +856,8 @@ namespace bioscara_hardware_interface
     {
       return rc;
     }
-    _joints.at(name)->postHoming();
-    return _joints.at(name)->stop(); // disable?
+    _joints.at(name)->stop();
+    return _joints.at(name)->postHoming();
   }
 
 } // namespace bioscara_hardware_interface
