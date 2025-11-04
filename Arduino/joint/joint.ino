@@ -21,7 +21,7 @@
  * 
  * Define either J1, J2, J3 or J4 and subsequently include configuration.h 
  */
-#define J2
+#define J4
 #include "configuration.h"
 
 
@@ -139,6 +139,7 @@ void blocking_handler(uint8_t reg) {
         memcpy(&holdCurrent, rx_buf + 1, 1);
         if (!stepperSetup) {
           stepper.setup(CLOSEDLOOP, 200);
+          stepper.enableClosedLoop(); // necessary to be able to use PID error
           stepperSetup = 1;
           notHomed = 1;
         }
@@ -146,11 +147,11 @@ void blocking_handler(uint8_t reg) {
         stepper.setMaxAcceleration(maxAccel);
         stepper.setMaxDeceleration(maxAccel);
         stepper.setMaxVelocity(maxVel);
-        stepper.setControlThreshold(15);  //Adjust the control threshold - here set to 15 microsteps before making corrective action
+        stepper.setControlThreshold(15);
         stepper.setCurrent(driveCurrent);
         stepper.setHoldCurrent(holdCurrent);
         stepper.moveToAngle(stepper.angleMoved());
-        stepper.enableClosedLoop();
+        // stepper.driver.setPosition(stepper.driver.getPosition());
         stepper.stop();
 
         isStallguardEnabled = 0;
@@ -190,6 +191,10 @@ void blocking_handler(uint8_t reg) {
 
         while (isBusy) {
           float err = stepper.getPidError();
+          // Serial.print(abs(err));
+          // Serial.print("\t");
+          // Serial.print(sensitivity);
+          // Serial.print("\n");
           if (abs(err) > sensitivity) {
             break;
           }
