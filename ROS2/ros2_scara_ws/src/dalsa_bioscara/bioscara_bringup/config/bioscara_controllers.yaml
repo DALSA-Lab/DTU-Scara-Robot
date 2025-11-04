@@ -13,7 +13,7 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
     
     homing_controller:
-      type: gpio_controllers/GpioCommandController
+      type: single_trigger_controller/SingleTriggerController
     
 
     update_rate: 50
@@ -44,7 +44,7 @@ position_joint_trajectory_controller:
 
     allow_partial_joints_goal: false
     interpolate_from_desired_state: false
-  
+    
 velocity_joint_trajectory_controller:
   ros__parameters:
     type: joint_trajectory_controller/JointTrajectoryController
@@ -94,22 +94,38 @@ velocity_joint_trajectory_controller:
       
 homing_controller:
   ros__parameters:
-    type: gpio_controllers/GpioCommandController
-    gpios:
+    type: single_trigger_controller/SingleTriggerController
+    joints:
       - j1
       - j2
       - j3
       - j4
     command_interfaces:
-      j1:
-        - interfaces:
-          - home
-      j2:
-        - interfaces:
-          - home
-      j3:
-        - interfaces:
-          - home
-      j4:
-        - interfaces:
-          - home
+      joints:
+        j1:
+          - interfaces:
+            - home
+        j2:
+          - interfaces:
+            - home
+        j3:
+          - interfaces:
+            - home
+        j4:
+          - interfaces:
+            - home
+
+    state_interfaces:
+      joints:
+        j1:
+          - interfaces:
+            - home
+        j2:
+          - interfaces:
+            - home
+        j3:
+          - interfaces:
+            - home
+        j4:
+          - interfaces:
+            - home

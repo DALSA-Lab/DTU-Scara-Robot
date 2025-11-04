@@ -1,0 +1,118 @@
+single_trigger_controller_parameters:
+  gpios: {
+    type: string_array,
+    description: "List of gpios",
+    read_only: true,
+    default_value: [],
+    validation: {
+      # size_gt<>: [0],
+      unique<>: null
+    }
+  }
+
+  joints: {
+    type: string_array,
+    description: "List of joints",
+    read_only: true,
+    default_value: [],
+    validation: {
+      # size_gt<>: [],
+      unique<>: null
+    }
+  }
+
+  command_interfaces:
+    gpios:
+      __map_gpios:
+        interfaces: {
+          type: string_array,
+          description: "List of command interfaces for each gpio.",
+          read_only: true,
+          default_value: [],
+          validation: {
+            unique<>: null
+          }
+        }
+    joints:
+      __map_joints:
+        interfaces: {
+          type: string_array,
+          description: "List of command interfaces for each joint.",
+          read_only: true,
+          default_value: [],
+          validation: {
+            unique<>: null
+          }
+        }
+
+  state_interfaces:
+    gpios:
+      __map_gpios:
+        interfaces: {
+          type: string_array,
+          description: "List of state interfaces for each gpio. If empty no states are broadcasted",
+          read_only: true,
+          default_value: [],
+          validation: {
+            unique<>: null
+          }
+        }
+    joints:
+      __map_joints:
+        interfaces: {
+          type: string_array,
+          description: "List of state interfaces for each joint. If empty no states are broadcasted",
+          read_only: true,
+          default_value: [],
+          validation: {
+            unique<>: null
+          }
+        }
+
+  # joints: {
+  #     type: string_array,
+  #     default_value: [],
+  #     description: "Joint names of the system",
+  #     read_only: true,
+  #     validation: {
+  #       unique<>: null,
+  #       size_gt<>: [0],
+  #     }
+  #   }
+  #   command_joints: {
+  #     type: string_array,
+  #     default_value: [],
+  #     description: "Joint names to control. If left empty, ``joints`` will be used. This parameters can be used if:
+  #       \n\n
+  #         * JTC is used in a controller chain where command and state interfaces don't have same names.
+
+  #         * If the number of command joints is smaller than the degrees-of-freedom. For example to track the state and error of passive joints. ``command_joints`` must then be a subset of ``joints``.",
+  #     read_only: true,
+  #     validation: {
+  #       unique<>: null,
+  #     }
+  #   }
+  #   command_interfaces: {
+  #     type: string_array,
+  #     default_value: [],
+  #     description: "Command interfaces provided by the hardware interface for all joints",
+  #     read_only: true,
+  #     validation: {
+  #       unique<>: null,
+  #       size_gt<>: [0],
+  #       subset_of<>: [["position", "velocity", "acceleration", "effort",]],
+  #       "joint_trajectory_controller::command_interface_type_combinations": null,
+  #     }
+  #   }
+  #   state_interfaces: {
+  #     type: string_array,
+  #     default_value: [],
+  #     description: "State interfaces provided by the hardware for all joints.",
+  #     read_only: true,
+  #     validation: {
+  #       unique<>: null,
+  #       size_gt<>: [0],
+  #       subset_of<>: [["position", "velocity", "acceleration",]],
+  #       "joint_trajectory_controller::state_interface_type_combinations": null,
+  #     }
+  #   }

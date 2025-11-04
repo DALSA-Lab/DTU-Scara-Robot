@@ -15,7 +15,7 @@ from launch.substitutions import (
 )
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
-from launch.substitutions import PythonExpression
+from launch.conditions import IfCondition
 
 def generate_launch_description():
     # Declare arguments
@@ -75,6 +75,13 @@ def generate_launch_description():
             description="Robot controller to start.",
         )
     )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "gui",
+            default_value="true",
+            description="Start RViz2 automatically with this launch file.",
+        )
+    )
     
 
     # Initialize Arguments
@@ -85,6 +92,7 @@ def generate_launch_description():
     prefix = LaunchConfiguration("prefix")
     use_mock_hardware = LaunchConfiguration("use_mock_hardware")
     robot_controller = LaunchConfiguration("robot_controller")
+    gui = LaunchConfiguration("gui")
 
     # Get URDF via xacro
     robot_description_content = Command(
@@ -120,6 +128,7 @@ def generate_launch_description():
         executable="ros2_control_node",
         output="both",
         parameters=[robot_description, robot_controllers],
+        # prefix=['gdbserver localhost:3000']
     )
 
     # start the robot state publisher node which gets the robot description file as paramter
@@ -135,6 +144,7 @@ def generate_launch_description():
         name="rviz2",
         output="log",
         arguments=["-d", rviz_config_file],
+        condition=IfCondition(gui),
     )
 
     rqt_joint_trajectory_controller_node = Node(
