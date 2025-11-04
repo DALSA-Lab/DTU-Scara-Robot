@@ -35,14 +35,7 @@ int BaseJoint::disable(void)
         return rc;
     }
     usleep(100000);
-
-    rc = this->disableCL();
-    if (rc < 0)
-    {
-        return rc;
-    }
-    usleep(10000);
-
+    
     rc = this->setHoldCurrent(0);
     if (rc < 0)
     {
