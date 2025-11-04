@@ -302,9 +302,21 @@ namespace bioscara_hardware_interface
         std::unordered_map<std::string, std::set<std::string>> _joint_command_modes;
 
 
-
+        /**
+         * @brief TODO
+         * 
+         * @param name 
+         * @param velocity 
+         * @return int 
+         */
         int start_homing(const std::string name, float velocity);
 
+        /**
+         * @brief TODO
+         * 
+         * @param name 
+         * @return int 
+         */
         int stop_homing(const std::string name);
     };
 
