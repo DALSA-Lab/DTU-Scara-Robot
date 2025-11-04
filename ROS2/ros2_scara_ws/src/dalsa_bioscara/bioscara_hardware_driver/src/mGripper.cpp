@@ -1,16 +1,13 @@
 #include "bioscara_hardware_driver/mGripper.h"
+#include "bioscara_hardware_driver/uTransmission.h"
 
-Gripper::Gripper(void)
-{
-    
-}
 
-int Gripper::init(void){
-    return 0;
-}
-
-int Gripper::deinit(void){
-    return 0;
+Gripper::Gripper(float reduction, float offset, float min, float max) : BaseGripper()
+{    
+    this->reduction = reduction;
+    this->offset = offset;
+    this->min = min;
+    this->max = max;
 }
 
 int Gripper::enable(void){
@@ -23,9 +20,10 @@ int Gripper::disable(void){
 }
 
 int Gripper::setPosition(float width){
-    width = width < 30 ? 30 : width;
-    width = width > 85 ? 85 : width;
-    float dc = (10-2.2)*width/85.0+2.2;
+    width = width < this->min ? this->min : width;
+    width = width > this->max ? this->max : width;
+    
+    float dc = JOINT2ACTUATOR(width, this->reduction, this->offset);
     for (size_t i = 0; i < 3; i++)
     {
         if(this->pwm.setDutyCycle(dc) >= 0){
@@ -35,5 +33,4 @@ int Gripper::setPosition(float width){
     
     return -1;
 }
-
 

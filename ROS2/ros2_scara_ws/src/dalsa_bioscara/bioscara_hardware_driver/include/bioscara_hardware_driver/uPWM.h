@@ -78,7 +78,7 @@ public:
     }
 
     /**
-     * Sets the duty cycle.
+     * Sets the duty cycle in percent 0 - 100.
      * \param v The duty cycle in percent.
      * \param return >0 on success and -1 after an error.
      **/

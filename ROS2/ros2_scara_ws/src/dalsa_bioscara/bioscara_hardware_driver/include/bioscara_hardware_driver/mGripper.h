@@ -12,73 +12,40 @@
  */
 #ifndef MGRIPPER_H
 #define MGRIPPER_H
+#include "bioscara_hardware_driver/mBaseGripper.h"
 #include "bioscara_hardware_driver/uPWM.h"
 
 /**
- * @brief Gripper object to interact with the robot gripper.
+ * @brief Derviced class from the BaseGripper class to interact with the hardware gripper.
  *
  * This class is a wrapper function to interact with a PWM servo gripper.
- * An example application is shown below. Note that depending on the build toolchain the include path can differ. This 
-example assumes the bioscara_hardware_driver package is built with ROS2.
- * 
- * 
- *   \code{.cpp}
-#include "bioscara_hardware_driver/mGripper.h"
-int main(int argc, char **argv)
-{
-    Gripper gripper;
-    gripper.init();
-    if(gripper.enable() != 0){
-        cerr << "Failed to engage gripper" << endl;
-        return -1;
-    }
-
-    if (gripper.setPosition(40) != 0)
-    {
-        cerr << "setting position failed" << endl;
-        return -1;
-    }
-
-    if(gripper.disable() != 0){
-        cerr << "Failed to disengage gripper" << endl;
-        return -1;
-    }
-
-    gripper.deinit();
-    return 0;
-}
-  \endcode
- *
  *
  */
-class Gripper
+class Gripper : public BaseGripper
 {
 public:
-    Gripper(void);
 
     /**
-     * @brief Placeholder, does nothing
-     *
-     * @return 0
+     * @brief Constructor of the hardware Gripper object. 
+     * 
+     * The gripper width in m is converted to a PWM dutycyle via the JOINT2ACTUATOR macro.
+     * 
+     * @param reduction 
+     * @param offset 
+     * @param min minimum width in m.
+     * @param max maxmimum width in m.
      */
-    int init(void);
-
-    /**
-     * @brief Placeholder, does nothing
-     *
-     * @return 0
-     */
-    int deinit(void);
+    Gripper(float reduction, float offset, float min, float max);
 
     /**
      * @brief Prepares the servo for use.
      *
      * Starts the PWM generation but does not set a position. Must be called before a position is set.
-     * The PWM pin is GPIO18. PWM chip is 0, channel 0.     *
+     * The PWM pin is GPIO18. PWM chip is 0, channel 0.
      *
      * @return non-zero error code.
      */
-    int enable(void);
+    int enable(void) override;
 
     /**
      * @brief Disables the servo.
@@ -87,16 +54,16 @@ public:
      *
      * @return non-zero error code.
      */
-    int disable(void);
+    int disable(void) override;
 
-    /**
-     * @brief Sets the gripper width in mm from the closed position.
-     *
-     * Arguments outside the allowed range are bounded to limit.
-     * @param width width in mm. 30 - 85 mm are currently allowed. With a new gripper this should be changed.
-     */
-    int setPosition(float width);
 
+    int setPosition(float width) override;
+
+protected:
+    float reduction = 1; ///< Joint to actuator reduction ratio
+    float offset = 0;    ///< Joint position offset
+    float min = 0;       ///< Joint lower limit
+    float max = 0;       ///< Joint upper limit
 private:
     RPI_PWM pwm;
 };

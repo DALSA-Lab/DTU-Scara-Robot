@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Gripper _Gripper;
+Gripper _Gripper(1,0,0,100);
 
 void INT_handler(int s)
 {
@@ -33,7 +33,7 @@ int main(int argc, char **argv)
     cout << "enter a gripper position between 30 mm and 85 mm: ";
     int i;
     cin >> i;
-    if (_Gripper.setPosition(i * 1.0) != 0)
+    if (_Gripper.setPosition(i/100.0) != 0)
     {
       return -1;
     }
