@@ -215,11 +215,10 @@ int Joint::setPosition(float pos)
     {
         return -2; // not homed
     }
-    int rc;
 
     // inline expansion of the macro did not work, convert before sending to function.
     pos = RAD2DEG(JOINT2ACTUATOR(pos, this->reduction, this->offset));
-    rc = this->write(MOVETOANGLE, pos, this->flags);
+    int rc = this->write(MOVETOANGLE, pos, this->flags);
     if (rc < 0)
     {
         return -1;
@@ -241,8 +240,8 @@ int Joint::moveSteps(int32_t steps)
     {
         return -3; // not enabled
     }
-    int rc;
-    rc = this->write(MOVESTEPS, steps, this->flags);
+
+    int rc = this->write(MOVESTEPS, steps, this->flags);
     if (rc < 0)
     {
         return -1;
@@ -281,11 +280,10 @@ int Joint::setVelocity(float vel)
     {
         return -2; // not homed
     }
-    int rc;
 
     // inline expansion of the macro did not work, convert before sending to function.
     vel = RAD2DEG(JOINT2ACTUATOR(vel, this->reduction, 0)) / 6;
-    rc = this->write(SETRPM, vel, this->flags);
+    int rc = this->write(SETRPM, vel, this->flags);
     if (rc < 0)
     {
         return -1;

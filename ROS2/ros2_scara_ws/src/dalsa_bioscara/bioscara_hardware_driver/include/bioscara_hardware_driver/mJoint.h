@@ -194,7 +194,7 @@ public:
   int getPosition(float &pos) override;
 
   /**
-   * @brief get the current joint position in radians or m for
+   * @brief set the current joint position in radians or m for
    * cylindrical and prismatic joints respectively.
    *
    * @param pos in rad or m
