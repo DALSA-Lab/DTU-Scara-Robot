@@ -1,0 +1,24 @@
+#cloud-config
+hostname: scara
+manage_etc_hosts: true
+packages:
+- avahi-daemon
+apt:
+  conf: |
+    Acquire {
+      Check-Date "false";
+    };
+
+users:
+- name: scara
+  groups: users,adm,dialout,audio,netdev,video,plugdev,cdrom,games,input,gpio,spi,i2c,render,sudo
+  shell: /bin/bash
+  lock_passwd: false
+  passwd: dtubio
+
+ssh_pwauth: true
+
+timezone: Europe/Berlin
+keyboard:
+  model: pc105
+  layout: "dk"
