@@ -83,64 +83,44 @@ $(function() {
 <div class="contents">
 <div class="textblock"><code>#include &lt;signal.h&gt;</code><br />
 <code>#include &lt;unistd.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="mJointCom_8h_source.html">bioscara_hardware_driver/mJointCom.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="mGripper_8h_source.html">bioscara_hardware_driver/mGripper.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="mJoint_8h_source.html">bioscara_hardware_driver/mJoint.h</a>&quot;</code><br />
+<code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for joint_comm_node.cpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="joint__comm__node_8cpp__incl.png" border="0" usemap="#aROS2_2ros2__scara__ws_2src_2dalsa__bioscara_2bioscara__hardware__driver_2src_2joint__comm__node_8cpp" alt=""/></div>
 <map name="aROS2_2ros2__scara__ws_2src_2dalsa__bioscara_2bioscara__hardware__driver_2src_2joint__comm__node_8cpp" id="aROS2_2ros2__scara__ws_2src_2dalsa__bioscara_2bioscara__hardware__driver_2src_2joint__comm__node_8cpp">
-<area shape="rect" title=" " alt="" coords="344,5,539,75"/>
-<area shape="rect" title=" " alt="" coords="279,130,353,155"/>
-<area shape="poly" title=" " alt="" coords="401,77,342,124,339,119,398,73"/>
-<area shape="rect" title=" " alt="" coords="463,475,537,500"/>
-<area shape="poly" title=" " alt="" coords="444,75,444,229,444,320,449,360,460,399,489,462,484,464,455,401,443,361,439,320,439,229,439,75"/>
-<area shape="rect" href="mJointCom_8h.html" title="File containing the Joint_comms class." alt="" coords="505,123,695,163"/>
-<area shape="poly" title=" " alt="" coords="496,73,560,113,557,118,493,77"/>
-<area shape="rect" href="mGripper_8h.html" title="File containing the Gripper class." alt="" coords="213,299,403,339"/>
-<area shape="poly" title=" " alt="" coords="427,76,325,287,321,285,423,74"/>
-<area shape="rect" title=" " alt="" coords="719,130,782,155"/>
-<area shape="poly" title=" " alt="" coords="540,66,709,120,715,122,713,127,707,125,538,71"/>
-<area shape="rect" title=" " alt="" coords="745,218,807,243"/>
-<area shape="poly" title=" " alt="" coords="640,160,742,210,739,214,637,165"/>
-<area shape="rect" title=" " alt="" coords="831,218,955,243"/>
-<area shape="poly" title=" " alt="" coords="665,160,842,212,840,217,664,165"/>
-<area shape="rect" title=" " alt="" coords="561,475,641,500"/>
-<area shape="poly" title=" " alt="" coords="566,165,540,185,520,212,496,270,488,319,495,368,520,425,538,449,563,466,560,470,535,453,515,428,490,370,483,319,491,268,515,209,536,181,563,161"/>
-<area shape="rect" href="mJoint_8h.html" title="File including the Joint class." alt="" coords="530,211,721,251"/>
-<area shape="poly" title=" " alt="" coords="608,162,618,197,613,198,603,164"/>
-<area shape="rect" href="mJoint_8hpp.html" title="Templated functions for the Joint class." alt="" coords="530,299,721,339"/>
-<area shape="poly" title=" " alt="" coords="620,251,619,285,614,285,615,251"/>
-<area shape="poly" title=" " alt="" coords="630,298,631,264,637,264,636,299"/>
-<area shape="rect" href="uI2C_8h.html" title="Low level utility for I2C communication on Raspberry Pi using lgpio library." alt="" coords="745,387,935,427"/>
-<area shape="poly" title=" " alt="" coords="673,336,781,379,779,384,671,341"/>
-<area shape="rect" href="common_8h.html" title="A file containing utility macros and functions." alt="" coords="530,387,721,427"/>
-<area shape="poly" title=" " alt="" coords="628,339,628,373,623,373,623,339"/>
-<area shape="poly" title=" " alt="" coords="759,429,551,477,550,472,758,424"/>
-<area shape="poly" title=" " alt="" coords="784,429,650,473,648,468,782,424"/>
-<area shape="rect" title=" " alt="" coords="691,475,757,500"/>
-<area shape="poly" title=" " alt="" coords="813,429,754,469,751,465,810,425"/>
-<area shape="rect" title=" " alt="" coords="782,475,850,500"/>
-<area shape="poly" title=" " alt="" coords="837,428,826,462,821,461,832,426"/>
-<area shape="rect" title=" " alt="" coords="874,475,937,500"/>
-<area shape="poly" title=" " alt="" coords="858,425,889,462,885,466,854,429"/>
-<area shape="rect" title=" " alt="" coords="961,475,1045,500"/>
-<area shape="poly" title=" " alt="" coords="880,424,967,466,965,471,878,429"/>
-<area shape="rect" href="uPWM_8h.html" title="Includes source code for Hardware PWM generation on Raspberry Pi 4." alt="" coords="213,387,403,427"/>
-<area shape="poly" title=" " alt="" coords="311,339,311,373,305,373,305,339"/>
-<area shape="poly" title=" " alt="" coords="355,424,460,467,458,472,353,429"/>
-<area shape="poly" title=" " alt="" coords="379,424,548,469,547,474,378,429"/>
-<area shape="rect" title=" " alt="" coords="181,475,248,500"/>
-<area shape="poly" title=" " alt="" coords="287,429,241,468,238,463,284,425"/>
-<area shape="rect" title=" " alt="" coords="273,475,343,500"/>
-<area shape="poly" title=" " alt="" coords="311,427,311,461,305,461,305,427"/>
-<area shape="rect" title=" " alt="" coords="367,475,438,500"/>
-<area shape="poly" title=" " alt="" coords="333,425,379,463,376,468,329,429"/>
-<area shape="rect" title=" " alt="" coords="5,475,64,500"/>
-<area shape="poly" title=" " alt="" coords="243,429,78,477,76,471,242,424"/>
-<area shape="rect" title=" " alt="" coords="89,475,157,500"/>
-<area shape="poly" title=" " alt="" coords="265,429,163,472,161,467,263,424"/>
+<area shape="rect" title=" " alt="" coords="153,5,347,75"/>
+<area shape="rect" title=" " alt="" coords="5,130,79,155"/>
+<area shape="poly" title=" " alt="" coords="181,77,79,126,77,122,179,73"/>
+<area shape="rect" title=" " alt="" coords="113,387,187,412"/>
+<area shape="poly" title=" " alt="" coords="187,77,163,98,144,124,132,156,125,190,123,260,132,324,145,373,139,374,127,325,118,261,120,190,127,155,140,121,159,94,184,73"/>
+<area shape="rect" href="mJoint_8h.html" title="File including the Joint class." alt="" coords="155,123,345,163"/>
+<area shape="poly" title=" " alt="" coords="253,75,253,108,247,108,247,75"/>
+<area shape="rect" title=" " alt="" coords="369,130,432,155"/>
+<area shape="poly" title=" " alt="" coords="302,73,373,120,371,125,299,77"/>
+<area shape="rect" title=" " alt="" coords="456,130,519,155"/>
+<area shape="poly" title=" " alt="" coords="332,72,446,120,450,122,448,127,444,125,330,77"/>
+<area shape="rect" title=" " alt="" coords="606,387,686,412"/>
+<area shape="poly" title=" " alt="" coords="311,160,369,182,438,212,509,250,574,297,610,334,635,373,631,375,605,338,571,301,506,255,436,217,367,187,309,165"/>
+<area shape="rect" href="mJoint_8hpp.html" title="Templated functions for the Joint class." alt="" coords="155,211,345,251"/>
+<area shape="poly" title=" " alt="" coords="245,163,244,197,239,197,240,163"/>
+<area shape="poly" title=" " alt="" coords="255,210,256,176,261,176,260,211"/>
+<area shape="rect" href="uI2C_8h.html" title="Low level utility for I2C communication on Raspberry Pi using lgpio library." alt="" coords="369,299,560,339"/>
+<area shape="poly" title=" " alt="" coords="298,248,406,291,404,296,296,253"/>
+<area shape="rect" href="common_8h.html" title="A file containing utility macros and functions." alt="" coords="155,299,345,339"/>
+<area shape="poly" title=" " alt="" coords="253,251,253,285,247,285,247,251"/>
+<area shape="poly" title=" " alt="" coords="390,341,201,388,200,383,389,336"/>
+<area shape="poly" title=" " alt="" coords="509,336,608,379,606,384,507,341"/>
+<area shape="rect" title=" " alt="" coords="515,387,582,412"/>
+<area shape="poly" title=" " alt="" coords="487,337,528,375,524,379,483,341"/>
+<area shape="rect" title=" " alt="" coords="228,387,296,412"/>
+<area shape="poly" title=" " alt="" coords="417,341,306,384,304,379,415,336"/>
+<area shape="rect" title=" " alt="" coords="320,387,383,412"/>
+<area shape="poly" title=" " alt="" coords="439,341,381,381,378,376,436,337"/>
+<area shape="rect" title=" " alt="" coords="407,387,491,412"/>
+<area shape="poly" title=" " alt="" coords="463,339,456,374,451,373,458,338"/>
 </map>
 </div>
 </div><table class="memberdecls">
@@ -153,10 +133,14 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a410a77976468d4271f43345e8d7854b9" id="r_a410a77976468d4271f43345e8d7854b9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classJoint__comms.html">Joint_comms</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="joint__comm__node_8cpp.html#a410a77976468d4271f43345e8d7854b9">_Joints</a></td></tr>
-<tr class="separator:a410a77976468d4271f43345e8d7854b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64371286b4aa2a104c9b5ec9db5b48b2" id="r_a64371286b4aa2a104c9b5ec9db5b48b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classGripper.html">Gripper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="joint__comm__node_8cpp.html#a64371286b4aa2a104c9b5ec9db5b48b2">_Gripper</a></td></tr>
-<tr class="separator:a64371286b4aa2a104c9b5ec9db5b48b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbe52cd33b413facbb206bd7f54734f6" id="r_acbe52cd33b413facbb206bd7f54734f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classJoint.html">Joint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="joint__comm__node_8cpp.html#acbe52cd33b413facbb206bd7f54734f6">J1</a> (&quot;j1&quot;, 0x11, 35, -3.04647, 3.04647)</td></tr>
+<tr class="separator:acbe52cd33b413facbb206bd7f54734f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae261ce877dad1392dd8bba2a5107abd5" id="r_ae261ce877dad1392dd8bba2a5107abd5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classJoint.html">Joint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="joint__comm__node_8cpp.html#ae261ce877dad1392dd8bba2a5107abd5">J2</a> (&quot;j2&quot;, 0x12, -2 *<a class="el" href="mJoint_8h.html#ae71449b1cc6e6250b91f539153a7a0d3">M_PI</a>/0.004, 0.338, 0.0)</td></tr>
+<tr class="separator:ae261ce877dad1392dd8bba2a5107abd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4deaebb2a18c7e8506b0d9fcd3f26366" id="r_a4deaebb2a18c7e8506b0d9fcd3f26366"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classJoint.html">Joint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="joint__comm__node_8cpp.html#a4deaebb2a18c7e8506b0d9fcd3f26366">J3</a> (&quot;j3&quot;, 0x13, 24, -2.62672, 2.62672)</td></tr>
+<tr class="separator:a4deaebb2a18c7e8506b0d9fcd3f26366"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43da7a991a5851b1caa14ac2c5855aea" id="r_a43da7a991a5851b1caa14ac2c5855aea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classJoint.html">Joint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="joint__comm__node_8cpp.html#a43da7a991a5851b1caa14ac2c5855aea">J4</a> (&quot;j4&quot;, 0x14, 12, -3.01069, 3.01069)</td></tr>
+<tr class="separator:a43da7a991a5851b1caa14ac2c5855aea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="af9b80db93c2f990422ecd0295b90668a" name="af9b80db93c2f990422ecd0295b90668a"></a>
@@ -206,28 +190,184 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a64371286b4aa2a104c9b5ec9db5b48b2" name="a64371286b4aa2a104c9b5ec9db5b48b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a64371286b4aa2a104c9b5ec9db5b48b2">&#9670;&#160;</a></span>_Gripper</h2>
+<a id="acbe52cd33b413facbb206bd7f54734f6" name="acbe52cd33b413facbb206bd7f54734f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbe52cd33b413facbb206bd7f54734f6">&#9670;&#160;</a></span>J1</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classGripper.html">Gripper</a> _Gripper</td>
+          <td class="memname"><a class="el" href="classJoint.html">Joint</a> J1(&quot;j1&quot;, 0x11, 35, -3.04647, 3.04647) </td>
+          <td>(</td>
+          <td class="paramtype">&quot;j1&quot;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">0x11&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">35&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">-3.&#160;</td>
+          <td class="paramname"><em>04647</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">3.&#160;</td>
+          <td class="paramname"><em>04647</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a410a77976468d4271f43345e8d7854b9" name="a410a77976468d4271f43345e8d7854b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a410a77976468d4271f43345e8d7854b9">&#9670;&#160;</a></span>_Joints</h2>
+<a id="ae261ce877dad1392dd8bba2a5107abd5" name="ae261ce877dad1392dd8bba2a5107abd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae261ce877dad1392dd8bba2a5107abd5">&#9670;&#160;</a></span>J2</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classJoint__comms.html">Joint_comms</a> _Joints</td>
+          <td class="memname"><a class="el" href="classJoint.html">Joint</a> J2(&quot;j2&quot;, 0x12, -2 *<a class="el" href="mJoint_8h.html#ae71449b1cc6e6250b91f539153a7a0d3">M_PI</a>/0.004, 0.338, 0.0) </td>
+          <td>(</td>
+          <td class="paramtype">&quot;j2&quot;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">0x12&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">-2 *<a class="el" href="mJoint_8h.html#ae71449b1cc6e6250b91f539153a7a0d3">M_PI</a>/0.&#160;</td>
+          <td class="paramname"><em>004</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">0.&#160;</td>
+          <td class="paramname"><em>338</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">0.&#160;</td>
+          <td class="paramname"><em>0</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4deaebb2a18c7e8506b0d9fcd3f26366" name="a4deaebb2a18c7e8506b0d9fcd3f26366"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4deaebb2a18c7e8506b0d9fcd3f26366">&#9670;&#160;</a></span>J3</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classJoint.html">Joint</a> J3(&quot;j3&quot;, 0x13, 24, -2.62672, 2.62672) </td>
+          <td>(</td>
+          <td class="paramtype">&quot;j3&quot;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">0x13&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">24&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">-2.&#160;</td>
+          <td class="paramname"><em>62672</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">2.&#160;</td>
+          <td class="paramname"><em>62672</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a43da7a991a5851b1caa14ac2c5855aea" name="a43da7a991a5851b1caa14ac2c5855aea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43da7a991a5851b1caa14ac2c5855aea">&#9670;&#160;</a></span>J4</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classJoint.html">Joint</a> J4(&quot;j4&quot;, 0x14, 12, -3.01069, 3.01069) </td>
+          <td>(</td>
+          <td class="paramtype">&quot;j4&quot;&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">0x14&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">12&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">-3.&#160;</td>
+          <td class="paramname"><em>01069</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">3.&#160;</td>
+          <td class="paramname"><em>01069</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">

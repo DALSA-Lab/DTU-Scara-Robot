@@ -1,39 +1,60 @@
 #include "bioscara_hardware_driver/mGripper.h"
+#include "bioscara_hardware_driver/uTransmission.h"
 
-Gripper::Gripper(void)
+namespace bioscara_hardware_driver
 {
-    
-}
 
-int Gripper::init(void){
-    return 0;
-}
-
-int Gripper::deinit(void){
-    return 0;
-}
-
-int Gripper::enable(void){
-    return this->pwm.start(0, 50, 0, 0) < 0 ? -1 : 0;
-}
-
-int Gripper::disable(void){
-    this->pwm.stop();
-    return 0;
-}
-
-int Gripper::setPosition(float width){
-    width = width < 30 ? 30 : width;
-    width = width > 85 ? 85 : width;
-    float dc = (10-2.2)*width/85.0+2.2;
-    for (size_t i = 0; i < 3; i++)
+    Gripper::Gripper(float reduction, float offset, float min, float max) : BaseGripper()
     {
-        if(this->pwm.setDutyCycle(dc) >= 0){
-            return 0;
-        }
+        this->reduction = reduction;
+        this->offset = offset;
+        this->min = min;
+        this->max = max;
     }
-    
-    return -1;
+
+    err_type_t Gripper::enable(void)
+    {
+        RETURN_ON_NEGATIVE(this->pwm.start(0, this->freq, 0, 0), err_type_t::COMM_ERROR);
+        return err_type_t::OK;
+    }
+
+    err_type_t Gripper::disable(void)
+    {
+        this->pwm.stop();
+        return err_type_t::OK;
+    }
+
+    err_type_t Gripper::setPosition(float width)
+    {
+        width = width < this->min ? this->min : width;
+        width = width > this->max ? this->max : width;
+
+        float angle = JOINT2ACTUATOR(width, this->reduction, this->offset);
+        return this->setServoPosition(angle);
+    }
+
+    err_type_t Gripper::setServoPosition(float angle)
+    {
+        float ton_us = angle / 90.0 * 500.0 + 1500.0;         // Ontime [us]
+        float dc = ton_us / (1000 * 1000) * this->freq * 100; // dutycycle [%] = ontime [s] /period [s] * 100 %
+        for (size_t i = 0; i < 3; i++)
+        {
+            if (this->pwm.setDutyCycle(dc) >= 0)
+            {
+                return err_type_t::OK;
+            }
+        }
+
+        return err_type_t::COMM_ERROR;
+    }
+
+    void Gripper::setReduction(float reduction)
+    {
+        this->reduction = reduction;
+    }
+
+    void Gripper::setOffset(float offset)
+    {
+        this->offset = offset;
+    }
 }
-
-

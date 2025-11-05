@@ -53,9 +53,8 @@ sudo netplan apply
 ### Create a static hostname entry
 in the */etc/hosts* add the following line:
 ```
-10.10.10.2 scara
+10.10.10.3 scara-dev
 ```
-
 
 ## Development Purposes:
 ### Install [PlotJuggler](https://github.com/facontidavide/PlotJuggler)

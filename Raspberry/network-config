@@ -1,0 +1,22 @@
+network:
+  version: 2
+  renderer: NetworkManager #use networkd as a fallback, tools for adding new connections like nmcli wont work then.
+  ethernets:
+    eth0:
+      addresses:
+        - 10.10.10.2/24
+      routes:
+        - to: default
+          via: 10.10.10.1
+          metric: 700 # Increase the metric so that a the wifi connection (metric: 600) is prefered for internet traffic
+      nameservers:
+          addresses:
+            - 8.8.8.8
+            - 8.8.4.4
+  wifis:
+    wlan0:
+      dhcp4: true
+      optional: true
+      access-points:
+        "DALSA_IOT":
+          password: "dalsa_iot"

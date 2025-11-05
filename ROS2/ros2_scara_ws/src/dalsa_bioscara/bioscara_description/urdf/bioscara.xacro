@@ -2,7 +2,6 @@
 <robot name="bioscara" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:arg name="use_mock_hardware" default="false"/>
-  <xacro:arg name="command_interface" default="position"/>
   <xacro:arg name="prefix" default=""/>
   <xacro:arg name="gripper_package_name" default="" />
   <xacro:arg name="gripper_macro_path" default="/urdf/gripper.xacro" />
@@ -31,10 +30,9 @@
 
   <xacro:include filename="$(find bioscara_description)/urdf/materials.xacro" />
   <xacro:include filename="$(find bioscara_description)/urdf/bioscara.urdf.xacro" />
-  <xacro:include filename="$(find bioscara_description)/urdf/bioscara.gazebo" />
 
   <xacro:include filename="$(find bioscara_description)/urdf/bioscara.ros2control" />
-  <xacro:bioscara_ros2_control prefix="$(arg prefix)" parameters="${params}" use_mock_hardware="$(arg use_mock_hardware)" command_interface="$(arg command_interface)"/>
+  <xacro:bioscara_ros2_control prefix="$(arg prefix)" parameters="${params}" use_mock_hardware="$(arg use_mock_hardware)"/>
 
    -->
 
