@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Gripper _Gripper;
+Gripper _Gripper(1,0,0,100);
 
 void INT_handler(int s)
 {
