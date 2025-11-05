@@ -27,12 +27,12 @@ cd bioscara/ROS2/ros2_scara_ws
 Source the ROS executables:
 > [!NOTE]
 >
-> The following step needs only to be done once after opening a new terminal session or when the 'Package 'gripper_example' not found' error is shown.
+> The following step needs only to be done once after opening a new terminal session or when the 'Package 'gripper_manual_control' not found' error is shown.
 ```bash
 source install/local_setup.sh
 ```
 
 And finally execute the gripper example program:
 ```bash
-ros2 run gripper_example main
+ros2 run gripper_manual_control manual_control
 ```
