@@ -43,3 +43,11 @@ int Gripper::setServoPosition(float angle)
 
     return -1;
 }
+
+void Gripper::setReduction(float reduction){
+    this->reduction = reduction;
+}
+
+void Gripper::setOffset(float offset){
+    this->offset = offset;
+}

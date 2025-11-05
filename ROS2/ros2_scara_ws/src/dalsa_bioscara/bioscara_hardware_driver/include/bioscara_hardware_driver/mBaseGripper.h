@@ -102,6 +102,18 @@ public:
      */
     virtual int setServoPosition(float angle);
 
+        /**
+     * @brief Manually set reduction
+     * 
+     * @param reduction 
+     */
+    void setReduction(float reduction);
+
+    /**
+     * @brief Manually set offset
+     */
+    void setOffset(float offset);
+
 protected:
 private:
 };

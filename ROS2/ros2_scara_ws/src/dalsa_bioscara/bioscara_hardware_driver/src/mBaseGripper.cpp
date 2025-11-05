@@ -33,3 +33,11 @@ int BaseGripper::setServoPosition(float /*angle*/)
 {
     return 0;
 }
+
+void BaseGripper::setReduction(float /*reduction*/)
+{
+}
+
+void BaseGripper::setOffset(float /*offset*/)
+{
+}

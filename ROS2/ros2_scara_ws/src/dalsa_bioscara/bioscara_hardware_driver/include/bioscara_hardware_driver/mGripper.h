@@ -61,6 +61,18 @@ public:
 
     int setServoPosition(float angle) override;
 
+    /**
+     * @brief Manually set reduction
+     * 
+     * @param reduction 
+     */
+    void setReduction(float reduction);
+
+    /**
+     * @brief Manually set offset
+     */
+    void setOffset(float offset);
+
 protected:
     float reduction = 1; ///< Joint to actuator reduction ratio
     float offset = 0;    ///< Joint position offset

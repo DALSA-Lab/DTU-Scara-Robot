@@ -1,11 +1,15 @@
 #include <signal.h>
 #include <unistd.h>
 #include <iostream>
-#include "bioscara_hardware_driver/mGripper.h"
+#include <limits>
+// #include "bioscara_hardware_driver/mGripper.h"
+#include "bioscara_hardware_driver/mMockGripper.h"
+#include "manual_control.h"
 
 using namespace std;
 
-Gripper _Gripper(1,0,0,100);
+// Gripper _Gripper(1, 0, 0, 100);
+MockGripper _Gripper;
 
 void INT_handler(int s)
 {
@@ -29,18 +33,118 @@ int main(int argc, char **argv)
     return 0;
   }
 
-  cout << "Use this program to manually set a gripper position by directly controlling the actuator angle.\n \
-  This can be used to position the actuator for mounting or to determine reduction and offset.";
   while (1)
   {
-    cout << "enter an angle for the gripper actuator in degrees between -90 and +90: ";
-    float i;
-    cin >> i;
-    if (_Gripper.setServoPosition(i) != 0)
+    cout << "Control the gripper by width (w) or actuator angle (a) [w/a]: ";
+    char mode;
+    cin >> mode;
+    cin.clear();
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    if (mode == 'w' || mode == 'W')
     {
-      return -1;
+      read_reduction();
+      read_offset();
+
+      while (1)
+      {
+        read_width();
+      }
+    }
+    else if (mode == 'a' || mode == 'A')
+    {
+      while (1)
+      {
+        read_angle();
+      }
+    }
+    else
+    {
+      cout << "invalid input: '" << mode << "'" << endl;
     }
   }
 
   return 0;
+}
+
+void read_angle()
+{
+  cout << "enter the actuator angle in degrees (-90 <= x <= +90): ";
+  float i;
+  cin >> i;
+  if (!cin)
+  {
+    cout << "invalid input!" << endl;
+    cin.clear();
+  }
+  else
+  {
+    if (_Gripper.setServoPosition(i) != 0)
+    {
+      cerr << "Failed to set position!" << endl;
+    }
+  }
+  cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+void read_width()
+{
+  cout << "Enter the gripper width in mm: ";
+  float i;
+  cin >> i;
+  if (!cin)
+  {
+    cout << "invalid input!" << endl;
+    cin.clear();
+  }
+  else
+  {
+    if (_Gripper.setPosition(i / 1000.0) != 0)
+    {
+      cerr << "Failed to set position!" << endl;
+    }
+  }
+  cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+void read_offset()
+{
+  while (1)
+  {
+    cout << "Enter the offset: ";
+    float i;
+    cin >> i;
+    if (!cin)
+    {
+      cout << "invalid input!" << endl;
+      cin.clear();
+    }
+    else
+    {
+      _Gripper.setOffset(i);
+      break;
+    }
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+  }
+}
+
+void read_reduction()
+{
+  while (1)
+  {
+    cout << "Enter the reduction: ";
+    float i;
+    cin >> i;
+    if (!cin)
+    {
+      cout << "invalid input!" << endl;
+      cin.clear();
+    }
+    else
+    {
+      _Gripper.setReduction(i);
+      break;
+    }
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+  }
 }
