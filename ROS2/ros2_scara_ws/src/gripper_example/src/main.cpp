@@ -1,10 +1,11 @@
 #include <signal.h>
 #include <unistd.h>
+#include <iostream>
 #include "bioscara_hardware_driver/mGripper.h"
 
 using namespace std;
 
-Gripper _Gripper(1,0,0,100);
+Gripper _Gripper;
 
 void INT_handler(int s)
 {
@@ -28,12 +29,14 @@ int main(int argc, char **argv)
     return 0;
   }
 
+  cout << "Use this program to manually set a gripper position by directly controlling the actuator angle.\n \
+  This can be used to position the actuator for mounting or to determine reduction and offset.";
   while (1)
   {
-    cout << "enter a gripper position between 30 mm and 85 mm: ";
-    int i;
+    cout << "enter an angle for the gripper actuator in degrees between -90 and +90: ";
+    float i;
     cin >> i;
-    if (_Gripper.setPosition(i/100.0) != 0)
+    if (_Gripper.setServoPosition(i) != 0)
     {
       return -1;
     }

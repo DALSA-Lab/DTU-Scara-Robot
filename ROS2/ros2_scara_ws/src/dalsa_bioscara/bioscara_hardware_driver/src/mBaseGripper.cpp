@@ -28,3 +28,8 @@ int BaseGripper::setPosition(float /*width*/)
 {
     return 0;
 }
+
+int BaseGripper::setServoPosition(float /*angle*/)
+{
+    return 0;
+}

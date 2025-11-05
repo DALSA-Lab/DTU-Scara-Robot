@@ -59,6 +59,8 @@ public:
 
     int setPosition(float width) override;
 
+    int setServoPosition(float angle) override;
+
 protected:
     float reduction = 1; ///< Joint to actuator reduction ratio
     float offset = 0;    ///< Joint position offset
@@ -66,5 +68,6 @@ protected:
     float max = 0;       ///< Joint upper limit
 private:
     RPI_PWM pwm;
+    int freq = 50;
 };
 #endif // MGRIPPER_H

@@ -95,6 +95,13 @@ public:
      */
     virtual int setPosition(float width);
 
+    /**
+     * @brief Sets the servo position of the gripper actuator in degrees.
+     *
+     * @param angle in degrees.
+     */
+    virtual int setServoPosition(float angle);
+
 protected:
 private:
 };
