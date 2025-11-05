@@ -2,484 +2,299 @@
 #include "bioscara_hardware_driver/mJoint.h"
 #include <cmath>
 
-Joint::Joint(const std::string name,
-             const int address,
-             const float reduction,
-             const float min,
-             const float max) : BaseJoint(name)
+namespace bioscara_hardware_driver
 {
-    this->address = address;
-    this->reduction = reduction;
-    this->min = min;
-    this->max = max;
-}
-
-Joint::~Joint(void)
-{
-    this->disable();
-    this->deinit();
-}
-
-int Joint::init(void)
-{
-    std::cout << "[INFO] Initializing " << this->name << std::endl;
-    this->handle = openI2CDevHandle(this->address);
-    if (this->handle < 0)
+    Joint::Joint(const std::string name,
+                 const int address,
+                 const float reduction,
+                 const float min,
+                 const float max) : BaseJoint(name)
     {
-        return -2;
+        this->address = address;
+        this->reduction = reduction;
+        this->min = min;
+        this->max = max;
     }
 
-    /* Check if communication can be established */
-    int rc = checkCom();
-    if (rc < 0)
+    Joint::~Joint(void)
     {
-        return rc;
+        this->disable();
+        this->deinit();
     }
 
-    /* If joint is homed, retrieve the homing position stored on the joint */
-    if (this->isHomed())
+    err_type_t Joint::init(void)
     {
-        float offset;
-        rc = this->getHomingOffset(offset);
-        if (rc < 0)
+        std::cout << "[INFO] Initializing " << this->name << std::endl;
+        this->handle = openI2CDevHandle(this->address);
+
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+
+        /* Check if communication can be established */
+        RETURN_ON_ERROR(this->checkCom());
+
+        /* If joint is homed, retrieve the homing position stored on the joint */
+        if (this->isHomed())
         {
-            return rc;
+            float offset;
+            RETURN_ON_ERROR(this->getHomingOffset(offset));
+            this->offset = offset;
         }
-        this->offset = offset;
+
+        return err_type_t::OK;
     }
 
-    return 0;
-}
-
-int Joint::deinit(void)
-{
-    if (this->handle < 0)
+    err_type_t Joint::deinit(void)
     {
-        return -5;
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+        RETURN_ON_NEGATIVE(closeI2CDevHandle(this->handle), err_type_t::COMM_ERROR);
+        return err_type_t::OK;
     }
-    int rc = closeI2CDevHandle(this->handle);
-    return rc < 0 ? -1 : 0;
-}
 
-int Joint::enable(u_int8_t driveCurrent, u_int8_t holdCurrent)
-{
-    if (this->handle < 0)
+    err_type_t Joint::enable(u_int8_t driveCurrent, u_int8_t holdCurrent)
     {
-        return -5;
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+
+        u_int32_t buf = 0;                  // Initialize buf to 0
+        buf |= (driveCurrent & 0xFF);       // Copy driveCurrent to the least significant byte
+        buf |= ((holdCurrent & 0xFF) << 8); // Copy holdCurrent to the next byte
+        std::cout << "[INFO] enabling " << this->name << std::endl;
+
+        RETURN_ON_NEGATIVE(this->write(SETUP, buf, this->flags), err_type_t::COMM_ERROR);
+        this->wait_while_busy(10.0);
+
+        RETURN_ON_FALSE(this->isEnabled(), err_type_t::NOT_ENABLED);
+        return err_type_t::OK;
     }
-    u_int32_t buf = 0;                  // Initialize buf to 0
-    buf |= (driveCurrent & 0xFF);       // Copy driveCurrent to the least significant byte
-    buf |= ((holdCurrent & 0xFF) << 8); // Copy holdCurrent to the next byte
-    std::cout << "[INFO] enabling " << this->name << std::endl;
-    if (this->write(SETUP, buf, this->flags) < 0)
+
+    err_type_t Joint::postHoming(void)
     {
-        return -1;
-    }
-    this->wait_while_busy(10.0);
+        RETURN_ON_ERROR(BaseJoint::postHoming());
 
-    if (!this->isEnabled())
+        /* Save the homing position stored on the joint.*/
+        RETURN_ON_ERROR(this->setHomingOffset(this->offset));
+
+        return err_type_t::OK;
+    }
+
+    err_type_t Joint::_home(float velocity, u_int8_t sensitivity, u_int8_t current)
     {
-        return -3;
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+
+        RETURN_ON_FALSE(this->isEnabled(), err_type_t::NOT_ENABLED);
+
+        /* Set the offset to min or max, depending on the direction we are homing. */
+        this->offset = velocity > 0.0 ? this->max : this->min;
+
+        velocity = RAD2DEG(JOINT2ACTUATOR(velocity, this->reduction, 0)) / 6;
+        if (velocity == 0)
+        {
+            return err_type_t::INVALID_ARGUMENT;
+        }
+        if (fabs(velocity) > 250.0 || fabs(velocity) < 1.0)
+        {
+            return err_type_t::INVALID_ARGUMENT;
+        }
+
+        u_int8_t direction = velocity > 0.0 ? 1 : 0;
+
+        velocity = fabs(velocity);
+        u_int8_t rpm = static_cast<u_int8_t>(velocity);
+
+        u_int32_t buf = 0;
+        buf |= (direction & 0xFF);
+        buf |= ((rpm & 0xFF) << 8);
+        buf |= ((sensitivity & 0xFF) << 16);
+        buf |= ((current & 0xFF) << 24);
+
+        RETURN_ON_NEGATIVE(this->write(HOME, buf, this->flags), err_type_t::COMM_ERROR);
+
+        return err_type_t::OK;
     }
-    return 0;
-}
 
-// int Joint::disable(void)
-// {
-//     if (this->handle < 0)
-//     {
-//         return -5;
-//     }
-//     return BaseJoint::disable();
-// }
-
-// int Joint::home(float velocity, u_int8_t sensitivity, u_int8_t current)
-// {
-//     int rc = this->startHoming(velocity, sensitivity, current);
-//     if (rc < 0)
-//     {
-//         return rc;
-//     }
-//     this->wait_while_busy(100.0);
-//     rc = this->postHoming();
-//     if (rc < 0)
-//     {
-//         return rc;
-//     }
-//     return 0;
-// }
-
-// int Joint::startHoming(float velocity, u_int8_t sensitivity, u_int8_t current)
-// {
-//     if (this->current_b_cmd != NONE)
-//     {
-//         return -109; // INCORRECT STATE
-//     }
-//     int rc = this->_home(velocity, sensitivity, current);
-//     if (rc < 0)
-//     {
-//         this->current_b_cmd = NONE;
-//         return rc;
-//     }
-//     this->current_b_cmd = HOME;
-//     return 0;
-// }
-
-int Joint::postHoming(void)
-{
-    int rc = BaseJoint::postHoming();
-    if (rc < 0)
+    err_type_t Joint::getPosition(float &pos)
     {
-        return rc;
-    }
-    /* Save the homing position stored on the joint.*/
-    rc = this->setHomingOffset(this->offset);
-    if (rc < 0)
-    {
-        return rc;
-    }
-    return 0;
-}
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
 
-int Joint::_home(float velocity, u_int8_t sensitivity, u_int8_t current)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    if (!this->isEnabled())
-    {
-        return -3;
+        RETURN_ON_NEGATIVE(this->read(ANGLEMOVED, pos, this->flags), err_type_t::COMM_ERROR);
+        pos = ACTUATOR2JOINT(DEG2RAD(pos), this->reduction, this->offset);
+        if (!this->isHomed())
+        {
+            pos = 0.0;
+        }
+        return err_type_t::OK;
     }
 
-    /* Set the offset to min or max, depending on the direction we are homing. */
-    this->offset = velocity > 0.0 ? this->max : this->min;
-
-    velocity = RAD2DEG(JOINT2ACTUATOR(velocity, this->reduction, 0)) / 6;
-    if (velocity == 0)
+    err_type_t Joint::setPosition(float pos)
     {
-        return -101;
-    }
-    if (fabs(velocity) > 250.0 || fabs(velocity) < 1.0)
-    {
-        return -102;
-    }
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+        RETURN_ON_FALSE(this->isEnabled(), err_type_t::NOT_ENABLED);
 
-    u_int8_t direction = velocity > 0.0 ? 1 : 0;
+        if (!this->isHomed())
+        {
+            return err_type_t::NOT_HOMED; // not homed
+        }
 
-    velocity = fabs(velocity);
-    u_int8_t rpm = static_cast<u_int8_t>(velocity);
-
-    u_int32_t buf = 0;
-    buf |= (direction & 0xFF);
-    buf |= ((rpm & 0xFF) << 8);
-    buf |= ((sensitivity & 0xFF) << 16);
-    buf |= ((current & 0xFF) << 24);
-
-    int rc = this->write(HOME, buf, this->flags);
-    if (rc < 0)
-    {
-        return -1;
+        pos = RAD2DEG(JOINT2ACTUATOR(pos, this->reduction, this->offset));
+        RETURN_ON_NEGATIVE(this->write(MOVETOANGLE, pos, this->flags), err_type_t::COMM_ERROR);
+        RETURN_ON_FALSE(!this->isStalled(), err_type_t::STALLED);
+        return err_type_t::OK;
     }
 
-    return 0;
-}
+    err_type_t Joint::moveSteps(int32_t steps)
+    {
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+        RETURN_ON_FALSE(this->isEnabled(), err_type_t::NOT_ENABLED);
 
-int Joint::getPosition(float &pos)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-
-    int rc = this->read(ANGLEMOVED, pos, this->flags);
-    pos = ACTUATOR2JOINT(DEG2RAD(pos), this->reduction, this->offset);
-    if (!this->isHomed())
-    {
-        pos = 0.0;
-    }
-    return rc < 0 ? -1 : 0;
-}
-
-int Joint::setPosition(float pos)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    if (!this->isEnabled())
-    {
-        return -3; // not enabled
-    }
-    if (!this->isHomed())
-    {
-        return -2; // not homed
+        RETURN_ON_NEGATIVE(this->write(MOVESTEPS, steps, this->flags), err_type_t::COMM_ERROR);
+        RETURN_ON_FALSE(!this->isStalled(), err_type_t::STALLED);
+        return err_type_t::OK;
     }
 
-    // inline expansion of the macro did not work, convert before sending to function.
-    pos = RAD2DEG(JOINT2ACTUATOR(pos, this->reduction, this->offset));
-    int rc = this->write(MOVETOANGLE, pos, this->flags);
-    if (rc < 0)
+    err_type_t Joint::getVelocity(float &vel)
     {
-        return -1;
-    }
-    if (this->isStalled())
-    {
-        return -4; // STALLED
-    }
-    return 0;
-}
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
 
-int Joint::moveSteps(int32_t steps)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    if (!this->isEnabled())
-    {
-        return -3; // not enabled
+        RETURN_ON_NEGATIVE(this->read(GETENCODERRPM, vel, this->flags), err_type_t::COMM_ERROR);
+        vel = ACTUATOR2JOINT(DEG2RAD(vel), this->reduction, 0);
+        vel *= 6.0; // convert from rpm to rad/s
+        return err_type_t::OK;
     }
 
-    int rc = this->write(MOVESTEPS, steps, this->flags);
-    if (rc < 0)
+    err_type_t Joint::setVelocity(float vel)
     {
-        return -1;
-    }
-    if (this->isStalled())
-    {
-        return -4; // STALLED
-    }
-    return 0;
-}
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+        RETURN_ON_FALSE(this->isEnabled(), err_type_t::NOT_ENABLED);
+        RETURN_ON_FALSE(this->isHomed(), err_type_t::NOT_HOMED);
 
-int Joint::getVelocity(float &vel)
-{
-    if (this->handle < 0)
-    {
-        return -5;
+        vel = RAD2DEG(JOINT2ACTUATOR(vel, this->reduction, 0)) / 6;
+        RETURN_ON_NEGATIVE(this->write(SETRPM, vel, this->flags), err_type_t::COMM_ERROR);
+        RETURN_ON_FALSE(!this->isStalled(), err_type_t::STALLED);
+        return err_type_t::OK;
     }
 
-    int rc = this->read(GETENCODERRPM, vel, this->flags);
-    vel = ACTUATOR2JOINT(DEG2RAD(vel), this->reduction, 0);
-    vel *= 6.0; // convert from rpm to rad/s
-    return rc < 0 ? -1 : 0;
-}
+    err_type_t Joint::checkOrientation(float angle)
+    {
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+        RETURN_ON_FALSE(this->isEnabled(), err_type_t::NOT_ENABLED);
 
-int Joint::setVelocity(float vel)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    if (!this->isEnabled())
-    {
-        return -3; // not enabled
-    }
-    if (!this->isHomed())
-    {
-        return -2; // not homed
+        RETURN_ON_NEGATIVE(this->write(CHECKORIENTATION, angle, this->flags), err_type_t::COMM_ERROR);
+        this->wait_while_busy(10.0);
+
+        RETURN_ON_FALSE(!this->isStalled(), err_type_t::STALLED);
+
+        return err_type_t::OK;
     }
 
-    // inline expansion of the macro did not work, convert before sending to function.
-    vel = RAD2DEG(JOINT2ACTUATOR(vel, this->reduction, 0)) / 6;
-    int rc = this->write(SETRPM, vel, this->flags);
-    if (rc < 0)
+    err_type_t Joint::stop(void)
     {
-        return -1;
-    }
-    if (this->isStalled())
-    {
-        return -4; // STALLED
-    }
-    return 0;
-}
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
 
-int Joint::checkOrientation(float angle)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    if (!this->isEnabled())
-    {
-        return -3; // not enabled
-    }
-    int rc = this->write(CHECKORIENTATION, angle, this->flags);
-    if (rc < 0)
-    {
-        return -1;
-    }
-    this->wait_while_busy(10.0);
-
-    if (this->isStalled())
-    {
-        return -4; // STALLED
+        RETURN_ON_NEGATIVE(this->write(STOP, (u_int8_t)0x00, this->flags), err_type_t::COMM_ERROR);
+        return err_type_t::OK;
     }
 
-    return 0;
-}
-
-int Joint::stop(void)
-{
-    if (this->handle < 0)
+    err_type_t Joint::disableCL(void)
     {
-        return -5;
-    }
-    return this->write(STOP, (u_int8_t)0x00, this->flags) < 0 ? -1 : 0;
-}
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+        u_int8_t buf = 0;
 
-int Joint::disableCL(void)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    u_int8_t buf = 0;
-    return this->write(DISABLECLOSEDLOOP, buf, this->flags) < 0 ? -1 : 0;
-}
-
-int Joint::setDriveCurrent(u_int8_t current)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    return this->write(SETCURRENT, current, this->flags) < 0 ? -1 : 0;
-}
-
-int Joint::setHoldCurrent(u_int8_t current)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    return this->write(SETHOLDCURRENT, current, this->flags) < 0 ? -1 : 0;
-}
-
-int Joint::setBrakeMode(u_int8_t mode)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    return this->write(SETBRAKEMODE, mode, this->flags) < 0 ? -1 : 0;
-}
-
-int Joint::setMaxAcceleration(float maxAccel)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    maxAccel = RAD2DEG(JOINT2ACTUATOR(maxAccel, this->reduction, 0));
-    return this->write(SETMAXACCELERATION, maxAccel, this->flags) < 0 ? -1 : 0;
-}
-
-int Joint::setMaxVelocity(float maxVel)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    maxVel = RAD2DEG(JOINT2ACTUATOR(maxVel, this->reduction, 0));
-    return this->write(SETMAXVELOCITY, maxVel, this->flags) < 0 ? -1 : 0;
-}
-
-int Joint::enableStallguard(u_int8_t sensitivity)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    return this->write(ENABLESTALLGUARD, sensitivity, this->flags) < 0 ? -1 : 0;
-}
-
-// bool Joint::isHomed(void)
-// {
-//     return ~this->flags & (1 << 2);
-// }
-
-// bool Joint::isEnabled(void)
-// {
-//     return ~this->flags & (1 << 3);
-// }
-
-// bool Joint::isStalled(void)
-// {
-//     return this->flags & (1 << 0);
-// }
-
-// bool Joint::isBusy(void)
-// {
-//     return this->flags & (1 << 1);
-// }
-
-int Joint::checkCom(void)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    u_int8_t buf;
-    int rc = this->read(PING, buf, this->flags);
-
-    if (buf == 'O' && rc == 0)
-    {
-        return 0;
-    }
-    return -1;
-}
-
-u_int8_t Joint::getFlags(void)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    u_int8_t buf;
-    this->read(PING, buf, this->flags);
-    return this->flags;
-}
-
-int Joint::getHomingOffset(float &offset)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    if (!this->isHomed())
-    {
-        return -2; // NOT HOMED
+        RETURN_ON_NEGATIVE(this->write(DISABLECLOSEDLOOP, buf, this->flags), err_type_t::COMM_ERROR);
+        return err_type_t::OK;
     }
 
-    return this->read(HOMEOFFSET, offset, this->flags) < 0 ? -1 : 0;
-}
+    err_type_t Joint::setDriveCurrent(u_int8_t current)
+    {
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
 
-int Joint::setHomingOffset(const float offset)
-{
-    if (this->handle < 0)
-    {
-        return -5;
-    }
-    if (!this->isHomed())
-    {
-        return -2; // NOT HOMED
+        RETURN_ON_NEGATIVE(this->write(SETCURRENT, current, this->flags), err_type_t::COMM_ERROR);
+        return err_type_t::OK;
     }
 
-    return this->write(HOMEOFFSET, offset, this->flags) < 0 ? -1 : 0;
-}
+    err_type_t Joint::setHoldCurrent(u_int8_t current)
+    {
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
 
-// Joint::stp_reg_t Joint::getCurrentBCmd(void)
-// {
-//     return this->current_b_cmd;
-// }
+        RETURN_ON_NEGATIVE(this->write(SETHOLDCURRENT, current, this->flags), err_type_t::COMM_ERROR);
+        return err_type_t::OK;
+    }
 
-// void Joint::wait_while_busy(const float period_ms)
-// {
-//     do
-//     {
-//         usleep(period_ms * 1000);
-//         this->getFlags();
-//     } while (this->isBusy());
-// }
+    err_type_t Joint::setBrakeMode(u_int8_t mode)
+    {
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+
+        RETURN_ON_NEGATIVE(this->write(SETBRAKEMODE, mode, this->flags), err_type_t::COMM_ERROR);
+        return err_type_t::OK;
+    }
+
+    err_type_t Joint::setMaxAcceleration(float maxAccel)
+    {
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+        maxAccel = RAD2DEG(JOINT2ACTUATOR(maxAccel, this->reduction, 0));
+
+        RETURN_ON_NEGATIVE(this->write(SETMAXACCELERATION, maxAccel, this->flags), err_type_t::COMM_ERROR);
+        return err_type_t::OK;
+    }
+
+    err_type_t Joint::setMaxVelocity(float maxVel)
+    {
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+        maxVel = RAD2DEG(JOINT2ACTUATOR(maxVel, this->reduction, 0));
+
+        RETURN_ON_NEGATIVE(this->write(SETMAXVELOCITY, maxVel, this->flags), err_type_t::COMM_ERROR);
+        return err_type_t::OK;
+    }
+
+    err_type_t Joint::enableStallguard(u_int8_t sensitivity)
+    {
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+
+        RETURN_ON_NEGATIVE(this->write(ENABLESTALLGUARD, sensitivity, this->flags), err_type_t::COMM_ERROR);
+        return err_type_t::OK;
+    }
+
+    err_type_t Joint::checkCom(void)
+    {
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+        u_int8_t buf;
+        RETURN_ON_NEGATIVE(this->read(PING, buf, this->flags), err_type_t::COMM_ERROR);
+
+        if (buf == 'O')
+        {
+            return err_type_t::OK;
+        }
+        return err_type_t::ERROR;
+    }
+
+    err_type_t Joint::getFlags(void)
+    {
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+        u_int8_t buf;
+        RETURN_ON_NEGATIVE(this->read(PING, buf, this->flags), err_type_t::COMM_ERROR);
+        return err_type_t::OK;
+    }
+
+    err_type_t Joint::getHomingOffset(float &offset)
+    {
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+        if (!this->isHomed())
+        {
+            return err_type_t::NOT_HOMED; // NOT HOMED
+        }
+
+        RETURN_ON_NEGATIVE(this->read(HOMEOFFSET, offset, this->flags), err_type_t::COMM_ERROR);
+        return err_type_t::OK;
+    }
+
+    err_type_t Joint::setHomingOffset(const float offset)
+    {
+        RETURN_ON_NEGATIVE(this->handle, err_type_t::NOT_INIT);
+        if (!this->isHomed())
+        {
+            return err_type_t::NOT_HOMED; // NOT HOMED
+        }
+
+        RETURN_ON_NEGATIVE(this->write(HOMEOFFSET, offset, this->flags), err_type_t::COMM_ERROR);
+        return err_type_t::OK;
+    }
+
+} // namespace bioscara_hardware_driver

@@ -1,43 +1,45 @@
 #include "bioscara_hardware_driver/mBaseGripper.h"
-
-BaseGripper::BaseGripper(void)
+namespace bioscara_hardware_driver
 {
-}
+    BaseGripper::BaseGripper(void)
+    {
+    }
 
-int BaseGripper::init(void)
-{
-    return 0;
-}
+    err_type_t BaseGripper::init(void)
+    {
+        return err_type_t::OK;
+    }
 
-int BaseGripper::deinit(void)
-{
-    return 0;
-}
+    err_type_t BaseGripper::deinit(void)
+    {
+        return err_type_t::OK;
+    }
 
-int BaseGripper::enable(void)
-{
-    return 0;
-}
+    err_type_t BaseGripper::enable(void)
+    {
+        return err_type_t::OK;
+    }
 
-int BaseGripper::disable(void)
-{
-    return 0;
-}
+    err_type_t BaseGripper::disable(void)
+    {
+        return err_type_t::OK;
+    }
 
-int BaseGripper::setPosition(float /*width*/)
-{
-    return 0;
-}
+    err_type_t BaseGripper::setPosition(float /*width*/)
+    {
+        return err_type_t::OK;
+    }
 
-int BaseGripper::setServoPosition(float /*angle*/)
-{
-    return 0;
-}
+    err_type_t BaseGripper::setServoPosition(float /*angle*/)
+    {
+        return err_type_t::OK;
+    }
 
-void BaseGripper::setReduction(float /*reduction*/)
-{
-}
+    void BaseGripper::setReduction(float /*reduction*/)
+    {
+    }
 
-void BaseGripper::setOffset(float /*offset*/)
-{
+    void BaseGripper::setOffset(float /*offset*/)
+    {
+    }
 }

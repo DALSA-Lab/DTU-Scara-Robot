@@ -13,16 +13,20 @@
 #ifndef MMOCKGRIPPER_H
 #define MMOCKGRIPPER_H
 #include "bioscara_hardware_driver/mBaseGripper.h"
-
+#include "bioscara_hardware_driver/uErr.h"
 /**
  * @copydoc BaseGripper
  */
-class MockGripper : public BaseGripper
+
+namespace bioscara_hardware_driver
 {
-public:
-    MockGripper(void);
-    
-protected:
-private:
-};
+    class MockGripper : public BaseGripper
+    {
+    public:
+        MockGripper(void);
+
+    protected:
+    private:
+    };
+}
 #endif // MMOCKGRIPPER_H

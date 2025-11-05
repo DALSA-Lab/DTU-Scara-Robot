@@ -7,6 +7,7 @@
 #include "manual_control.h"
 
 using namespace std;
+using namespace bioscara_hardware_driver;
 
 // Gripper _Gripper(1, 0, 0, 100);
 MockGripper _Gripper;
@@ -27,7 +28,7 @@ int main(int argc, char **argv)
   (void)argv;
 
   _Gripper.init();
-  if (_Gripper.enable() != 0)
+  if (_Gripper.enable() != err_type_t::OK)
   {
     cerr << "Gripper not enabled" << endl;
     return 0;
@@ -79,7 +80,7 @@ void read_angle()
   }
   else
   {
-    if (_Gripper.setServoPosition(i) != 0)
+    if (_Gripper.setServoPosition(i) != err_type_t::OK)
     {
       cerr << "Failed to set position!" << endl;
     }
@@ -99,7 +100,7 @@ void read_width()
   }
   else
   {
-    if (_Gripper.setPosition(i / 1000.0) != 0)
+    if (_Gripper.setPosition(i / 1000.0) != err_type_t::OK)
     {
       cerr << "Failed to set position!" << endl;
     }

@@ -275,7 +275,7 @@ namespace bioscara_hardware_interface
          * implementation of a method. So either BaseJoint::foo() or Joint::foo()/MockJoint::foo() if foo() is overwritten in Joint or MockJoint.
          * a smart pointer is used to guarantee destruction when the pointer is destructed. A unique pointer is used to prevent copying of the object.
          */
-        std::unordered_map<std::string, std::unique_ptr<BaseJoint>> _joints;
+        std::unordered_map<std::string, std::unique_ptr<bioscara_hardware_driver::BaseJoint>> _joints;
 
         /**
          * @brief unordered map storing the configuration struct of the joints.
@@ -309,7 +309,7 @@ namespace bioscara_hardware_interface
          * @param velocity 
          * @return int 
          */
-        int start_homing(const std::string name, float velocity);
+        bioscara_hardware_driver::err_type_t start_homing(const std::string name, float velocity);
 
         /**
          * @brief TODO
@@ -317,7 +317,7 @@ namespace bioscara_hardware_interface
          * @param name 
          * @return int 
          */
-        int stop_homing(const std::string name);
+        bioscara_hardware_driver::err_type_t stop_homing(const std::string name);
     };
 
 } // namespace bioscara_hardware_interface

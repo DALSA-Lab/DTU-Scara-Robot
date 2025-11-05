@@ -1,6 +1,7 @@
 #include "bioscara_hardware_driver/mMockGripper.h"
-
-MockGripper::MockGripper(void)
-{    
+namespace bioscara_hardware_driver
+{
+    MockGripper::MockGripper(void)
+    {
+    }
 }
-

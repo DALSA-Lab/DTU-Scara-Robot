@@ -16,44 +16,46 @@
 #include "bioscara_hardware_driver/mBaseJoint.h"
 #include <chrono>
 
-class MockJoint : public BaseJoint
+namespace bioscara_hardware_driver
 {
-public:
-  MockJoint(const std::string name);
+  class MockJoint : public BaseJoint
+  {
+  public:
+    MockJoint(const std::string name);
 
-  int enable(u_int8_t driveCurrent, u_int8_t holdCurrent) override;
+    err_type_t enable(u_int8_t driveCurrent, u_int8_t holdCurrent) override;
 
-  int disable(void) override;
+    err_type_t disable(void) override;
 
-  int getPosition(float &pos) override;
+    err_type_t getPosition(float &pos) override;
 
-  int setPosition(float pos) override;
+    err_type_t setPosition(float pos) override;
 
-  int getVelocity(float &vel) override;
+    err_type_t getVelocity(float &vel) override;
 
-  int setVelocity(float vel) override;
+    err_type_t setVelocity(float vel) override;
 
-  int checkOrientation(float angle = 10.0) override;
+    err_type_t checkOrientation(float angle = 10.0) override;
 
-  int stop(void) override;
+    err_type_t stop(void) override;
 
-  u_int8_t getFlags(void) override;
+    err_type_t getFlags(void) override;
 
-  bool isHomed(void) override;
+    bool isHomed(void) override;
 
-protected:
-  int _home(float velocity, u_int8_t sensitivity, u_int8_t current);
+  protected:
+    err_type_t _home(float velocity, u_int8_t sensitivity, u_int8_t current);
 
-private:
-  float q = 0.0;
-  float qd = 0.0;
+  private:
+    float q = 0.0;
+    float qd = 0.0;
 
-  std::chrono::_V2::system_clock::time_point last_set_position = std::chrono::high_resolution_clock::now();
-  std::chrono::_V2::system_clock::time_point last_set_velocity = last_set_position;
-  std::chrono::_V2::system_clock::time_point async_start_time = last_set_position;
-  float getDeltaT(std::chrono::_V2::system_clock::time_point &last_call, bool update = true);
+    std::chrono::_V2::system_clock::time_point last_set_position = std::chrono::high_resolution_clock::now();
+    std::chrono::_V2::system_clock::time_point last_set_velocity = last_set_position;
+    std::chrono::_V2::system_clock::time_point async_start_time = last_set_position;
+    float getDeltaT(std::chrono::_V2::system_clock::time_point &last_call, bool update = true);
 
-  stp_reg_t op_mode = NONE;
-};
-
+    stp_reg_t op_mode = NONE;
+  };
+}
 #endif

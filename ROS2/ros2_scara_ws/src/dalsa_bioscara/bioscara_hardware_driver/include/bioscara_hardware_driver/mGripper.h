@@ -14,6 +14,7 @@
 #define MGRIPPER_H
 #include "bioscara_hardware_driver/mBaseGripper.h"
 #include "bioscara_hardware_driver/uPWM.h"
+#include "bioscara_hardware_driver/uErr.h"
 
 /**
  * @brief Derviced class from the BaseGripper class to interact with the hardware gripper.
@@ -21,65 +22,66 @@
  * This class is a wrapper function to interact with a PWM servo gripper.
  *
  */
-class Gripper : public BaseGripper
+namespace bioscara_hardware_driver
 {
-public:
+    class Gripper : public BaseGripper
+    {
+    public:
+        /**
+         * @brief Constructor of the hardware Gripper object.
+         *
+         * The gripper width in m is converted to a PWM dutycyle via the JOINT2ACTUATOR macro.
+         *
+         * @param reduction
+         * @param offset
+         * @param min minimum width in m.
+         * @param max maxmimum width in m.
+         */
+        Gripper(float reduction, float offset, float min, float max);
 
-    /**
-     * @brief Constructor of the hardware Gripper object. 
-     * 
-     * The gripper width in m is converted to a PWM dutycyle via the JOINT2ACTUATOR macro.
-     * 
-     * @param reduction 
-     * @param offset 
-     * @param min minimum width in m.
-     * @param max maxmimum width in m.
-     */
-    Gripper(float reduction, float offset, float min, float max);
+        /**
+         * @brief Prepares the servo for use.
+         *
+         * Starts the PWM generation but does not set a position. Must be called before a position is set.
+         * The PWM pin is GPIO18. PWM chip is 0, channel 0.
+         *
+         * @return return code of bioscara_hardware_driver::esp_err_t type
+         */
+        err_type_t enable(void) override;
 
-    /**
-     * @brief Prepares the servo for use.
-     *
-     * Starts the PWM generation but does not set a position. Must be called before a position is set.
-     * The PWM pin is GPIO18. PWM chip is 0, channel 0.
-     *
-     * @return non-zero error code.
-     */
-    int enable(void) override;
+        /**
+         * @brief Disables the servo.
+         *
+         * Stops the servo and disables the PWM generation.
+         *
+         * @return return code of bioscara_hardware_driver::esp_err_t type.
+         */
+        err_type_t disable(void) override;
 
-    /**
-     * @brief Disables the servo.
-     *
-     * Stops the servo and disables the PWM generation.
-     *
-     * @return non-zero error code.
-     */
-    int disable(void) override;
+        err_type_t setPosition(float width) override;
 
+        err_type_t setServoPosition(float angle) override;
 
-    int setPosition(float width) override;
+        /**
+         * @brief Manually set reduction
+         *
+         * @param reduction
+         */
+        void setReduction(float reduction);
 
-    int setServoPosition(float angle) override;
+        /**
+         * @brief Manually set offset
+         */
+        void setOffset(float offset);
 
-    /**
-     * @brief Manually set reduction
-     * 
-     * @param reduction 
-     */
-    void setReduction(float reduction);
-
-    /**
-     * @brief Manually set offset
-     */
-    void setOffset(float offset);
-
-protected:
-    float reduction = 1; ///< Joint to actuator reduction ratio
-    float offset = 0;    ///< Joint position offset
-    float min = 0;       ///< Joint lower limit
-    float max = 0;       ///< Joint upper limit
-private:
-    RPI_PWM pwm;
-    int freq = 50;
-};
+    protected:
+        float reduction = 1; ///< Joint to actuator reduction ratio
+        float offset = 0;    ///< Joint position offset
+        float min = 0;       ///< Joint lower limit
+        float max = 0;       ///< Joint upper limit
+    private:
+        RPI_PWM pwm;
+        int freq = 50;
+    };
+}
 #endif // MGRIPPER_H
