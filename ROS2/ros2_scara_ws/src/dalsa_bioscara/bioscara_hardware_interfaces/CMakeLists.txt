@@ -18,7 +18,7 @@ add_library(
   bioscara_hardware_interfaces
   SHARED
   src/arm_hardware.cpp
-  # src/gripper_hardware.cpp
+  src/gripper_hardware.cpp
 )
 target_include_directories(
   bioscara_hardware_interfaces

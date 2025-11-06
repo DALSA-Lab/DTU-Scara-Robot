@@ -39,6 +39,7 @@ namespace bioscara_hardware_interfaces
     /**
      * @brief The bioscara gripper hardware interface class.
      * 
+     * System interface has been chosen to allow future modifications for grippers that provide feedback.
      * refer to the BioscaraArmHardwareInterface class for a more detailed description of the hardware life-cycle.
      */
     class BioscaraGripperHardwareInterface : public hardware_interface::SystemInterface
@@ -53,8 +54,7 @@ namespace bioscara_hardware_interfaces
          * @brief Called on the transistion from the `inactive`, `unconfigured` and `active` to the `finalized` state.
          *
          * When transitioning directly from `active` to `finalized` on_deactivate() is automatically called before [Source Code](https://github.com/ros-controls/ros2_control/blob/d0836b7f12b89acb89bde83d4ba4308513b03204/hardware_interface/src/resource_manager.cpp#L616)
-         * If the previous state is either `inactive` or `active` the on_cleanup() method is called first. Then regardless of the previous state,
-         * the _joints map is cleared.
+         * If the previous state is either `inactive` or `active` the on_cleanup() method is called first. 
          * @param previous_state
          * @return hardware_interface::CallbackReturn
          */
@@ -64,7 +64,6 @@ namespace bioscara_hardware_interfaces
         /**
          * @brief Called on the transistion from the `unconfigured` to the `inactive` state.
          *
-         * Establish and test connection to each joint.
          * @param previous_state
          * @return hardware_interface::CallbackReturn
          */
@@ -73,8 +72,6 @@ namespace bioscara_hardware_interfaces
 
         /**
          * @brief Called on the transistion from the `inactive` to the `unconfigured` state.
-         *
-         * Disconnect from the joints.
          *
          * @param previous_state
          * @return hardware_interface::CallbackReturn
@@ -85,13 +82,7 @@ namespace bioscara_hardware_interfaces
         /**
          * @brief Called on the transistion from the `inactive` to the `active` state.
          *
-         * Enables each joint, enables the stall detection and sets the maximmum acceleration. \n
-         * It is allowed to activate the hardware even if it is not homed. To home the joint the homing_controller must be activated,
-         * but generally a hardware component must be active in order for controllers to become active. \n
-         *
-         * To prohibit movement on activation the set point for each position command interface is set equal to the current measured position,
-         * and the velocity command is set to 0.0 for each command interface. The current values are obtained by calling the read() method once
-         * which populates the state interfaces with values.
+         * Enables PWM generation.
          *
          * @param previous_state
          * @return hardware_interface::CallbackReturn
@@ -102,7 +93,7 @@ namespace bioscara_hardware_interfaces
         /**
          * @brief Called on the transistion from the `active` to the `inactive` state.
          * 
-         * Disables all joints and thereby allows backdriving. State interfaces continue to be updated.
+         * Disables PWM generation.
          *
          * @param previous_state
          * @return hardware_interface::CallbackReturn
@@ -110,85 +101,28 @@ namespace bioscara_hardware_interfaces
         hardware_interface::CallbackReturn on_deactivate(
             const rclcpp_lifecycle::State &previous_state) override;
 
-            /**
-             * @brief Reads from the hardware and populates the state interfaces.
-             * 
-             * Iterates over all state interfaces and calls the corresponding Joint method.
-             * 
-             * - State interface "position" -> Joint::getPosition()
-             * - State interface "velocity" -> Joint::getVelocity()
-             * - State interface "home"     -> Joint::isHomed()
-             *  - This does not actually trigger a communication, instead it relies on the return flags of 
-             *    the previous transmissions. Since position and velocity have been called immediatly before the return flags
-             *    are assumed to be valid.
-             *  - If the the homing of a joint has been activated through the command interface (Joint::getCurrentBCmd() == Joint::HOME)
-             *    the device signals BUSY (Joint::isBusy()) as long as it is still homing. \n
-             *    If the BUSY flag is reset while the current command is still Joint::HOME we can assume the homing has finished. 
-             *    Then the "home" command interface of the joint is reset to 0.0, which will stop the homing (perform cleanup tasks) at the next write cycle.
-             *  
-             * @param time 
-             * @param period 
-             * @return hardware_interface::return_type 
-             */
+        /**
+         * @brief Reads from the hardware and populates the state interfaces.
+         * 
+         *  
+         * @param time 
+         * @param period 
+         * @return hardware_interface::return_type 
+         */
         hardware_interface::return_type read(
             const rclcpp::Time &time,
             const rclcpp::Duration &period) override;
 
-            /**
-             * @brief Writes commands to the hardware from the command interfaces.
-             * 
-             * In contrast to the read() method the write() method only loops over the command interfaces that are currently active defined by
-             * the BioscaraGripperHardwareInterface::_joint_command_modes map. See prepare_command_mode_switch() for a detailed reasoning why this approach
-             * has been chosen. 
-             * 
-             * - Command interface "position" -> Joint::setPosition()
-             * - Command interface "velocity" -> Joint::setVelocity()
-             * - Command interface "home"     -> Joint::startHoming()
-             *  - If the commanded value in "home" is != 0.0 the and the joint is currently executing a blocking function, 
-             * for example homing (Joint::getCurrentBCmd() == Joint::NONE), the homing sequence is started with the speed, sensitivity, current and acceleration
-             * defined in the BioscaraGripperHardwareInterface::_joint_cfg which is polulated from the hardware description urdf. The direction of
-             * the homing is determined by the sign of the command interface value.
-             *  - If the commanded value in "home" is = 0.0 and the joint is currently executing homing, the homing is stopped. This can either
-             * happen prematurely through user input or when the homing is completed which is registered in read(). 
-             * .
-             * @param time 
-             * @param period 
-             * @return hardware_interface::return_type 
-             */
+        /**
+         * @brief Writes commands to the hardware from the command interfaces.
+         * 
+         * @param time 
+         * @param period 
+         * @return hardware_interface::return_type 
+         */
         hardware_interface::return_type write(
             const rclcpp::Time &time,
             const rclcpp::Duration &period) override;
-
-        /**
-         * @brief Performs checks and book keeping of the active control mode when changing controllers.
-         *
-         * For safe operation only one controller may interact with the hardware at the time.
-         * For example if the velocity JTC is active and has claimed the velocity command interfaces it is technically possible to
-         * activate the position JTC (or a homing controller, or others) that claim a different command interface (position in this case).
-         * However if both controllers are active they start writing to the hardware simultaneously which is to be avoided.
-         * For this reason a book keeping mechanism has been implemented which stores the currently active command interfaces for each joint in the
-         * _joint_command_modes member. Each joint has a set of active command interfaces. When a controller switch is performed the interfaces that should be stopped are removed from
-         * each joint set, then the one that should be started are added, if they are already present an error is thrown. Lastly
-         * a validation is performed. Currently the validation is simple since each joint may only have one command interface. The validation can be expanded for furture use cases that require
-         * a combination of active command interfaces per joint for example. \n
-         *
-         * The following basic checks are implemented:
-         * - <b>On deactivation</b>:
-         *  - [ERROR] Homing command interfaces may only be deactivated if no current homing process is ongoing (Joint::getCurrentBCmd() != Joint::HOME)
-         *  - [WARN] Deactivating a velocity command interface if the velocity set point is 0.0.
-         *  - [WARN] Deactivating a command interface that has not been started. This should not happen.
-         *
-         * - <b>On activation</b>:
-         *  - [ERROR] Activating a command interface that is already started. This should not happen.
-         *  - [ERROR] Activating a second command interface for a joint.
-         * .
-         * @param start_interfaces command interfaces that should be started in the form "joint/interface"
-         * @param stop_interfaces command interfaces that should be stopped in the form "joint/interface"
-         * @return hardware_interface::return_type
-         */
-        hardware_interface::return_type prepare_command_mode_switch(
-            const std::vector<std::string> &start_interfaces,
-            const std::vector<std::string> &stop_interfaces) override;
 
         /**
          * @brief Called when an error in any state or state transition is thrown.
@@ -207,13 +141,8 @@ namespace bioscara_hardware_interfaces
          * - <b>Previous state</b>: `inactive`
          *  - Deactivate hardware (on_deactivate()) -> `inactive`
          *      - call the deactivate function anyway regardless if state was active or inactive.
-         *        For example if the on_activate() function fails on Joint::enableStallguard()
-         *        the joint will have been enabled, to disable it invoke on_deactivate().
          *  - Clean-Up hardware (on_cleanup()) -> `unconfigured`
          * .
-         * In particular the deactivation is important. For example if a joint stalls the read() or write() methods throw an error,
-         * which will be handled here and allow the hardware to be deactivated, disableing the joints to allow backdriving.
-         *
          * @param previous_state
          * @return hardware_interface::CallbackReturn
          */
@@ -221,19 +150,6 @@ namespace bioscara_hardware_interfaces
             const rclcpp_lifecycle::State &previous_state) override;
 
     private:
-        /**
-         * @brief configuration structure holding the passed homing paramters from the ros2_control urdf
-         *
-         * Saving all parameters on initialization in a structure allows for quick access during runtime.
-         *
-         */
-        struct joint_homing_config_t
-        {
-            float speed = 0;
-            u_int8_t threshold = 10;
-            u_int8_t current = 10;
-            float acceleration = 0.01;
-        };
 
         /**
          * @brief configuration structure holding the passed paramters from the ros2_control urdf
@@ -241,40 +157,27 @@ namespace bioscara_hardware_interfaces
          * Saving all parameters on initialization in a structure allows for quick access during runtime.
          *
          */
-        struct joint_config_t
+        struct gripper_config_t
         {
-            int i2c_address;
             float reduction = 1;
+            float offset = 0;
             float min;
             float max;
-            u_int8_t drive_current;
-            u_int8_t hold_current;
-            u_int8_t stall_threshold;
-            float max_velocity;
-            float max_acceleration;
-            joint_homing_config_t homing;
         };
 
         /**
-         * @brief unordered map storing the pointers to BaseJoint objects. This will either be a MockJoint or Joint.
-         *
-         * An unordered map is chosen to simplify acces via the joint name, as this conforms well with the ROS2_control hardware interface
-         * The map does not need to be ordered. Search, insertion, and removal of elements have average constant-time complexity.
-         *
-         * Since the BaseJoint methods are implemented as virtual, dynamic method dispatch can be utilized to call the correct
-         * implementation of a method. So either BaseJoint::foo() or Joint::foo()/MockJoint::foo() if foo() is overwritten in Joint or MockJoint.
-         * a smart pointer is used to guarantee destruction when the pointer is destructed. A unique pointer is used to prevent copying of the object.
+         * @brief Smart pointer to the local BaseGripper
+         * 
+         * This will be used to either interact with the hardware or mock hardware.
+         * A smart pointer is used to guarantee destruction when the pointer is destructed. A unique pointer is used to prevent copying of the object.
          */
-        std::unordered_map<std::string, std::unique_ptr<bioscara_hardware_driver::BaseJoint>> _joints;
-
+        std::unique_ptr<bioscara_hardware_driver::BaseGripper> _gripper;
+       
         /**
-         * @brief unordered map storing the configuration struct of the joints.
-         *
-         * An unordered map is chosen to simplify acces via the joint name, as this conforms well with the ROS2_control hardware interface
-         * The map does not need to be ordered. Search, insertion, and removal of elements have average constant-time complexity.
+         * @brief configuration struct of the gripper.
          *
          */
-        std::unordered_map<std::string, joint_config_t> _joint_cfg;
+        gripper_config_t _gripper_cfg;
 
     };
 
