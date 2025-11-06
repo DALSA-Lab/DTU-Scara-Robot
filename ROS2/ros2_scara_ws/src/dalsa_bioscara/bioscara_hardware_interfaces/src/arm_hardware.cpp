@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "bioscara_hardware_interface/bioscara_hardware.hpp"
+#include "bioscara_hardware_interfaces/arm_hardware.hpp"
 
 #include <chrono>
 #include <cmath>
@@ -23,9 +23,9 @@
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-namespace bioscara_hardware_interface
+namespace bioscara_hardware_interfaces
 {
-  hardware_interface::CallbackReturn BioscaraHardwareInterface::on_init(
+  hardware_interface::CallbackReturn BioscaraArmHardwareInterface::on_init(
       const hardware_interface::HardwareComponentInterfaceParams &params)
   {
     if (
@@ -76,13 +76,13 @@ namespace bioscara_hardware_interface
       }
 
       // expect the third command interface to be home
-      if (joint.command_interfaces[2].name != bioscara_hardware_interface::HW_IF_HOME)
+      if (joint.command_interfaces[2].name != bioscara_hardware_interfaces::HW_IF_HOME)
       {
         RCLCPP_FATAL(
             get_logger(), "Joint '%s' has '%s' command interface. '%s' expected.",
             joint.name.c_str(),
             joint.command_interfaces[0].name.c_str(),
-            bioscara_hardware_interface::HW_IF_HOME);
+            bioscara_hardware_interfaces::HW_IF_HOME);
         return hardware_interface::CallbackReturn::ERROR;
       }
 
@@ -98,14 +98,14 @@ namespace bioscara_hardware_interface
       // expect state interface to be position or velocity
       if (joint.state_interfaces[0].name != hardware_interface::HW_IF_POSITION &&
           joint.state_interfaces[1].name != hardware_interface::HW_IF_VELOCITY &&
-          joint.state_interfaces[2].name != bioscara_hardware_interface::HW_IF_HOME)
+          joint.state_interfaces[2].name != bioscara_hardware_interfaces::HW_IF_HOME)
       {
         RCLCPP_FATAL(
             get_logger(), "Joint '%s' have %s state interfaces found. '%s', '%s' and '%s' expected (in this order).",
             joint.name.c_str(), joint.state_interfaces[0].name.c_str(),
             hardware_interface::HW_IF_POSITION,
             hardware_interface::HW_IF_VELOCITY,
-            bioscara_hardware_interface::HW_IF_HOME);
+            bioscara_hardware_interfaces::HW_IF_HOME);
         return hardware_interface::CallbackReturn::ERROR;
       }
 
@@ -174,7 +174,7 @@ namespace bioscara_hardware_interface
     // if (info_.gpios.size() != _joints.size())
     // {
     //   RCLCPP_FATAL(
-    //       get_logger(), "BioscaraHardwareInterface has '%ld' GPIO components, '%lu' expected. Every joint needs a GPIO interface",
+    //       get_logger(), "BioscaraArmHardwareInterface has '%ld' GPIO components, '%lu' expected. Every joint needs a GPIO interface",
     //       info_.gpios.size(), _joints.size());
     //   return hardware_interface::CallbackReturn::ERROR;
     // }
@@ -191,13 +191,13 @@ namespace bioscara_hardware_interface
     //   }
 
     //   // expect the first command interface to be 'home'
-    //   if (gpio.command_interfaces[0].name != bioscara_hardware_interface::HW_IF_HOME)
+    //   if (gpio.command_interfaces[0].name != bioscara_hardware_interfaces::HW_IF_HOME)
     //   {
     //     RCLCPP_FATAL(
     //         get_logger(), "GPIO '%s' have %s command interfaces found. '%s' expected.",
     //         gpio.name.c_str(),
     //         gpio.command_interfaces[0].name.c_str(),
-    //         bioscara_hardware_interface::HW_IF_HOME);
+    //         bioscara_hardware_interfaces::HW_IF_HOME);
     //     return hardware_interface::CallbackReturn::ERROR;
     //   }
 
@@ -211,12 +211,12 @@ namespace bioscara_hardware_interface
     //   }
 
     //   // expect state interface to be 'home'
-    //   if (gpio.state_interfaces[0].name != bioscara_hardware_interface::HW_IF_HOME)
+    //   if (gpio.state_interfaces[0].name != bioscara_hardware_interfaces::HW_IF_HOME)
     //   {
     //     RCLCPP_FATAL(
     //         get_logger(), "GPIO '%s' have %s state interfaces found. '%s' expected.",
     //         gpio.name.c_str(), gpio.state_interfaces[0].name.c_str(),
-    //         bioscara_hardware_interface::HW_IF_HOME);
+    //         bioscara_hardware_interfaces::HW_IF_HOME);
     //     return hardware_interface::CallbackReturn::ERROR;
     //   }
 
@@ -253,7 +253,7 @@ namespace bioscara_hardware_interface
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
-  hardware_interface::CallbackReturn BioscaraHardwareInterface::on_shutdown(
+  hardware_interface::CallbackReturn BioscaraArmHardwareInterface::on_shutdown(
       const rclcpp_lifecycle::State &previous_state)
   {
     RCLCPP_INFO(get_logger(), "Shutting down ...please wait...");
@@ -280,7 +280,7 @@ namespace bioscara_hardware_interface
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
-  hardware_interface::CallbackReturn BioscaraHardwareInterface::on_configure(
+  hardware_interface::CallbackReturn BioscaraArmHardwareInterface::on_configure(
       const rclcpp_lifecycle::State & /*previous_state*/)
   {
     RCLCPP_INFO(get_logger(), "Configuring ...please wait...");
@@ -321,7 +321,7 @@ namespace bioscara_hardware_interface
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
-  hardware_interface::CallbackReturn BioscaraHardwareInterface::on_cleanup(
+  hardware_interface::CallbackReturn BioscaraArmHardwareInterface::on_cleanup(
       const rclcpp_lifecycle::State & /*previous_state*/)
   {
     RCLCPP_INFO(get_logger(), "Cleaning up ...please wait...");
@@ -345,7 +345,7 @@ namespace bioscara_hardware_interface
     return CallbackReturn::SUCCESS;
   }
 
-  hardware_interface::CallbackReturn BioscaraHardwareInterface::on_activate(
+  hardware_interface::CallbackReturn BioscaraArmHardwareInterface::on_activate(
       const rclcpp_lifecycle::State & /*previous_state*/)
   {
     RCLCPP_INFO(get_logger(), "Activating ...please wait...");
@@ -438,7 +438,7 @@ namespace bioscara_hardware_interface
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
-  hardware_interface::CallbackReturn BioscaraHardwareInterface::on_deactivate(
+  hardware_interface::CallbackReturn BioscaraArmHardwareInterface::on_deactivate(
       const rclcpp_lifecycle::State & /*previous_state*/)
   {
     RCLCPP_INFO(get_logger(), "Deactivating ...please wait...");
@@ -463,7 +463,7 @@ namespace bioscara_hardware_interface
     return CallbackReturn::SUCCESS;
   }
 
-  hardware_interface::return_type BioscaraHardwareInterface::read(
+  hardware_interface::return_type BioscaraArmHardwareInterface::read(
       const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
     for (const auto &[name, descr] : joint_state_interfaces_)
@@ -478,7 +478,7 @@ namespace bioscara_hardware_interface
       {
         rc = _joints.at(descr.prefix_name)->getVelocity(v);
       }
-      else if (descr.interface_info.name == bioscara_hardware_interface::HW_IF_HOME)
+      else if (descr.interface_info.name == bioscara_hardware_interfaces::HW_IF_HOME)
       {
         /* Reset the return code. All following functions do not return an error code */
         rc = bioscara_hardware_driver::err_type_t::OK;
@@ -517,7 +517,7 @@ namespace bioscara_hardware_interface
     //   float v;
     //   bioscara_hardware_driver::err_type_t rc = 1;
 
-    //   if (descr.interface_info.name == bioscara_hardware_interface::HW_IF_HOME)
+    //   if (descr.interface_info.name == bioscara_hardware_interfaces::HW_IF_HOME)
     //   {
     //     /* Reset the return code. All following functions do not return an error code */
     //     rc = 0;
@@ -568,7 +568,7 @@ namespace bioscara_hardware_interface
     return hardware_interface::return_type::OK;
   }
 
-  hardware_interface::return_type BioscaraHardwareInterface::write(
+  hardware_interface::return_type BioscaraArmHardwareInterface::write(
       const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
 
@@ -588,7 +588,7 @@ namespace bioscara_hardware_interface
         {
           rc = _joints.at(name)->setVelocity((float)get_command(CIF_name));
         }
-        else if (interface == bioscara_hardware_interface::HW_IF_HOME)
+        else if (interface == bioscara_hardware_interfaces::HW_IF_HOME)
         {
           rc = bioscara_hardware_driver::err_type_t::OK;
 
@@ -641,7 +641,7 @@ namespace bioscara_hardware_interface
     return hardware_interface::return_type::OK;
   }
 
-  hardware_interface::return_type BioscaraHardwareInterface::prepare_command_mode_switch(
+  hardware_interface::return_type BioscaraArmHardwareInterface::prepare_command_mode_switch(
       const std::vector<std::string> &start_interfaces,
       const std::vector<std::string> &stop_interfaces)
   {
@@ -659,7 +659,7 @@ namespace bioscara_hardware_interface
       interface.erase(0, pos + delimiter.length());
 
       /* If the interface that is to be stopped is the homing interface, check that no current homing command is active */
-      if (interface == bioscara_hardware_interface::HW_IF_HOME &&
+      if (interface == bioscara_hardware_interfaces::HW_IF_HOME &&
           _joints.at(joint)->getCurrentBCmd() == bioscara_hardware_driver::Joint::HOME)
       {
         RCLCPP_FATAL(
@@ -744,7 +744,7 @@ namespace bioscara_hardware_interface
     return hardware_interface::return_type::OK;
   }
 
-  hardware_interface::CallbackReturn BioscaraHardwareInterface::on_error(
+  hardware_interface::CallbackReturn BioscaraArmHardwareInterface::on_error(
       const rclcpp_lifecycle::State &previous_state)
   {
     /*
@@ -779,7 +779,7 @@ namespace bioscara_hardware_interface
     return CallbackReturn::ERROR;
   }
 
-  bioscara_hardware_driver::err_type_t BioscaraHardwareInterface::start_homing(const std::string name, float velocity)
+  bioscara_hardware_driver::err_type_t BioscaraArmHardwareInterface::start_homing(const std::string name, float velocity)
   {
     joint_config_t cfg = _joint_cfg[name];
 
@@ -789,7 +789,7 @@ namespace bioscara_hardware_interface
     return _joints.at(name)->startHoming(speed, cfg.homing.threshold, cfg.homing.current);
   }
 
-  bioscara_hardware_driver::err_type_t BioscaraHardwareInterface::stop_homing(const std::string name)
+  bioscara_hardware_driver::err_type_t BioscaraArmHardwareInterface::stop_homing(const std::string name)
   {
     joint_config_t cfg = _joint_cfg[name];
 
@@ -800,9 +800,9 @@ namespace bioscara_hardware_interface
     return _joints.at(name)->postHoming();
   }
 
-} // namespace bioscara_hardware_interface
+} // namespace bioscara_hardware_interfaces
 
 #include "pluginlib/class_list_macros.hpp"
 
 PLUGINLIB_EXPORT_CLASS(
-    bioscara_hardware_interface::BioscaraHardwareInterface, hardware_interface::SystemInterface)
+    bioscara_hardware_interfaces::BioscaraArmHardwareInterface, hardware_interface::SystemInterface)

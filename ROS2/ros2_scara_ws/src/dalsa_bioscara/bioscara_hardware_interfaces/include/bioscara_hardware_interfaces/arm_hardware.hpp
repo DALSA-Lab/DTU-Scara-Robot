@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef BIOSCARA_HARDWARE_INTERFACE_HPP_
-#define BIOSCARA_HARDWARE_INTERFACE_HPP_
+#ifndef ARM_HARDWARE_HPP_
+#define ARM_HARDWARE_HPP_
 
 #include <memory>
 #include <string>
@@ -34,14 +34,14 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
-namespace bioscara_hardware_interface
+namespace bioscara_hardware_interfaces
 {
     constexpr char HW_IF_HOME[] = "home";
 
     /**
-     * @brief The bioscara hardware interface class.
+     * @brief The bioscara arm hardware interface class.
      * 
-     * The hardware interface serves to wrap custom hardware interaction in the standardized ros2_control architecture.
+     * The hardware interface serves to wrap custom hardware interaction with the arm joints in the standardized ros2_control architecture.
      *
      *
      * <b>Hardware Lifecycle</b> \n
@@ -51,10 +51,10 @@ namespace bioscara_hardware_interface
      * \image html images/hardware_interface_lifecycle.png "Hardware interface lifecycle" width=1000em
      * \image latex images/hardware_interface_lifecycle.png "Hardware interface lifecycle" width=\linewidth
      */
-    class BioscaraHardwareInterface : public hardware_interface::SystemInterface
+    class BioscaraArmHardwareInterface : public hardware_interface::SystemInterface
     {
     public:
-        RCLCPP_SHARED_PTR_DEFINITIONS(BioscaraHardwareInterface)
+        RCLCPP_SHARED_PTR_DEFINITIONS(BioscaraArmHardwareInterface)
 
         hardware_interface::CallbackReturn on_init(
             const hardware_interface::HardwareComponentInterfaceParams &params) override;
@@ -148,7 +148,7 @@ namespace bioscara_hardware_interface
              * @brief Writes commands to the hardware from the command interfaces.
              * 
              * In contrast to the read() method the write() method only loops over the command interfaces that are currently active defined by
-             * the BioscaraHardwareInterface::_joint_command_modes map. See prepare_command_mode_switch() for a detailed reasoning why this approach
+             * the BioscaraArmHardwareInterface::_joint_command_modes map. See prepare_command_mode_switch() for a detailed reasoning why this approach
              * has been chosen. 
              * 
              * - Command interface "position" -> Joint::setPosition()
@@ -156,7 +156,7 @@ namespace bioscara_hardware_interface
              * - Command interface "home"     -> Joint::startHoming()
              *  - If the commanded value in "home" is != 0.0 the and the joint is currently executing a blocking function, 
              * for example homing (Joint::getCurrentBCmd() == Joint::NONE), the homing sequence is started with the speed, sensitivity, current and acceleration
-             * defined in the BioscaraHardwareInterface::_joint_cfg which is polulated from the hardware description urdf. The direction of
+             * defined in the BioscaraArmHardwareInterface::_joint_cfg which is polulated from the hardware description urdf. The direction of
              * the homing is determined by the sign of the command interface value.
              *  - If the commanded value in "home" is = 0.0 and the joint is currently executing homing, the homing is stopped. This can either
              * happen prematurely through user input or when the homing is completed which is registered in read(). 
@@ -320,6 +320,6 @@ namespace bioscara_hardware_interface
         bioscara_hardware_driver::err_type_t stop_homing(const std::string name);
     };
 
-} // namespace bioscara_hardware_interface
+} // namespace bioscara_hardware_interfaces
 
-#endif // BIOSCARA_HARDWARE_INTERFACE_HPP_
+#endif // ARM_HARDWARE_HPP_

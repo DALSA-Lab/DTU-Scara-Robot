@@ -122,7 +122,7 @@ namespace bioscara_hardware_driver
     //  *
     //  * See Joint::_home() for documentation. The current_b_cmd flag is set to HOME
     //  * This method returns immediatly after starting the homing sequence. This should be used when the blocking implementation is not acceptable.
-    //  * For example in the update loop of the bioscara_hardware_interface::BioscaraHardwareInterface::write().
+    //  * For example in the update loop of the bioscara_hardware_interfaces::BioscaraHardwareInterface::write().
 
     //  * Additionally this method returns:
     //  * @return -109 if the joint is already currently homing (for example from a call to Joint::startHoming()).

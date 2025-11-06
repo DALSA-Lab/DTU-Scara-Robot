@@ -7,7 +7,7 @@
     <ros2_control name="bioscara" type="system">
 
       <hardware>
-        <plugin>bioscara_hardware_interface/BioscaraHardwareInterface</plugin>
+        <plugin>bioscara_hardware_interfaces/BioscaraArmHardwareInterface</plugin>
         <param name="use_mock_hardware">${use_mock_hardware}</param>
       </hardware>
 

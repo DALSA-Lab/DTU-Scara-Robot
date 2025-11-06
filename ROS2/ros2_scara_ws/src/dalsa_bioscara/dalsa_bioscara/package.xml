@@ -17,7 +17,7 @@
   <exec_depend>bioscara_controllers</exec_depend>
   <exec_depend>bioscara_description</exec_depend>
   <exec_depend>bioscara_hardware_driver</exec_depend>
-  <exec_depend>bioscara_hardware_interface</exec_depend>
+  <exec_depend>bioscara_hardware_interfaces</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
