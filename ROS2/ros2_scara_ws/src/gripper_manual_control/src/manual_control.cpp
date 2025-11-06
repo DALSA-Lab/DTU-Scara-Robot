@@ -2,15 +2,13 @@
 #include <unistd.h>
 #include <iostream>
 #include <limits>
-// #include "bioscara_hardware_driver/mGripper.h"
-#include "bioscara_hardware_driver/mMockGripper.h"
+#include "bioscara_hardware_driver/mGripper.h"
 #include "manual_control.h"
 
 using namespace std;
 using namespace bioscara_hardware_driver;
 
-// Gripper _Gripper(1, 0, 0, 100);
-MockGripper _Gripper;
+Gripper _Gripper(1, 0, 0, 100);
 
 void INT_handler(int s)
 {
@@ -70,7 +68,7 @@ int main(int argc, char **argv)
 
 void read_angle()
 {
-  cout << "enter the actuator angle in degrees (-90 <= x <= +90): ";
+  cout << "enter the actuator angle in degrees (-180 <= x <= +180): ";
   float i;
   cin >> i;
   if (!cin)
