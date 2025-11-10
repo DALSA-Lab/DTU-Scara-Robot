@@ -32,7 +32,7 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  *********************************************************************/
 
-/* Author: David V. Lu!! and Sebastian Storz */
+/* Author: sbstorz */
 
 #ifndef RVIZ_PANEL_TUTORIAL__DEMO_PANEL_HPP_
 #define RVIZ_PANEL_TUTORIAL__DEMO_PANEL_HPP_
@@ -48,9 +48,6 @@
 #include "controller_manager_msgs/srv/list_controllers.hpp"
 #include "control_msgs/msg/dynamic_interface_group_values.hpp"
 #include "control_msgs/msg/interface_value.hpp"
-
-// #include <rclcpp/create_timer.hpp>
-
 
 namespace bioscara_rviz_plugin
 {
@@ -76,7 +73,6 @@ protected:
   QTimer *_timer;
 
   rclcpp::Node::SharedPtr _node;
-  // rclcpp::TimerBase::SharedPtr check_timer_;
 
 private Q_SLOTS:
   void buttonActivated();

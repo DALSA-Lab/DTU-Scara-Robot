@@ -138,7 +138,6 @@ def generate_launch_description():
         parameters=[robot_description],
     )
     rviz_node = Node(
-        condition=IfCondition(rviz),
         package="rviz2",
         executable="rviz2",
         name="rviz2",
