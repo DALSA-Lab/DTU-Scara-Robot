@@ -1,209 +1,189 @@
 #include "bioscara_hardware_driver/mBaseJoint.h"
 #include <unistd.h>
 
-BaseJoint::BaseJoint(const std::string name)
+namespace bioscara_hardware_driver
 {
-    this->name = name;
-}
-
-BaseJoint::~BaseJoint(void)
-{
-    this->disable();
-    this->deinit();
-}
-
-int BaseJoint::init(void)
-{
-    return 0;
-}
-
-int BaseJoint::deinit(void)
-{
-    return 0;
-}
-
-int BaseJoint::enable(u_int8_t /*driveCurrent*/, u_int8_t /*holdCurrent*/)
-{
-    return 0;
-}
-
-int BaseJoint::disable(void)
-{
-    int rc = this->stop();
-    if (rc < 0)
+    BaseJoint::BaseJoint(const std::string name)
     {
-        return rc;
+        this->name = name;
     }
-    usleep(100000);
 
-    rc = this->disableCL();
-    if (rc < 0)
+    BaseJoint::~BaseJoint(void)
     {
-        return rc;
+        this->disable();
+        this->deinit();
     }
-    usleep(10000);
 
-    rc = this->setHoldCurrent(0);
-    if (rc < 0)
+    err_type_t BaseJoint::init(void)
     {
-        return rc;
+        return err_type_t::OK;
     }
-    usleep(10000);
 
-    rc = this->setBrakeMode(0);
-    if (rc < 0)
+    err_type_t BaseJoint::deinit(void)
     {
-        return rc;
+        return err_type_t::OK;
     }
-    return 0;
-}
 
-int BaseJoint::home(float velocity, u_int8_t sensitivity, u_int8_t current)
-{
-    int rc = this->startHoming(velocity, sensitivity, current);
-    if (rc < 0)
+    err_type_t BaseJoint::enable(u_int8_t /*driveCurrent*/, u_int8_t /*holdCurrent*/)
     {
-        return rc;
+        return err_type_t::OK;
     }
-    this->wait_while_busy(100.0);
-    rc = this->postHoming();
-    if (rc < 0)
-    {
-        return rc;
-    }
-    return 0;
-}
 
-int BaseJoint::startHoming(float velocity, u_int8_t sensitivity, u_int8_t current)
-{
-    if (this->current_b_cmd != NONE)
+    err_type_t BaseJoint::disable(void)
     {
-        return -109; // INCORRECT STATE
+
+        RETURN_ON_ERROR(this->stop());
+        usleep(100000);
+
+        RETURN_ON_ERROR(this->setHoldCurrent(0));
+        usleep(10000);
+
+        RETURN_ON_ERROR(this->setBrakeMode(0));
+        usleep(10000);
+        return err_type_t::OK;
     }
-    int rc = this->_home(velocity, sensitivity, current);
-    if (rc < 0)
+
+    err_type_t BaseJoint::home(float velocity, u_int8_t sensitivity, u_int8_t current)
     {
+        RETURN_ON_ERROR(this->startHoming(velocity, sensitivity, current));
+
+        this->wait_while_busy(100.0);
+        RETURN_ON_ERROR(this->postHoming());
+        return err_type_t::OK;
+    }
+
+    err_type_t BaseJoint::startHoming(float velocity, u_int8_t sensitivity, u_int8_t current)
+    {
+        if (this->current_b_cmd != NONE)
+        {
+            return err_type_t::INCORRECT_STATE;
+        }
+        err_type_t rc = this->_home(velocity, sensitivity, current);
+        if (rc != err_type_t::OK)
+        {
+            this->current_b_cmd = NONE;
+            return rc;
+        }
+        this->current_b_cmd = HOME;
+        return err_type_t::OK;
+    }
+
+    err_type_t BaseJoint::postHoming(void)
+    {
+        if (this->current_b_cmd != HOME)
+        {
+            return err_type_t::INCORRECT_STATE;
+        }
         this->current_b_cmd = NONE;
-        return rc;
+        RETURN_ON_ERROR(this->getFlags());
+        RETURN_ON_FALSE(this->isHomed(), err_type_t::NOT_HOMED);
+
+        return err_type_t::OK;
     }
-    this->current_b_cmd = HOME;
-    return 0;
-}
 
-int BaseJoint::postHoming(void)
-{
-    if (this->current_b_cmd != HOME)
+    err_type_t BaseJoint::setPosition(float /*pos*/)
     {
-        return -109; // INCORRECT STATE
+        return err_type_t::OK;
     }
-    this->current_b_cmd = NONE;
-    int rc = this->getFlags();
-    if (rc < 0)
+
+    err_type_t BaseJoint::moveSteps(int32_t /*steps*/)
     {
-        return rc;
+        return err_type_t::OK;
     }
-    if (!this->isHomed())
+
+    err_type_t BaseJoint::setVelocity(float /*vel*/)
     {
-        return -2; // NOT HOMED
+        return err_type_t::OK;
     }
-    return 0;
-}
 
-int BaseJoint::setPosition(float /*pos*/)
-{
-    return 0;
-}
-
-int BaseJoint::moveSteps(int32_t /*steps*/)
-{
-    return 0;
-}
-
-int BaseJoint::setVelocity(float /*vel*/)
-{
-    return 0;
-}
-
-int BaseJoint::checkOrientation(float /*angle*/)
-{
-    return 0;
-}
-
-int BaseJoint::stop(void)
-{
-    return 0;
-}
-
-int BaseJoint::disableCL(void)
-{
-    return 0;
-}
-
-int BaseJoint::setDriveCurrent(u_int8_t /*current*/)
-{
-    return 0;
-}
-
-int BaseJoint::setHoldCurrent(u_int8_t /*current*/)
-{
-    return 0;
-}
-
-int BaseJoint::setBrakeMode(u_int8_t /*mode*/)
-{
-    return 0;
-}
-
-int BaseJoint::setMaxAcceleration(float /*maxAccel*/)
-{
-    return 0;
-}
-
-int BaseJoint::setMaxVelocity(float /*maxVel*/)
-{
-    return 0;
-}
-
-int BaseJoint::enableStallguard(u_int8_t /*sensitivity*/)
-{
-    return 0;
-}
-
-bool BaseJoint::isHomed(void)
-{
-    return ~this->flags & (1 << 2);
-}
-
-bool BaseJoint::isEnabled(void)
-{
-    return ~this->flags & (1 << 3);
-}
-
-bool BaseJoint::isStalled(void)
-{
-    return this->flags & (1 << 0);
-}
-
-bool BaseJoint::isBusy(void)
-{
-    return this->flags & (1 << 1);
-}
-
-u_int8_t BaseJoint::getFlags(void)
-{
-    return this->flags;
-}
-
-BaseJoint::stp_reg_t BaseJoint::getCurrentBCmd(void)
-{
-    return this->current_b_cmd;
-}
-
-void BaseJoint::wait_while_busy(const float period_ms)
-{
-    do
+    err_type_t BaseJoint::checkOrientation(float /*angle*/)
     {
-        usleep(period_ms * 1000);
-        this->getFlags();
-    } while (this->isBusy());
+        return err_type_t::OK;
+    }
+
+    err_type_t BaseJoint::stop(void)
+    {
+        return err_type_t::OK;
+    }
+
+    err_type_t BaseJoint::disableCL(void)
+    {
+        return err_type_t::OK;
+    }
+
+    err_type_t BaseJoint::setDriveCurrent(u_int8_t /*current*/)
+    {
+        return err_type_t::OK;
+    }
+
+    err_type_t BaseJoint::setHoldCurrent(u_int8_t /*current*/)
+    {
+        return err_type_t::OK;
+    }
+
+    err_type_t BaseJoint::setBrakeMode(u_int8_t /*mode*/)
+    {
+        return err_type_t::OK;
+    }
+
+    err_type_t BaseJoint::setMaxAcceleration(float /*maxAccel*/)
+    {
+        return err_type_t::OK;
+    }
+
+    err_type_t BaseJoint::setMaxVelocity(float /*maxVel*/)
+    {
+        return err_type_t::OK;
+    }
+
+    err_type_t BaseJoint::enableStallguard(u_int8_t /*sensitivity*/)
+    {
+        return err_type_t::OK;
+    }
+
+    bool BaseJoint::isHomed(void)
+    {
+        return ~this->flags & (1 << 2);
+    }
+
+    bool BaseJoint::isEnabled(void)
+    {
+        return ~this->flags & (1 << 3);
+    }
+
+    bool BaseJoint::isStalled(void)
+    {
+        return this->flags & (1 << 0);
+    }
+
+    bool BaseJoint::isBusy(void)
+    {
+        return this->flags & (1 << 1);
+    }
+
+    err_type_t BaseJoint::getFlags(u_int8_t &flags)
+    {
+        RETURN_ON_ERROR(this->getFlags());
+        flags = this->flags;
+        return err_type_t::OK;
+    }
+
+    err_type_t BaseJoint::getFlags(void)
+    {
+        return err_type_t::OK;
+    }
+
+    BaseJoint::stp_reg_t BaseJoint::getCurrentBCmd(void)
+    {
+        return this->current_b_cmd;
+    }
+
+    void BaseJoint::wait_while_busy(const float period_ms)
+    {
+        do
+        {
+            usleep(period_ms * 1000);
+            this->getFlags();
+        } while (this->isBusy());
+    }
 }

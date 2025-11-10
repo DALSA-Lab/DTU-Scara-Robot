@@ -76,36 +76,46 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">mGripper.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>File containing the <a class="el" href="classGripper.html" title="Gripper object to interact with the robot gripper.">Gripper</a> class.  
+<p>File containing the Gripper class.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="uPWM_8h_source.html">bioscara_hardware_driver/uPWM.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="mBaseGripper_8h_source.html">bioscara_hardware_driver/mBaseGripper.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="uPWM_8h_source.html">bioscara_hardware_driver/uPWM.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="uErr_8h_source.html">bioscara_hardware_driver/uErr.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for mGripper.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="mGripper_8h__incl.png" border="0" usemap="#aROS2_2ros2__scara__ws_2src_2dalsa__bioscara_2bioscara__hardware__driver_2include_2bioscara__hardware__driver_2mGripper_8h" alt=""/></div>
 <map name="aROS2_2ros2__scara__ws_2src_2dalsa__bioscara_2bioscara__hardware__driver_2include_2bioscara__hardware__driver_2mGripper_8h" id="aROS2_2ros2__scara__ws_2src_2dalsa__bioscara_2bioscara__hardware__driver_2include_2bioscara__hardware__driver_2mGripper_8h">
-<area shape="rect" title="File containing the Gripper class." alt="" coords="224,5,424,89"/>
-<area shape="rect" href="uPWM_8h.html" title="Includes source code for Hardware PWM generation on Raspberry Pi 4." alt="" coords="229,137,419,177"/>
-<area shape="poly" title=" " alt="" coords="327,90,327,124,321,124,321,90"/>
-<area shape="rect" title=" " alt="" coords="5,225,72,251"/>
-<area shape="poly" title=" " alt="" coords="256,180,86,226,85,221,255,175"/>
-<area shape="rect" title=" " alt="" coords="97,225,167,251"/>
-<area shape="poly" title=" " alt="" coords="279,180,174,223,172,218,277,175"/>
-<area shape="rect" title=" " alt="" coords="191,225,262,251"/>
-<area shape="poly" title=" " alt="" coords="302,180,253,219,250,214,299,175"/>
-<area shape="rect" title=" " alt="" coords="287,225,361,251"/>
-<area shape="poly" title=" " alt="" coords="327,178,327,211,321,211,321,178"/>
-<area shape="rect" title=" " alt="" coords="385,225,444,251"/>
-<area shape="poly" title=" " alt="" coords="348,176,393,214,389,218,344,180"/>
-<area shape="rect" title=" " alt="" coords="468,225,548,251"/>
-<area shape="poly" title=" " alt="" coords="369,175,470,217,467,222,367,180"/>
-<area shape="rect" title=" " alt="" coords="573,225,641,251"/>
-<area shape="poly" title=" " alt="" coords="392,175,560,221,558,226,391,180"/>
+<area shape="rect" title="File containing the Gripper class." alt="" coords="158,5,358,89"/>
+<area shape="rect" href="mBaseGripper_8h.html" title="File containing the BaseGripper class." alt="" coords="5,137,196,177"/>
+<area shape="poly" title=" " alt="" coords="200,92,141,132,138,127,197,87"/>
+<area shape="rect" href="uErr_8h.html" title=" " alt="" coords="5,225,196,265"/>
+<area shape="poly" title=" " alt="" coords="261,90,254,135,246,158,233,179,208,204,177,222,174,217,204,200,229,176,241,156,249,134,256,89"/>
+<area shape="rect" href="uPWM_8h.html" title="Includes source code for Hardware PWM generation on Raspberry Pi 4." alt="" coords="349,137,540,177"/>
+<area shape="poly" title=" " alt="" coords="330,87,401,128,399,133,328,92"/>
+<area shape="poly" title=" " alt="" coords="197,140,215,146,223,157,219,166,211,171,208,167,215,162,217,158,212,150,195,145"/>
+<area shape="poly" title=" " alt="" coords="103,178,103,211,98,211,98,178"/>
+<area shape="rect" title=" " alt="" coords="138,313,197,339"/>
+<area shape="poly" title=" " alt="" coords="119,264,151,301,147,304,115,267"/>
+<area shape="poly" title=" " alt="" coords="368,180,314,200,261,228,218,265,185,304,181,300,214,261,258,223,311,195,366,175"/>
+<area shape="rect" title=" " alt="" coords="271,233,338,258"/>
+<area shape="poly" title=" " alt="" coords="415,180,337,228,334,223,413,175"/>
+<area shape="rect" title=" " alt="" coords="363,233,433,258"/>
+<area shape="poly" title=" " alt="" coords="437,179,413,222,409,219,432,176"/>
+<area shape="rect" title=" " alt="" coords="457,233,528,258"/>
+<area shape="poly" title=" " alt="" coords="458,176,482,219,477,222,453,179"/>
+<area shape="rect" title=" " alt="" coords="553,233,627,258"/>
+<area shape="poly" title=" " alt="" coords="478,175,560,223,558,228,475,180"/>
+<area shape="rect" title=" " alt="" coords="651,233,731,258"/>
+<area shape="poly" title=" " alt="" coords="501,175,640,223,648,225,646,230,638,228,499,180"/>
+<area shape="rect" title=" " alt="" coords="756,233,824,258"/>
+<area shape="poly" title=" " alt="" coords="541,173,639,195,744,223,752,225,750,230,743,228,638,200,540,179"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -123,12 +133,17 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classGripper.html">Gripper</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classGripper.html" title="Gripper object to interact with the robot gripper.">Gripper</a> object to interact with the robot gripper.  <a href="classGripper.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__driver_1_1Gripper.html">bioscara_hardware_driver::Gripper</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacebioscara__hardware__driver" id="r_namespacebioscara__hardware__driver"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebioscara__hardware__driver.html">bioscara_hardware_driver</a></td></tr>
+<tr class="memdesc:namespacebioscara__hardware__driver"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generic <a class="el" href="classbioscara__hardware__driver_1_1BaseGripper.html">BaseGripper</a> object to interact with the robot gripper. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>File containing the <a class="el" href="classGripper.html" title="Gripper object to interact with the robot gripper.">Gripper</a> class. </p>
+<div class="textblock"><p>File containing the Gripper class. </p>
 <dl class="section author"><dt>Author</dt><dd>Sebastian Storz </dd></dl>
 <dl class="section version"><dt>Version</dt><dd>0.1 </dd></dl>
 <dl class="section date"><dt>Date</dt><dd>2025-05-27</dd></dl>

@@ -5,6 +5,7 @@
 #include <cmath>
 
 using namespace std;
+using namespace bioscara_hardware_driver;
 
 Joint J1("j1", 0x11, 35, -3.04647, 3.04647);
 Joint J2("j2", 0x12, -2 * M_PI / 0.004, 0.338, 0.0);
@@ -23,7 +24,6 @@ int main(int argc, char **argv)
 
   (void)argc;
   (void)argv;
-
 
   J1.init();
   J2.init();
@@ -101,16 +101,16 @@ int main(int argc, char **argv)
 
   J1.disable();
   J2.disable();
-J3.disable();
-J4.disable();
+  J3.disable();
+  J4.disable();
 
   while (1)
   {
 
-    if (J1.getPosition(q[0]) == 0 &&
-        J2.getPosition(q[1]) == 0 &&
-        J3.getPosition(q[2]) == 0 &&
-        J4.getPosition(q[3]) == 0)
+    if (J1.getPosition(q[0]) == err_type_t::OK &&
+        J2.getPosition(q[1]) == err_type_t::OK &&
+        J3.getPosition(q[2]) == err_type_t::OK &&
+        J4.getPosition(q[3]) == err_type_t::OK)
     {
       cout << "Positions: ";
       for (float n : q)

@@ -56,6 +56,35 @@ namespace bioscara_hardware_interface
     public:
         RCLCPP_SHARED_PTR_DEFINITIONS(BioscaraHardwareInterface)
 
+        /**
+         * @brief  Called on initialization to the `unconfigured` state.
+         * 
+         * Performs the following checks on the configures joints parsed form the URDF description:
+         * - Each joint must have the 3 command interfaces (in this order): 'position', 'velocity', 'home'
+         * - Each joint must have the 3 state interfaces (in this order): 'position', 'velocity', 'home'
+         * 
+         * Stores the configuration parameters for each joint in the _joint_cfg map.
+         * Each joint must have these parameters:
+         * - i2c_address (int, HEX)
+         * - reduction (float)
+         * - min (float)
+         * - max (float)
+         * - stall_threshold (int, DEC)
+         * - hold_current (int, DEC)
+         * - drive_current (int, DEC)
+         * - max_acceleration (float)
+         * - max_velocity (float)
+         * - homing
+         *  - speed (float)
+         *  - threshold (int, DEC)
+         *  - current (int, DEC)
+         *  - acceleration (float)
+         * 
+         * Adds each joint to the internal _joints map. Creates a MockJoint object if the use_mock_hardware parameter is 'True' or 'true', 
+         * or else a hardware Joint.
+         * @param params 
+         * @return hardware_interface::CallbackReturn 
+         */
         hardware_interface::CallbackReturn on_init(
             const hardware_interface::HardwareComponentInterfaceParams &params) override;
 
@@ -275,7 +304,7 @@ namespace bioscara_hardware_interface
          * implementation of a method. So either BaseJoint::foo() or Joint::foo()/MockJoint::foo() if foo() is overwritten in Joint or MockJoint.
          * a smart pointer is used to guarantee destruction when the pointer is destructed. A unique pointer is used to prevent copying of the object.
          */
-        std::unordered_map<std::string, std::unique_ptr<BaseJoint>> _joints;
+        std::unordered_map<std::string, std::unique_ptr<bioscara_hardware_driver::BaseJoint>> _joints;
 
         /**
          * @brief unordered map storing the configuration struct of the joints.
@@ -302,10 +331,22 @@ namespace bioscara_hardware_interface
         std::unordered_map<std::string, std::set<std::string>> _joint_command_modes;
 
 
+        /**
+         * @brief TODO
+         * 
+         * @param name 
+         * @param velocity 
+         * @return int 
+         */
+        bioscara_hardware_driver::err_type_t start_homing(const std::string name, float velocity);
 
-        int start_homing(const std::string name, float velocity);
-
-        int stop_homing(const std::string name);
+        /**
+         * @brief TODO
+         * 
+         * @param name 
+         * @return int 
+         */
+        bioscara_hardware_driver::err_type_t stop_homing(const std::string name);
     };
 
 } // namespace bioscara_hardware_interface

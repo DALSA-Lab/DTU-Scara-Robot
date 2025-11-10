@@ -1,0 +1,14 @@
+<map id="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/mMockJoint.h" name="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/mMockJoint.h">
+<area shape="rect" id="Node000001" title="File including the MockJoint class." alt="" coords="79,5,279,89"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,233,85,258"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="117,92,93,114,73,139,56,180,49,219,44,218,51,178,68,136,89,110,113,88"/>
+<area shape="rect" id="Node000003" href="$mBaseJoint_8h.html" title="File including the BaseJoint class." alt="" coords="83,137,274,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="181,90,181,124,176,124,176,90"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="299,145,365,170"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="239,87,306,135,303,139,236,92"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="151,180,76,227,73,223,148,175"/>
+<area shape="rect" id="Node000004" href="$uErr_8h.html" title=" " alt="" coords="110,225,301,265"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="187,177,198,211,193,213,182,178"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="176,313,235,339"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="208,266,208,299,203,299,203,266"/>
+</map>

@@ -1,19 +1,26 @@
 <map id="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/mGripper.h" name="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/mGripper.h">
-<area shape="rect" id="Node000001" title="File containing the Gripper class." alt="" coords="224,5,424,89"/>
-<area shape="rect" id="Node000002" href="$uPWM_8h.html" title="Includes source code for Hardware PWM generation on Raspberry Pi 4." alt="" coords="229,137,419,177"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="327,90,327,124,321,124,321,90"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,225,72,251"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="256,180,86,226,85,221,255,175"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="97,225,167,251"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="279,180,174,223,172,218,277,175"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="191,225,262,251"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="302,180,253,219,250,214,299,175"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="287,225,361,251"/>
-<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="327,178,327,211,321,211,321,178"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="385,225,444,251"/>
-<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="348,176,393,214,389,218,344,180"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="468,225,548,251"/>
-<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="369,175,470,217,467,222,367,180"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="573,225,641,251"/>
-<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="392,175,560,221,558,226,391,180"/>
+<area shape="rect" id="Node000001" title="File containing the Gripper class." alt="" coords="158,5,358,89"/>
+<area shape="rect" id="Node000002" href="$mBaseGripper_8h.html" title="File containing the BaseGripper class." alt="" coords="5,137,196,177"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,92,141,132,138,127,197,87"/>
+<area shape="rect" id="Node000003" href="$uErr_8h.html" title=" " alt="" coords="5,225,196,265"/>
+<area shape="poly" id="edge13_Node000001_Node000003" title=" " alt="" coords="261,90,254,135,246,158,233,179,208,204,177,222,174,217,204,200,229,176,241,156,249,134,256,89"/>
+<area shape="rect" id="Node000005" href="$uPWM_8h.html" title="Includes source code for Hardware PWM generation on Raspberry Pi 4." alt="" coords="349,137,540,177"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="330,87,401,128,399,133,328,92"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="197,140,215,146,223,157,219,166,211,171,208,167,215,162,217,158,212,150,195,145"/>
+<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="103,178,103,211,98,211,98,178"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="138,313,197,339"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="119,264,151,301,147,304,115,267"/>
+<area shape="poly" id="edge10_Node000005_Node000004" title=" " alt="" coords="368,180,314,200,261,228,218,265,185,304,181,300,214,261,258,223,311,195,366,175"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="271,233,338,258"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="415,180,337,228,334,223,413,175"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="363,233,433,258"/>
+<area shape="poly" id="edge7_Node000005_Node000007" title=" " alt="" coords="437,179,413,222,409,219,432,176"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="457,233,528,258"/>
+<area shape="poly" id="edge8_Node000005_Node000008" title=" " alt="" coords="458,176,482,219,477,222,453,179"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="553,233,627,258"/>
+<area shape="poly" id="edge9_Node000005_Node000009" title=" " alt="" coords="478,175,560,223,558,228,475,180"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="651,233,731,258"/>
+<area shape="poly" id="edge11_Node000005_Node000010" title=" " alt="" coords="501,175,640,223,648,225,646,230,638,228,499,180"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="756,233,824,258"/>
+<area shape="poly" id="edge12_Node000005_Node000011" title=" " alt="" coords="541,173,639,195,744,223,752,225,750,230,743,228,638,200,540,179"/>
 </map>

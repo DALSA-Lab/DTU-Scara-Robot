@@ -9,7 +9,6 @@
 
   <xacro:include filename="$(find bioscara_description)/urdf/materials.xacro" />
   <xacro:include filename="$(find bioscara_description)/urdf/bioscara.urdf.xacro" />
-  <xacro:include filename="$(find bioscara_description)/urdf/bioscara.gazebo" />
 
   <xacro:include filename="$(find bioscara_description)/urdf/bioscara.ros2control" />
   <xacro:bioscara_ros2_control prefix="$(arg prefix)" parameters="${params}" use_mock_hardware="$(arg use_mock_hardware)"/>
