@@ -78,6 +78,7 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">bioscara_hardware_interface::BioscaraHardwareInterface Class Reference</div></div>
@@ -121,6 +122,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6aa90281abb9010d645ee5b0d5144af6" id="r_a6aa90281abb9010d645ee5b0d5144af6"><td class="memItemLeft" align="right" valign="top">hardware_interface::CallbackReturn&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#a6aa90281abb9010d645ee5b0d5144af6">on_init</a> (const hardware_interface::HardwareComponentInterfaceParams &amp;params) override</td></tr>
+<tr class="memdesc:a6aa90281abb9010d645ee5b0d5144af6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on initialization to the <code>unconfigured</code> state.  <br /></td></tr>
 <tr class="separator:a6aa90281abb9010d645ee5b0d5144af6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6b03c347e879fa429abec6a717f24e9" id="r_af6b03c347e879fa429abec6a717f24e9"><td class="memItemLeft" align="right" valign="top">hardware_interface::CallbackReturn&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#af6b03c347e879fa429abec6a717f24e9">on_shutdown</a> (const rclcpp_lifecycle::State &amp;previous_state) override</td></tr>
 <tr class="memdesc:af6b03c347e879fa429abec6a717f24e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called on the transistion from the <code>inactive</code>, <code>unconfigured</code> and <code>active</code> to the <code>finalized</code> state.  <br /></td></tr>
@@ -150,11 +152,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ab22b95903e65936fdcfdd889074adefd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when an error in any state or state transition is thrown.  <br /></td></tr>
 <tr class="separator:ab22b95903e65936fdcfdd889074adefd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:aceb1efdc164d5c79540f117bf6320bcd" id="r_aceb1efdc164d5c79540f117bf6320bcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacebioscara__hardware__driver.html#afd669880becd2fc4859d33a0f7780231">bioscara_hardware_driver::err_type_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#aceb1efdc164d5c79540f117bf6320bcd">start_homing</a> (const std::string name, float velocity)</td></tr>
+<tr class="memdesc:aceb1efdc164d5c79540f117bf6320bcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO.  <br /></td></tr>
+<tr class="separator:aceb1efdc164d5c79540f117bf6320bcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1edae840470034cfff21117b3270d4f5" id="r_a1edae840470034cfff21117b3270d4f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacebioscara__hardware__driver.html#afd669880becd2fc4859d33a0f7780231">bioscara_hardware_driver::err_type_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#a1edae840470034cfff21117b3270d4f5">stop_homing</a> (const std::string name)</td></tr>
+<tr class="memdesc:a1edae840470034cfff21117b3270d4f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO.  <br /></td></tr>
+<tr class="separator:a1edae840470034cfff21117b3270d4f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a2d3d462ac0d52197d58467b13751dfe7" id="r_a2d3d462ac0d52197d58467b13751dfe7"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, <a class="el" href="classJoint.html">Joint</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#a2d3d462ac0d52197d58467b13751dfe7">_joints</a></td></tr>
-<tr class="memdesc:a2d3d462ac0d52197d58467b13751dfe7"><td class="mdescLeft">&#160;</td><td class="mdescRight">unordered map storing the <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> objects.  <br /></td></tr>
-<tr class="separator:a2d3d462ac0d52197d58467b13751dfe7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cf66b54b657b09db178d26e334ed3f5" id="r_a8cf66b54b657b09db178d26e334ed3f5"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, std::unique_ptr&lt; <a class="el" href="classbioscara__hardware__driver_1_1BaseJoint.html">bioscara_hardware_driver::BaseJoint</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#a8cf66b54b657b09db178d26e334ed3f5">_joints</a></td></tr>
+<tr class="memdesc:a8cf66b54b657b09db178d26e334ed3f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">unordered map storing the pointers to BaseJoint objects. This will either be a MockJoint or Joint.  <br /></td></tr>
+<tr class="separator:a8cf66b54b657b09db178d26e334ed3f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8af71c4da340c7798ee83f1fcccc1979" id="r_a8af71c4da340c7798ee83f1fcccc1979"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::string, <a class="el" href="structbioscara__hardware__interface_1_1BioscaraHardwareInterface_1_1joint__config__t.html">joint_config_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#a8af71c4da340c7798ee83f1fcccc1979">_joint_cfg</a></td></tr>
 <tr class="memdesc:a8af71c4da340c7798ee83f1fcccc1979"><td class="mdescLeft">&#160;</td><td class="mdescRight">unordered map storing the configuration struct of the joints.  <br /></td></tr>
 <tr class="separator:a8af71c4da340c7798ee83f1fcccc1979"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -357,7 +368,7 @@ It is allowed to activate the hardware even if it is not homed. To home the join
 </li>
 <li><b>Previous state</b>: <code>inactive</code><ul>
 <li>Deactivate hardware (<a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#aec3a7dd7cbf651783175b5766c8220c8" title="Called on the transistion from the active to the inactive state.">on_deactivate()</a>) -&gt; <code>inactive</code><ul>
-<li>call the deactivate function anyway regardless if state was active or inactive. For example if the <a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#ad1af9ab693e0a0dad30bac75bc02b462" title="Called on the transistion from the inactive to the active state.">on_activate()</a> function fails on <a class="el" href="classJoint.html#a4269e05eca7c3d773d5ea2e7c25c2300" title="Enable encoder stall detection of the joint.">Joint::enableStallguard()</a> the joint will have been enabled, to disable it invoke <a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#aec3a7dd7cbf651783175b5766c8220c8" title="Called on the transistion from the active to the inactive state.">on_deactivate()</a>.</li>
+<li>call the deactivate function anyway regardless if state was active or inactive. For example if the <a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#ad1af9ab693e0a0dad30bac75bc02b462" title="Called on the transistion from the inactive to the active state.">on_activate()</a> function fails on Joint::enableStallguard() the joint will have been enabled, to disable it invoke <a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#aec3a7dd7cbf651783175b5766c8220c8" title="Called on the transistion from the active to the inactive state.">on_deactivate()</a>.</li>
 </ul>
 </li>
 <li>Clean-Up hardware (<a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#a113dab971a250a727d68a0aef28c13e6" title="Called on the transistion from the inactive to the unconfigured state.">on_cleanup()</a>) -&gt; <code>unconfigured</code></li>
@@ -398,8 +409,38 @@ It is allowed to activate the hardware even if it is not homed. To home the join
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Called on initialization to the <code>unconfigured</code> state. </p>
+<p>Performs the following checks on the configures joints parsed form the URDF description:</p><ul>
+<li>Each joint must have the 3 command interfaces (in this order): 'position', 'velocity', 'home'</li>
+<li>Each joint must have the 3 state interfaces (in this order): 'position', 'velocity', 'home'</li>
+</ul>
+<p>Stores the configuration parameters for each joint in the _joint_cfg map. Each joint must have these parameters:</p><ul>
+<li>i2c_address (int, HEX)</li>
+<li>reduction (float)</li>
+<li>min (float)</li>
+<li>max (float)</li>
+<li>stall_threshold (int, DEC)</li>
+<li>hold_current (int, DEC)</li>
+<li>drive_current (int, DEC)</li>
+<li>max_acceleration (float)</li>
+<li>max_velocity (float)</li>
+<li>homing<ul>
+<li>speed (float)</li>
+<li>threshold (int, DEC)</li>
+<li>current (int, DEC)</li>
+<li>acceleration (float)</li>
+</ul>
+</li>
+</ul>
+<p>Adds each joint to the internal _joints map. Creates a MockJoint object if the use_mock_hardware parameter is 'True' or 'true', or else a hardware Joint. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">params</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>hardware_interface::CallbackReturn </dd></dl>
 <p>Loop over all joints decribed in the hardware description file, check if they have the position and velocity command and state interface defined and finally add them to the internal _joints list</p>
-<p>Loop over all GPIOs decribed in the hardware description file, check if they have the home command and state interface defined.</p>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>threshold and current are uint8_t, if a number larger outside 0 &lt; n &lt; 255 is passed as a parameters it will overflow. </dd></dl>
 
 </div>
@@ -477,7 +518,7 @@ It is allowed to activate the hardware even if it is not homed. To home the join
 <p>For safe operation only one controller may interact with the hardware at the time. For example if the velocity JTC is active and has claimed the velocity command interfaces it is technically possible to activate the position JTC (or a homing controller, or others) that claim a different command interface (position in this case). However if both controllers are active they start writing to the hardware simultaneously which is to be avoided. For this reason a book keeping mechanism has been implemented which stores the currently active command interfaces for each joint in the _joint_command_modes member. Each joint has a set of active command interfaces. When a controller switch is performed the interfaces that should be stopped are removed from each joint set, then the one that should be started are added, if they are already present an error is thrown. Lastly a validation is performed. Currently the validation is simple since each joint may only have one command interface. The validation can be expanded for furture use cases that require a combination of active command interfaces per joint for example. <br  />
  The following basic checks are implemented:</p><ul>
 <li><b>On deactivation</b>:<ul>
-<li>[ERROR] Homing command interfaces may only be deactivated if no current homing process is ongoing (<a class="el" href="classJoint.html#a361a85787aed8cea8684da3c6c194c47" title="get the currently active blocking command">Joint::getCurrentBCmd()</a> != <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18aa188969e84239aee3334c3ac140dec6f" title="W; Size: 4; [(uint8) current, (int8) sensitivity, (uint8) speed, (uint8) direction].">Joint::HOME</a>)</li>
+<li>[ERROR] Homing command interfaces may only be deactivated if no current homing process is ongoing (Joint::getCurrentBCmd() != Joint::HOME)</li>
 <li>[WARN] Deactivating a velocity command interface if the velocity set point is 0.0.</li>
 <li>[WARN] Deactivating a command interface that has not been started. This should not happen.</li>
 </ul>
@@ -534,14 +575,14 @@ It is allowed to activate the hardware even if it is not homed. To home the join
 </div><div class="memdoc">
 
 <p>Reads from the hardware and populates the state interfaces. </p>
-<p>Iterates over all state interfaces and calls the corresponding <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> method.</p>
+<p>Iterates over all state interfaces and calls the corresponding Joint method.</p>
 <ul>
-<li>State interface "position" -&gt; <a class="el" href="classJoint.html#abcda66b87fdca763475cf1cd7d309b1c" title="get the current joint position in radians or m for cylindrical and prismatic joints respectively.">Joint::getPosition()</a></li>
-<li>State interface "velocity" -&gt; <a class="el" href="classJoint.html#afce77655c67f0b8ce75acc4e0cfdd016" title="get the current joint velocity in radians/s or m/s for cylindrical and prismatic joints respectively.">Joint::getVelocity()</a></li>
-<li>State interface "home" -&gt; <a class="el" href="classJoint.html#ace70cee21bf7ff76ba85199a1d3f8d73" title="Checks the state if the motor is homed.">Joint::isHomed()</a><ul>
+<li>State interface "position" -&gt; Joint::getPosition()</li>
+<li>State interface "velocity" -&gt; Joint::getVelocity()</li>
+<li>State interface "home" -&gt; Joint::isHomed()<ul>
 <li>This does not actually trigger a communication, instead it relies on the return flags of the previous transmissions. Since position and velocity have been called immediatly before the return flags are assumed to be valid.</li>
-<li>If the the homing of a joint has been activated through the command interface (<a class="el" href="classJoint.html#a361a85787aed8cea8684da3c6c194c47" title="get the currently active blocking command">Joint::getCurrentBCmd()</a> == <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18aa188969e84239aee3334c3ac140dec6f" title="W; Size: 4; [(uint8) current, (int8) sensitivity, (uint8) speed, (uint8) direction].">Joint::HOME</a>) the device signals BUSY (<a class="el" href="classJoint.html#ab676034c52aab8931cd4c9eb250ff1e2" title="Checks if the joint controller is busy processing a blocking command.">Joint::isBusy()</a>) as long as it is still homing. <br  />
- If the BUSY flag is reset while the current command is still <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18aa188969e84239aee3334c3ac140dec6f" title="W; Size: 4; [(uint8) current, (int8) sensitivity, (uint8) speed, (uint8) direction].">Joint::HOME</a> we can assume the homing has finished. Then the "home" command interface of the joint is reset to 0.0, which will stop the homing (perform cleanup tasks) at the next write cycle.</li>
+<li>If the the homing of a joint has been activated through the command interface (Joint::getCurrentBCmd() == Joint::HOME) the device signals BUSY (Joint::isBusy()) as long as it is still homing. <br  />
+ If the BUSY flag is reset while the current command is still Joint::HOME we can assume the homing has finished. Then the "home" command interface of the joint is reset to 0.0, which will stop the homing (perform cleanup tasks) at the next write cycle.</li>
 </ul>
 </li>
 </ul>
@@ -553,6 +594,87 @@ It is allowed to activate the hardware even if it is not homed. To home the join
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>hardware_interface::return_type </dd></dl>
+
+</div>
+</div>
+<a id="aceb1efdc164d5c79540f117bf6320bcd" name="aceb1efdc164d5c79540f117bf6320bcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aceb1efdc164d5c79540f117bf6320bcd">&#9670;&#160;</a></span>start_homing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacebioscara__hardware__driver.html#afd669880becd2fc4859d33a0f7780231">bioscara_hardware_driver::err_type_t</a> bioscara_hardware_interface::BioscaraHardwareInterface::start_homing </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>velocity</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>TODO. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td></td></tr>
+    <tr><td class="paramname">velocity</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int </dd></dl>
+
+</div>
+</div>
+<a id="a1edae840470034cfff21117b3270d4f5" name="a1edae840470034cfff21117b3270d4f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1edae840470034cfff21117b3270d4f5">&#9670;&#160;</a></span>stop_homing()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacebioscara__hardware__driver.html#afd669880becd2fc4859d33a0f7780231">bioscara_hardware_driver::err_type_t</a> bioscara_hardware_interface::BioscaraHardwareInterface::stop_homing </td>
+          <td>(</td>
+          <td class="paramtype">const std::string&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>TODO. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>int </dd></dl>
 
 </div>
 </div>
@@ -593,10 +715,10 @@ It is allowed to activate the hardware even if it is not homed. To home the join
 <p>Writes commands to the hardware from the command interfaces. </p>
 <p>In contrast to the <a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#afd6356a580850582282adf77e9461a40" title="Reads from the hardware and populates the state interfaces.">read()</a> method the <a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#ababed9c7c6dc8660f20dc1b4e950c023" title="Writes commands to the hardware from the command interfaces.">write()</a> method only loops over the command interfaces that are currently active defined by the <a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#a1359775a2b4cfdaa48b41088b10adedb" title="unordered map of sets storing the active command interfaces for each joint.">BioscaraHardwareInterface::_joint_command_modes</a> map. See <a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#ae217264240bb140ca85381c0d1ca24e4" title="Performs checks and book keeping of the active control mode when changing controllers.">prepare_command_mode_switch()</a> for a detailed reasoning why this approach has been chosen.</p>
 <ul>
-<li>Command interface "position" -&gt; <a class="el" href="classJoint.html#a365628f72a742bb383f6e495b7d9f74a" title="get the current joint position in radians or m for cylindrical and prismatic joints respectively.">Joint::setPosition()</a></li>
-<li>Command interface "velocity" -&gt; <a class="el" href="classJoint.html#a3dbda9cbf3b38d85bc693a742998bbe0" title="Set the current joint velocity in radians/s or m/s for cylindrical and prismatic joints respectively.">Joint::setVelocity()</a></li>
-<li>Command interface "home" -&gt; <a class="el" href="classJoint.html#a671f0b36a5e711907940e6ce33884206" title="non-blocking implementation to home the joint.">Joint::startHoming()</a><ul>
-<li>If the commanded value in "home" is != 0.0 the and the joint is currently executing a blocking function, for example homing (<a class="el" href="classJoint.html#a361a85787aed8cea8684da3c6c194c47" title="get the currently active blocking command">Joint::getCurrentBCmd()</a> == <a class="el" href="classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18a25281ddcb159a124dddec185dee6e970" title="Used for signalling purposes.">Joint::NONE</a>), the homing sequence is started with the speed, sensitivity, current and acceleration defined in the <a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#a8af71c4da340c7798ee83f1fcccc1979" title="unordered map storing the configuration struct of the joints.">BioscaraHardwareInterface::_joint_cfg</a> which is polulated from the hardware description urdf. The direction of the homing is determined by the sign of the command interface value.</li>
+<li>Command interface "position" -&gt; Joint::setPosition()</li>
+<li>Command interface "velocity" -&gt; Joint::setVelocity()</li>
+<li>Command interface "home" -&gt; Joint::startHoming()<ul>
+<li>If the commanded value in "home" is != 0.0 the and the joint is currently executing a blocking function, for example homing (Joint::getCurrentBCmd() == Joint::NONE), the homing sequence is started with the speed, sensitivity, current and acceleration defined in the <a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#a8af71c4da340c7798ee83f1fcccc1979" title="unordered map storing the configuration struct of the joints.">BioscaraHardwareInterface::_joint_cfg</a> which is polulated from the hardware description urdf. The direction of the homing is determined by the sign of the command interface value.</li>
 <li>If the commanded value in "home" is = 0.0 and the joint is currently executing homing, the homing is stopped. This can either happen prematurely through user input or when the homing is completed which is registered in <a class="el" href="classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#afd6356a580850582282adf77e9461a40" title="Reads from the hardware and populates the state interfaces.">read()</a>.</li>
 </ul>
 </li>
@@ -664,8 +786,8 @@ It is allowed to activate the hardware even if it is not homed. To home the join
 
 </div>
 </div>
-<a id="a2d3d462ac0d52197d58467b13751dfe7" name="a2d3d462ac0d52197d58467b13751dfe7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2d3d462ac0d52197d58467b13751dfe7">&#9670;&#160;</a></span>_joints</h2>
+<a id="a8cf66b54b657b09db178d26e334ed3f5" name="a8cf66b54b657b09db178d26e334ed3f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cf66b54b657b09db178d26e334ed3f5">&#9670;&#160;</a></span>_joints</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -674,7 +796,7 @@ It is allowed to activate the hardware even if it is not homed. To home the join
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::unordered_map&lt;std::string, <a class="el" href="classJoint.html">Joint</a>&gt; bioscara_hardware_interface::BioscaraHardwareInterface::_joints</td>
+          <td class="memname">std::unordered_map&lt;std::string, std::unique_ptr&lt;<a class="el" href="classbioscara__hardware__driver_1_1BaseJoint.html">bioscara_hardware_driver::BaseJoint</a>&gt; &gt; bioscara_hardware_interface::BioscaraHardwareInterface::_joints</td>
         </tr>
       </table>
   </td>
@@ -684,8 +806,9 @@ It is allowed to activate the hardware even if it is not homed. To home the join
 </table>
 </div><div class="memdoc">
 
-<p>unordered map storing the <a class="el" href="classJoint.html" title="Representing a single joint on the I2C bus.">Joint</a> objects. </p>
-<p>An unordered map is chosen to simplify acces via the joint name, as this conforms well with the ROS2_control hardware interface The map does not need to be ordered. Search, insertion, and removal of elements have average constant-time complexity. </p>
+<p>unordered map storing the pointers to BaseJoint objects. This will either be a MockJoint or Joint. </p>
+<p>An unordered map is chosen to simplify acces via the joint name, as this conforms well with the ROS2_control hardware interface The map does not need to be ordered. Search, insertion, and removal of elements have average constant-time complexity.</p>
+<p>Since the BaseJoint methods are implemented as virtual, dynamic method dispatch can be utilized to call the correct implementation of a method. So either BaseJoint::foo() or Joint::foo()/MockJoint::foo() if foo() is overwritten in Joint or MockJoint. a smart pointer is used to guarantee destruction when the pointer is destructed. A unique pointer is used to prevent copying of the object. </p>
 
 </div>
 </div>

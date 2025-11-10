@@ -1,23 +1,32 @@
 <map id="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/mJoint.h" name="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/mJoint.h">
-<area shape="rect" id="Node000001" title="File including the Joint class." alt="" coords="135,5,335,89"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,313,85,339"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,92,151,114,129,139,102,181,81,225,54,301,49,299,76,223,98,178,125,136,147,110,173,88"/>
-<area shape="rect" id="Node000003" href="$mJoint_8hpp.html" title="Templated functions for the Joint class." alt="" coords="139,137,330,177"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="229,90,229,124,224,124,223,90"/>
-<area shape="poly" id="edge3_Node000003_Node000001" title=" " alt="" coords="239,137,241,103,246,104,244,137"/>
-<area shape="rect" id="Node000004" href="$uI2C_8h.html" title="Low level utility for I2C communication on Raspberry Pi using lgpio library." alt="" coords="139,225,330,265"/>
-<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="237,178,237,211,232,211,232,178"/>
-<area shape="rect" id="Node000010" href="$common_8h.html" title="A file containing utility macros and functions." alt="" coords="354,225,545,265"/>
-<area shape="poly" id="edge11_Node000003_Node000010" title=" " alt="" coords="283,175,391,218,389,223,281,180"/>
-<area shape="poly" id="edge8_Node000004_Node000002" title=" " alt="" coords="190,268,87,310,85,305,188,263"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="109,313,176,339"/>
-<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="214,268,169,306,165,302,211,264"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="201,313,269,339"/>
-<area shape="poly" id="edge6_Node000004_Node000006" title=" " alt="" coords="237,266,237,299,232,299,232,266"/>
-<area shape="rect" id="Node000007" title=" " alt="" coords="293,313,355,339"/>
-<area shape="poly" id="edge7_Node000004_Node000007" title=" " alt="" coords="258,264,302,302,299,306,255,268"/>
-<area shape="rect" id="Node000008" title=" " alt="" coords="379,313,463,339"/>
-<area shape="poly" id="edge9_Node000004_Node000008" title=" " alt="" coords="280,263,382,305,380,310,278,268"/>
-<area shape="rect" id="Node000009" title=" " alt="" coords="488,313,563,339"/>
-<area shape="poly" id="edge10_Node000004_Node000009" title=" " alt="" coords="305,263,475,308,474,314,304,268"/>
+<area shape="rect" id="Node000001" title="File including the Joint class." alt="" coords="318,5,518,89"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="245,313,325,339"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="354,91,331,113,312,139,296,180,287,224,284,266,285,300,280,300,279,266,282,224,291,179,308,136,327,110,351,88"/>
+<area shape="rect" id="Node000003" href="$mBaseJoint_8h.html" title="File including the BaseJoint class." alt="" coords="56,137,247,177"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="319,91,211,135,209,130,317,86"/>
+<area shape="rect" id="Node000006" href="$uTransmission_8h.html" title=" " alt="" coords="323,137,513,177"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="421,90,421,124,415,124,415,90"/>
+<area shape="rect" id="Node000007" href="$mJoint_8hpp.html" title="Templated functions for the Joint class." alt="" coords="537,137,728,177"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="492,87,577,129,574,134,490,92"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="170,176,209,224,270,301,266,304,205,227,166,179"/>
+<area shape="rect" id="Node000004" href="$uErr_8h.html" title=" " alt="" coords="5,225,196,265"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="142,179,121,215,117,212,138,176"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="71,313,130,339"/>
+<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="103,266,103,299,98,299,98,266"/>
+<area shape="poly" id="edge8_Node000007_Node000001" title=" " alt="" coords="601,139,519,98,522,93,603,135"/>
+<area shape="rect" id="Node000008" href="$uI2C_8h.html" title="Low level utility for I2C communication on Raspberry Pi using lgpio library." alt="" coords="537,225,728,265"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="635,178,635,211,630,211,630,178"/>
+<area shape="rect" id="Node000014" href="$common_8h.html" title="A file containing utility macros and functions." alt="" coords="323,225,513,265"/>
+<area shape="poly" id="edge16_Node000007_Node000014" title=" " alt="" coords="587,180,479,223,477,218,585,175"/>
+<area shape="poly" id="edge13_Node000008_Node000002" title=" " alt="" coords="550,268,339,315,337,310,549,263"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="694,313,761,339"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="657,263,704,302,701,306,654,268"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="785,313,853,339"/>
+<area shape="poly" id="edge11_Node000008_Node000010" title=" " alt="" coords="678,263,780,305,778,310,676,268"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="400,313,463,339"/>
+<area shape="poly" id="edge12_Node000008_Node000011" title=" " alt="" coords="585,268,475,311,473,306,583,263"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="487,313,571,339"/>
+<area shape="poly" id="edge14_Node000008_Node000012" title=" " alt="" coords="609,268,557,307,553,303,606,263"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="595,313,670,339"/>
+<area shape="poly" id="edge15_Node000008_Node000013" title=" " alt="" coords="635,266,635,299,630,299,630,266"/>
 </map>

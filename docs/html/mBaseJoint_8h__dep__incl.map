@@ -1,0 +1,23 @@
+<map id="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/mBaseJoint.h" name="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/mBaseJoint.h">
+<area shape="rect" id="Node000001" title="File including the BaseJoint class." alt="" coords="688,5,888,89"/>
+<area shape="rect" id="Node000002" href="$mJoint_8h.html" title="File including the Joint class." alt="" coords="336,137,536,221"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="676,93,537,144,536,139,674,88"/>
+<area shape="rect" id="Node000008" href="$mMockJoint_8h.html" title="File including the MockJoint class." alt="" coords="688,137,888,221"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="791,103,791,137,785,137,785,103"/>
+<area shape="rect" id="Node000010" href="$mBaseJoint_8cpp.html" title=" " alt="" coords="912,145,1107,214"/>
+<area shape="poly" id="edge11_Node000001_Node000010" title=" " alt="" coords="871,94,953,142,951,147,868,99"/>
+<area shape="rect" id="Node000003" href="$mJoint_8hpp.html" title="Templated functions for the Joint class." alt="" coords="5,269,205,353"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="324,224,202,272,200,267,322,219"/>
+<area shape="rect" id="Node000004" href="$joint__comm__node_8cpp.html" title=" " alt="" coords="229,277,424,346"/>
+<area shape="poly" id="edge4_Node000002_Node000004" title=" " alt="" coords="394,234,357,278,353,275,390,230"/>
+<area shape="rect" id="Node000005" href="$mJoint_8cpp.html" title=" " alt="" coords="448,277,643,346"/>
+<area shape="poly" id="edge5_Node000002_Node000005" title=" " alt="" coords="482,230,519,275,515,278,478,234"/>
+<area shape="rect" id="Node000006" href="$bioscara__hardware_8hpp.html" title=" " alt="" coords="667,269,909,353"/>
+<area shape="poly" id="edge6_Node000002_Node000006" title=" " alt="" coords="550,220,678,267,676,272,548,225"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="217,267,339,219,341,224,219,272"/>
+<area shape="rect" id="Node000007" href="$bioscara__hardware_8cpp.html" title=" " alt="" coords="681,401,895,471"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="791,367,791,401,785,401,785,367"/>
+<area shape="poly" id="edge10_Node000008_Node000006" title=" " alt="" coords="791,235,791,269,785,269,785,235"/>
+<area shape="rect" id="Node000009" href="$mMockJoint_8cpp.html" title=" " alt="" coords="933,277,1128,346"/>
+<area shape="poly" id="edge9_Node000008_Node000009" title=" " alt="" coords="878,226,969,274,967,279,875,230"/>
+</map>
