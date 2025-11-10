@@ -4,10 +4,7 @@
   <version>0.0.0</version>
   <description>Metapackage for the DALSA Bioscara control packages</description>
 
-  <author email="s.storz01@gmail.com">Sebastian Storz</author>
   <maintainer email="s.storz01@gmail.com">Sebastian Storz</maintainer>
-
-
 
   <license>Apache-2.0</license>
 
@@ -18,6 +15,7 @@
   <exec_depend>bioscara_description</exec_depend>
   <exec_depend>bioscara_hardware_driver</exec_depend>
   <exec_depend>bioscara_hardware_interfaces</exec_depend>
+  <depend>python3-vcstool</depend>
 
   <export>
     <build_type>ament_cmake</build_type>

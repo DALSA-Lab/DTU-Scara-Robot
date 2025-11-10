@@ -56,6 +56,35 @@ namespace bioscara_hardware_interfaces
     public:
         RCLCPP_SHARED_PTR_DEFINITIONS(BioscaraArmHardwareInterface)
 
+        /**
+         * @brief  Called on initialization to the `unconfigured` state.
+         * 
+         * Performs the following checks on the configures joints parsed form the URDF description:
+         * - Each joint must have the 3 command interfaces (in this order): 'position', 'velocity', 'home'
+         * - Each joint must have the 3 state interfaces (in this order): 'position', 'velocity', 'home'
+         * 
+         * Stores the configuration parameters for each joint in the _joint_cfg map.
+         * Each joint must have these parameters:
+         * - i2c_address (int, HEX)
+         * - reduction (float)
+         * - min (float)
+         * - max (float)
+         * - stall_threshold (int, DEC)
+         * - hold_current (int, DEC)
+         * - drive_current (int, DEC)
+         * - max_acceleration (float)
+         * - max_velocity (float)
+         * - homing
+         *  - speed (float)
+         *  - threshold (int, DEC)
+         *  - current (int, DEC)
+         *  - acceleration (float)
+         * 
+         * Adds each joint to the internal _joints map. Creates a MockJoint object if the use_mock_hardware parameter is 'True' or 'true', 
+         * or else a hardware Joint.
+         * @param params 
+         * @return hardware_interface::CallbackReturn 
+         */
         hardware_interface::CallbackReturn on_init(
             const hardware_interface::HardwareComponentInterfaceParams &params) override;
 

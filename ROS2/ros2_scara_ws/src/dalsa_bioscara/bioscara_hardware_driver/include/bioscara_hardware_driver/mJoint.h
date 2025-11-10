@@ -295,7 +295,7 @@ namespace bioscara_hardware_driver
      *
      * If the PID error exceeds the set threshold a stall is triggered and the motor disabled.
      * A detected stall can be reset by homing or by reenabling the stall guard.
-     * @param thresholds value of threshold. 0 - 255 where lower is more sensitive.
+     * @param sensitivity value of threshold. 0 - 255 where lower is more sensitive.
      * @return 0 on success, -1 on communication error,
       -5 if the joint is not initialized.
      */
