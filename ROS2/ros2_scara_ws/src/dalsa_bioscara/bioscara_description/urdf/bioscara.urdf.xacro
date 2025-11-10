@@ -146,7 +146,7 @@
       </collision>
     </link>
 
-    <joint name="${prefix}tool_joint" type="fixed">
+    <joint name="${prefix}flange_joint" type="fixed">
       <origin xyz="0 0 0" rpy="${pi} 0 0" />
       <parent link="${prefix}link_4"/>
       <child link="${prefix}tool_flange" />

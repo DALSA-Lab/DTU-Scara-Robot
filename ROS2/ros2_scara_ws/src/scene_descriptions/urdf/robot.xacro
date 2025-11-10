@@ -1,25 +1,28 @@
 <?xml version="1.0" ?>
-<robot name="bioscara" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:macro name="load_robot" params="
     parent
     *origin
     use_mock_hardware
-    command_interface
     prefix
-    gripper_package_name
+    arm_description_package
+    arm_macro_path
+    gripper_description_package
     gripper_macro_path">
+
+    <!-- Include and load arm macro files -->
+    <xacro:include filename="$(find ${arm_description_package})${arm_macro_path}"/>
 
     <xacro:load_arm 
       parent="${parent}" 
       prefix="${prefix}" 
-      use_mock_hardware="${use_mock_hardware}" 
-      command_interface="${command_interface}">
+      use_mock_hardware="${use_mock_hardware}">
       <xacro:insert_block name="origin" />
     </xacro:load_arm>
 
     <!-- If no gripper, define tool frame here. The last arm link must be "tool_flange" -->
-    <xacro:if value="${not gripper_package_name}">
+    <xacro:if value="${not gripper_description_package}">
       <link name="${prefix}tool"/>
       <joint name="${prefix}tool_joint" type="fixed">
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -30,13 +33,15 @@
     </xacro:if>
 
     <!-- Include and load the gripper if defined -->
-    <xacro:unless value="${not gripper_package_name}">
-    <!-- TODO: Check if the include works without "$(find <package>)" -->
-      <xacro:include filename="package://${gripper_package_name}${gripper_macro_path}"/>
+    <xacro:unless value="${not gripper_description_package}">
+      <xacro:include filename="$(find ${gripper_description_package})${gripper_macro_path}"/>
       <xacro:load_gripper
         parent="${prefix}tool_flange"
         prefix="${prefix}"
-        use_mock_hardware="${use_mock_hardware}"/>
+        use_mock_hardware="${use_mock_hardware}">
+        <!-- TODO. define origin of gripper -->
+        <origin xyz="0 0 0" rpy="0 0 0" />
+       </xacro:load_gripper>  
     </xacro:unless>
 
   </xacro:macro>

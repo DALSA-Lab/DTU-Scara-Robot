@@ -5,7 +5,6 @@
     parent
     *origin
     use_mock_hardware
-    command_interface
     prefix">
 
     <xacro:property name="config_file" value="$(find bioscara_description)/config/bioscara_parameters.yaml" />
@@ -19,8 +18,7 @@
     <xacro:bioscara_ros2_control 
       prefix="${prefix}" 
       parameters="${params}" 
-      use_mock_hardware="${use_mock_hardware}" 
-      command_interface="${command_interface}"/>
+      use_mock_hardware="${use_mock_hardware}"/>
 
     <xacro:bioscara 
       parent="${parent}" 

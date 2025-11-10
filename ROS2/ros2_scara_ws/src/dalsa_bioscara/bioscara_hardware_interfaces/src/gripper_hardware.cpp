@@ -37,6 +37,21 @@ namespace bioscara_hardware_interfaces
 
     std::string use_mock_hardware = info_.hardware_parameters["use_mock_hardware"];
 
+    try
+    {
+      _gripper_cfg.reduction = std::stof(info_.hardware_parameters["reduction"]);
+      _gripper_cfg.offset = std::stof(info_.hardware_parameters["offset"]);
+      _gripper_cfg.min = std::stof(info_.hardware_parameters["min"]);
+      _gripper_cfg.max = std::stof(info_.hardware_parameters["max"]);
+    }
+    catch (...)
+    {
+      RCLCPP_FATAL(
+          get_logger(), "Gripper '%s' is missing one of the following parameters: reduction, offset, min, max",
+          info_.name.c_str());
+      return hardware_interface::CallbackReturn::ERROR;
+    }
+
     /**
      * check that only one joint is defined, more mimic joints may be defined.
      */
@@ -86,21 +101,6 @@ namespace bioscara_hardware_interfaces
           joint.name.c_str(),
           joint.state_interfaces[0].name.c_str(),
           hardware_interface::HW_IF_POSITION);
-      return hardware_interface::CallbackReturn::ERROR;
-    }
-
-    try
-    {
-      _gripper_cfg.reduction = std::stof(joint.parameters.at("reduction"));
-      _gripper_cfg.offset = std::stof(joint.parameters.at("offset"));
-      _gripper_cfg.min = std::stof(joint.parameters.at("min"));
-      _gripper_cfg.max = std::stof(joint.parameters.at("max"));
-    }
-    catch (...)
-    {
-      RCLCPP_FATAL(
-          get_logger(), "Gripper '%s' is missing one of the following parameters: reduction, offset, min, max",
-          joint.name.c_str());
       return hardware_interface::CallbackReturn::ERROR;
     }
 
