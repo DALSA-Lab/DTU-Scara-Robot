@@ -36,7 +36,7 @@ static uint8_t isBusy = 0;
 static uint8_t notEnabled = 1;
 static bool stepperSetup = 0;
 static uint8_t isStallguardEnabled = 0;
-static int stallguardThreshold = 100;
+static int stallguardThreshold = 0; 
 static float q_set, q, qd_set, qd;
 static float maxAccel = MAXACCEL;
 static float maxVel = MAXVEL;
@@ -142,7 +142,7 @@ void blocking_handler(uint8_t reg) {
         memcpy(&holdCurrent, rx_buf + 1, 1);
         if (!stepperSetup) {
           stepper.setup(CLOSEDLOOP, 200);
-          stepper.enableClosedLoop(); // necessary to be able to use PID error
+          stepper.enableClosedLoop();  // necessary to be able to use PID error
           stepperSetup = 1;
           notHomed = 1;
         }
@@ -463,52 +463,85 @@ void setup(void) {
 
   Wire.onReceive(receiveEvent);
   Wire.onRequest(requestEvent);
-
 }
 
 
-static float last_err = 0, last_err_fil = 0;
-static float err = 0, err_fil = 0;
+static float last_pid_err = 0;
+static float pid_err = 0, pid_err_fil = 0;
+
+static int32_t last_SG_err = 0;
+static int32_t SG_err = 0, SG_err_fil = 0;
+
 /**
  * @brief Main loop
 
  * Executes the following: \n 
- * 1) if isStallguardEnabled: compares stepper.getPidError() with stallguardThreshold and sets isStalled flag. \n 
- * 2) if rx_data_ready: set isBusy flag to indicate device is busy. Invoke blocking_handler. 
+ * 1. if isStallguardEnabled: compares stepper.getPidError() with stallguardThreshold and sets isStalled flag. \n 
+ * 2. if rx_data_ready: set isBusy flag to indicate device is busy. Invoke blocking_handler. 
  * Clear isBusy flag to indicate device is no longer busy \n 
  */
 void loop(void) {
   if (isStallguardEnabled && !isStalled) {
-    err = abs(stepper.getPidError());
-    if(err-last_err > 500){
-      err = last_err;
+    pid_err = abs(stepper.getPidError());
+
+    /* data0: raw abs(pid-error) */
+    Serial.print(pid_err);
+    Serial.print("\t");    
+    if (pid_err - last_pid_err > 500) {
+      pid_err = last_pid_err;
     }
-    Serial.print(err);
+
+    /* data1: abs(pid-error) spikes removed */
+    Serial.print(pid_err);                     
     Serial.print("\t");
-    err_fil = lp.updateState(err);
-    Serial.print(err_fil);
+
+    /* data2: abs(pid-error) spikes removed LP filtered */
+    pid_err_fil = lp.updateState(pid_err);
+    Serial.print(pid_err_fil);                  
     Serial.print("\t");
-    Serial.print(err_fil-last_err_fil);
+
+    /* data3: raw abs(SG_VALUE) */
+    SG_err = abs(stepper.driver.getStallValue()); // unint16_t?
+    Serial.print(SG_err);
+    Serial.print("\t");    
+    if (SG_err - last_SG_err > 200) {
+      SG_err = last_SG_err;
+    }
+
+    /* data4: abs(SG_VALUE) spikes removed */
+    Serial.print(SG_err);                     
     Serial.print("\t");
-    Serial.print(abs(qd)*0.1+20);
-    Serial.print("\t");
+
+    /* data5: q */
     Serial.print(q);
     Serial.print("\t");
+
+    /* data6: q_set */
     Serial.print(q_set);
     Serial.print("\t");
+
+    /* data7: qd */
     Serial.print(qd * 6);
     Serial.print("\t");
+
+    /* data8: qd_set */
     Serial.print(qd_set * 6);
     Serial.print("\t");
-    if (err > stallguardThreshold && last_err > stallguardThreshold) {
+
+    /* data9: threshold */
+    Serial.print(stallguardThreshold);
+    Serial.print("\t");
+
+    /* data10: stall */
+    if (SG_err > stallguardThreshold && last_SG_err > stallguardThreshold) {
       Serial.println(1);
       // isStalled = 1;
       // stepper.stop(HARD);
-      // last_err = 0;
+      // last_pid_err = 0;
     } else {
       Serial.println(0);
-      last_err = err;
-      last_err_fil = err_fil;
+      last_pid_err = pid_err;
+      last_SG_err = SG_err;
     }
   }
 
