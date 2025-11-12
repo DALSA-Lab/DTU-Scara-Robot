@@ -150,25 +150,22 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227a266ba21402387fe0d25a356060b3894d">DISABLESTALLGUARD</a> = 0x1F
 , <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227a9a59d78a2b03d184ea1d02368aa9dcc2">CLEARSTALL</a> = 0x20
-, <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227aed8a50cbd61e7ae98db130c0fdae4911">ISSTALLED</a> = 0x21
 , <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227a8967f5054ed12cf09fe37b7369a668af">SETBRAKEMODE</a> = 0x22
+, <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227a399fd338684eda1dedbb11aeb03f8e2f">ENABLEPID</a> = 0x23
 , <br />
-&#160;&#160;<a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227a399fd338684eda1dedbb11aeb03f8e2f">ENABLEPID</a> = 0x23
-, <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227aaf95a712e56303c0583c3fefa2b54557">DISABLEPID</a> = 0x24
+&#160;&#160;<a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227aaf95a712e56303c0583c3fefa2b54557">DISABLEPID</a> = 0x24
 , <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227adf27eff58b369b9beca8e31805c2431c">ENABLECLOSEDLOOP</a> = 0x25
 , <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227aeac2084745674097d6e6f35d9be7a168">DISABLECLOSEDLOOP</a> = 0x26
+, <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227a25463cded0b67be6de7e47c1fc2825ea">SETCONTROLTHRESHOLD</a> = 0x27
 , <br />
-&#160;&#160;<a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227a25463cded0b67be6de7e47c1fc2825ea">SETCONTROLTHRESHOLD</a> = 0x27
-, <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227a40442f487c9f54988557a67e0ead0a86">MOVETOEND</a> = 0x28
+&#160;&#160;<a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227a40442f487c9f54988557a67e0ead0a86">MOVETOEND</a> = 0x28
 , <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227a679ee5320d66c8322e310daeb2ee99b8">STOP</a> = 0x29
 , <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227a4294032a7f68338c60eabb96d9e868cb">GETPIDERROR</a> = 0x2A
+, <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227ab497f086d05a8a6ece2b0adae02b86b7">CHECKORIENTATION</a> = 0x2B
 , <br />
-&#160;&#160;<a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227ab497f086d05a8a6ece2b0adae02b86b7">CHECKORIENTATION</a> = 0x2B
-, <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227aa23c46b2a03715e7fac0e2e660a7e247">GETENCODERRPM</a> = 0x2C
+&#160;&#160;<a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227aa23c46b2a03715e7fac0e2e660a7e247">GETENCODERRPM</a> = 0x2C
 , <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227a8f280224da64e98f2d52d50ec43bc197">HOME</a> = 0x2D
-, <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227a8aae6cf9961b7f745410acf817525888">ISHOMED</a> = 0x2E
-, <br />
-&#160;&#160;<a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227ab336d4f27301a6785af20d8ba0e5076d">ISSETUP</a> = 0x2F
+, <a class="el" href="joint_8h.html#aaf12c41494c327736d4980ffe1184227a158125bda40f0fe207da57b7b31afa2c">HOMEOFFSET</a> = 0x2E
 <br />
  }</td></tr>
 <tr class="memdesc:aaf12c41494c327736d4980ffe1184227"><td class="mdescLeft">&#160;</td><td class="mdescRight">register and command definitions  <a href="joint_8h.html#aaf12c41494c327736d4980ffe1184227">More...</a><br /></td></tr>
@@ -346,8 +343,6 @@ Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a266ba21402387fe0d25a356060b3894d" name="aaf12c41494c327736d4980ffe1184227a266ba21402387fe0d25a356060b3894d"></a>DISABLESTALLGUARD&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a9a59d78a2b03d184ea1d02368aa9dcc2" name="aaf12c41494c327736d4980ffe1184227a9a59d78a2b03d184ea1d02368aa9dcc2"></a>CLEARSTALL&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227aed8a50cbd61e7ae98db130c0fdae4911" name="aaf12c41494c327736d4980ffe1184227aed8a50cbd61e7ae98db130c0fdae4911"></a>ISSTALLED&#160;</td><td class="fielddoc"><p>R; Size: 1; [(uint8) isStalled]. </p>
-</td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a8967f5054ed12cf09fe37b7369a668af" name="aaf12c41494c327736d4980ffe1184227a8967f5054ed12cf09fe37b7369a668af"></a>SETBRAKEMODE&#160;</td><td class="fielddoc"><p>W; Size: 1; [(uint8) mode]. </p>
 </td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a399fd338684eda1dedbb11aeb03f8e2f" name="aaf12c41494c327736d4980ffe1184227a399fd338684eda1dedbb11aeb03f8e2f"></a>ENABLEPID&#160;</td><td class="fielddoc"></td></tr>
@@ -366,9 +361,7 @@ Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a8f280224da64e98f2d52d50ec43bc197" name="aaf12c41494c327736d4980ffe1184227a8f280224da64e98f2d52d50ec43bc197"></a>HOME&#160;</td><td class="fielddoc"><p>W; Size: 4; [(uint8) current, (uint8) sensitivity, (uint8) speed, (uint8) direction]. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a8aae6cf9961b7f745410acf817525888" name="aaf12c41494c327736d4980ffe1184227a8aae6cf9961b7f745410acf817525888"></a>ISHOMED&#160;</td><td class="fielddoc"><p>R; Size: 1; [(uint8) isStalled]. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227ab336d4f27301a6785af20d8ba0e5076d" name="aaf12c41494c327736d4980ffe1184227ab336d4f27301a6785af20d8ba0e5076d"></a>ISSETUP&#160;</td><td class="fielddoc"><p>R; Size: 1; [(uint8) isStalled]. </p>
+<tr><td class="fieldname"><a id="aaf12c41494c327736d4980ffe1184227a158125bda40f0fe207da57b7b31afa2c" name="aaf12c41494c327736d4980ffe1184227a158125bda40f0fe207da57b7b31afa2c"></a>HOMEOFFSET&#160;</td><td class="fielddoc"><p>R/W; Size: 4; [(float) -]. </p>
 </td></tr>
 </table>
 

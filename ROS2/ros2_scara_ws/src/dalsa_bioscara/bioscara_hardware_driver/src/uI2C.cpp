@@ -64,13 +64,14 @@ int writeToI2CDev(const int dev_handle, const int reg, char *tx_buffer, const in
     return rc;
 }
 
-int closeI2CDevHandle(const int dev_handle)
+int closeI2CDevHandle(int &dev_handle)
 {
     int rc = lgI2cClose(dev_handle);
     if (rc < 0)
     {
         std::cerr << "I2C CLOSE ERROR: \'" << lguErrorText(rc) << "\'" << std::endl;
     }
+    dev_handle = -1;
     return rc;
 }
 

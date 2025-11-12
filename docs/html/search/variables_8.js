@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['joints_0',['joints',['../classJoint__comms.html#a560da87e376b60b95192bbedf8197447',1,'Joint_comms']]],
-  ['joints_5f_1',['Joints_',['../classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#aa4a6925763da32eeaf992d4d3c03070c',1,'bioscara_hardware_interface::BioscaraHardwareInterface']]]
+  ['j1_0',['J1',['../joint__comm__node_8cpp.html#acbe52cd33b413facbb206bd7f54734f6',1,'joint_comm_node.cpp']]],
+  ['j2_1',['J2',['../joint__comm__node_8cpp.html#ae261ce877dad1392dd8bba2a5107abd5',1,'joint_comm_node.cpp']]],
+  ['j3_2',['J3',['../joint__comm__node_8cpp.html#a4deaebb2a18c7e8506b0d9fcd3f26366',1,'joint_comm_node.cpp']]],
+  ['j4_3',['J4',['../joint__comm__node_8cpp.html#a43da7a991a5851b1caa14ac2c5855aea',1,'joint_comm_node.cpp']]]
 ];
