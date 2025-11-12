@@ -86,7 +86,7 @@ namespace bioscara_hardware_interface
         return hardware_interface::CallbackReturn::ERROR;
       }
 
-      // expect exactly two state interfaces
+      // expect exactly three state interfaces
       if (joint.state_interfaces.size() != 3)
       {
         RCLCPP_FATAL(
@@ -165,91 +165,6 @@ namespace bioscara_hardware_interface
                                                                                       cfg.max));
       }
     }
-
-    /**
-     * Loop over all GPIOs decribed in the hardware description file, check if they have the home command
-     * and state interface defined.
-     *
-     */
-    // if (info_.gpios.size() != _joints.size())
-    // {
-    //   RCLCPP_FATAL(
-    //       get_logger(), "BioscaraHardwareInterface has '%ld' GPIO components, '%lu' expected. Every joint needs a GPIO interface",
-    //       info_.gpios.size(), _joints.size());
-    //   return hardware_interface::CallbackReturn::ERROR;
-    // }
-
-    // for (const hardware_interface::ComponentInfo &gpio : info_.gpios)
-    // {
-    //   // expect only one command interface
-    //   if (gpio.command_interfaces.size() != 1)
-    //   {
-    //     RCLCPP_FATAL(
-    //         get_logger(), "GPIO '%s' has %zu command interfaces found. 1 expected.",
-    //         gpio.name.c_str(), gpio.command_interfaces.size());
-    //     return hardware_interface::CallbackReturn::ERROR;
-    //   }
-
-    //   // expect the first command interface to be 'home'
-    //   if (gpio.command_interfaces[0].name != bioscara_hardware_interface::HW_IF_HOME)
-    //   {
-    //     RCLCPP_FATAL(
-    //         get_logger(), "GPIO '%s' have %s command interfaces found. '%s' expected.",
-    //         gpio.name.c_str(),
-    //         gpio.command_interfaces[0].name.c_str(),
-    //         bioscara_hardware_interface::HW_IF_HOME);
-    //     return hardware_interface::CallbackReturn::ERROR;
-    //   }
-
-    //   // expect only one state interface
-    //   if (gpio.state_interfaces.size() > 1)
-    //   {
-    //     RCLCPP_FATAL(
-    //         get_logger(), "GPIO '%s' has %zu state interface. 1 expected.", gpio.name.c_str(),
-    //         gpio.state_interfaces.size());
-    //     return hardware_interface::CallbackReturn::ERROR;
-    //   }
-
-    //   // expect state interface to be 'home'
-    //   if (gpio.state_interfaces[0].name != bioscara_hardware_interface::HW_IF_HOME)
-    //   {
-    //     RCLCPP_FATAL(
-    //         get_logger(), "GPIO '%s' have %s state interfaces found. '%s' expected.",
-    //         gpio.name.c_str(), gpio.state_interfaces[0].name.c_str(),
-    //         bioscara_hardware_interface::HW_IF_HOME);
-    //     return hardware_interface::CallbackReturn::ERROR;
-    //   }
-
-    //   // Check that a joint with the same name exists
-    //   if (_joints.find(gpio.name) == _joints.end())
-    //   {
-    //     RCLCPP_FATAL(
-    //         get_logger(), "No matching joint with the name '%s' found. Currently every GPIO needs to match a joint.",
-    //         gpio.name.c_str());
-    //     return hardware_interface::CallbackReturn::ERROR;
-    //   }
-
-    //   /**
-    //    * @todo threshold and current are uint8_t, if a number larger outside 0 < n < 255 is passed as a parameters it will overflow.
-    //    */
-    //   joint_homing_config_t cfg;
-    //   try
-    //   {
-    //     cfg.speed = std::stof(gpio.command_interfaces[0].parameters.at("speed"));
-    //     cfg.threshold = std::stoi(gpio.command_interfaces[0].parameters.at("threshold"));
-    //     cfg.current = std::stoi(gpio.command_interfaces[0].parameters.at("current"));
-    //     cfg.acceleration = std::stof(gpio.command_interfaces[0].parameters.at("acceleration"));
-    //   }
-    //   catch (...)
-    //   {
-    //     RCLCPP_FATAL(
-    //         get_logger(), "GPIO '%s' is missing one of the following parameters in 'home' command_interface: speed, threshold, current, acceleration",
-    //         gpio.name.c_str());
-    //     return hardware_interface::CallbackReturn::ERROR;
-    //   }
-
-    //   _joint_cfg[gpio.name].homing = cfg;
-    // }
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
