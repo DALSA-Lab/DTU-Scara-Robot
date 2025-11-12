@@ -378,8 +378,6 @@ namespace bioscara_hardware_driver
     //  */
     // stp_reg_t getCurrentBCmd(void);
 
-    std::string name;
-
   protected:
     // /**
     //  * @brief Blocking loop waiting for BUSY flag to reset.
