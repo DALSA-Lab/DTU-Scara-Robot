@@ -9,8 +9,8 @@ Since the postion JTC simply forwards the postion reference to the joint it can 
 Joint 1 is used for all tests. All generated ramps are below the maximum joint speed, which is constant and configured to be 1.0 rad/s.
 Two ramps are configured with different speeds:
 
-**Ramp 1**: Rrom -1.5707 rad to 1.5707 rad in 20 s. Yielding a ramp gradient/speed ($\dot{r}_{1}$) of 0.15707 rad/s <br>
-**Ramp 2**: Rrom -1.5707 rad to 1.5707 rad in 10 s. Yielding a ramp gradient/speed of 0.31415 rad/s
+**Ramp 1**: From -1.5707 rad to 1.5707 rad in 20 s. Yielding a ramp gradient/speed ($\dot{r}_{1}$) of 0.15707 rad/s <br>
+**Ramp 2**: From -1.5707 rad to 1.5707 rad in 10 s. Yielding a ramp gradient/speed of 0.31415 rad/s
 
 The following data is collected:
 *Position Setpoint* ($r_{1}$) and *Joint Position* ($q_{1}$).

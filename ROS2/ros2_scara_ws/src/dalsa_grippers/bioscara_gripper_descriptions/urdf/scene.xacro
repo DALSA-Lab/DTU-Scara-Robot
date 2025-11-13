@@ -3,16 +3,15 @@
 
   <xacro:arg name="use_mock_hardware" default="false"/>
   <xacro:arg name="prefix" default=""/>
-  <xacro:arg name="gripper_description_package" default="" />
   <xacro:arg name="gripper_macro_path" default="/urdf/bioscara_gripper_128.xacro" />
 
-  <xacro:property name="gripper_description_package" value="$(arg gripper_description_package)"/>
   <xacro:property name="gripper_macro_path" value="$(arg gripper_macro_path)"/>
+
+  <xacro:include filename="$(find bioscara_gripper_descriptions)${gripper_macro_path}"/>
 
   <!-- Used for fixing robot -->
   <link name="world"/>
 
-  <xacro:include filename="$(find ${gripper_description_package})${gripper_macro_path}"/>
   <xacro:load_gripper
     parent="world"
     prefix="$(arg prefix)"
