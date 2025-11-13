@@ -220,11 +220,12 @@ namespace bioscara_hardware_interfaces
 
     for (const auto &[name, descr] : joint_command_interfaces_)
     {
-      /* Check if position or velocity. Set position to current position and velocity to 0.0 */
+      /* Check if position or velocity. Current position is unknown, setting to 0.0 because setting to NaN 
+      causes constant errors in TF transform and velocity to 0.0 */
       if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
         RCLCPP_INFO(get_logger(), "Set %s, to NaN", name.c_str());
-        set_command(name, std::numeric_limits<double>::quiet_NaN());
+        set_command(name, 0.0);
       }
       else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
       {
