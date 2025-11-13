@@ -1,0 +1,23 @@
+controller_manager:
+  ros__parameters:
+    # joint_state_broadcaster is treated as a 'controller', needs to be provided.
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    
+    gripper_controller:
+      type: parallel_gripper_action_controller/GripperActionController
+    
+
+    update_rate: 50
+      
+gripper_controller:
+  ros__parameters:
+    type: parallel_gripper_action_controller/GripperActionController
+    
+    joint: gripper
+    
+    # Only setting position as state interface does not work. It needs velocity as well:
+    # see: https://github.com/ros-controls/ros2_controllers/blob/d71538afba652c7fe1565948c082064dfcdec527/parallel_gripper_controller/include/parallel_gripper_controller/parallel_gripper_action_controller_impl.hpp#L332 
+    # state_interfaces:
+    #   - position
+    #   - velocity

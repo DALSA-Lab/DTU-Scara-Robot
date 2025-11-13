@@ -16,7 +16,6 @@
 
 #include <chrono>
 #include <cmath>
-#include <limits>
 #include <memory>
 #include <vector>
 
@@ -85,11 +84,11 @@ namespace bioscara_hardware_interfaces
       return hardware_interface::CallbackReturn::ERROR;
     }
 
-    // expect no state interfaces, warn if there is. Wont be used.
-    if (joint.state_interfaces.size() != 1)
+    // expect 2 state interfaces.
+    if (joint.state_interfaces.size() != 2)
     {
       RCLCPP_WARN(
-          get_logger(), "Gripper '%s' has %zu state interfaces. 1 expected.", joint.name.c_str(),
+          get_logger(), "Gripper '%s' has %zu state interfaces. 2 expected.", joint.name.c_str(),
           joint.state_interfaces.size());
     }
 
@@ -101,6 +100,16 @@ namespace bioscara_hardware_interfaces
           joint.name.c_str(),
           joint.state_interfaces[0].name.c_str(),
           hardware_interface::HW_IF_POSITION);
+      return hardware_interface::CallbackReturn::ERROR;
+    }
+
+    if (joint.state_interfaces[1].name != hardware_interface::HW_IF_VELOCITY)
+    {
+      RCLCPP_FATAL(
+          get_logger(), "Gripper '%s' has '%s' state interface. '%s' expected.",
+          joint.name.c_str(),
+          joint.state_interfaces[0].name.c_str(),
+          hardware_interface::HW_IF_VELOCITY);
       return hardware_interface::CallbackReturn::ERROR;
     }
 
@@ -255,9 +264,19 @@ namespace bioscara_hardware_interfaces
     /* Simply mirror commands to states */
     for (const auto &[name, descr] : joint_state_interfaces_)
     {
+      double v = 0.0;
+      if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
+      {
+        /* Multiply by 2 again to get full width */
+        v = this->last_pos*2;
+      }
+      else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
+      {
+        v = this->vel;
+      }
       try
       {
-        set_state(name, get_command(name));
+        set_state(name, v);
       }
       catch (const std::exception &e)
       {
@@ -272,14 +291,24 @@ namespace bioscara_hardware_interfaces
   }
 
   hardware_interface::return_type BioscaraGripperHardwareInterface::write(
-      const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
+      const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
   {
     for (const auto &[name, descr] : joint_command_interfaces_)
     {
       bioscara_hardware_driver::err_type_t rc = static_cast<bioscara_hardware_driver::err_type_t>(1);
       if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
-        rc = _gripper->setPosition((float)get_command(name));
+        /* Divide by two since mimic joint mirrors the command and hence doubles the opening width */
+        float pos_set = get_command(name)/2;
+        rc = _gripper->setPosition(pos_set);
+
+        if (this->last_pos != std::numeric_limits<double>::quiet_NaN())
+        {
+          this->vel = (pos_set - this->last_pos)/period.seconds();
+        }else{
+          this->vel = 0.0;
+        }
+        this->last_pos = pos_set;
       }
 
       // use != 0 here since 1 for no compatible interface type

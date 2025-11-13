@@ -21,6 +21,7 @@
 #include <set>
 #include <unordered_map>
 #include <memory>
+#include <limits>
 
 
 #include "bioscara_hardware_driver/mGripper.h"
@@ -178,6 +179,9 @@ namespace bioscara_hardware_interfaces
          *
          */
         gripper_config_t _gripper_cfg;
+
+        float last_pos = std::numeric_limits<double>::quiet_NaN();
+        float vel = std::numeric_limits<double>::quiet_NaN();
 
     };
 
