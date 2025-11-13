@@ -11,11 +11,6 @@
  *
  */
 
-#include <UstepperS32.h>
-
-#include <Wire.h>
-#include "joint.h"
-#include "filters.h"
 
 /**
  * @brief Define either joint that is to be flashed
@@ -25,6 +20,11 @@
 #define J4
 #include "configuration.h"
 
+#include <UstepperS32.h>
+#include <Wire.h>
+#include "joint.h"
+#include "filters.h"
+#include "stall.h"
 
 UstepperS32 stepper;
 static Lowpass lp(1, 0.01, 0.1);
@@ -36,7 +36,7 @@ static uint8_t isBusy = 0;
 static uint8_t notEnabled = 1;
 static bool stepperSetup = 0;
 static uint8_t isStallguardEnabled = 0;
-static int stallguardThreshold = 0; 
+static int stallguardThreshold = 0;
 static float q_set, q, qd_set, qd;
 static float maxAccel = MAXACCEL;
 static float maxVel = MAXVEL;
@@ -469,8 +469,8 @@ void setup(void) {
 static float last_pid_err = 0;
 static float pid_err = 0, pid_err_fil = 0;
 
-static int32_t last_SG_err = 0;
-static int32_t SG_err = 0, SG_err_fil = 0;
+static uint16_t last_SG_err = 0;
+static uint16_t SG_err = 0, SG_err_fil = 0;
 
 /**
  * @brief Main loop
@@ -486,30 +486,30 @@ void loop(void) {
 
     /* data0: raw abs(pid-error) */
     Serial.print(pid_err);
-    Serial.print("\t");    
+    Serial.print("\t");
     if (pid_err - last_pid_err > 500) {
       pid_err = last_pid_err;
     }
 
     /* data1: abs(pid-error) spikes removed */
-    Serial.print(pid_err);                     
+    Serial.print(pid_err);
     Serial.print("\t");
 
     /* data2: abs(pid-error) spikes removed LP filtered */
     pid_err_fil = lp.updateState(pid_err);
-    Serial.print(pid_err_fil);                  
+    Serial.print(pid_err_fil);
     Serial.print("\t");
 
     /* data3: raw abs(SG_VALUE) */
-    SG_err = abs(stepper.driver.getStallValue()); // unint16_t?
+    SG_err = abs(stepper.driver.getStallValue());  // unint16_t?
     Serial.print(SG_err);
-    Serial.print("\t");    
+    Serial.print("\t");
     if (SG_err - last_SG_err > 200) {
       SG_err = last_SG_err;
     }
 
     /* data4: abs(SG_VALUE) spikes removed */
-    Serial.print(SG_err);                     
+    Serial.print(SG_err);
     Serial.print("\t");
 
     /* data5: q */
@@ -533,7 +533,7 @@ void loop(void) {
     Serial.print("\t");
 
     /* data10: stall */
-    if (SG_err > stallguardThreshold && last_SG_err > stallguardThreshold) {
+    if (SG_err > stall_threshold(qd_set, stallguardThreshold)) {
       Serial.println(1);
       // isStalled = 1;
       // stepper.stop(HARD);

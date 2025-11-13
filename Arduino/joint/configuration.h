@@ -17,23 +17,39 @@
 #if defined(J1)
 /** Test C documentation. */
 #define ADR 0x11
-#define MAXACCEL 10000
-#define MAXVEL 800
+#define MAXACCEL 0
+#define MAXVEL 0
+#define STALL_WINDOW_B1 500
+#define STALL_WINDOW_B2 2500
+#define STALL_WINDOW_OFFSET 75
+#define STALL_SLOPE 0.00714
 
 #elif defined(J2)
 #define ADR 0x12
-#define MAXACCEL 10000
-#define MAXVEL 800
+#define MAXACCEL 0
+#define MAXVEL 0
+#define STALL_WINDOW_B1 500
+#define STALL_WINDOW_B2 2500
+#define STALL_WINDOW_OFFSET 75
+#define STALL_SLOPE 0.00714
 
 #elif defined(J3)
 #define ADR 0x13
-#define MAXACCEL 10000
-#define MAXVEL 800
+#define MAXACCEL 0
+#define MAXVEL 0
+#define STALL_WINDOW_B1 500
+#define STALL_WINDOW_B2 2500
+#define STALL_WINDOW_OFFSET 75
+#define STALL_SLOPE 0.00714
 
 #elif defined(J4)
 #define ADR 0x14
-#define MAXACCEL 10000
-#define MAXVEL 800
+#define MAXACCEL 0
+#define MAXVEL 0
+#define STALL_WINDOW_B1 500
+#define STALL_WINDOW_B2 2500
+#define STALL_WINDOW_OFFSET 75
+#define STALL_SLOPE 0.00714
 #else
 
 /* Below only defined for documentation */
