@@ -138,13 +138,6 @@ def generate_launch_description():
         condition=IfCondition(gui),
     )
 
-    rqt_joint_trajectory_controller_node = Node(
-        package="rqt_joint_trajectory_controller",
-        executable="rqt_joint_trajectory_controller",
-        # name="rviz2",
-        output="log",
-    )
-
     # uses the controller manager to spawn joint state broadcaster.
     # The joint_state_broadcaster is not actually a controller but is treated as such.
     # it publishes/broadcasts the joint states. 
@@ -192,7 +185,6 @@ def generate_launch_description():
             target_action=joint_state_broadcaster_spawner,
             on_exit=[
             rviz_node,
-            # rqt_joint_trajectory_controller_node,
             ],
         )
     )
