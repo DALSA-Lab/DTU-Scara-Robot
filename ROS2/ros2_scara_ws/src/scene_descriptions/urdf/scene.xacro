@@ -1,8 +1,7 @@
 <?xml version="1.0" ?>
-<robot name="bioscara" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="scene" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:arg name="use_mock_hardware" default="false"/>
-  <!-- <xacro:arg name="prefix" default=""/> Does it make sense to have a prefix for a scene? -->
   <xacro:arg name="arm_description_package" default="bioscara_description" />
   <xacro:arg name="arm_macro_path" default="/urdf/bioscara_arm.xacro" />
   <xacro:arg name="gripper_description_package" default="" />

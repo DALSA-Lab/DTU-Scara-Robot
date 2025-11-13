@@ -2,6 +2,8 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:macro name="bioscara" params="parameters prefix parent *origin">
+    
+    <xacro:include filename="$(find bioscara_description)/urdf/materials.xacro" />
 
     <joint name="${prefix}base_joint" type="fixed">
       <xacro:insert_block name="origin" />
