@@ -18,7 +18,7 @@ j2:
   reduction: -1570.79632679 # -2*pi/0.004
   min: -0.0016
   max: 0.338
-  stall_threshold: 6
+  stall_threshold: 12 # Stall detection unlikely on J2 anyway
   hold_current: 40
   drive_current: 40
   max_acceleration: 0.2
