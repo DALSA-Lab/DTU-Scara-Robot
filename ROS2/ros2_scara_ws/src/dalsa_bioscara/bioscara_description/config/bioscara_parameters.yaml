@@ -3,10 +3,10 @@ j1:
   reduction: 35
   min: -3.04647
   max: 3.04647
-  stall_threshold: 12
+  stall_threshold: 6
   hold_current: 20
   drive_current: 20
-  max_acceleration: 1.57
+  max_acceleration: 2.0
   max_velocity: 1.0
   homing:
     speed: 0.03
@@ -21,8 +21,8 @@ j2:
   stall_threshold: 6
   hold_current: 40
   drive_current: 40
-  max_acceleration: 1.0
-  max_velocity: 0.05
+  max_acceleration: 0.2
+  max_velocity: 0.03
   homing:
     speed: 0.003
     threshold: 50
@@ -36,8 +36,8 @@ j3:
   stall_threshold: 6
   hold_current: 20
   drive_current: 20
-  max_acceleration: 1.0
-  max_velocity: 3.0
+  max_acceleration: 14.0
+  max_velocity: 5.0
   homing:
     speed: 0.05
     threshold: 25
@@ -51,8 +51,8 @@ j4:
   stall_threshold: 6
   hold_current: 20
   drive_current: 20
-  max_acceleration: 1.0
-  max_velocity: 3.0
+  max_acceleration: 30.0
+  max_velocity: 10.0
   homing:
     speed: 0.1
     threshold: 30
