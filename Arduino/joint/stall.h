@@ -21,7 +21,7 @@ float stall_threshold(float qd_rad, float offset){
   /* y = ax + b */
   float a = STALL_SLOPE;
   float b = offset;
-  if((qd_rad >= STALL_WINDOW_B1) && (qd_rad <= STALL_WINDOW_B2)){
+  if((abs(qd_rad) >= STALL_WINDOW_B1) && (abs(qd_rad) <= STALL_WINDOW_B2)){
     b += STALL_WINDOW_OFFSET;
   }
   return a*qd_rad+b;
