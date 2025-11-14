@@ -708,9 +708,9 @@ namespace bioscara_hardware_interface
   {
     joint_config_t cfg = _joint_cfg[name];
 
-    /* Stop the homing. Reset acceleration and perform the postHoming cleanup */
-
+    /* Stop the homing. Reset acceleration and velocity and perform the postHoming cleanup */
     RETURN_ON_ERROR(_joints.at(name)->setMaxAcceleration(cfg.max_acceleration));
+    RETURN_ON_ERROR(_joints.at(name)->setMaxVelocity(cfg.max_velocity));
     _joints.at(name)->stop();
     return _joints.at(name)->postHoming();
   }
