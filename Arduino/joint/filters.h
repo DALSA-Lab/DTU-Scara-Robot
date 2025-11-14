@@ -21,7 +21,9 @@ public:
 
   /**
   * @brief A simple lowpass filter class
-  *
+  * @param gain
+  * @param sampleTime
+  * @param timeconstant
   * 
   */
   Lowpass(float gain = 1, float sampleTime = 0.1, float timeconstant = 1.0) {
@@ -34,6 +36,10 @@ public:
   float updateState(float u) {
     x = (1 - (Ts / tau)) * x + K * (Ts / tau) * u;
     return x;
+  }
+
+  void resetState(void){
+    x = 0.0;
   }
 };
 

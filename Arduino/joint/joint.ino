@@ -17,7 +17,7 @@
  * 
  * Define either J1, J2, J3 or J4 and subsequently include configuration.h 
  */
-#define J4
+#define J1
 #include "configuration.h"
 
 #include <UstepperS32.h>
@@ -27,7 +27,7 @@
 #include "stall.h"
 
 UstepperS32 stepper;
-static Lowpass lp(1, 0.01, 0.1);
+static Lowpass lp(1, 0.01, 0.05);
 
 static uint8_t driveCurrent, holdCurrent;
 static uint8_t notHomed = 1;
@@ -470,11 +470,11 @@ void setup(void) {
 }
 
 
-static float last_pid_err = 0;
+static float last_pid_err = 0, last_pid_err_fil = 0;
 static float pid_err = 0, pid_err_fil = 0;
 
-static uint16_t last_SG_err = 0;
-static uint16_t SG_err = 0, SG_err_fil = 0;
+// static uint16_t last_SG_err = 0;
+// static uint16_t SG_err = 0, SG_err_fil = 0;
 
 /**
  * @brief Main loop
@@ -490,64 +490,69 @@ void loop(void) {
     pid_err = abs(stepper.getPidError());
 
     /* data0: raw abs(pid-error) */
-    Serial.print(pid_err);
-    Serial.print("\t");
+    // Serial.print(pid_err);
+    // Serial.print("\t");
     if (pid_err - last_pid_err > 500) {
       pid_err = last_pid_err;
     }
 
     /* data1: abs(pid-error) spikes removed */
-    Serial.print(pid_err);
-    Serial.print("\t");
+    // Serial.print(pid_err);
+    // Serial.print("\t");
 
     /* data2: abs(pid-error) spikes removed LP filtered */
     pid_err_fil = lp.updateState(pid_err);
-    Serial.print(pid_err_fil);
-    Serial.print("\t");
+    // Serial.print(pid_err_fil);
+    // Serial.print("\t");
 
-    /* data3: raw abs(SG_VALUE) */
-    SG_err = stepper.driver.getStallValue();  // unint16_t?
-    Serial.print(SG_err);
-    Serial.print("\t");
-    if (SG_err - last_SG_err > 200) {
-      SG_err = last_SG_err;
-    }
+    /* data3: raw SG_RESULT */
+    // SG_err = stepper.driver.getStallValue(); 
+    // Serial.print(SG_err);
+    // Serial.print("\t");
+    // if (SG_err - last_SG_err > 200) {
+    //   SG_err = last_SG_err;
+    // }
 
-    /* data4: abs(SG_VALUE) spikes removed */
-    Serial.print(SG_err);
-    Serial.print("\t");
+    /* data4: SG_RESULT spikes removed */
+    // Serial.print(SG_err);
+    // Serial.print("\t");
 
     /* data5: q */
-    Serial.print(q);
-    Serial.print("\t");
+    // Serial.print(q);
+    // Serial.print("\t");
 
     /* data6: q_set */
-    Serial.print(q_set);
-    Serial.print("\t");
+    // Serial.print(q_set);
+    // Serial.print("\t");
 
     /* data7: qd */
-    Serial.print(qd * 6);
-    Serial.print("\t");
+    // Serial.print(qd/9.549296596425384);
+    // Serial.print("\t");
 
     /* data8: qd_set */
-    Serial.print(qd_set * 6);
-    Serial.print("\t");
+    // Serial.print(qd_set/9.549296596425384);
+    // Serial.print("\t");
 
     /* data9: threshold */
-    float threshold = stall_threshold(qd*6, stallguardThreshold);
-    Serial.print(threshold);
-    Serial.print("\t");
+    float threshold = stall_threshold(qd/9.549296596425384, stallguardThreshold);
+    // Serial.print(threshold);
+    // Serial.print("\t");
 
     /* data10: stall */
-    if (SG_err > threshold) {
-      Serial.println(1);
-      // isStalled = 1;
-      // stepper.stop(HARD);
-      // last_pid_err = 0;
+    if (pid_err_fil > threshold) {
+      // Serial.println(1);
+      isStalled = 1;
+      stepper.stop(HARD);
+
+      /* Clear the LP memory */
+      lp.resetState();
+      last_pid_err = 0;
+      pid_err_fil = 0;
+      // last_SG_err = 0;
     } else {
       Serial.println(0);
       last_pid_err = pid_err;
-      last_SG_err = SG_err;
+      // last_SG_err = SG_err;
     }
   }
 
