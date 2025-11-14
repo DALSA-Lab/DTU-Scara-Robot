@@ -184,14 +184,17 @@ void blocking_handler(uint8_t reg) {
         memcpy(&speed, rx_buf + 1, 1);
         memcpy(&sensitivity, rx_buf + 2, 1);
         memcpy(&current, rx_buf + 3, 1);
-
+        
         stepper.stop(SOFT);
 
+        /* Set the maximum velocity to homing speed to
+         ensure it is not 0.0 for succesfull checkOrientation */
+        stepper.setMaxVelocity(speed);
         stepper.checkOrientation(1.0);
 
         stepper.setRPM(dir ? speed : -speed);
         stepper.setCurrent(current);
-
+          
         while (isBusy) {
           float err = stepper.getPidError();
           // Serial.print(abs(err));
@@ -204,9 +207,10 @@ void blocking_handler(uint8_t reg) {
           delay(1);
         }
 
-        /**
-        * Homing has been cancled from ISR (f.x. STOP)
-        */
+        /* reset MaxVelocity to system value */
+        stepper.setMaxVelocity(maxVel);
+
+        /* Homing has been cancled from ISR (f.x. STOP) */
         if (!isBusy) {
           break;
         }
@@ -529,11 +533,12 @@ void loop(void) {
     Serial.print("\t");
 
     /* data9: threshold */
-    Serial.print(stallguardThreshold);
+    float threshold = stall_threshold(qd_set, stallguardThreshold);
+    Serial.print(threshold);
     Serial.print("\t");
 
     /* data10: stall */
-    if (SG_err > stall_threshold(qd_set, stallguardThreshold)) {
+    if (SG_err > threshold) {
       Serial.println(1);
       // isStalled = 1;
       // stepper.stop(HARD);
