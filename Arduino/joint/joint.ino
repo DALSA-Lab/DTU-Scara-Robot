@@ -11,21 +11,24 @@
  *
  */
 
-#include <UstepperS32.h>
-
-#include <Wire.h>
-#include "joint.h"
 
 /**
  * @brief Define either joint that is to be flashed
  * 
  * Define either J1, J2, J3 or J4 and subsequently include configuration.h 
  */
-#define J4
+#define J1
 #include "configuration.h"
 
+#include <UstepperS32.h>
+#include <Wire.h>
+#include "joint.h"
+#include "filters.h"
+#include "stall.h"
 
 UstepperS32 stepper;
+static Lowpass lp(1, 0.01, 0.05);
+
 static uint8_t driveCurrent, holdCurrent;
 static uint8_t notHomed = 1;
 static uint8_t isStalled = 0;
@@ -33,7 +36,7 @@ static uint8_t isBusy = 0;
 static uint8_t notEnabled = 1;
 static bool stepperSetup = 0;
 static uint8_t isStallguardEnabled = 0;
-static int stallguardThreshold = 100;
+static int stallguardThreshold = 0;
 static float q_set, q, qd_set, qd;
 static float maxAccel = MAXACCEL;
 static float maxVel = MAXVEL;
@@ -139,7 +142,7 @@ void blocking_handler(uint8_t reg) {
         memcpy(&holdCurrent, rx_buf + 1, 1);
         if (!stepperSetup) {
           stepper.setup(CLOSEDLOOP, 200);
-          stepper.enableClosedLoop(); // necessary to be able to use PID error
+          stepper.enableClosedLoop();  // necessary to be able to use PID error
           stepperSetup = 1;
           notHomed = 1;
         }
@@ -181,14 +184,17 @@ void blocking_handler(uint8_t reg) {
         memcpy(&speed, rx_buf + 1, 1);
         memcpy(&sensitivity, rx_buf + 2, 1);
         memcpy(&current, rx_buf + 3, 1);
-
+        
         stepper.stop(SOFT);
 
+        /* Set the maximum velocity to homing speed to
+         ensure it is not 0.0 for succesfull checkOrientation */
+        stepper.setMaxVelocity(speed);
         stepper.checkOrientation(1.0);
 
         stepper.setRPM(dir ? speed : -speed);
         stepper.setCurrent(current);
-
+          
         while (isBusy) {
           float err = stepper.getPidError();
           // Serial.print(abs(err));
@@ -201,9 +207,10 @@ void blocking_handler(uint8_t reg) {
           delay(1);
         }
 
-        /**
-        * Homing has been cancled from ISR (f.x. STOP)
-        */
+        /* reset MaxVelocity to system value */
+        stepper.setMaxVelocity(maxVel);
+
+        /* Homing has been cancled from ISR (f.x. STOP) */
         if (!isBusy) {
           break;
         }
@@ -463,39 +470,89 @@ void setup(void) {
 }
 
 
-static float last_err = 0;
-static float err = 0;
+static float last_pid_err = 0, last_pid_err_fil = 0;
+static float pid_err = 0, pid_err_fil = 0;
+
+// static uint16_t last_SG_err = 0;
+// static uint16_t SG_err = 0, SG_err_fil = 0;
+
 /**
  * @brief Main loop
 
  * Executes the following: \n 
- * 1) if isStallguardEnabled: compares stepper.getPidError() with stallguardThreshold and sets isStalled flag. \n 
- * 2) if rx_data_ready: set isBusy flag to indicate device is busy. Invoke blocking_handler. 
+ * 1. if isStallguardEnabled: compares stepper.getPidError() with stallguardThreshold and sets isStalled flag. \n 
+ * 2. if rx_data_ready: set isBusy flag to indicate device is busy. Invoke blocking_handler. 
  * Clear isBusy flag to indicate device is no longer busy \n 
  */
 void loop(void) {
   if (isStallguardEnabled && !isStalled) {
-    err = abs(stepper.getPidError());
-    // Serial.print(err);
+    float qd = stepper.encoder.getRPM();
+    pid_err = abs(stepper.getPidError());
+
+    /* data0: raw abs(pid-error) */
+    // Serial.print(pid_err);
     // Serial.print("\t");
-    // Serial.print(stallguardThreshold);
+    if (pid_err - last_pid_err > 500) {
+      pid_err = last_pid_err;
+    }
+
+    /* data1: abs(pid-error) spikes removed */
+    // Serial.print(pid_err);
     // Serial.print("\t");
+
+    /* data2: abs(pid-error) spikes removed LP filtered */
+    pid_err_fil = lp.updateState(pid_err);
+    // Serial.print(pid_err_fil);
+    // Serial.print("\t");
+
+    /* data3: raw SG_RESULT */
+    // SG_err = stepper.driver.getStallValue(); 
+    // Serial.print(SG_err);
+    // Serial.print("\t");
+    // if (SG_err - last_SG_err > 200) {
+    //   SG_err = last_SG_err;
+    // }
+
+    /* data4: SG_RESULT spikes removed */
+    // Serial.print(SG_err);
+    // Serial.print("\t");
+
+    /* data5: q */
     // Serial.print(q);
     // Serial.print("\t");
+
+    /* data6: q_set */
     // Serial.print(q_set);
     // Serial.print("\t");
-    // Serial.print(qd * 6);
+
+    /* data7: qd */
+    // Serial.print(qd/9.549296596425384);
     // Serial.print("\t");
-    // Serial.print(qd_set * 6);
+
+    /* data8: qd_set */
+    // Serial.print(qd_set/9.549296596425384);
     // Serial.print("\t");
-    if (err > stallguardThreshold && last_err > stallguardThreshold) {
+
+    /* data9: threshold */
+    float threshold = stall_threshold(qd/9.549296596425384, stallguardThreshold);
+    // Serial.print(threshold);
+    // Serial.print("\t");
+
+    /* data10: stall */
+    if (pid_err_fil > threshold) {
       // Serial.println(1);
       isStalled = 1;
       stepper.stop(HARD);
-      last_err = 0;
+
+      /* Clear the LP memory */
+      lp.resetState();
+      last_pid_err = 0;
+      pid_err_fil = 0;
+      // last_SG_err = 0;
     } else {
-      // Serial.println(0);
-      last_err = err;
+      Serial.println(0);
+      last_pid_err = pid_err;
+      // last_SG_err = SG_err;
     }
   }
 
