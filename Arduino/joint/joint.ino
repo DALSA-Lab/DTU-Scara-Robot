@@ -17,7 +17,7 @@
  * 
  * Define either J1, J2, J3 or J4 and subsequently include configuration.h 
  */
-#define J1
+#define J3
 #include "configuration.h"
 
 #include <UstepperS32.h>
@@ -550,7 +550,7 @@ void loop(void) {
       pid_err_fil = 0;
       // last_SG_err = 0;
     } else {
-      Serial.println(0);
+      // Serial.println(0);
       last_pid_err = pid_err;
       // last_SG_err = SG_err;
     }
