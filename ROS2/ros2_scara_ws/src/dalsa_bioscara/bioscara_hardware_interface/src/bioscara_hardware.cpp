@@ -699,7 +699,7 @@ namespace bioscara_hardware_interface
     joint_config_t cfg = _joint_cfg[name];
 
     float speed = velocity > 0.0 ? cfg.homing.speed : -cfg.homing.speed;
-
+    RCLCPP_INFO(get_logger(), "Started homing joint '%s'", name.c_str());
     RETURN_ON_ERROR(_joints.at(name)->setMaxAcceleration(cfg.homing.acceleration));
     return _joints.at(name)->startHoming(speed, cfg.homing.threshold, cfg.homing.current);
   }
@@ -712,6 +712,7 @@ namespace bioscara_hardware_interface
     RETURN_ON_ERROR(_joints.at(name)->setMaxAcceleration(cfg.max_acceleration));
     RETURN_ON_ERROR(_joints.at(name)->setMaxVelocity(cfg.max_velocity));
     _joints.at(name)->stop();
+    RCLCPP_INFO(get_logger(), "Finished homing joint '%s'", name.c_str());
     return _joints.at(name)->postHoming();
   }
 
