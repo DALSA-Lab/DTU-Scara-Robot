@@ -486,6 +486,7 @@ static uint16_t SG_err = 0, SG_err_fil = 0;
  */
 void loop(void) {
   if (isStallguardEnabled && !isStalled) {
+    float qd = stepper.encoder.getRPM();
     pid_err = abs(stepper.getPidError());
 
     /* data0: raw abs(pid-error) */
@@ -505,7 +506,7 @@ void loop(void) {
     Serial.print("\t");
 
     /* data3: raw abs(SG_VALUE) */
-    SG_err = abs(stepper.driver.getStallValue());  // unint16_t?
+    SG_err = stepper.driver.getStallValue();  // unint16_t?
     Serial.print(SG_err);
     Serial.print("\t");
     if (SG_err - last_SG_err > 200) {
@@ -533,7 +534,7 @@ void loop(void) {
     Serial.print("\t");
 
     /* data9: threshold */
-    float threshold = stall_threshold(qd_set, stallguardThreshold);
+    float threshold = stall_threshold(qd*6, stallguardThreshold);
     Serial.print(threshold);
     Serial.print("\t");
 

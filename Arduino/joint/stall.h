@@ -11,12 +11,18 @@
  */
 #include <stdlib.h>
 
-float stall_threshold(float qd_set, float offset){
+  /**
+  * @brief computes the speed adaptive threshold.
+  *
+  * @param qd_rad speed in rad/s. Should be measured speed because set speed
+  * is only available in velocity mode.
+  */
+float stall_threshold(float qd_rad, float offset){
   /* y = ax + b */
   float a = STALL_SLOPE;
   float b = offset;
-  if(qd_set >= STALL_WINDOW_B1 && qd_set <= STALL_WINDOW_B2){
+  if((qd_rad >= STALL_WINDOW_B1) && (qd_rad <= STALL_WINDOW_B2)){
     b += STALL_WINDOW_OFFSET;
   }
-  return a*qd_set+b;
+  return a*qd_rad+b;
 }
