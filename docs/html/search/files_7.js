@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['readme_2emd_0',['readme.md',['../bioscara__bringup_2README_8md.html',1,'(Global Namespace)'],['../bioscara__description_2README_8md.html',1,'(Global Namespace)'],['../README_8md.html',1,'(Global Namespace)']]]
+  ['readme_2emd_0',['readme.md',['../bioscara__bringup_2README_8md.html',1,'(Global Namespace)'],['../bioscara__controllers_2README_8md.html',1,'(Global Namespace)'],['../bioscara__description_2README_8md.html',1,'(Global Namespace)'],['../README_8md.html',1,'(Global Namespace)']]]
 ];

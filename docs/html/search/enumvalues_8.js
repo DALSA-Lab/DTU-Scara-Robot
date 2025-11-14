@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['ping_0',['ping',['../classJoint.html#a8e8dbb90cccefd4f3ee472c6e8c85c18af922c6520e40e336b7130cdb24d388c7',1,'Joint::PING'],['../joint_8h.html#aaf12c41494c327736d4980ffe1184227a3a95ef902bc659901cceef98e0bc8041',1,'PING:&#160;joint.h']]]
+  ['none_0',['NONE',['../classbioscara__hardware__driver_1_1BaseJoint.html#af72eb34484da5e6ecddbe74e2a3cabe4a6bcb5112d3db314d5791f028cd74adb6',1,'bioscara_hardware_driver::BaseJoint']]],
+  ['not_5fenabled_1',['NOT_ENABLED',['../namespacebioscara__hardware__driver.html#afd669880becd2fc4859d33a0f7780231a987ccd915b17c81fb4ed90447146d3ab',1,'bioscara_hardware_driver']]],
+  ['not_5fhomed_2',['NOT_HOMED',['../namespacebioscara__hardware__driver.html#afd669880becd2fc4859d33a0f7780231a8279c150ce308a3cdca3c362fa06a7c8',1,'bioscara_hardware_driver']]],
+  ['not_5finit_3',['NOT_INIT',['../namespacebioscara__hardware__driver.html#afd669880becd2fc4859d33a0f7780231aca0408a962115a6e199dbac349bd3597',1,'bioscara_hardware_driver']]]
 ];

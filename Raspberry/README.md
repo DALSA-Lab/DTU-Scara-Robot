@@ -192,6 +192,44 @@ sudo usermod -a -G realtime $(whoami)
 ```
 | The limits will be applied after you log out and in again.
 
+## Other Dependencies
+The order of managing dependenices is according to [this](https://ros2-quality-assurance.readthedocs.io/en/released/tutorials/dependencies.html) guideline the following:
+1. **rosdep**: Installs missing dependecies specified in the packages via the systems package manager.
+2. **vcstool**: Specify further source code repositoryies in a repository file, vcstool will then retrieve the repository and it can then be built with colcon. 
+3. **other**
+
+### ROS2 dependencies
+To install ROS2 package dependencies navigate to the workspace:
+```bash
+cd ROS2/ros2_scara_ws
+```
+Install all packages that can be resolved through `rosdep` (all packages that have been released to the ROS2 package ecosystem and some debian packages):
+```bash
+rosdep install --from-paths src --ignore-src -y --rosdistro $ROS_DISTRO
+```
+This command will recursively scan every package in the workspace for the `<depend/>` key and install missing packages.
+
+### vcstool
+*vcstool* is common in many ROS2 packages to import dependencies that are not in a ROS or debian repository. from a repository file. 
+
+*vcstool* is specified as a dependency in the *dalsa_bioscara* package and hence should be installed after running *rosdep*
+
+To install, use
+```bash
+sudo apt install python3-vcstool
+```
+
+then to import the dependencies execute:
+```bash
+cd ROS2/ros2_scara_ws
+vcs import --recursive src < req.repos
+```
+This will pull the repositories specified in *req.repos* into the directories also specified in the file.
+
+Then dont forget to build the workspace:
+```bash
+colcon build --symlink-install
+```
 
 ## Development Purposes:
 ### Install [PlotJuggler](https://github.com/facontidavide/PlotJuggler)

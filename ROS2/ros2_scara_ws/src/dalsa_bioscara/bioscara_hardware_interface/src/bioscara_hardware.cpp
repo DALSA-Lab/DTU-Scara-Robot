@@ -16,10 +16,8 @@
 
 #include <chrono>
 #include <cmath>
-#include <iomanip>
 #include <limits>
 #include <memory>
-#include <sstream>
 #include <vector>
 
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
@@ -88,7 +86,7 @@ namespace bioscara_hardware_interface
         return hardware_interface::CallbackReturn::ERROR;
       }
 
-      // expect exactly two state interfaces
+      // expect exactly three state interfaces
       if (joint.state_interfaces.size() != 3)
       {
         RCLCPP_FATAL(
@@ -156,102 +154,17 @@ namespace bioscara_hardware_interface
       if (use_mock_hardware == "true" || use_mock_hardware == "True")
       {
         /* construct the object directly in the map */
-        _joints.emplace(joint.name, std::make_unique<MockJoint>(joint.name));
+        _joints.emplace(joint.name, std::make_unique<bioscara_hardware_driver::MockJoint>(joint.name));
       }
       else
       {
-        _joints.emplace(joint.name, std::make_unique<Joint>(joint.name,
-                                                            cfg.i2c_address,
-                                                            cfg.reduction,
-                                                            cfg.min,
-                                                            cfg.max));
+        _joints.emplace(joint.name, std::make_unique<bioscara_hardware_driver::Joint>(joint.name,
+                                                                                      cfg.i2c_address,
+                                                                                      cfg.reduction,
+                                                                                      cfg.min,
+                                                                                      cfg.max));
       }
     }
-
-    /**
-     * Loop over all GPIOs decribed in the hardware description file, check if they have the home command
-     * and state interface defined.
-     *
-     */
-    // if (info_.gpios.size() != _joints.size())
-    // {
-    //   RCLCPP_FATAL(
-    //       get_logger(), "BioscaraHardwareInterface has '%ld' GPIO components, '%lu' expected. Every joint needs a GPIO interface",
-    //       info_.gpios.size(), _joints.size());
-    //   return hardware_interface::CallbackReturn::ERROR;
-    // }
-
-    // for (const hardware_interface::ComponentInfo &gpio : info_.gpios)
-    // {
-    //   // expect only one command interface
-    //   if (gpio.command_interfaces.size() != 1)
-    //   {
-    //     RCLCPP_FATAL(
-    //         get_logger(), "GPIO '%s' has %zu command interfaces found. 1 expected.",
-    //         gpio.name.c_str(), gpio.command_interfaces.size());
-    //     return hardware_interface::CallbackReturn::ERROR;
-    //   }
-
-    //   // expect the first command interface to be 'home'
-    //   if (gpio.command_interfaces[0].name != bioscara_hardware_interface::HW_IF_HOME)
-    //   {
-    //     RCLCPP_FATAL(
-    //         get_logger(), "GPIO '%s' have %s command interfaces found. '%s' expected.",
-    //         gpio.name.c_str(),
-    //         gpio.command_interfaces[0].name.c_str(),
-    //         bioscara_hardware_interface::HW_IF_HOME);
-    //     return hardware_interface::CallbackReturn::ERROR;
-    //   }
-
-    //   // expect only one state interface
-    //   if (gpio.state_interfaces.size() > 1)
-    //   {
-    //     RCLCPP_FATAL(
-    //         get_logger(), "GPIO '%s' has %zu state interface. 1 expected.", gpio.name.c_str(),
-    //         gpio.state_interfaces.size());
-    //     return hardware_interface::CallbackReturn::ERROR;
-    //   }
-
-    //   // expect state interface to be 'home'
-    //   if (gpio.state_interfaces[0].name != bioscara_hardware_interface::HW_IF_HOME)
-    //   {
-    //     RCLCPP_FATAL(
-    //         get_logger(), "GPIO '%s' have %s state interfaces found. '%s' expected.",
-    //         gpio.name.c_str(), gpio.state_interfaces[0].name.c_str(),
-    //         bioscara_hardware_interface::HW_IF_HOME);
-    //     return hardware_interface::CallbackReturn::ERROR;
-    //   }
-
-    //   // Check that a joint with the same name exists
-    //   if (_joints.find(gpio.name) == _joints.end())
-    //   {
-    //     RCLCPP_FATAL(
-    //         get_logger(), "No matching joint with the name '%s' found. Currently every GPIO needs to match a joint.",
-    //         gpio.name.c_str());
-    //     return hardware_interface::CallbackReturn::ERROR;
-    //   }
-
-    //   /**
-    //    * @todo threshold and current are uint8_t, if a number larger outside 0 < n < 255 is passed as a parameters it will overflow.
-    //    */
-    //   joint_homing_config_t cfg;
-    //   try
-    //   {
-    //     cfg.speed = std::stof(gpio.command_interfaces[0].parameters.at("speed"));
-    //     cfg.threshold = std::stoi(gpio.command_interfaces[0].parameters.at("threshold"));
-    //     cfg.current = std::stoi(gpio.command_interfaces[0].parameters.at("current"));
-    //     cfg.acceleration = std::stof(gpio.command_interfaces[0].parameters.at("acceleration"));
-    //   }
-    //   catch (...)
-    //   {
-    //     RCLCPP_FATAL(
-    //         get_logger(), "GPIO '%s' is missing one of the following parameters in 'home' command_interface: speed, threshold, current, acceleration",
-    //         gpio.name.c_str());
-    //     return hardware_interface::CallbackReturn::ERROR;
-    //   }
-
-    //   _joint_cfg[gpio.name].homing = cfg;
-    // }
     return hardware_interface::CallbackReturn::SUCCESS;
   }
 
@@ -290,22 +203,10 @@ namespace bioscara_hardware_interface
     // Init each joint and test connection to each joint by pinging
     for (auto &[name, joint] : _joints)
     {
-      int rc = joint->init();
-      if (rc < 0)
+      bioscara_hardware_driver::err_type_t rc = joint->init();
+      if (rc != bioscara_hardware_driver::err_type_t::OK)
       {
-        std::string reason = "";
-        switch (rc)
-        {
-        case -1:
-          reason = "Joint added to I2C bus but no ACK received back from the joint when pinged";
-          break;
-        case -2:
-          reason = "I2C error";
-          break;
-
-        default:
-          reason = "Unkown Reason " + std::to_string(rc);
-        }
+        std::string reason = bioscara_hardware_driver::error_to_string(rc);
         RCLCPP_FATAL(
             get_logger(),
             "Failed to connect to joint '%s'. Reason: %s", name.c_str(), reason.c_str());
@@ -345,18 +246,10 @@ namespace bioscara_hardware_interface
      */
     for (auto &[name, joint] : _joints)
     {
-      int rc = joint->deinit();
-      if (rc < 0)
+      bioscara_hardware_driver::err_type_t rc = joint->deinit();
+      if (rc != bioscara_hardware_driver::err_type_t::OK)
       {
-        std::string reason = "";
-        switch (rc)
-        {
-        case -1:
-          reason = "I2C error";
-          break;
-        default:
-          reason = "Unkown Reason " + std::to_string(rc);
-        }
+       std::string reason = bioscara_hardware_driver::error_to_string(rc);
         RCLCPP_FATAL(
             get_logger(),
             "Failed to disconnect from joint '%s'. Reason: %s", name.c_str(), reason.c_str());
@@ -380,21 +273,10 @@ namespace bioscara_hardware_interface
       joint_config_t cfg = _joint_cfg[name];
 
       // enable motor
-      int rc = joint->enable(cfg.drive_current, cfg.hold_current);
-      if (rc < 0)
+      bioscara_hardware_driver::err_type_t rc = joint->enable(cfg.drive_current, cfg.hold_current);
+      if (rc != bioscara_hardware_driver::err_type_t::OK)
       {
-        std::string reason = "";
-        switch (rc)
-        {
-        case -1:
-          reason = "communication error";
-          break;
-        case -3:
-          reason = "motor failed to enable";
-          break;
-        default:
-          reason = "Unkown Reason" + std::to_string(rc);
-        }
+        std::string reason = bioscara_hardware_driver::error_to_string(rc);
         RCLCPP_FATAL(
             get_logger(),
             "Failed to enable joint '%s'. Reason: %s", name.c_str(), reason.c_str());
@@ -403,18 +285,9 @@ namespace bioscara_hardware_interface
 
       // enable stall detection
       rc = joint->enableStallguard(cfg.stall_threshold);
-      if (rc < 0)
+      if (rc != bioscara_hardware_driver::err_type_t::OK)
       {
-        std::string reason = "";
-        switch (rc)
-        {
-        case -1:
-          reason = "communication error";
-          break;
-
-        default:
-          reason = "Unkown Reason " + std::to_string(rc);
-        }
+        std::string reason = bioscara_hardware_driver::error_to_string(rc);
         RCLCPP_FATAL(
             get_logger(),
             "Failed to enable stall protection of joint '%s'. Reason: %s", name.c_str(), reason.c_str());
@@ -423,18 +296,9 @@ namespace bioscara_hardware_interface
 
       // set max acceleration
       rc = joint->setMaxAcceleration(cfg.max_acceleration);
-      if (rc < 0)
+      if (rc != bioscara_hardware_driver::err_type_t::OK)
       {
-        std::string reason = "";
-        switch (rc)
-        {
-        case -1:
-          reason = "communication error";
-          break;
-
-        default:
-          reason = "Unkown Reason " + std::to_string(rc);
-        }
+        std::string reason = bioscara_hardware_driver::error_to_string(rc);
         RCLCPP_FATAL(
             get_logger(),
             "Failed to set maximum acceleration of joint '%s'. Reason: %s", name.c_str(), reason.c_str());
@@ -443,18 +307,9 @@ namespace bioscara_hardware_interface
 
       // set max velocity
       rc = joint->setMaxVelocity(cfg.max_velocity);
-      if (rc < 0)
+      if (rc != bioscara_hardware_driver::err_type_t::OK)
       {
-        std::string reason = "";
-        switch (rc)
-        {
-        case -1:
-          reason = "communication error";
-          break;
-
-        default:
-          reason = "Unkown Reason " + std::to_string(rc);
-        }
+        std::string reason = bioscara_hardware_driver::error_to_string(rc);
         RCLCPP_FATAL(
             get_logger(),
             "Failed to set maximum velocity of joint '%s'. Reason: %s", name.c_str(), reason.c_str());
@@ -509,18 +364,10 @@ namespace bioscara_hardware_interface
      */
     for (auto &[name, joint] : _joints)
     {
-      int rc = joint->disable();
-      if (rc < 0)
+      bioscara_hardware_driver::err_type_t rc = joint->disable();
+      if (rc != bioscara_hardware_driver::err_type_t::OK)
       {
-        std::string reason = "";
-        switch (rc)
-        {
-        case -1:
-          reason = "communication error";
-          break;
-        default:
-          reason = "Unkown Reason " + std::to_string(rc);
-        }
+        std::string reason = bioscara_hardware_driver::error_to_string(rc);
         RCLCPP_FATAL(
             get_logger(),
             "Failed to disable joint '%s'. Reason: %s", name.c_str(), reason.c_str());
@@ -537,7 +384,7 @@ namespace bioscara_hardware_interface
     for (const auto &[name, descr] : joint_state_interfaces_)
     {
       float v;
-      int rc = 1;
+      bioscara_hardware_driver::err_type_t rc = static_cast<bioscara_hardware_driver::err_type_t>(1);
       if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
         rc = _joints.at(descr.prefix_name)->getPosition(v);
@@ -549,7 +396,7 @@ namespace bioscara_hardware_interface
       else if (descr.interface_info.name == bioscara_hardware_interface::HW_IF_HOME)
       {
         /* Reset the return code. All following functions do not return an error code */
-        rc = 0;
+        rc = bioscara_hardware_driver::err_type_t::OK;
 
         /* We can assume that the previous calls to read the joint state interfaces
         gave us the latest flags. Hence we can simply retrieve the HOMED flag by calling isHomed().
@@ -559,7 +406,7 @@ namespace bioscara_hardware_interface
         /* If the homing has been activated (through the command interface) the device signals BUSY
         as long as it is still homing. If the BUSY flag is reset while the current command is still HOME
         we can assume the homing has finished. Then stop the homing. */
-        if (_joints.at(descr.prefix_name)->getCurrentBCmd() == Joint::HOME &&
+        if (_joints.at(descr.prefix_name)->getCurrentBCmd() == bioscara_hardware_driver::Joint::HOME &&
             !_joints.at(descr.prefix_name)->isBusy())
         {
           stop_homing(descr.prefix_name);
@@ -568,24 +415,10 @@ namespace bioscara_hardware_interface
           set_command(name, 0.0);
         }
       }
-      // use != 0 here since 1 for no compatible interface type
-      if (rc != 0)
+
+      if (rc != bioscara_hardware_driver::err_type_t::OK)
       {
-        std::string reason = "";
-        switch (rc)
-        {
-        case 1:
-          reason = "no compatible command to read " + descr.interface_info.name;
-          break;
-        case -1:
-          reason = "communication error";
-          break;
-        case -2:
-          reason = "joint not homed";
-          break;
-        default:
-          reason = "Unkown Reason " + std::to_string(rc);
-        }
+        std::string reason = bioscara_hardware_driver::error_to_string(rc);
         RCLCPP_FATAL(
             get_logger(),
             "Failed to read %s of joint '%s'. Reason: %s", descr.interface_info.name.c_str(), name.c_str(), reason.c_str());
@@ -597,7 +430,7 @@ namespace bioscara_hardware_interface
     // for (const auto &[name, descr] : gpio_state_interfaces_)
     // {
     //   float v;
-    //   int rc = 1;
+    //   bioscara_hardware_driver::err_type_t rc = 1;
 
     //   if (descr.interface_info.name == bioscara_hardware_interface::HW_IF_HOME)
     //   {
@@ -612,7 +445,7 @@ namespace bioscara_hardware_interface
     //     /* If the homing has been activated (through the command interface) the device signals BUSY
     //     as long as it is still homing. If the BUSY flag is reset while the current command is still HOME
     //     we can assume the homing has finished. Then stop the homing. */
-    //     if (_joints.at(descr.prefix_name)->getCurrentBCmd() == Joint::HOME &&
+    //     if (_joints.at(descr.prefix_name)->getCurrentBCmd() == bioscara_hardware_driver::Joint::HOME &&
     //         !_joints.at(descr.prefix_name)->isBusy())
     //     {
     //       stop_homing(descr.prefix_name);
@@ -661,7 +494,7 @@ namespace bioscara_hardware_interface
       for (std::string interface : interfaces)
       {
         std::string CIF_name = name + "/" + interface;
-        int rc = 1;
+        bioscara_hardware_driver::err_type_t rc = static_cast<bioscara_hardware_driver::err_type_t>(1);
         if (interface == hardware_interface::HW_IF_POSITION)
         {
           rc = _joints.at(name)->setPosition((float)get_command(CIF_name));
@@ -672,24 +505,24 @@ namespace bioscara_hardware_interface
         }
         else if (interface == bioscara_hardware_interface::HW_IF_HOME)
         {
-          rc = 0;
+          rc = bioscara_hardware_driver::err_type_t::OK;
 
           float velocity = get_command(CIF_name);
-          Joint::stp_reg_t current_cmd = _joints.at(name)->getCurrentBCmd();
+          bioscara_hardware_driver::Joint::stp_reg_t current_cmd = _joints.at(name)->getCurrentBCmd();
 
           /* If the joint is currently executing a homing call and the velocity is set to 0.0,
           stop the homing. This indicates that the homing should be aborted. */
           if (velocity == 0.0)
           {
-            if (current_cmd == Joint::HOME)
+            if (current_cmd == bioscara_hardware_driver::Joint::HOME)
             {
               rc = stop_homing(name);
 
               /* In this case, if the homing is manually stopped,
               we expect stop_homing() to return -2 (not homed). Hence this is not an error. */
-              if (rc == -2)
+              if (rc == bioscara_hardware_driver::err_type_t::NOT_HOMED)
               {
-                rc = 0;
+                rc = bioscara_hardware_driver::err_type_t::OK;
               }
             }
           }
@@ -698,43 +531,20 @@ namespace bioscara_hardware_interface
           most likely the homing itself from a previous call, start the homing sequence. */
           else
           {
-            if (current_cmd == Joint::NONE)
+            if (current_cmd == bioscara_hardware_driver::Joint::NONE)
             {
               rc = start_homing(name, velocity);
             }
-            else if (current_cmd != Joint::HOME)
+            else if (current_cmd != bioscara_hardware_driver::Joint::HOME)
             {
-              rc = -109;
+              rc = bioscara_hardware_driver::err_type_t::INCORRECT_STATE;
             }
           }
         }
         // use != 0 here since 1 for no compatible interface type
-        if (rc != 0)
+        if (rc != bioscara_hardware_driver::err_type_t::OK )
         {
-          std::string reason = "";
-          switch (rc)
-          {
-          case 1:
-            reason = "no compatible command to read " + interface;
-            break;
-          case -1:
-            reason = "communication error";
-            break;
-          case -2:
-            reason = "joint not homed, can not set " + interface;
-            break;
-          case -3:
-            reason = "joint not enabled, can not set " + interface;
-            break;
-          case -4:
-            reason = "joint stalled, can not set " + interface;
-            break;
-          case -109:
-            reason = "joint busy processing another blocking command";
-            break;
-          default:
-            reason = "Unkown Reason " + std::to_string(rc);
-          }
+          std::string reason = bioscara_hardware_driver::error_to_string(rc);
           RCLCPP_FATAL(
               get_logger(),
               "Failed to set %s of joint '%s'. Reason: %s", CIF_name.c_str(), name.c_str(), reason.c_str());
@@ -765,7 +575,7 @@ namespace bioscara_hardware_interface
 
       /* If the interface that is to be stopped is the homing interface, check that no current homing command is active */
       if (interface == bioscara_hardware_interface::HW_IF_HOME &&
-          _joints.at(joint)->getCurrentBCmd() == Joint::HOME)
+          _joints.at(joint)->getCurrentBCmd() == bioscara_hardware_driver::Joint::HOME)
       {
         RCLCPP_FATAL(
             get_logger(),
@@ -884,29 +694,23 @@ namespace bioscara_hardware_interface
     return CallbackReturn::ERROR;
   }
 
-  int BioscaraHardwareInterface::start_homing(const std::string name, float velocity)
+  bioscara_hardware_driver::err_type_t BioscaraHardwareInterface::start_homing(const std::string name, float velocity)
   {
     joint_config_t cfg = _joint_cfg[name];
 
     float speed = velocity > 0.0 ? cfg.homing.speed : -cfg.homing.speed;
-    int rc = _joints.at(name)->setMaxAcceleration(cfg.homing.acceleration);
-    if (rc < 0)
-    {
-      return rc;
-    }
+
+    RETURN_ON_ERROR(_joints.at(name)->setMaxAcceleration(cfg.homing.acceleration));
     return _joints.at(name)->startHoming(speed, cfg.homing.threshold, cfg.homing.current);
   }
 
-  int BioscaraHardwareInterface::stop_homing(const std::string name)
+  bioscara_hardware_driver::err_type_t BioscaraHardwareInterface::stop_homing(const std::string name)
   {
     joint_config_t cfg = _joint_cfg[name];
 
     /* Stop the homing. Reset acceleration and perform the postHoming cleanup */
-    int rc = _joints.at(name)->setMaxAcceleration(cfg.max_acceleration);
-    if (rc < 0)
-    {
-      return rc;
-    }
+
+    RETURN_ON_ERROR(_joints.at(name)->setMaxAcceleration(cfg.max_acceleration));
     _joints.at(name)->stop();
     return _joints.at(name)->postHoming();
   }

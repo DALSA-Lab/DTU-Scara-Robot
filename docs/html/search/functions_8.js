@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['joint_0',['Joint',['../classJoint.html#ac8a3a9c4dd94acb930d36441b2468a9b',1,'Joint']]]
+  ['joint_0',['Joint',['../classbioscara__hardware__driver_1_1Joint.html#a53aebede4afe3dabf74779cddb036a07',1,'bioscara_hardware_driver::Joint']]]
 ];

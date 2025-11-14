@@ -21,7 +21,14 @@ find_library(LGPIO_LIBRARY lgpio)
 add_library(
   ${PROJECT_NAME} 
   SHARED 
-  src/uI2C.cpp src/mJoint.cpp src/mMockJoint.cpp src/mBaseJoint.cpp src/mGripper.cpp
+  src/uI2C.cpp 
+  src/uErr.cpp 
+  src/mJoint.cpp 
+  src/mMockJoint.cpp 
+  src/mBaseJoint.cpp 
+  src/mBaseGripper.cpp
+  src/mMockGripper.cpp
+  src/mGripper.cpp
 )
 
 target_include_directories(
@@ -49,7 +56,7 @@ set(RCLCPP_LOCAL_BINARY_NAME ${PROJECT_NAME}_node)
 ## add source files to be compiled for the executable
 add_executable(
   ${RCLCPP_LOCAL_BINARY_NAME} 
-  src/joint_comm_node.cpp# src/uI2C.cpp src/mJoint.cpp src/mJointCom.cpp src/mGripper.cpp
+  src/joint_comm_node.cpp
 )
 
 ## also link the executable to the library created in this package

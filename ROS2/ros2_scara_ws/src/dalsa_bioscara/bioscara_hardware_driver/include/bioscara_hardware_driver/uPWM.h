@@ -39,7 +39,7 @@ public:
      * \param frequency The PWM frequency
      * \param duty_cycle The initial duty cycle of the PWM (default 0)
      * \param chip The chip number (for RPI5 it's 2)
-     * \param return >0 on success and -1 if an error has happened.
+     * \return >0 on success and -1 if an error has happened.
      **/
     int start(int channel, int frequency, float duty_cycle = 0, int chip = 2)
     {
@@ -78,9 +78,9 @@ public:
     }
 
     /**
-     * Sets the duty cycle.
+     * Sets the duty cycle in percent 0 - 100.
      * \param v The duty cycle in percent.
-     * \param return >0 on success and -1 after an error.
+     * \return >0 on success and -1 after an error.
      **/
     inline int setDutyCycle(float v) const
     {

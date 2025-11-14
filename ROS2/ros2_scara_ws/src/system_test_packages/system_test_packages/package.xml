@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>system_test_packages</name>
+  <version>0.0.0</version>
+  <description>Metapackage system test packages</description>
+
+  <maintainer email="s.storz01@gmail.com">Sebastian Storz</maintainer>
+
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>max_accel_test</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

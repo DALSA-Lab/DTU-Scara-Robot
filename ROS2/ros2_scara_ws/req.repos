@@ -1,0 +1,5 @@
+repositories:
+  dalsa_bioscara/bioscara_controllers/single_trigger_controller:
+    type: git
+    url: https://github.com/DALSA-Lab/ros2_control-single_trigger_controller.git
+    version: main
