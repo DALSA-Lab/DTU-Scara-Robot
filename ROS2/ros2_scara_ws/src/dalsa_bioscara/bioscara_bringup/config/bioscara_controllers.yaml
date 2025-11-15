@@ -1,11 +1,6 @@
 controller_manager:
   ros__parameters:
-    # joint_state_broadcaster is treated as a 'controller', needs to be provided.
-    joint_state_broadcaster:
-      type: joint_state_broadcaster/JointStateBroadcaster
-    
-    # I need to specify the type here otherwise the following error message is thrown on controller activation:
-    #  "The 'type' param was not defined for 'velocity_joint_trajectory_controller'"
+       
     velocity_joint_trajectory_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
@@ -16,18 +11,8 @@ controller_manager:
       type: single_trigger_controller/SingleTriggerController
     
 
-    update_rate: 50
-
-    # hardware_components_initial_state:
-    #   inactive:
-    #     - "bioscara"
-    
-    defaults:
-      allow_controller_activation_with_inactive_hardware: false
-
 position_joint_trajectory_controller:
   ros__parameters:
-    type: joint_trajectory_controller/JointTrajectoryController
     joints:
       - j1
       - j2
@@ -47,7 +32,6 @@ position_joint_trajectory_controller:
     
 velocity_joint_trajectory_controller:
   ros__parameters:
-    type: joint_trajectory_controller/JointTrajectoryController
     joints:
       - j1
       - j2
@@ -94,7 +78,6 @@ velocity_joint_trajectory_controller:
       
 homing_controller:
   ros__parameters:
-    type: single_trigger_controller/SingleTriggerController
     joints:
       - j1
       - j2

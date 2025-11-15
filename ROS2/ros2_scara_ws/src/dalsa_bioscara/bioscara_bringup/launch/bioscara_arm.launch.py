@@ -30,6 +30,13 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
+            "controller_manager_file",
+            default_value="bioscara_controller_manager.yaml",
+            description="YAML file with the controller manager configuration.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
             "arm_description_package",
             default_value="bioscara_description",
             description='Package that holds the robot arm description.',
@@ -78,6 +85,7 @@ def generate_launch_description():
     # Initialize Arguments
     runtime_config_package = "bioscara_bringup"
     controllers_file = LaunchConfiguration("controllers_file")
+    controller_manager_file = LaunchConfiguration("controller_manager_file")
     arm_description_package = LaunchConfiguration("arm_description_package")
     arm_macro_path = LaunchConfiguration("arm_macro_path")
     prefix = LaunchConfiguration("prefix")
@@ -110,6 +118,9 @@ def generate_launch_description():
     robot_controllers = PathJoinSubstitution(
         [FindPackageShare(runtime_config_package), "config", controllers_file]
     )
+    controller_manager_file = PathJoinSubstitution(
+        [FindPackageShare(runtime_config_package), "config", controller_manager_file]
+    )
     rviz_config_file = PathJoinSubstitution(
         [FindPackageShare(arm_description_package), "rviz", "display.rviz"]
     )
@@ -117,11 +128,13 @@ def generate_launch_description():
     # Start the ros2_control controller manager node that loads the controller(s) (JTC in my case)
     # and on their request request resources from the resource manager to interact with the hardware
     # The controller manager receives the robot description and controler configuration file as parameters.
+    # First load the controller managers file, then the controllers file. The controller managers configuration
+    # may be overridden by added controllers. 
     control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
         output="both",
-        parameters=[robot_description, robot_controllers],
+        parameters=[robot_description, controller_manager_file, robot_controllers],
         # prefix=['gdbserver localhost:3000']
     )
 
