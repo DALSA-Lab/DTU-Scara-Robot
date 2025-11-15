@@ -1,18 +1,11 @@
 controller_manager:
   ros__parameters:
-    # joint_state_broadcaster is treated as a 'controller', needs to be provided.
-    joint_state_broadcaster:
-      type: joint_state_broadcaster/JointStateBroadcaster
-    
+
     gripper_controller:
       type: parallel_gripper_action_controller/GripperActionController
     
-
-    update_rate: 50
-      
 gripper_controller:
   ros__parameters:
-    type: parallel_gripper_action_controller/GripperActionController
     
     joint: gripper
     

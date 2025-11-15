@@ -30,6 +30,13 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
+            "controller_manager_file",
+            default_value="bioscara_gripper_controller_manager.yaml",
+            description="YAML file with the controller manager configuration.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
             "gripper_description_package",
             default_value="bioscara_gripper_descriptions",
             description='Package that holds the robot gripper description.',
@@ -77,6 +84,7 @@ def generate_launch_description():
     # Initialize Arguments
     runtime_config_package = "bioscara_gripper_bringup"
     controllers_file = LaunchConfiguration("controllers_file")
+    controller_manager_file = LaunchConfiguration("controller_manager_file")
     gripper_description_package = LaunchConfiguration("gripper_description_package")
     gripper_macro_path = LaunchConfiguration("gripper_macro_path")
     prefix = LaunchConfiguration("prefix")
@@ -109,16 +117,21 @@ def generate_launch_description():
     robot_controllers = PathJoinSubstitution(
         [FindPackageShare(runtime_config_package), "config", controllers_file]
     )
+    controller_manager_file = PathJoinSubstitution(
+        [FindPackageShare(runtime_config_package), "config", controller_manager_file]
+    )
     rviz_config_file = PathJoinSubstitution(
         [FindPackageShare(gripper_description_package), "rviz", "display.rviz"]
     )
 
     # Start the ros2_control controller manager node that loads the controller(s)
+    # First load the controller managers file, then the controllers file. The controller managers configuration
+    # may be overridden by added controllers. 
     control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
         output="both",
-        parameters=[robot_description, robot_controllers],
+        parameters=[robot_description, controller_manager_file, robot_controllers],
         # prefix=['gdbserver localhost:3000']
     )
 
