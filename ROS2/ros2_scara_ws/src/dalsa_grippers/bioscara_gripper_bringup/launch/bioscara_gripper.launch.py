@@ -44,8 +44,8 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "gripper_macro_path",
-            default_value="/urdf/bioscara_gripper_128.xacro",
+            "gripper_macro",
+            default_value="bioscara_gripper_128.xacro",
             description="URDF/XACRO description file with the robot.",
         )
     )
@@ -86,7 +86,7 @@ def generate_launch_description():
     controllers_file = LaunchConfiguration("controllers_file")
     controller_manager_file = LaunchConfiguration("controller_manager_file")
     gripper_description_package = LaunchConfiguration("gripper_description_package")
-    gripper_macro_path = LaunchConfiguration("gripper_macro_path")
+    gripper_macro = LaunchConfiguration("gripper_macro")
     prefix = LaunchConfiguration("prefix")
     use_mock_hardware = LaunchConfiguration("use_mock_hardware")
     robot_controller = LaunchConfiguration("robot_controller")
@@ -107,8 +107,8 @@ def generate_launch_description():
             "use_mock_hardware:=",
             use_mock_hardware,
             " ",
-            "gripper_macro_path:=",
-            gripper_macro_path,
+            "gripper_macro:=",
+            gripper_macro,
         ]
     )
 

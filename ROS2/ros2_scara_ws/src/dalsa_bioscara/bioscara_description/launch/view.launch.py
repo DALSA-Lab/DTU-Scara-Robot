@@ -28,8 +28,8 @@ def generate_launch_description():
     
     declared_arguments.append(
         DeclareLaunchArgument(
-            "arm_macro_path",
-            default_value='"/urdf/bioscara_arm.xacro"',
+            "arm_macro",
+            default_value="bioscara_arm.xacro",
             description="Path inside description package of the macro that holds the load_arm macro.",
         )
     )
@@ -51,7 +51,7 @@ def generate_launch_description():
 
     # Initialize Arguments
     arm_description_package = "bioscara_description"
-    arm_macro_path = LaunchConfiguration("arm_macro_path")
+    arm_macro = LaunchConfiguration("arm_macro")
     prefix = LaunchConfiguration("prefix")
     use_mock_hardware = LaunchConfiguration("use_mock_hardware")
     gui = LaunchConfiguration("gui")
@@ -62,7 +62,7 @@ def generate_launch_description():
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare(arm_description_package), "urdf/scene.xacro"]
+                [FindPackageShare(arm_description_package), "urdf", "scene.xacro"]
             ),
             " ",
             "prefix:=",
@@ -74,8 +74,8 @@ def generate_launch_description():
             "arm_description_package:=",
             arm_description_package,
             " ",
-            "arm_macro_path:=",
-            arm_macro_path,
+            "arm_macro:=",
+            arm_macro,
         ]
     )
 

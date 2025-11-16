@@ -3,9 +3,9 @@
 
   <xacro:arg name="use_mock_hardware" default="false"/>
   <xacro:arg name="arm_description_package" default="bioscara_description" />
-  <xacro:arg name="arm_macro_path" default="/urdf/bioscara_arm.xacro" />
+  <xacro:arg name="arm_macro" default="bioscara_arm.xacro" />
   <xacro:arg name="gripper_description_package" default="" />
-  <xacro:arg name="gripper_macro_path" default="/urdf/bioscara_gripper_128.xacro" />
+  <xacro:arg name="gripper_macro" default="bioscara_gripper_128.xacro" />
 
 
   <xacro:include filename="$(find scene_descriptions)/urdf/robot.xacro" />
@@ -19,9 +19,9 @@
     prefix="" 
     use_mock_hardware="$(arg use_mock_hardware)"
     arm_description_package="$(arg arm_description_package)"
-    arm_macro_path="$(arg arm_macro_path)"
+    arm_macro="$(arg arm_macro)"
     gripper_description_package="$(arg gripper_description_package)"
-    gripper_macro_path="$(arg gripper_macro_path)">
+    gripper_macro="$(arg gripper_macro)">
     <origin xyz="0 0 0" rpy="0 0 0" />
   </xacro:load_robot>
 

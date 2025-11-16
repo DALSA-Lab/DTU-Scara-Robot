@@ -34,8 +34,8 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "arm_macro_path",
-            default_value='"/urdf/bioscara_arm.xacro"',
+            "arm_macro",
+            default_value="bioscara_arm.xacro",
             description="Path inside description package of the macro that holds the load_arm macro.",
         )
     )
@@ -48,8 +48,8 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "gripper_macro_path",
-            default_value='"/urdf/bioscara_gripper_128.xacro"',
+            "gripper_macro",
+            default_value="bioscara_gripper_128.xacro",
             description="Path inside description package of the macro that holds the load_gripper macro.",
         )
     )
@@ -71,9 +71,9 @@ def generate_launch_description():
 
     # Initialize Arguments
     arm_description_package = LaunchConfiguration("arm_description_package")
-    arm_macro_path = LaunchConfiguration("arm_macro_path")
+    arm_macro = LaunchConfiguration("arm_macro")
     gripper_description_package = LaunchConfiguration("gripper_description_package")
-    gripper_macro_path = LaunchConfiguration("gripper_macro_path")
+    gripper_macro = LaunchConfiguration("gripper_macro")
     prefix = LaunchConfiguration("prefix")
     use_mock_hardware = LaunchConfiguration("use_mock_hardware")
     gui = LaunchConfiguration("gui")
@@ -85,7 +85,7 @@ def generate_launch_description():
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare(xacro_file), "urdf/scene.xacro"]
+                [FindPackageShare(xacro_file), "urdf", "scene.xacro"]
             ),
             " ",
             "prefix:=",
@@ -97,14 +97,14 @@ def generate_launch_description():
             "arm_description_package:=",
             arm_description_package,
             " ",
-            "arm_macro_path:=",
-            arm_macro_path,
+            "arm_macro:=",
+            arm_macro,
             " ",
             "gripper_description_package:=",
             gripper_description_package,
             " ",
-            "gripper_macro_path:=",
-            gripper_macro_path,
+            "gripper_macro:=",
+            gripper_macro,
         ]
     )
 

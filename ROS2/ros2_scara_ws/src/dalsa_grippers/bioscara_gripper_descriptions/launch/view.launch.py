@@ -28,8 +28,8 @@ def generate_launch_description():
     
     declared_arguments.append(
         DeclareLaunchArgument(
-            "gripper_macro_path",
-            default_value='"/urdf/bioscara_gripper_128.xacro"',
+            "gripper_macro",
+            default_value="bioscara_gripper_128.xacro",
             description="Path inside description package of the macro that holds the load_gripper macro.",
         )
     )
@@ -51,7 +51,7 @@ def generate_launch_description():
 
     # Initialize Arguments
     gripper_description_package = "bioscara_gripper_descriptions"
-    gripper_macro_path = LaunchConfiguration("gripper_macro_path")
+    gripper_macro = LaunchConfiguration("gripper_macro")
     prefix = LaunchConfiguration("prefix")
     use_mock_hardware = LaunchConfiguration("use_mock_hardware")
     gui = LaunchConfiguration("gui")
@@ -62,7 +62,7 @@ def generate_launch_description():
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare(gripper_description_package), "urdf/scene.xacro"]
+                [FindPackageShare(gripper_description_package), "urdf", "scene.xacro"]
             ),
             " ",
             "prefix:=",
@@ -74,8 +74,8 @@ def generate_launch_description():
             "gripper_description_package:=",
             gripper_description_package,
             " ",
-            "gripper_macro_path:=",
-            gripper_macro_path,
+            "gripper_macro:=",
+            gripper_macro,
         ]
     )
 

@@ -3,15 +3,15 @@
 
   <xacro:arg name="use_mock_hardware" default="false"/>
   <xacro:arg name="prefix" default=""/>
-  <xacro:arg name="arm_macro_path" default="/urdf/bioscara_arm.xacro" />
+  <xacro:arg name="arm_macro" default="bioscara_arm.xacro" />
 
   <xacro:property name="arm_description_package" value="$(arg arm_description_package)"/>
-  <xacro:property name="arm_macro_path" value="$(arg arm_macro_path)"/>
+  <xacro:property name="arm_macro" value="$(arg arm_macro)"/>
 
   <!-- Used for fixing robot -->
   <link name="world"/>
 
-  <xacro:include filename="$(find bioscara_description)${arm_macro_path}"/>
+  <xacro:include filename="$(find bioscara_description)/urdf/${arm_macro}"/>
   <xacro:load_arm
     parent="world"
     prefix="$(arg prefix)"

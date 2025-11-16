@@ -44,8 +44,8 @@ def generate_launch_description():
     )
     declared_arguments.append(
         DeclareLaunchArgument(
-            "arm_macro_path",
-            default_value="/urdf/bioscara_arm.xacro",
+            "arm_macro",
+            default_value="bioscara_arm.xacro",
             description="URDF/XACRO description file with the robot.",
         )
     )
@@ -87,7 +87,7 @@ def generate_launch_description():
     controllers_file = LaunchConfiguration("controllers_file")
     controller_manager_file = LaunchConfiguration("controller_manager_file")
     arm_description_package = LaunchConfiguration("arm_description_package")
-    arm_macro_path = LaunchConfiguration("arm_macro_path")
+    arm_macro = LaunchConfiguration("arm_macro")
     prefix = LaunchConfiguration("prefix")
     use_mock_hardware = LaunchConfiguration("use_mock_hardware")
     robot_controller = LaunchConfiguration("robot_controller")
@@ -108,8 +108,8 @@ def generate_launch_description():
             "use_mock_hardware:=",
             use_mock_hardware,
             " ",
-            "arm_macro_path:=",
-            arm_macro_path,
+            "arm_macro:=",
+            arm_macro,
         ]
     )
 

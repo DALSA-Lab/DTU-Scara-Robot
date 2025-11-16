@@ -7,12 +7,12 @@
     use_mock_hardware
     prefix
     arm_description_package
-    arm_macro_path
+    arm_macro
     gripper_description_package
-    gripper_macro_path">
+    gripper_macro">
 
     <!-- Include and load arm macro files -->
-    <xacro:include filename="$(find ${arm_description_package})${arm_macro_path}"/>
+    <xacro:include filename="$(find ${arm_description_package})/urdf/${arm_macro}"/>
 
     <xacro:load_arm 
       parent="${parent}" 
@@ -34,7 +34,7 @@
 
     <!-- Include and load the gripper if defined -->
     <xacro:unless value="${not gripper_description_package}">
-      <xacro:include filename="$(find ${gripper_description_package})${gripper_macro_path}"/>
+      <xacro:include filename="$(find ${gripper_description_package})/urdf/${gripper_macro}"/>
       <xacro:load_gripper
         parent="${prefix}tool_flange"
         prefix="${prefix}"
