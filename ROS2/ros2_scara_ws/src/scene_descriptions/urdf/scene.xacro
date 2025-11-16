@@ -2,7 +2,7 @@
 <robot name="scene" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:arg name="use_mock_hardware" default="false"/>
-  <xacro:arg name="arm_description_package" default="bioscara_description" />
+  <xacro:arg name="arm_description_package" default="bioscara_arm_description" />
   <xacro:arg name="arm_macro" default="bioscara_arm.xacro" />
   <xacro:arg name="gripper_description_package" default="" />
   <xacro:arg name="gripper_macro" default="bioscara_gripper_128.xacro" />

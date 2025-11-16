@@ -1,15 +1,16 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>gripper_manual_control</name>
+  <name>bioscara_arm_controllers</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>Meta package for cutoms bioscara controllers</description>
   <maintainer email="s.storz01@gmail.com">Sebastian Storz</maintainer>
-  <license>TODO: License declaration</license>
+  <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>bioscara_gripper_hardware_driver</depend>
+  <depend>single_trigger_controller</depend>
+
 
   <export>
     <build_type>ament_cmake</build_type>

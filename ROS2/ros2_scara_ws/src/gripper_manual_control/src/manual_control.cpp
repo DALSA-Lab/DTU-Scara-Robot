@@ -2,11 +2,11 @@
 #include <unistd.h>
 #include <iostream>
 #include <limits>
-#include "bioscara_hardware_driver/mGripper.h"
+#include "bioscara_gripper_hardware_driver/mGripper.h"
 #include "manual_control.h"
 
 using namespace std;
-using namespace bioscara_hardware_driver;
+using namespace bioscara_hardware_drivers;
 
 Gripper _Gripper(1, 0, 0, 100);
 

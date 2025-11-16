@@ -10,11 +10,11 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <exec_depend>bioscara_bringup</exec_depend>
-  <exec_depend>bioscara_controllers</exec_depend>
-  <exec_depend>bioscara_description</exec_depend>
-  <exec_depend>bioscara_hardware_driver</exec_depend>
-  <exec_depend>bioscara_hardware_interfaces</exec_depend>
+  <exec_depend>bioscara_arm_bringup</exec_depend>
+  <exec_depend>bioscara_arm_controllers</exec_depend>
+  <exec_depend>bioscara_arm_description</exec_depend>
+  <exec_depend>bioscara_arm_hardware_driver</exec_depend>
+  <exec_depend>bioscara_arm_hardware_interface</exec_depend>
   <depend>python3-vcstool</depend>
 
   <export>

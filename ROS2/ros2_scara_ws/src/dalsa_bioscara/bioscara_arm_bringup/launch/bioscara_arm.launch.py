@@ -23,9 +23,54 @@ def generate_launch_description():
 
     declared_arguments.append(
         DeclareLaunchArgument(
+            "controllers_file",
+            default_value="bioscara_arm_controllers.yaml",
+            description="YAML file with the controllers configuration.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "controller_manager_file",
+            default_value="bioscara_controller_manager.yaml",
+            description="YAML file with the controller manager configuration.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "arm_description_package",
+            default_value="bioscara_arm_description",
+            description='Package that holds the robot arm description.',
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "arm_macro",
+            default_value="bioscara_arm.xacro",
+            description="URDF/XACRO description file with the robot.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "prefix",
+            default_value='""',
+            description="Prefix of the joint names, useful for \
+        multi-robot setup. If changed than also joint names in the controllers' configuration \
+        have to be updated.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
             "use_mock_hardware",
             default_value="false",
             description="Start robot with fake hardware mirroring command to its states.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "robot_controller",
+            default_value="velocity_joint_trajectory_controller",
+            choices=["velocity_joint_trajectory_controller", "position_joint_trajectory_controller"],
+            description="Robot controller to start.",
         )
     )
     declared_arguments.append(
@@ -38,31 +83,23 @@ def generate_launch_description():
     
 
     # Initialize Arguments
-
-    # Use the arms controller manager parameters (for now)
-    controller_manager_package = "bioscara_arm_bringup"
-    controller_manager_file = "bioscara_controller_manager.yaml"
-    arm_controller_package = "bioscara_arm_bringup"
-    arm_controller_file = "bioscara_arm_controllers.yaml"
-    gripper_controller_package = "bioscara_gripper_bringup"
-    gripper_controller_file = "bioscara_gripper_controllers.yaml"
-    scene_description_package = "scene_descriptions"
-    scene_macro = "scene.xacro"
-    arm_description_package = "bioscara_arm_description"
-    arm_macro = "bioscara_arm.xacro"
-    gripper_description_package = "bioscara_gripper_descriptions"
-    gripper_macro = "bioscara_gripper_128.xacro"
-    prefix = ""
+    runtime_config_package = "bioscara_arm_bringup"
+    controllers_file = LaunchConfiguration("controllers_file")
+    controller_manager_file = LaunchConfiguration("controller_manager_file")
+    arm_description_package = LaunchConfiguration("arm_description_package")
+    arm_macro = LaunchConfiguration("arm_macro")
+    prefix = LaunchConfiguration("prefix")
     use_mock_hardware = LaunchConfiguration("use_mock_hardware")
+    robot_controller = LaunchConfiguration("robot_controller")
     gui = LaunchConfiguration("gui")
 
-    # assemble robot via XACRO
+    # Get URDF via xacro
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare(scene_description_package), "urdf", scene_macro]
+                [FindPackageShare(arm_description_package), "urdf", "scene.xacro"]
             ),
             " ",
             "prefix:=",
@@ -71,49 +108,33 @@ def generate_launch_description():
             "use_mock_hardware:=",
             use_mock_hardware,
             " ",
-            "arm_description_package:=",
-            arm_description_package,
-            " ",
             "arm_macro:=",
             arm_macro,
-            " ",
-            "gripper_description_package:=",
-            gripper_description_package,
-            " ",
-            "gripper_macro:=",
-            gripper_macro,
         ]
     )
 
     robot_description = {"robot_description": robot_description_content}
 
-    arm_controller_file = PathJoinSubstitution(
-        [FindPackageShare(arm_controller_package), "config", arm_controller_file]
-    )
-
-    gripper_controller_file = PathJoinSubstitution(
-        [FindPackageShare(gripper_controller_package), "config", gripper_controller_file]
+    robot_controllers = PathJoinSubstitution(
+        [FindPackageShare(runtime_config_package), "config", controllers_file]
     )
     controller_manager_file = PathJoinSubstitution(
-        [FindPackageShare(controller_manager_package), "config", controller_manager_file]
+        [FindPackageShare(runtime_config_package), "config", controller_manager_file]
     )
-
-    # use scene description rviz config file (for now)
     rviz_config_file = PathJoinSubstitution(
-        [FindPackageShare(scene_description_package), "rviz", "display.rviz"]
+        [FindPackageShare(arm_description_package), "rviz", "display.rviz"]
     )
 
     # Start the ros2_control controller manager node that loads the controller(s) (JTC in my case)
     # and on their request request resources from the resource manager to interact with the hardware
     # The controller manager receives the robot description and controler configuration file as parameters.
+    # First load the controller managers file, then the controllers file. The controller managers configuration
+    # may be overridden by added controllers. 
     control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
         output="both",
-        parameters=[robot_description, 
-                    controller_manager_file, 
-                    arm_controller_file, 
-                    gripper_controller_file],
+        parameters=[robot_description, controller_manager_file, robot_controllers],
         # prefix=['gdbserver localhost:3000']
     )
 
@@ -136,8 +157,8 @@ def generate_launch_description():
     rqt_joint_trajectory_controller_node = Node(
         package="rqt_joint_trajectory_controller",
         executable="rqt_joint_trajectory_controller",
+        # name="rviz2",
         output="log",
-        condition=IfCondition(gui),
     )
 
     # uses the controller manager to spawn joint state broadcaster.
@@ -155,10 +176,7 @@ def generate_launch_description():
     )
 
     # spawn the controller manager using the controller manager spawner.
-    robot_controllers = ["velocity_joint_trajectory_controller",
-                        "homing_controller", 
-                        "gripper_controller"]
-
+    robot_controllers = [robot_controller, "homing_controller"]
     robot_controller_spawners = []
     for controller in robot_controllers:
         robot_controller_spawners += [

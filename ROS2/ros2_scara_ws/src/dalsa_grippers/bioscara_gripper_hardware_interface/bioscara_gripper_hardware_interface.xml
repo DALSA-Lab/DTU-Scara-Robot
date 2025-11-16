@@ -1,0 +1,9 @@
+<library path="bioscara_gripper_hardware_interface">
+  <class name="bioscara_hardware_interfaces/BioscaraGripperHardwareInterface"
+         type="bioscara_hardware_interfaces::BioscaraGripperHardwareInterface"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Bioscara gripper hardware plugin.
+    </description>
+  </class>
+</library>

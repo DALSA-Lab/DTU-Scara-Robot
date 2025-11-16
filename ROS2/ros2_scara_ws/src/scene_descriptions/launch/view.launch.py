@@ -28,7 +28,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "arm_description_package",
-            default_value="bioscara_description",
+            default_value="bioscara_arm_description",
             description="Description package holding arm descriptions.",
         )
     )

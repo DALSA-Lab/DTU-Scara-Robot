@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<robot name="bioscara" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="load_arm" params="
+    parent
+    *origin
+    use_mock_hardware
+    prefix">
+
+    <xacro:property name="config_file" value="$(find bioscara_arm_description)/config/bioscara_parameters.yaml" />
+    <xacro:property name="params" value="${xacro.load_yaml(config_file)}"/>
+
+    <xacro:include filename="$(find bioscara_arm_description)/urdf/bioscara.urdf.xacro" />
+    <xacro:include filename="$(find bioscara_arm_description)/urdf/bioscara.ros2control" />
+    
+    <xacro:bioscara_ros2_control 
+      prefix="${prefix}" 
+      parameters="${params}" 
+      use_mock_hardware="${use_mock_hardware}"/>
+
+    <xacro:bioscara 
+      parent="${parent}" 
+      prefix="${prefix}" 
+      parameters="${params}">
+      <xacro:insert_block name="origin" />
+    </xacro:bioscara>
+  </xacro:macro>
+</robot>
