@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>dalsa_bioscara</name>
+  <name>dalsa_bioscara_arm</name>
   <version>0.0.0</version>
   <description>Metapackage for the DALSA Bioscara control packages</description>
 

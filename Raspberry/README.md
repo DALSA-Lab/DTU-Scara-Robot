@@ -212,7 +212,7 @@ This command will recursively scan every package in the workspace for the `<depe
 ### vcstool
 *vcstool* is common in many ROS2 packages to import dependencies that are not in a ROS or debian repository. from a repository file. 
 
-*vcstool* is specified as a dependency in the *dalsa_bioscara* package and hence should be installed after running *rosdep*
+*vcstool* is specified as a dependency in the *dalsa_bioscara_arm* package and hence should be installed after running *rosdep*
 
 To install, use
 ```bash
