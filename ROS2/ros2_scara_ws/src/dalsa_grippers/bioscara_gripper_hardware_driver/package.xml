@@ -8,6 +8,8 @@
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!-- Depends on arm driver since it has some error types and macros defined -->
   <depend>bioscara_arm_hardware_driver</depend>
 
   <export>
