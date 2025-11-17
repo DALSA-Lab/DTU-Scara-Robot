@@ -342,6 +342,11 @@ namespace bioscara_hardware_interface
         RCLCPP_INFO(get_logger(), "Set %s, to 0.0", name.c_str());
         set_command(name, 0.0);
       }
+      else if (descr.interface_info.name == bioscara_hardware_interface::HW_IF_HOME)
+      {
+        RCLCPP_INFO(get_logger(), "Set %s, to 0.0", name.c_str());
+        set_command(name, 0.0);
+      }
     }
     // for (const auto &[name, descr] : gpio_command_interfaces_)
     // {
