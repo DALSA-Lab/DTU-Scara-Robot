@@ -249,7 +249,7 @@ namespace bioscara_hardware_interface
       bioscara_hardware_driver::err_type_t rc = joint->deinit();
       if (rc != bioscara_hardware_driver::err_type_t::OK)
       {
-       std::string reason = bioscara_hardware_driver::error_to_string(rc);
+        std::string reason = bioscara_hardware_driver::error_to_string(rc);
         RCLCPP_FATAL(
             get_logger(),
             "Failed to disconnect from joint '%s'. Reason: %s", name.c_str(), reason.c_str());
@@ -542,7 +542,7 @@ namespace bioscara_hardware_interface
           }
         }
         // use != 0 here since 1 for no compatible interface type
-        if (rc != bioscara_hardware_driver::err_type_t::OK )
+        if (rc != bioscara_hardware_driver::err_type_t::OK)
         {
           std::string reason = bioscara_hardware_driver::error_to_string(rc);
           RCLCPP_FATAL(
@@ -635,6 +635,27 @@ namespace bioscara_hardware_interface
             "The controller tries to start multiple command interfaces for '%s'. The following interfaces are active or are trying to be active:\n%s.",
             name.c_str(), active_if.c_str());
         return hardware_interface::return_type::ERROR;
+      }
+
+
+      for (std::string interface : interfaces)
+      {
+        /* Reject mode switch if joint in question is not homed */
+        if (interface == hardware_interface::HW_IF_VELOCITY ||
+            interface == hardware_interface::HW_IF_POSITION)
+        {
+          if (!_joints.at(name)->isHomed())
+          {
+            RCLCPP_FATAL(
+                get_logger(),
+                "The controller tried to start the '%s' command interfaces for '%s', which is not homed yet.",
+                interface.c_str(), name.c_str());
+            return hardware_interface::return_type::ERROR;
+          }
+        }
+        else if (*interfaces.begin() == bioscara_hardware_interface::HW_IF_HOME)
+        {
+        }
       }
     }
 
