@@ -7,7 +7,7 @@
     use_mock_hardware
     prefix">
 
-    <xacro:property name="config_file" value="$(find bioscara_arm_description)/config/bioscara_parameters.yaml" />
+    <xacro:property name="config_file" value="$(find bioscara_arm_description)/config/bioscara_arm_parameters.yaml" />
     <xacro:property name="params" value="${xacro.load_yaml(config_file)}"/>
 
     <xacro:include filename="$(find bioscara_arm_description)/urdf/bioscara.urdf.xacro" />

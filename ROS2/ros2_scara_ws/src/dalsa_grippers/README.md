@@ -10,7 +10,7 @@ https://tree.nathanfriend.com/?s=(%27optEns!(%27fancy!true~fullPath!false~traili
 See the [this](https://github.com/PickNikRobotics/ros2_robotiq_gripper/tree/12e623212e6891a5fcc9af94d67b07e640916394/robotiq_description) repository for inspiration.
 
 ```
-dalsa_grippers/
+dalsa_bioscara_grippers/
 └── bioscara_gripper_descriptions/
     ├── config/
     │   ├── bioscara_gripper_128_parameters.yaml
