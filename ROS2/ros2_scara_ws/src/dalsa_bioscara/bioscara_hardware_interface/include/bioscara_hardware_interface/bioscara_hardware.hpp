@@ -380,17 +380,17 @@ namespace bioscara_hardware_interface
          * @brief Enables each joint, enables the stall detection and sets the maximmum acceleration.
          * 
          * @param name joint name to enable
-         * @return hardware_interface::return_type 
+         * @return bioscara_hardware_driver::err_type_t 
          */
-        hardware_interface::return_type activate_joint(const std::string name);
+        bioscara_hardware_driver::err_type_t activate_joint(const std::string name);
 
         /**
          * @brief Disables each joint.
          * 
          * @param name joint name to disable
-         * @return hardware_interface::return_type 
+         * @return bioscara_hardware_driver::err_type_t 
          */
-        hardware_interface::return_type deactivate_joint(const std::string name);
+        bioscara_hardware_driver::err_type_t deactivate_joint(const std::string name);
     };
 
 } // namespace bioscara_hardware_interface
