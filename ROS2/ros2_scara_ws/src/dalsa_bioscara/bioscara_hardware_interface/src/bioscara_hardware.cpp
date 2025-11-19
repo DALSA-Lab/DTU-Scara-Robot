@@ -173,7 +173,7 @@ namespace bioscara_hardware_interface
   {
     RCLCPP_INFO(get_logger(), "Shutting down ...please wait...");
 
-    hardware_interface::CallbackReturn cr = CallbackReturn::SUCCESS;
+    hardware_interface::CallbackReturn cr = hardware_interface::CallbackReturn::SUCCESS;
     switch (previous_state.id())
     {
       /* Joints already deinitialized */
@@ -186,9 +186,9 @@ namespace bioscara_hardware_interface
       cr = on_cleanup(previous_state);
       break;
     }
-    if (cr != CallbackReturn::SUCCESS)
+    if (cr != hardware_interface::CallbackReturn::SUCCESS)
     {
-      return CallbackReturn::ERROR;
+      return hardware_interface::CallbackReturn::ERROR;
     }
     _joints.clear();
     RCLCPP_INFO(get_logger(), "Shut down");
@@ -210,7 +210,7 @@ namespace bioscara_hardware_interface
         RCLCPP_FATAL(
             get_logger(),
             "Failed to connect to joint '%s'. Reason: %s", name.c_str(), reason.c_str());
-        return CallbackReturn::ERROR;
+        return hardware_interface::CallbackReturn::ERROR;
       }
     }
 
@@ -253,11 +253,11 @@ namespace bioscara_hardware_interface
         RCLCPP_FATAL(
             get_logger(),
             "Failed to disconnect from joint '%s'. Reason: %s", name.c_str(), reason.c_str());
-        return CallbackReturn::ERROR;
+        return hardware_interface::CallbackReturn::ERROR;
       }
     }
     RCLCPP_INFO(get_logger(), "Successfully cleaned up!");
-    return CallbackReturn::SUCCESS;
+    return hardware_interface::CallbackReturn::SUCCESS;
   }
 
   hardware_interface::CallbackReturn BioscaraHardwareInterface::on_activate(
@@ -334,7 +334,7 @@ namespace bioscara_hardware_interface
       }
     }
     RCLCPP_INFO(get_logger(), "Successfully deactivated!");
-    return CallbackReturn::SUCCESS;
+    return hardware_interface::CallbackReturn::SUCCESS;
   }
 
   hardware_interface::return_type BioscaraHardwareInterface::read(
@@ -690,7 +690,7 @@ namespace bioscara_hardware_interface
     if (previous_state.label() == "active" || previous_state.label() == "inactive")
     {
       hardware_interface::CallbackReturn cr = on_deactivate(previous_state);
-      if (cr != CallbackReturn::SUCCESS)
+      if (cr != hardware_interface::CallbackReturn::SUCCESS)
       {
         return cr;
       }
@@ -698,14 +698,14 @@ namespace bioscara_hardware_interface
       /* since the hardware goes to "unconfigured state if an error is caught and the on_error function returns SUCCESS
       we also have to manually call the on_cleanup function */
       cr = on_cleanup(previous_state);
-      if (cr != CallbackReturn::SUCCESS)
+      if (cr != hardware_interface::CallbackReturn::SUCCESS)
       {
         return cr;
       }
-      return CallbackReturn::SUCCESS;
+      return hardware_interface::CallbackReturn::SUCCESS;
     }
 
-    return CallbackReturn::ERROR;
+    return hardware_interface::CallbackReturn::ERROR;
   }
 
   bioscara_hardware_driver::err_type_t BioscaraHardwareInterface::start_homing(const std::string name, float velocity)
