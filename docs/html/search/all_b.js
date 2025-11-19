@@ -1,8 +1,4 @@
 var searchData=
 [
-  ['last_5fset_5fposition_0',['last_set_position',['../classbioscara__hardware__driver_1_1MockJoint.html#a97549e014af6b33d838bcc529aa4320e',1,'bioscara_hardware_driver::MockJoint']]],
-  ['last_5fset_5fvelocity_1',['last_set_velocity',['../classbioscara__hardware__driver_1_1MockJoint.html#a97db4c87f77135013e7de27c5111cca5',1,'bioscara_hardware_driver::MockJoint']]],
-  ['license_2',['license',['../namespacesetup.html#a8ed6f50a28bd6a8794f8e1153baa6de9',1,'setup']]],
-  ['list_3',['Todo List',['../todo.html',1,'']]],
-  ['loop_4',['loop',['../joint_8ino.html#a0b33edabd7f1c4e4a0bf32c67269be2f',1,'joint.ino']]]
+  ['k_0',['K',['../classLowpass.html#aafe83cc490cc40309417a39955585446',1,'Lowpass']]]
 ];

@@ -1,13 +1,20 @@
 <map id="Arduino/joint/joint.ino" name="Arduino/joint/joint.ino">
-<area shape="rect" id="Node000001" title="joint firmware" alt="" coords="141,5,304,31"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,123,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="198,33,103,75,101,71,196,28"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="147,79,211,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="218,32,195,68,191,66,213,30"/>
-<area shape="rect" id="Node000004" href="$joint_8h.html" title="joint firmware header" alt="" coords="235,79,298,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="232,30,255,66,250,68,228,32"/>
-<area shape="rect" id="Node000006" href="$configuration_8h.html" title="Configuration definitions for Joint 1 to Joint 4." alt="" coords="322,79,441,104"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="249,28,344,71,342,75,247,33"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="225,152,309,177"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="269,104,269,138,264,138,264,104"/>
+<area shape="rect" id="Node000001" title="joint firmware" alt="" coords="283,5,446,31"/>
+<area shape="rect" id="Node000002" href="$configuration_8h.html" title="Configuration definitions for Joint 1 to Joint 4." alt="" coords="5,79,124,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="317,33,127,78,126,73,316,28"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="147,79,265,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="340,33,245,75,243,71,338,28"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="289,79,353,104"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="360,32,337,68,333,66,355,30"/>
+<area shape="rect" id="Node000005" href="$joint_8h.html" title="joint firmware header" alt="" coords="377,79,440,104"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="374,30,397,66,392,68,370,32"/>
+<area shape="rect" id="Node000007" href="$filters_8h.html" title="Helper classes for FIR and IIR filters." alt="" coords="464,79,535,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="388,28,466,70,464,74,385,33"/>
+<area shape="rect" id="Node000009" href="$stall_8h.html" title="Helper functions for improved stall detection." alt="" coords="559,79,621,104"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="402,28,546,74,545,79,400,33"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="367,152,451,177"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="411,104,411,138,406,138,406,104"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="515,152,585,177"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="510,103,536,139,532,142,506,106"/>
+<area shape="poly" id="edge9_Node000009_Node000008" title=" " alt="" coords="586,106,566,141,561,139,581,103"/>
 </map>

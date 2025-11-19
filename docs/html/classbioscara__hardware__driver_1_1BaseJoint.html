@@ -631,7 +631,8 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Enable encoder stall detection of the joint. Derived class may override this. </p>
-<p>If the PID error exceeds the set threshold a stall is triggered and the motor disabled. A detected stall can be reset by homing or by reenabling the stall guard. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>If the PID error exceeds the set threshold a stall is triggered and the motor disabled. A detected stall can be reset by homing or reenabling the joint using <a class="el" href="classbioscara__hardware__driver_1_1BaseJoint.html#a7acc31e7f22f52f102ded46edf1a7dea" title="Setup the joint and engages motor, derived classes may override this.">enable()</a>. </p><dl class="section note"><dt>Note</dt><dd>If stall detection shall be enabled, invoke this method AFTER enabling the joint with <a class="el" href="classbioscara__hardware__driver_1_1BaseJoint.html#a7acc31e7f22f52f102ded46edf1a7dea" title="Setup the joint and engages motor, derived classes may override this.">enable()</a>. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sensitivity</td><td>value of threshold. 0 - 255 where lower is more sensitive. </td></tr>
   </table>

@@ -85,34 +85,43 @@ $(function() {
 
 <p>joint firmware  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;UstepperS32.h&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="configuration_8h_source.html">configuration.h</a>&quot;</code><br />
+<code>#include &lt;UstepperS32.h&gt;</code><br />
 <code>#include &lt;Wire.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="joint_8h_source.html">joint.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="configuration_8h_source.html">configuration.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="filters_8h_source.html">filters.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="stall_8h_source.html">stall.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for joint.ino:</div>
 <div class="dyncontent">
 <div class="center"><img src="joint_8ino__incl.png" border="0" usemap="#aArduino_2joint_2joint_8ino" alt=""/></div>
 <map name="aArduino_2joint_2joint_8ino" id="aArduino_2joint_2joint_8ino">
-<area shape="rect" title="joint firmware" alt="" coords="141,5,304,31"/>
-<area shape="rect" title=" " alt="" coords="5,79,123,104"/>
-<area shape="poly" title=" " alt="" coords="198,33,103,75,101,71,196,28"/>
-<area shape="rect" title=" " alt="" coords="147,79,211,104"/>
-<area shape="poly" title=" " alt="" coords="218,32,195,68,191,66,213,30"/>
-<area shape="rect" href="joint_8h.html" title="joint firmware header" alt="" coords="235,79,298,104"/>
-<area shape="poly" title=" " alt="" coords="232,30,255,66,250,68,228,32"/>
-<area shape="rect" href="configuration_8h.html" title="Configuration definitions for Joint 1 to Joint 4." alt="" coords="322,79,441,104"/>
-<area shape="poly" title=" " alt="" coords="249,28,344,71,342,75,247,33"/>
-<area shape="rect" title=" " alt="" coords="225,152,309,177"/>
-<area shape="poly" title=" " alt="" coords="269,104,269,138,264,138,264,104"/>
+<area shape="rect" title="joint firmware" alt="" coords="283,5,446,31"/>
+<area shape="rect" href="configuration_8h.html" title="Configuration definitions for Joint 1 to Joint 4." alt="" coords="5,79,124,104"/>
+<area shape="poly" title=" " alt="" coords="317,33,127,78,126,73,316,28"/>
+<area shape="rect" title=" " alt="" coords="147,79,265,104"/>
+<area shape="poly" title=" " alt="" coords="340,33,245,75,243,71,338,28"/>
+<area shape="rect" title=" " alt="" coords="289,79,353,104"/>
+<area shape="poly" title=" " alt="" coords="360,32,337,68,333,66,355,30"/>
+<area shape="rect" href="joint_8h.html" title="joint firmware header" alt="" coords="377,79,440,104"/>
+<area shape="poly" title=" " alt="" coords="374,30,397,66,392,68,370,32"/>
+<area shape="rect" href="filters_8h.html" title="Helper classes for FIR and IIR filters." alt="" coords="464,79,535,104"/>
+<area shape="poly" title=" " alt="" coords="388,28,466,70,464,74,385,33"/>
+<area shape="rect" href="stall_8h.html" title="Helper functions for improved stall detection." alt="" coords="559,79,621,104"/>
+<area shape="poly" title=" " alt="" coords="402,28,546,74,545,79,400,33"/>
+<area shape="rect" title=" " alt="" coords="367,152,451,177"/>
+<area shape="poly" title=" " alt="" coords="411,104,411,138,406,138,406,104"/>
+<area shape="rect" title=" " alt="" coords="515,152,585,177"/>
+<area shape="poly" title=" " alt="" coords="510,103,536,139,532,142,506,106"/>
+<area shape="poly" title=" " alt="" coords="586,106,566,141,561,139,581,103"/>
 </map>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a587193c9dfc1e471f4510ec090b3c01f" id="r_a587193c9dfc1e471f4510ec090b3c01f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="joint_8ino.html#a587193c9dfc1e471f4510ec090b3c01f">J4</a></td></tr>
-<tr class="memdesc:a587193c9dfc1e471f4510ec090b3c01f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define either joint that is to be flashed.  <br /></td></tr>
-<tr class="separator:a587193c9dfc1e471f4510ec090b3c01f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b3684b22e0838d0e388f217b1a8c18e" id="r_a8b3684b22e0838d0e388f217b1a8c18e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="joint_8ino.html#a8b3684b22e0838d0e388f217b1a8c18e">J3</a></td></tr>
+<tr class="memdesc:a8b3684b22e0838d0e388f217b1a8c18e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define either joint that is to be flashed.  <br /></td></tr>
+<tr class="separator:a8b3684b22e0838d0e388f217b1a8c18e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -160,14 +169,14 @@ Variables</h2></td></tr>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2025</dd></dl>
 <p>This file contains the joint firmware. </p>
 </div><h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a587193c9dfc1e471f4510ec090b3c01f" name="a587193c9dfc1e471f4510ec090b3c01f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a587193c9dfc1e471f4510ec090b3c01f">&#9670;&#160;</a></span>J4</h2>
+<a id="a8b3684b22e0838d0e388f217b1a8c18e" name="a8b3684b22e0838d0e388f217b1a8c18e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b3684b22e0838d0e388f217b1a8c18e">&#9670;&#160;</a></span>J3</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define J4</td>
+          <td class="memname">#define J3</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -202,7 +211,6 @@ Variables</h2></td></tr>
   </table>
   </dd>
 </dl>
-<p>Homing has been cancled from ISR (f.x. STOP)</p>
 
 </div>
 </div>
@@ -224,9 +232,12 @@ Variables</h2></td></tr>
 
 <p>Main loop. </p>
 <p>Executes the following: <br  />
- 1) if isStallguardEnabled: compares stepper.getPidError() with stallguardThreshold and sets isStalled flag. <br  />
- 2) if rx_data_ready: set isBusy flag to indicate device is busy. Invoke blocking_handler. Clear isBusy flag to indicate device is no longer busy <br  />
- </p>
+</p><ol type="1">
+<li>if isStallguardEnabled: compares stepper.getPidError() with stallguardThreshold and sets isStalled flag. <br  />
+</li>
+<li>if rx_data_ready: set isBusy flag to indicate device is busy. Invoke blocking_handler. Clear isBusy flag to indicate device is no longer busy <br  />
+ </li>
+</ol>
 
 </div>
 </div>
