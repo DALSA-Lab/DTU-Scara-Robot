@@ -232,7 +232,12 @@ namespace bioscara_hardware_interface
         /**
          * @brief Perform the mode-switching for the new command interface combination.
          * 
-         * @todo this
+         * Performs the following actions:
+         * - <b>On activation</b>:
+         *  - <b>home</b> interface:
+         *   - Reset command to 0.0. This clears any remaining commands that have been written to the 
+         * command interface while the hardware was unable to act on it. For example if it was inactive or the homing command
+         * was not the active command mode. 
          *
          * \note This is part of the realtime update loop, and should be fast.
          * \param[in] start_interfaces vector of string identifiers for the command interfaces starting.

@@ -686,16 +686,18 @@ namespace bioscara_hardware_interface
     Iterate over each interface and test for its type. Perform action depending on its type for its joint. */
     for (auto interface : start_interfaces)
     {
-      std::string joint;
-      split_interface_string_to_joint_and_name(interface, joint, interface);
-      if (interface == hardware_interface::HW_IF_POSITION)
+      std::string joint, interface_name;
+      split_interface_string_to_joint_and_name(interface, joint, interface_name);
+      if (interface_name == hardware_interface::HW_IF_POSITION)
       {
       }
-      else if (interface == hardware_interface::HW_IF_VELOCITY)
+      else if (interface_name == hardware_interface::HW_IF_VELOCITY)
       {
       }
-      else if (interface == bioscara_hardware_interface::HW_IF_HOME)
+      else if (interface_name == bioscara_hardware_interface::HW_IF_HOME)
       {
+        /* Reset homing command on activation to avoid triggering a homing if some command is left in the command interface */
+        set_command(interface, 0.0);
         // disable joint
       }
     }
