@@ -572,11 +572,8 @@ namespace bioscara_hardware_interface
     for (std::string interface : stop_interfaces)
     {
       std::string full_interface = interface;
-      /* split 'joint/interface to 'joint' and 'interface' */
-      std::string delimiter = "/";
-      size_t pos = interface.find(delimiter);
-      std::string joint = interface.substr(0, pos);
-      interface.erase(0, pos + delimiter.length());
+      std::string joint;
+      split_interface_string_to_joint_and_name(interface, joint, interface);
 
       /* If the interface that is to be stopped is the homing interface, check that no current homing command is active */
       if (interface == bioscara_hardware_interface::HW_IF_HOME &&
@@ -608,11 +605,8 @@ namespace bioscara_hardware_interface
     /* Then add all new interfaces to the active set */
     for (std::string interface : start_interfaces)
     {
-      /* split 'joint/interface to 'joint' and 'interface' */
-      std::string delimiter = "/";
-      size_t pos = interface.find(delimiter);
-      std::string joint = interface.substr(0, pos);
-      interface.erase(0, pos + delimiter.length());
+      std::string joint;
+      split_interface_string_to_joint_and_name(interface, joint, interface);
 
       std::pair rc = new_active_interfaces.at(joint).insert(interface);
       if (rc.second == 0)
@@ -642,7 +636,6 @@ namespace bioscara_hardware_interface
         return hardware_interface::return_type::ERROR;
       }
 
-
       for (std::string interface : interfaces)
       {
         /* Reject mode switch if joint in question is not homed */
@@ -658,7 +651,7 @@ namespace bioscara_hardware_interface
             return hardware_interface::return_type::ERROR;
           }
         }
-        else if (*interfaces.begin() == bioscara_hardware_interface::HW_IF_HOME)
+        else if (interface == bioscara_hardware_interface::HW_IF_HOME)
         {
         }
       }
@@ -682,6 +675,45 @@ namespace bioscara_hardware_interface
         get_logger(),
         "New active command modes:\n%s", active_if.c_str());
 
+    return hardware_interface::return_type::OK;
+  }
+
+  hardware_interface::return_type BioscaraHardwareInterface::perform_command_mode_switch(
+      const std::vector<std::string> &start_interfaces,
+      const std::vector<std::string> &stop_interfaces)
+  {
+    /* We can assume the start and stop interfaces are valid.
+    Iterate over each interface and test for its type. Perform action depending on its type for its joint. */
+    for (auto interface : start_interfaces)
+    {
+      std::string joint;
+      split_interface_string_to_joint_and_name(interface, joint, interface);
+      if (interface == hardware_interface::HW_IF_POSITION)
+      {
+      }
+      else if (interface == hardware_interface::HW_IF_VELOCITY)
+      {
+      }
+      else if (interface == bioscara_hardware_interface::HW_IF_HOME)
+      {
+        // disable joint
+      }
+    }
+    for (auto interface : stop_interfaces)
+    {
+      std::string joint;
+      split_interface_string_to_joint_and_name(interface, joint, interface);
+      if (interface == hardware_interface::HW_IF_POSITION)
+      {
+      }
+      else if (interface == hardware_interface::HW_IF_VELOCITY)
+      {
+      }
+      else if (interface == bioscara_hardware_interface::HW_IF_HOME)
+      {
+        // enable joint again
+      }
+    }
     return hardware_interface::return_type::OK;
   }
 
@@ -740,6 +772,16 @@ namespace bioscara_hardware_interface
     _joints.at(name)->stop();
     RCLCPP_INFO(get_logger(), "Finished homing joint '%s'", name.c_str());
     return _joints.at(name)->postHoming();
+  }
+
+  void BioscaraHardwareInterface::split_interface_string_to_joint_and_name(std::string interface, std::string &joint_name, std::string &interface_name)
+  {
+    /* split 'joint/interface to 'joint' and 'interface' */
+    std::string delimiter = "/";
+    size_t pos = interface.find(delimiter);
+    joint_name = interface.substr(0, pos);
+    interface.erase(0, pos + delimiter.length());
+    interface_name = interface;
   }
 
 } // namespace bioscara_hardware_interface

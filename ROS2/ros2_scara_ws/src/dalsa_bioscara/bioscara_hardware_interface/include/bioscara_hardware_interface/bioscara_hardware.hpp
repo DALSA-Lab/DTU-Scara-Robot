@@ -22,7 +22,6 @@
 #include <unordered_map>
 #include <memory>
 
-
 #include "bioscara_hardware_driver/mJoint.h"
 #include "bioscara_hardware_driver/mMockJoint.h"
 
@@ -40,7 +39,7 @@ namespace bioscara_hardware_interface
 
     /**
      * @brief The bioscara hardware interface class.
-     * 
+     *
      * The hardware interface serves to wrap custom hardware interaction in the standardized ros2_control architecture.
      *
      *
@@ -58,11 +57,11 @@ namespace bioscara_hardware_interface
 
         /**
          * @brief  Called on initialization to the `unconfigured` state.
-         * 
+         *
          * Performs the following checks on the configures joints parsed form the URDF description:
          * - Each joint must have the 3 command interfaces (in this order): 'position', 'velocity', 'home'
          * - Each joint must have the 3 state interfaces (in this order): 'position', 'velocity', 'home'
-         * 
+         *
          * Stores the configuration parameters for each joint in the _joint_cfg map.
          * Each joint must have these parameters:
          * - i2c_address (int, HEX)
@@ -79,11 +78,11 @@ namespace bioscara_hardware_interface
          *  - threshold (int, DEC)
          *  - current (int, DEC)
          *  - acceleration (float)
-         * 
-         * Adds each joint to the internal _joints map. Creates a MockJoint object if the use_mock_hardware parameter is 'True' or 'true', 
+         *
+         * Adds each joint to the internal _joints map. Creates a MockJoint object if the use_mock_hardware parameter is 'True' or 'true',
          * or else a hardware Joint.
-         * @param params 
-         * @return hardware_interface::CallbackReturn 
+         * @param params
+         * @return hardware_interface::CallbackReturn
          */
         hardware_interface::CallbackReturn on_init(
             const hardware_interface::HardwareComponentInterfaceParams &params) override;
@@ -140,7 +139,7 @@ namespace bioscara_hardware_interface
 
         /**
          * @brief Called on the transistion from the `active` to the `inactive` state.
-         * 
+         *
          * Disables all joints and thereby allows backdriving. State interfaces continue to be updated.
          *
          * @param previous_state
@@ -149,51 +148,51 @@ namespace bioscara_hardware_interface
         hardware_interface::CallbackReturn on_deactivate(
             const rclcpp_lifecycle::State &previous_state) override;
 
-            /**
-             * @brief Reads from the hardware and populates the state interfaces.
-             * 
-             * Iterates over all state interfaces and calls the corresponding Joint method.
-             * 
-             * - State interface "position" -> Joint::getPosition()
-             * - State interface "velocity" -> Joint::getVelocity()
-             * - State interface "home"     -> Joint::isHomed()
-             *  - This does not actually trigger a communication, instead it relies on the return flags of 
-             *    the previous transmissions. Since position and velocity have been called immediatly before the return flags
-             *    are assumed to be valid.
-             *  - If the the homing of a joint has been activated through the command interface (Joint::getCurrentBCmd() == Joint::HOME)
-             *    the device signals BUSY (Joint::isBusy()) as long as it is still homing. \n
-             *    If the BUSY flag is reset while the current command is still Joint::HOME we can assume the homing has finished. 
-             *    Then the "home" command interface of the joint is reset to 0.0, which will stop the homing (perform cleanup tasks) at the next write cycle.
-             *  
-             * @param time 
-             * @param period 
-             * @return hardware_interface::return_type 
-             */
+        /**
+         * @brief Reads from the hardware and populates the state interfaces.
+         *
+         * Iterates over all state interfaces and calls the corresponding Joint method.
+         *
+         * - State interface "position" -> Joint::getPosition()
+         * - State interface "velocity" -> Joint::getVelocity()
+         * - State interface "home"     -> Joint::isHomed()
+         *  - This does not actually trigger a communication, instead it relies on the return flags of
+         *    the previous transmissions. Since position and velocity have been called immediatly before the return flags
+         *    are assumed to be valid.
+         *  - If the the homing of a joint has been activated through the command interface (Joint::getCurrentBCmd() == Joint::HOME)
+         *    the device signals BUSY (Joint::isBusy()) as long as it is still homing. \n
+         *    If the BUSY flag is reset while the current command is still Joint::HOME we can assume the homing has finished.
+         *    Then the "home" command interface of the joint is reset to 0.0, which will stop the homing (perform cleanup tasks) at the next write cycle.
+         *
+         * @param time
+         * @param period
+         * @return hardware_interface::return_type
+         */
         hardware_interface::return_type read(
             const rclcpp::Time &time,
             const rclcpp::Duration &period) override;
 
-            /**
-             * @brief Writes commands to the hardware from the command interfaces.
-             * 
-             * In contrast to the read() method the write() method only loops over the command interfaces that are currently active defined by
-             * the BioscaraHardwareInterface::_joint_command_modes map. See prepare_command_mode_switch() for a detailed reasoning why this approach
-             * has been chosen. 
-             * 
-             * - Command interface "position" -> Joint::setPosition()
-             * - Command interface "velocity" -> Joint::setVelocity()
-             * - Command interface "home"     -> Joint::startHoming()
-             *  - If the commanded value in "home" is != 0.0 the and the joint is currently executing a blocking function, 
-             * for example homing (Joint::getCurrentBCmd() == Joint::NONE), the homing sequence is started with the speed, sensitivity, current and acceleration
-             * defined in the BioscaraHardwareInterface::_joint_cfg which is polulated from the hardware description urdf. The direction of
-             * the homing is determined by the sign of the command interface value.
-             *  - If the commanded value in "home" is = 0.0 and the joint is currently executing homing, the homing is stopped. This can either
-             * happen prematurely through user input or when the homing is completed which is registered in read(). 
-             * .
-             * @param time 
-             * @param period 
-             * @return hardware_interface::return_type 
-             */
+        /**
+         * @brief Writes commands to the hardware from the command interfaces.
+         *
+         * In contrast to the read() method the write() method only loops over the command interfaces that are currently active defined by
+         * the BioscaraHardwareInterface::_joint_command_modes map. See prepare_command_mode_switch() for a detailed reasoning why this approach
+         * has been chosen.
+         *
+         * - Command interface "position" -> Joint::setPosition()
+         * - Command interface "velocity" -> Joint::setVelocity()
+         * - Command interface "home"     -> Joint::startHoming()
+         *  - If the commanded value in "home" is != 0.0 the and the joint is currently executing a blocking function,
+         * for example homing (Joint::getCurrentBCmd() == Joint::NONE), the homing sequence is started with the speed, sensitivity, current and acceleration
+         * defined in the BioscaraHardwareInterface::_joint_cfg which is polulated from the hardware description urdf. The direction of
+         * the homing is determined by the sign of the command interface value.
+         *  - If the commanded value in "home" is = 0.0 and the joint is currently executing homing, the homing is stopped. This can either
+         * happen prematurely through user input or when the homing is completed which is registered in read().
+         * .
+         * @param time
+         * @param period
+         * @return hardware_interface::return_type
+         */
         hardware_interface::return_type write(
             const rclcpp::Time &time,
             const rclcpp::Duration &period) override;
@@ -220,6 +219,7 @@ namespace bioscara_hardware_interface
          * - <b>On activation</b>:
          *  - [ERROR] Activating a command interface that is already started. This should not happen.
          *  - [ERROR] Activating a second command interface for a joint.
+         *  - [ERROR] Activating 'position' or 'velocity' command interface if the joint is not homed (Joint::isHomed() == false).
          * .
          * @param start_interfaces command interfaces that should be started in the form "joint/interface"
          * @param stop_interfaces command interfaces that should be stopped in the form "joint/interface"
@@ -228,6 +228,21 @@ namespace bioscara_hardware_interface
         hardware_interface::return_type prepare_command_mode_switch(
             const std::vector<std::string> &start_interfaces,
             const std::vector<std::string> &stop_interfaces) override;
+
+        /**
+         * @brief Perform the mode-switching for the new command interface combination.
+         * 
+         * @todo this
+         *
+         * \note This is part of the realtime update loop, and should be fast.
+         * \param[in] start_interfaces vector of string identifiers for the command interfaces starting.
+         * \param[in] stop_interfaces vector of string identifiers for the command interfaces stopping.
+         * \return return_type::OK if the new command interface combination can be switched to (or) if the
+         * interface key is not relevant to this system. Returns return_type::ERROR otherwise.
+         */
+         hardware_interface::return_type perform_command_mode_switch(
+            const std::vector<std::string> & start_interfaces,
+            const std::vector<std::string> & stop_interfaces) override;
 
         /**
          * @brief Called when an error in any state or state transition is thrown.
@@ -317,36 +332,44 @@ namespace bioscara_hardware_interface
 
         /**
          * @brief unordered map of sets storing the active command interfaces for each joint.
-         * 
-         * Each joint can have a set of active command interfaces. This type of structure is chosen to group interfaces by joint. 
+         *
+         * Each joint can have a set of active command interfaces. This type of structure is chosen to group interfaces by joint.
          * In the write() function the interface name can simply be constructed by concatenating joint name with interface name.
-         * Although currently only one active command interface is allowed at the time, a set can be used to store multiple command 
-         * interfaces that are acceptable to be combined, for example it would be acceptable to set velocity 
+         * Although currently only one active command interface is allowed at the time, a set can be used to store multiple command
+         * interfaces that are acceptable to be combined, for example it would be acceptable to set velocity
          * and driver current and hence that would be an allowable combination.
          *
          * An unordered map is chosen to simplify acces via the joint name, as this conforms well with the ROS2_control hardware interface.
-         * The map does not need to be ordered. Search, insertion, and removal of elements have average constant-time complexity. 
+         * The map does not need to be ordered. Search, insertion, and removal of elements have average constant-time complexity.
          *
          */
         std::unordered_map<std::string, std::set<std::string>> _joint_command_modes;
 
-
         /**
          * @brief TODO
-         * 
-         * @param name 
-         * @param velocity 
-         * @return int 
+         *
+         * @param name
+         * @param velocity
+         * @return int
          */
         bioscara_hardware_driver::err_type_t start_homing(const std::string name, float velocity);
 
         /**
          * @brief TODO
-         * 
-         * @param name 
-         * @return int 
+         *
+         * @param name
+         * @return int
          */
         bioscara_hardware_driver::err_type_t stop_homing(const std::string name);
+
+        /**
+         * @brief Split a interface string like "<joint_name>/<interface_name>" to "<joint_name>" and "<interface_name>"
+         * 
+         * @param interface 
+         * @param joint_name 
+         * @param interface_name 
+         */
+        void split_interface_string_to_joint_and_name(std::string interface, std::string &joint_name, std::string &interface_name);
     };
 
 } // namespace bioscara_hardware_interface
