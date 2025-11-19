@@ -654,7 +654,7 @@ namespace bioscara_hardware_interface
         set_command(interface, 0.0);
 
         /* Deactivate joint */
-        // deactivate_joint(joint_name);
+        deactivate_joint(joint_name);
       }
     }
     for (auto interface : stop_interfaces)
@@ -670,7 +670,7 @@ namespace bioscara_hardware_interface
       else if (interface == bioscara_hardware_interface::HW_IF_HOME)
       {
         /* Activate joint again */
-        // activate_joint(joint_name);
+        activate_joint(joint_name);
       }
     }
     return hardware_interface::return_type::OK;
@@ -716,21 +716,30 @@ namespace bioscara_hardware_interface
     joint_config_t cfg = _joint_cfg[name];
 
     float speed = velocity > 0.0 ? cfg.homing.speed : -cfg.homing.speed;
-    RCLCPP_INFO(get_logger(), "Started homing joint '%s'", name.c_str());
+    
+    /* Activate the joint, set homing acceleration and start homing. */
+    RETURN_ON_ERROR(activate_joint(name));
     RETURN_ON_ERROR(_joints.at(name)->setMaxAcceleration(cfg.homing.acceleration));
-    return _joints.at(name)->startHoming(speed, cfg.homing.threshold, cfg.homing.current);
+    RETURN_ON_ERROR(_joints.at(name)->startHoming(speed, cfg.homing.threshold, cfg.homing.current));
+    
+    RCLCPP_INFO(get_logger(), "Started homing joint '%s'", name.c_str());
+    return bioscara_hardware_driver::err_type_t::OK;
   }
 
   bioscara_hardware_driver::err_type_t BioscaraHardwareInterface::stop_homing(const std::string name)
   {
     joint_config_t cfg = _joint_cfg[name];
 
-    /* Stop the homing. Reset acceleration and velocity and perform the postHoming cleanup */
+    /* Stop the homing. Reset acceleration and velocity and perform the postHoming cleanup, then deactivate the joint. */
     RETURN_ON_ERROR(_joints.at(name)->setMaxAcceleration(cfg.max_acceleration));
     RETURN_ON_ERROR(_joints.at(name)->setMaxVelocity(cfg.max_velocity));
-    _joints.at(name)->stop();
+    RETURN_ON_ERROR(_joints.at(name)->stop());
+    RETURN_ON_ERROR(_joints.at(name)->postHoming());
+    RETURN_ON_ERROR(deactivate_joint(name));
+    
     RCLCPP_INFO(get_logger(), "Finished homing joint '%s'", name.c_str());
-    return _joints.at(name)->postHoming();
+        
+    return bioscara_hardware_driver::err_type_t::OK;
   }
 
   void BioscaraHardwareInterface::split_interface_string_to_joint_and_name(std::string interface, std::string &joint_name, std::string &interface_name)

@@ -351,19 +351,21 @@ namespace bioscara_hardware_interface
         std::unordered_map<std::string, std::set<std::string>> _joint_command_modes;
 
         /**
-         * @brief TODO
-         *
+         * @brief wrapper method to start homing.
+         * 
+         * Activate the joint, set homing acceleration and start homing.
          * @param name
          * @param velocity
-         * @return int
+         * @return bioscara_hardware_driver::err_type_t
          */
         bioscara_hardware_driver::err_type_t start_homing(const std::string name, float velocity);
 
         /**
-         * @brief TODO
+         * @brief wrapper method to stop homing.
          *
+         * Stop the homing. Reset acceleration and velocity and perform the postHoming cleanup, then deactivate the joint.
          * @param name
-         * @return int
+         * @return bioscara_hardware_driver::err_type_t
          */
         bioscara_hardware_driver::err_type_t stop_homing(const std::string name);
 
