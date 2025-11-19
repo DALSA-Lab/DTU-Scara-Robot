@@ -123,7 +123,7 @@ namespace bioscara_hardware_interface
         /**
          * @brief Called on the transistion from the `inactive` to the `active` state.
          *
-         * Enables each joint, enables the stall detection and sets the maximmum acceleration. \n
+         * Calls activate_joint() to enable the joints. \n
          * It is allowed to activate the hardware even if it is not homed. To home the joint the homing_controller must be activated,
          * but generally a hardware component must be active in order for controllers to become active. \n
          *
@@ -375,6 +375,22 @@ namespace bioscara_hardware_interface
          * @param interface_name 
          */
         void split_interface_string_to_joint_and_name(std::string interface, std::string &joint_name, std::string &interface_name);
+
+        /**
+         * @brief Enables each joint, enables the stall detection and sets the maximmum acceleration.
+         * 
+         * @param name joint name to enable
+         * @return hardware_interface::return_type 
+         */
+        hardware_interface::return_type activate_joint(const std::string name);
+
+        /**
+         * @brief Disables each joint.
+         * 
+         * @param name joint name to disable
+         * @return hardware_interface::return_type 
+         */
+        hardware_interface::return_type deactivate_joint(const std::string name);
     };
 
 } // namespace bioscara_hardware_interface

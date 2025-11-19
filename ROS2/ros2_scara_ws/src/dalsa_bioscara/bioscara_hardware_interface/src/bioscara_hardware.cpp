@@ -270,50 +270,9 @@ namespace bioscara_hardware_interface
       /* Clear the active command modes. Controllers can only be activated after the hardware is activated. */
       _joint_command_modes[name] = {};
 
-      joint_config_t cfg = _joint_cfg[name];
-
-      // enable motor
-      bioscara_hardware_driver::err_type_t rc = joint->enable(cfg.drive_current, cfg.hold_current);
-      if (rc != bioscara_hardware_driver::err_type_t::OK)
+      if (activate_joint(name) != hardware_interface::return_type::OK)
       {
-        std::string reason = bioscara_hardware_driver::error_to_string(rc);
-        RCLCPP_FATAL(
-            get_logger(),
-            "Failed to enable joint '%s'. Reason: %s", name.c_str(), reason.c_str());
-        return CallbackReturn::ERROR;
-      }
-
-      // enable stall detection
-      rc = joint->enableStallguard(cfg.stall_threshold);
-      if (rc != bioscara_hardware_driver::err_type_t::OK)
-      {
-        std::string reason = bioscara_hardware_driver::error_to_string(rc);
-        RCLCPP_FATAL(
-            get_logger(),
-            "Failed to enable stall protection of joint '%s'. Reason: %s", name.c_str(), reason.c_str());
-        return CallbackReturn::ERROR;
-      }
-
-      // set max acceleration
-      rc = joint->setMaxAcceleration(cfg.max_acceleration);
-      if (rc != bioscara_hardware_driver::err_type_t::OK)
-      {
-        std::string reason = bioscara_hardware_driver::error_to_string(rc);
-        RCLCPP_FATAL(
-            get_logger(),
-            "Failed to set maximum acceleration of joint '%s'. Reason: %s", name.c_str(), reason.c_str());
-        return CallbackReturn::ERROR;
-      }
-
-      // set max velocity
-      rc = joint->setMaxVelocity(cfg.max_velocity);
-      if (rc != bioscara_hardware_driver::err_type_t::OK)
-      {
-        std::string reason = bioscara_hardware_driver::error_to_string(rc);
-        RCLCPP_FATAL(
-            get_logger(),
-            "Failed to set maximum velocity of joint '%s'. Reason: %s", name.c_str(), reason.c_str());
-        return CallbackReturn::ERROR;
+        return hardware_interface::CallbackReturn::ERROR;
       }
     }
 
@@ -369,14 +328,9 @@ namespace bioscara_hardware_interface
      */
     for (auto &[name, joint] : _joints)
     {
-      bioscara_hardware_driver::err_type_t rc = joint->disable();
-      if (rc != bioscara_hardware_driver::err_type_t::OK)
+      if (deactivate_joint(name) != hardware_interface::return_type::OK)
       {
-        std::string reason = bioscara_hardware_driver::error_to_string(rc);
-        RCLCPP_FATAL(
-            get_logger(),
-            "Failed to disable joint '%s'. Reason: %s", name.c_str(), reason.c_str());
-        return CallbackReturn::ERROR;
+        return hardware_interface::CallbackReturn::ERROR;
       }
     }
     RCLCPP_INFO(get_logger(), "Successfully deactivated!");
@@ -784,6 +738,71 @@ namespace bioscara_hardware_interface
     joint_name = interface.substr(0, pos);
     interface.erase(0, pos + delimiter.length());
     interface_name = interface;
+  }
+
+  hardware_interface::return_type BioscaraHardwareInterface::activate_joint(const std::string name)
+  {
+    joint_config_t cfg = _joint_cfg[name];
+
+    // enable motor
+    bioscara_hardware_driver::err_type_t rc = _joints.at(name)->enable(cfg.drive_current, cfg.hold_current);
+    if (rc != bioscara_hardware_driver::err_type_t::OK)
+    {
+      std::string reason = bioscara_hardware_driver::error_to_string(rc);
+      RCLCPP_FATAL(
+          get_logger(),
+          "Failed to enable joint '%s'. Reason: %s", name.c_str(), reason.c_str());
+      return hardware_interface::return_type::ERROR;
+    }
+
+    // enable stall detection
+    rc = _joints.at(name)->enableStallguard(cfg.stall_threshold);
+    if (rc != bioscara_hardware_driver::err_type_t::OK)
+    {
+      std::string reason = bioscara_hardware_driver::error_to_string(rc);
+      RCLCPP_FATAL(
+          get_logger(),
+          "Failed to enable stall protection of joint '%s'. Reason: %s", name.c_str(), reason.c_str());
+      return hardware_interface::return_type::ERROR;
+    }
+
+    // set max acceleration
+    rc = _joints.at(name)->setMaxAcceleration(cfg.max_acceleration);
+    if (rc != bioscara_hardware_driver::err_type_t::OK)
+    {
+      std::string reason = bioscara_hardware_driver::error_to_string(rc);
+      RCLCPP_FATAL(
+          get_logger(),
+          "Failed to set maximum acceleration of joint '%s'. Reason: %s", name.c_str(), reason.c_str());
+      return hardware_interface::return_type::ERROR;
+    }
+
+    // set max velocity
+    rc = _joints.at(name)->setMaxVelocity(cfg.max_velocity);
+    if (rc != bioscara_hardware_driver::err_type_t::OK)
+    {
+      std::string reason = bioscara_hardware_driver::error_to_string(rc);
+      RCLCPP_FATAL(
+          get_logger(),
+          "Failed to set maximum velocity of joint '%s'. Reason: %s", name.c_str(), reason.c_str());
+      return hardware_interface::return_type::ERROR;
+    }
+
+    return hardware_interface::return_type::OK;
+  }
+
+  hardware_interface::return_type BioscaraHardwareInterface::deactivate_joint(const std::string name)
+  {
+    bioscara_hardware_driver::err_type_t rc = _joints.at(name)->disable();
+    if (rc != bioscara_hardware_driver::err_type_t::OK)
+    {
+      std::string reason = bioscara_hardware_driver::error_to_string(rc);
+      RCLCPP_FATAL(
+          get_logger(),
+          "Failed to disable joint '%s'. Reason: %s", name.c_str(), reason.c_str());
+      return hardware_interface::return_type::ERROR;
+    }
+    return hardware_interface::return_type::OK;
   }
 
 } // namespace bioscara_hardware_interface
