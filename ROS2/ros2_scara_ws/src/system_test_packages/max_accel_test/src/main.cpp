@@ -1,11 +1,11 @@
 #include <signal.h>
-#include "bioscara_hardware_driver/mJoint.h"
+#include "bioscara_arm_hardware_driver/mJoint.h"
 #include <cmath>
 #include <chrono>
 #include <thread>
 
 using namespace std;
-using namespace bioscara_hardware_driver;
+using namespace bioscara_hardware_drivers;
 
 #define CURRENT 20
 #define MAXACCEL 30

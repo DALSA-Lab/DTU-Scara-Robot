@@ -676,50 +676,6 @@ namespace bioscara_hardware_interfaces
     return hardware_interface::return_type::OK;
   }
 
-  hardware_interface::return_type BioscaraArmHardwareInterface::perform_command_mode_switch(
-      const std::vector<std::string> &start_interfaces,
-      const std::vector<std::string> &stop_interfaces)
-  {
-    /* We can assume the start and stop interfaces are valid.
-    Iterate over each interface and test for its type. Perform action depending on its type for its joint. */
-    for (auto interface : start_interfaces)
-    {
-      std::string joint_name, interface_name;
-      split_interface_string_to_joint_and_name(interface, joint_name, interface_name);
-      if (interface_name == hardware_interface::HW_IF_POSITION)
-      {
-      }
-      else if (interface_name == hardware_interface::HW_IF_VELOCITY)
-      {
-      }
-      else if (interface_name == bioscara_hardware_interfaces::HW_IF_HOME)
-      {
-        /* Reset homing command on activation to avoid triggering a homing if some command is left in the command interface */
-        set_command(interface, 0.0);
-
-        /* Deactivate joint */
-        deactivate_joint(joint_name);
-      }
-    }
-    for (auto interface : stop_interfaces)
-    {
-      std::string joint_name;
-      split_interface_string_to_joint_and_name(interface, joint_name, interface);
-      if (interface == hardware_interface::HW_IF_POSITION)
-      {
-      }
-      else if (interface == hardware_interface::HW_IF_VELOCITY)
-      {
-      }
-      else if (interface == bioscara_hardware_interfaces::HW_IF_HOME)
-      {
-        /* Activate joint again */
-        activate_joint(joint_name);
-      }
-    }
-    return hardware_interface::return_type::OK;
-  }
-
   hardware_interface::CallbackReturn BioscaraArmHardwareInterface::on_error(
       const rclcpp_lifecycle::State &previous_state)
   {
