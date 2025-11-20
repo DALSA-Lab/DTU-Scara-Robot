@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: scene_descriptions
+    relative_path: urdf/scene.xacro
+    xacro_args: " arm_description_package:=bioscara_arm_description arm_macro:=bioscara_arm.xacro gripper_description_package:=bioscara_gripper_descriptions gripper_macro:=bioscara_gripper_128.xacro"
+  srdf:
+    relative_path: config/scene.srdf
+  package_settings:
+    author_name: sbstorz
+    author_email: s.storz01@gmail.com
+    generated_timestamp: 1763649016
