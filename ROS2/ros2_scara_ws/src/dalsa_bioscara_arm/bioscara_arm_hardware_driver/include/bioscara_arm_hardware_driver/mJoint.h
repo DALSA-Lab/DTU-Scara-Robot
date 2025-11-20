@@ -291,10 +291,11 @@ namespace bioscara_hardware_drivers
     err_type_t setMaxVelocity(float maxVel) override;
 
     /**
-     * @brief Enable encoder stall detection of the joint.
+     * @brief Enable encoder stall detection of the joint. Derived class may override this.
      *
      * If the PID error exceeds the set threshold a stall is triggered and the motor disabled.
-     * A detected stall can be reset by homing or by reenabling the stall guard.
+     * A detected stall can be reset by homing or reenabling the joint using enable().
+     * @note If stall detection shall be enabled, invoke this method  AFTER enabling the joint with enable(). 
      * @param sensitivity value of threshold. 0 - 255 where lower is more sensitive.
      * @return 0 on success, -1 on communication error,
       -5 if the joint is not initialized.
@@ -377,8 +378,6 @@ namespace bioscara_hardware_drivers
     //  * @return The the command of type stp_reg_t
     //  */
     // stp_reg_t getCurrentBCmd(void);
-
-    std::string name;
 
   protected:
     // /**

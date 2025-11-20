@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['read_0',['read',['../classbioscara__hardware__driver_1_1Joint.html#a8db0ae4208feea40c306ea819f18e305',1,'bioscara_hardware_driver::Joint::read()'],['../classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#afd6356a580850582282adf77e9461a40',1,'bioscara_hardware_interface::BioscaraHardwareInterface::read()']]],
-  ['readfromi2cdev_1',['readfromi2cdev',['../uI2C_8h.html#a607cb25ea06e8ce952788a1e710e7f50',1,'readFromI2CDev(const int dev_handle, const int reg, char *buffer, const int data_length):&#160;uI2C.cpp'],['../uI2C_8cpp.html#a607cb25ea06e8ce952788a1e710e7f50',1,'readFromI2CDev(const int dev_handle, const int reg, char *buffer, const int data_length):&#160;uI2C.cpp']]],
-  ['readvalue_2',['readValue',['../joint_8h.html#a018130d8f5ce298859605a5c8e1320ee',1,'joint.h']]],
-  ['receiveevent_3',['receiveEvent',['../joint_8ino.html#aad830e539898b28392f61bfbbc02458f',1,'joint.ino']]],
-  ['requestevent_4',['requestEvent',['../joint_8ino.html#ac10b80b8aaeaf66cecbf0bb5eff5ae33',1,'joint.ino']]]
+  ['perform_5fcommand_5fmode_5fswitch_0',['perform_command_mode_switch',['../classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#a5c2a766b7f31313507fac3e683d65d83',1,'bioscara_hardware_interface::BioscaraHardwareInterface']]],
+  ['posthoming_1',['posthoming',['../classbioscara__hardware__driver_1_1BaseJoint.html#a5e9a9912005f627a94bcd41ab8f8cd78',1,'bioscara_hardware_driver::BaseJoint::postHoming()'],['../classbioscara__hardware__driver_1_1Joint.html#adbf3d93627ceea2355eeb1c66b88704f',1,'bioscara_hardware_driver::Joint::postHoming()']]],
+  ['prepare_5fcommand_5fmode_5fswitch_2',['prepare_command_mode_switch',['../classbioscara__hardware__interface_1_1BioscaraHardwareInterface.html#ae217264240bb140ca85381c0d1ca24e4',1,'bioscara_hardware_interface::BioscaraHardwareInterface']]]
 ];
