@@ -269,7 +269,7 @@ namespace bioscara_hardware_interfaces
         /* Workaround: since the gripper position is unkown until the first command arrived we return 0.0.
         It would be possible to return NaN but that floods the
         TF2 log with errors that the gripper position can not be calculated. */
-        if (_last_pos != std::numeric_limits<double>::quiet_NaN())
+        if (!isnan(_last_pos))
         {
           v = _last_pos;
         }
@@ -309,12 +309,15 @@ namespace bioscara_hardware_interfaces
         float pos_set = get_command(name);
 
         /* Only set the position if it is not NaN */
-        if (pos_set != std::numeric_limits<double>::quiet_NaN())
+        if (!isnan(pos_set))
         {
           rc = _gripper->setPosition(pos_set);
+        }else{
+          /* set rc to OK to not trigger an error */
+          rc = bioscara_hardware_drivers::err_type_t::OK;
         }
 
-        if (_last_pos != std::numeric_limits<double>::quiet_NaN())
+        if (!isnan(_last_pos))
         {
           _vel = (pos_set - _last_pos) / period.seconds();
         }
