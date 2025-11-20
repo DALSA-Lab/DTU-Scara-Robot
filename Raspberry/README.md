@@ -205,6 +205,7 @@ cd ROS2/ros2_scara_ws
 ```
 Install all packages that can be resolved through `rosdep` (all packages that have been released to the ROS2 package ecosystem and some debian packages):
 ```bash
+sudo apt update
 rosdep install --from-paths src --ignore-src -y --rosdistro $ROS_DISTRO
 ```
 This command will recursively scan every package in the workspace for the `<depend/>` key and install missing packages.

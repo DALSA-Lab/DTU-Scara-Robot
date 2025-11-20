@@ -15,7 +15,7 @@
 
   <!-- Specify all bioscara_gripper packages -->
   <exec_depend>bioscara_gripper_bringup</exec_depend>
-  <exec_depend>bioscara_gripper_description</exec_depend>
+  <exec_depend>bioscara_gripper_descriptions</exec_depend>
   <exec_depend>bioscara_gripper_hardware_driver</exec_depend>
   <exec_depend>bioscara_gripper_hardware_interface</exec_depend>
 

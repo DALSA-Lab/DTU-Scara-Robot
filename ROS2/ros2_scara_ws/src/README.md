@@ -264,21 +264,21 @@ flowchart TB
   end
  subgraph dalsa_bioscara_grippers["dalsa_bioscara_grippers"]
         bioscara_gripper_bringup["bioscara_gripper_bringup"]
-        bioscara_gripper_description["bioscara_gripper_descriptions"]
+        bioscara_gripper_descriptions["bioscara_gripper_descriptions"]
         bioscara_gripper_hardware_driver["bioscara_gripper_hardware_driver"]
         bioscara_gripper_hardware_interface["bioscara_gripper_hardware_interface"]
   end
  subgraph dalsa_controllers["dalsa_controllers"]
         single_trigger_controller["single_trigger_controller"]
   end
-    scene_description["scene_description"] --> bioscara_arm_description & bioscara_gripper_description
+    scene_description["scene_description"] --> bioscara_arm_description & bioscara_gripper_descriptions
     scene_bringup["scene_bringup"] --> scene_description & dalsa_bioscara_arm & dalsa_bioscara_grippers
     bioscara_arm_bringup --> single_trigger_controller & bioscara_arm_description
     bioscara_arm_description --> bioscara_arm_hardware_interface
     bioscara_arm_hardware_interface --> bioscara_arm_hardware_driver
-    bioscara_gripper_bringup --> bioscara_arm_description & bioscara_gripper_description
+    bioscara_gripper_bringup --> bioscara_arm_description & bioscara_gripper_descriptions
     bioscara_gripper_hardware_driver --> bioscara_arm_hardware_driver
-    bioscara_gripper_description --> bioscara_gripper_hardware_interface
+    bioscara_gripper_descriptions --> bioscara_gripper_hardware_interface
     bioscara_gripper_hardware_interface --> bioscara_gripper_hardware_driver
 
 ```

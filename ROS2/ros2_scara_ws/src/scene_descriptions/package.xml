@@ -14,7 +14,7 @@
   <exec_depend>joint_state_publisher</exec_depend>
   <exec_depend>joint_state_publisher_gui</exec_depend>
   <exec_depend>bioscara_arm_description</exec_depend>
-  <exec_depend>bioscara_gripper_description</exec_depend>
+  <exec_depend>bioscara_gripper_descriptions</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
