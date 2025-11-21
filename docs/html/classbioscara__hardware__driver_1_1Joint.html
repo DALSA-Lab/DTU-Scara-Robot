@@ -77,7 +77,6 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
@@ -114,7 +113,7 @@ Collaboration diagram for bioscara_hardware_driver::Joint:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a53aebede4afe3dabf74779cddb036a07" id="r_a53aebede4afe3dabf74779cddb036a07"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a53aebede4afe3dabf74779cddb036a07">Joint</a> (const std::string <a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a0a68b0d520e2c9a07e19c2d0282d81c7">name</a>, const int <a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a719726501bfb0f73eb67f0a20468a3c8">address</a>, const float <a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a7df41d80184ad3973e61021164718f94">reduction</a>, const float <a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a953751c645e1ff83b80877d425ac7faf">min</a>, const float <a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a965468e48f4d6860618f03b51233a870">max</a>)</td></tr>
+<tr class="memitem:a53aebede4afe3dabf74779cddb036a07" id="r_a53aebede4afe3dabf74779cddb036a07"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a53aebede4afe3dabf74779cddb036a07">Joint</a> (const std::string <a class="el" href="classbioscara__hardware__driver_1_1BaseJoint.html#ae2c5480bb00b9d54fa4b30b29d8d23a7">name</a>, const int <a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a719726501bfb0f73eb67f0a20468a3c8">address</a>, const float <a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a7df41d80184ad3973e61021164718f94">reduction</a>, const float <a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a953751c645e1ff83b80877d425ac7faf">min</a>, const float <a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a965468e48f4d6860618f03b51233a870">max</a>)</td></tr>
 <tr class="memdesc:a53aebede4afe3dabf74779cddb036a07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a <a class="el" href="classbioscara__hardware__driver_1_1Joint.html" title="Representing a single joint on the I2C bus.">Joint</a> object.  <br /></td></tr>
 <tr class="separator:a53aebede4afe3dabf74779cddb036a07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad70e417e0215b20b5141d52e5f6cf5e5" id="r_ad70e417e0215b20b5141d52e5f6cf5e5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__driver_1_1Joint.html#ad70e417e0215b20b5141d52e5f6cf5e5">~Joint</a> (void)</td></tr>
@@ -171,7 +170,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a654d14f8d433f4ef82f7b2d05f7add68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the maximum permitted joint velocity in rad/s or m/s for cylindrical and prismatic joints respectively.  <br /></td></tr>
 <tr class="separator:a654d14f8d433f4ef82f7b2d05f7add68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a870c343f87fade4ea5b3d3d1de8f6520" id="r_a870c343f87fade4ea5b3d3d1de8f6520"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacebioscara__hardware__driver.html#afd669880becd2fc4859d33a0f7780231">err_type_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a870c343f87fade4ea5b3d3d1de8f6520">enableStallguard</a> (u_int8_t sensitivity) override</td></tr>
-<tr class="memdesc:a870c343f87fade4ea5b3d3d1de8f6520"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable encoder stall detection of the joint.  <br /></td></tr>
+<tr class="memdesc:a870c343f87fade4ea5b3d3d1de8f6520"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable encoder stall detection of the joint. Derived class may override this.  <br /></td></tr>
 <tr class="separator:a870c343f87fade4ea5b3d3d1de8f6520"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ad06a0770cb6f24fe253c4c2754ebb6" id="r_a6ad06a0770cb6f24fe253c4c2754ebb6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacebioscara__hardware__driver.html#afd669880becd2fc4859d33a0f7780231">err_type_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a6ad06a0770cb6f24fe253c4c2754ebb6">getFlags</a> (void) override</td></tr>
 <tr class="separator:a6ad06a0770cb6f24fe253c4c2754ebb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,14 +212,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9e299da80d66340e13727c3f2adcc6c0 inherit pub_methods_classbioscara__hardware__driver_1_1BaseJoint" id="r_a9e299da80d66340e13727c3f2adcc6c0"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classbioscara__hardware__driver_1_1BaseJoint.html#af72eb34484da5e6ecddbe74e2a3cabe4">stp_reg_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__driver_1_1BaseJoint.html#a9e299da80d66340e13727c3f2adcc6c0">getCurrentBCmd</a> (void)</td></tr>
 <tr class="memdesc:a9e299da80d66340e13727c3f2adcc6c0 inherit pub_methods_classbioscara__hardware__driver_1_1BaseJoint"><td class="mdescLeft">&#160;</td><td class="mdescRight">get the currently active blocking command  <br /></td></tr>
 <tr class="separator:a9e299da80d66340e13727c3f2adcc6c0 inherit pub_methods_classbioscara__hardware__driver_1_1BaseJoint"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a0a68b0d520e2c9a07e19c2d0282d81c7" id="r_a0a68b0d520e2c9a07e19c2d0282d81c7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a0a68b0d520e2c9a07e19c2d0282d81c7">name</a></td></tr>
-<tr class="separator:a0a68b0d520e2c9a07e19c2d0282d81c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_attribs_classbioscara__hardware__driver_1_1BaseJoint"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classbioscara__hardware__driver_1_1BaseJoint')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classbioscara__hardware__driver_1_1BaseJoint.html">bioscara_hardware_driver::BaseJoint</a></td></tr>
-<tr class="memitem:ae2c5480bb00b9d54fa4b30b29d8d23a7 inherit pub_attribs_classbioscara__hardware__driver_1_1BaseJoint" id="r_ae2c5480bb00b9d54fa4b30b29d8d23a7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__driver_1_1BaseJoint.html#ae2c5480bb00b9d54fa4b30b29d8d23a7">name</a></td></tr>
-<tr class="separator:ae2c5480bb00b9d54fa4b30b29d8d23a7 inherit pub_attribs_classbioscara__hardware__driver_1_1BaseJoint"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -324,6 +315,9 @@ Additional Inherited Members</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:af72eb34484da5e6ecddbe74e2a3cabe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">register and command definitions  <a href="classbioscara__hardware__driver_1_1BaseJoint.html#af72eb34484da5e6ecddbe74e2a3cabe4">More...</a><br /></td></tr>
 <tr class="separator:af72eb34484da5e6ecddbe74e2a3cabe4 inherit pub_types_classbioscara__hardware__driver_1_1BaseJoint"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_classbioscara__hardware__driver_1_1BaseJoint"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_classbioscara__hardware__driver_1_1BaseJoint')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classbioscara__hardware__driver_1_1BaseJoint.html">bioscara_hardware_driver::BaseJoint</a></td></tr>
+<tr class="memitem:ae2c5480bb00b9d54fa4b30b29d8d23a7 inherit pub_attribs_classbioscara__hardware__driver_1_1BaseJoint" id="r_ae2c5480bb00b9d54fa4b30b29d8d23a7"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classbioscara__hardware__driver_1_1BaseJoint.html#ae2c5480bb00b9d54fa4b30b29d8d23a7">name</a></td></tr>
+<tr class="separator:ae2c5480bb00b9d54fa4b30b29d8d23a7 inherit pub_attribs_classbioscara__hardware__driver_1_1BaseJoint"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Representing a single joint on the I2C bus. </p>
@@ -681,8 +675,9 @@ J4: 3.01069 </td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Enable encoder stall detection of the joint. </p>
-<p>If the PID error exceeds the set threshold a stall is triggered and the motor disabled. A detected stall can be reset by homing or by reenabling the stall guard. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Enable encoder stall detection of the joint. Derived class may override this. </p>
+<p>If the PID error exceeds the set threshold a stall is triggered and the motor disabled. A detected stall can be reset by homing or reenabling the joint using <a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a9530f96e9594b2d8ad50e7a306074f4f" title="Setup the joint and engages motor.">enable()</a>. </p><dl class="section note"><dt>Note</dt><dd>If stall detection shall be enabled, invoke this method AFTER enabling the joint with <a class="el" href="classbioscara__hardware__driver_1_1Joint.html#a9530f96e9594b2d8ad50e7a306074f4f" title="Setup the joint and engages motor.">enable()</a>. </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sensitivity</td><td>value of threshold. 0 - 255 where lower is more sensitive. </td></tr>
   </table>
@@ -1459,20 +1454,6 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p><a class="el" href="classbioscara__hardware__driver_1_1Joint.html" title="Representing a single joint on the I2C bus.">Joint</a> lower limit. </p>
-
-</div>
-</div>
-<a id="a0a68b0d520e2c9a07e19c2d0282d81c7" name="a0a68b0d520e2c9a07e19c2d0282d81c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a68b0d520e2c9a07e19c2d0282d81c7">&#9670;&#160;</a></span>name</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string bioscara_hardware_driver::Joint::name</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>

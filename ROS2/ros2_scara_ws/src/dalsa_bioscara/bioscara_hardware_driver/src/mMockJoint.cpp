@@ -79,6 +79,7 @@ namespace bioscara_hardware_driver
 
     err_type_t MockJoint::_home(float /*velocity*/, u_int8_t /*sensitivity*/, u_int8_t /*current*/)
     {
+        getDeltaT(async_start_time);
         this->flags |= (1 << 1); // set BUSY
         this->flags |= (1 << 2); // set NOTHOMED
         return err_type_t::OK;
@@ -93,7 +94,7 @@ namespace bioscara_hardware_driver
     {
         /* If we started homing, and more than 2 seconds have passed, simulate succesfull homing
         by resetting BUSY and NOTHOMED flag */
-        if (getCurrentBCmd() == HOME && getDeltaT(async_start_time, false) >= 2.0)
+        if (getCurrentBCmd() == HOME && getDeltaT(async_start_time, false) >= 5.0)
         {
             this->flags &= ~(1 << 1); // reset BUSY
             this->flags &= ~(1 << 2); // reset NOTHOMED
