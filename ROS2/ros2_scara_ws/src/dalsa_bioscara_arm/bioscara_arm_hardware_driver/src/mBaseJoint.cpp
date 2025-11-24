@@ -33,13 +33,10 @@ namespace bioscara_hardware_drivers
     {
 
         RETURN_ON_ERROR(this->stop());
-        usleep(100000);
 
         RETURN_ON_ERROR(this->setHoldCurrent(0));
-        usleep(10000);
 
         RETURN_ON_ERROR(this->setBrakeMode(0));
-        usleep(10000);
         return err_type_t::OK;
     }
 
