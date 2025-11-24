@@ -159,10 +159,10 @@ namespace bioscara_hardware_interfaces
       else
       {
         _joints.emplace(joint.name, std::make_unique<bioscara_hardware_drivers::Joint>(joint.name,
-                                                                                      cfg.i2c_address,
-                                                                                      cfg.reduction,
-                                                                                      cfg.min,
-                                                                                      cfg.max));
+                                                                                       cfg.i2c_address,
+                                                                                       cfg.reduction,
+                                                                                       cfg.min,
+                                                                                       cfg.max));
       }
     }
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -340,6 +340,9 @@ namespace bioscara_hardware_interfaces
   hardware_interface::return_type BioscaraArmHardwareInterface::read(
       const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
+    // lock access to _joints and _joint_command_modes
+    const std::lock_guard<std::mutex> lock(mtx);
+
     for (const auto &[name, descr] : joint_state_interfaces_)
     {
       float v;
@@ -446,6 +449,9 @@ namespace bioscara_hardware_interfaces
       const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
   {
 
+    // lock access to _joints and _joint_command_modes
+    const std::lock_guard<std::mutex> lock(mtx);
+
     /* Loop over all active command interfaces for each joint and write the command to the hardware.
     Previously the command was written to every command interface specified in the ros2_control urdf. This causes conflicts. */
     for (const auto &[name, interfaces] : _joint_command_modes)
@@ -501,7 +507,7 @@ namespace bioscara_hardware_interfaces
           }
         }
         // use != 0 here since 1 for no compatible interface type
-        if (rc != bioscara_hardware_drivers::err_type_t::OK )
+        if (rc != bioscara_hardware_drivers::err_type_t::OK)
         {
           std::string reason = bioscara_hardware_drivers::error_to_string(rc);
           RCLCPP_FATAL(
@@ -520,7 +526,9 @@ namespace bioscara_hardware_interfaces
       const std::vector<std::string> &stop_interfaces)
   {
 
-    std::unordered_map<std::string, std::set<std::string>> new_active_interfaces = _joint_command_modes;
+    /* Dont need to protect _joint_command_modes here since it will only be modified in perform_command_mode_switch,
+     which will only be called after prepare_command_mode_switch. */
+    _new_joint_command_modes = _joint_command_modes;
 
     /* First remove all stopped interfaces from the active set */
     for (std::string interface : stop_interfaces)
@@ -548,7 +556,7 @@ namespace bioscara_hardware_interfaces
             "The controller tried to deactivate '%s' of '%s' but the velocity is not 0.0", interface.c_str(), joint.c_str());
       }
 
-      if (new_active_interfaces.at(joint).erase(interface) == 0)
+      if (_new_joint_command_modes.at(joint).erase(interface) == 0)
       {
         RCLCPP_WARN(
             get_logger(),
@@ -562,7 +570,7 @@ namespace bioscara_hardware_interfaces
       std::string joint;
       split_interface_string_to_joint_and_name(interface, joint, interface);
 
-      std::pair rc = new_active_interfaces.at(joint).insert(interface);
+      std::pair rc = _new_joint_command_modes.at(joint).insert(interface);
       if (rc.second == 0)
       {
         RCLCPP_FATAL(
@@ -573,7 +581,7 @@ namespace bioscara_hardware_interfaces
     }
 
     /* Validation. Currently the validation is very simple, for every joint only one active interface must exist.*/
-    for (auto &[name, interfaces] : new_active_interfaces)
+    for (auto &[name, interfaces] : _new_joint_command_modes)
     {
       size_t size = interfaces.size();
       if (size > 1)
@@ -611,11 +619,9 @@ namespace bioscara_hardware_interfaces
       }
     }
 
-    /* If the command mode switch was successfull save the new active interfaces */
-    _joint_command_modes = new_active_interfaces;
-
+    /* Print new active interfaces for debugging. */
     std::string active_if = "";
-    for (const auto &[name, interfaces] : new_active_interfaces)
+    for (const auto &[name, interfaces] : _new_joint_command_modes)
     {
       active_if += (name + ":\n[\n");
       for (std::string interface : interfaces)
@@ -636,6 +642,12 @@ namespace bioscara_hardware_interfaces
       const std::vector<std::string> &start_interfaces,
       const std::vector<std::string> &stop_interfaces)
   {
+    // lock the mutex, automatically released when leaving scope
+    const std::lock_guard<std::mutex> lock(mtx);
+
+    /* If the command mode switch was successfull save the new active interfaces from the cache. */
+    _joint_command_modes = _new_joint_command_modes;
+
     /* We can assume the start and stop interfaces are valid.
     Iterate over each interface and test for its type. Perform action depending on its type for its joint. */
     for (auto interface : start_interfaces)
@@ -760,12 +772,12 @@ namespace bioscara_hardware_interfaces
     joint_config_t cfg = _joint_cfg[name];
 
     float speed = velocity > 0.0 ? cfg.homing.speed : -cfg.homing.speed;
-    
+
     /* Activate the joint, set homing acceleration and start homing. */
     RETURN_ON_ERROR(activate_joint(name));
     RETURN_ON_ERROR(_joints.at(name)->setMaxAcceleration(cfg.homing.acceleration));
     RETURN_ON_ERROR(_joints.at(name)->startHoming(speed, cfg.homing.threshold, cfg.homing.current));
-    
+
     RCLCPP_INFO(get_logger(), "Started homing joint '%s'", name.c_str());
     return bioscara_hardware_drivers::err_type_t::OK;
   }
@@ -780,9 +792,9 @@ namespace bioscara_hardware_interfaces
     RETURN_ON_ERROR(_joints.at(name)->stop());
     RETURN_ON_ERROR(_joints.at(name)->postHoming());
     RETURN_ON_ERROR(deactivate_joint(name));
-    
+
     RCLCPP_INFO(get_logger(), "Finished homing joint '%s'", name.c_str());
-        
+
     return bioscara_hardware_drivers::err_type_t::OK;
   }
 

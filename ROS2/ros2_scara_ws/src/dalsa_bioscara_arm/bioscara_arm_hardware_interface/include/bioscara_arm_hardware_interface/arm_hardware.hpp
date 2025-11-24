@@ -21,6 +21,7 @@
 #include <set>
 #include <unordered_map>
 #include <memory>
+#include <mutex>
 
 #include "bioscara_arm_hardware_driver/mJoint.h"
 #include "bioscara_arm_hardware_driver/mMockJoint.h"
@@ -349,6 +350,22 @@ namespace bioscara_hardware_interfaces
          *
          */
         std::unordered_map<std::string, std::set<std::string>> _joint_command_modes;
+
+        /**
+         * @brief Temporary cache of new joint_command_modes when switching controllers.
+         * 
+         * Since the prepare_command_mode_switch is executed in a non-RT context we save the new joint command modes to this
+         * cache first to avoid needing to lock the _joint_command_modes 
+         * TODO: this
+         * 
+         */
+        std::unordered_map<std::string, std::set<std::string>> _new_joint_command_modes;
+
+        /**
+         * @brief TODO
+         * 
+         */
+        std::mutex mtx;
 
         /**
          * @brief wrapper method to start homing.
