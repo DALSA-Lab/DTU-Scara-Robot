@@ -779,15 +779,18 @@ namespace bioscara_hardware_interfaces
       return bioscara_hardware_drivers::err_type_t::ERROR;
     }
 
-    // enable stall detection
-    rc = _joints.at(name)->enableStallguard(cfg.stall_threshold);
-    if (rc != bioscara_hardware_drivers::err_type_t::OK)
+    if (cfg.stall_threshold > 0)
     {
-      std::string reason = bioscara_hardware_drivers::error_to_string(rc);
-      RCLCPP_FATAL(
-          get_logger(),
-          "Failed to enable stall protection of joint '%s'. Reason: %s", name.c_str(), reason.c_str());
-      return bioscara_hardware_drivers::err_type_t::ERROR;
+      // enable stall detection
+      rc = _joints.at(name)->enableStallguard(cfg.stall_threshold);
+      if (rc != bioscara_hardware_drivers::err_type_t::OK)
+      {
+        std::string reason = bioscara_hardware_drivers::error_to_string(rc);
+        RCLCPP_FATAL(
+            get_logger(),
+            "Failed to enable stall protection of joint '%s'. Reason: %s", name.c_str(), reason.c_str());
+        return bioscara_hardware_drivers::err_type_t::ERROR;
+      }
     }
 
     // set max acceleration
