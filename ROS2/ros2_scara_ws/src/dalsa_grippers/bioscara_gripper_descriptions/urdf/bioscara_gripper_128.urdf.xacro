@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="bioscara_gripper">
+
+    <xacro:macro name="bioscara_gripper_128" params="
+        parameters
+        prefix
+        parent
+        *origin">
+
+        <xacro:include filename="$(find bioscara_gripper_descriptions)/urdf/materials.xacro" />
+
+        <joint name="${prefix}grp_base_joint" type="fixed">
+            <xacro:insert_block name="origin" />
+            <parent link="${parent}" />
+            <child link="${prefix}grp_base_link" />
+        </joint>
+
+        <link name="${prefix}grp_base_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="file://$(find bioscara_gripper_descriptions)/meshes/base.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="gripper_silver"/>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="file://$(find bioscara_gripper_descriptions)/meshes/base.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <link name="${prefix}virtual_gripper"/>
+        <joint name="${prefix}gripper" type="prismatic">
+            <parent link="${prefix}grp_base_link"/>
+            <child link="${prefix}virtual_gripper"/>
+            <axis xyz="1.0 0.0 0.0"/>
+            <limit upper="${parameters['max']}" lower="${parameters['min']}" effort="100" velocity="${parameters['max_velocity']}"/>
+        </joint>
+
+        <link name="${prefix}left_jaw_link">
+            <visual>
+                <geometry>
+                    <mesh filename="file://$(find bioscara_gripper_descriptions)/meshes/left_jaw.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="gripper_silver"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <mesh filename="file://$(find bioscara_gripper_descriptions)/meshes/left_jaw.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <link name="${prefix}right_jaw_link">
+            <visual>
+                <geometry>
+                    <mesh filename="file://$(find bioscara_gripper_descriptions)/meshes/right_jaw.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+                <material name="gripper_silver"/>
+            </visual>
+            <collision>
+                <geometry>
+                    <mesh filename="file://$(find bioscara_gripper_descriptions)/meshes/right_jaw.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}gripper_l_mimic" type="prismatic">
+            <parent link="${prefix}grp_base_link"/>
+            <child link="${prefix}left_jaw_link"/>
+            <axis xyz="1 0 0" />
+            <limit upper="${parameters['max']}" lower="${parameters['min']}" effort="100" velocity="${parameters['max_velocity']}"/>
+            <mimic joint="${prefix}gripper" multiplier="0.5" />
+        </joint>
+
+        <joint name="${prefix}gripper_r_mimic" type="prismatic">
+            <parent link="${prefix}grp_base_link"/>
+            <child link="${prefix}right_jaw_link"/>
+            <axis xyz="1 0 0" />
+            <limit upper="${parameters['max']}" lower="${parameters['min']}" effort="100" velocity="${parameters['max_velocity']}"/>
+            <mimic joint="${prefix}gripper" multiplier="-0.5" />
+        </joint>
+
+
+        <!-- Tool Link -->
+        <link name="${prefix}tool"/>
+
+        <joint name="tool" type="fixed">
+            <parent link="${prefix}grp_base_link"/>
+            <child link="${prefix}tool"/>
+            <origin xyz="0.0 -0.11908 -0.14409" rpy="0 0 ${-pi/2}" />
+        </joint>
+
+    </xacro:macro>
+</robot>

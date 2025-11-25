@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>dalsa_bioscara_arm</name>
+  <version>0.0.0</version>
+  <description>Metapackage for the DALSA Bioscara control packages</description>
+
+  <maintainer email="s.storz01@gmail.com">Sebastian Storz</maintainer>
+
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!-- Specify all bioscara_arm packages -->
+  <exec_depend>bioscara_arm_bringup</exec_depend>
+  <exec_depend>bioscara_arm_controllers</exec_depend>
+  <exec_depend>bioscara_arm_description</exec_depend>
+  <exec_depend>bioscara_arm_hardware_driver</exec_depend>
+  <exec_depend>bioscara_arm_hardware_interface</exec_depend>
+  <depend>python3-vcstool</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

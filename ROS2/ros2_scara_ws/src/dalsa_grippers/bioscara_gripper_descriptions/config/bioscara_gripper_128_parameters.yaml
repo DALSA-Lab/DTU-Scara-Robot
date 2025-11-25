@@ -1,0 +1,5 @@
+reduction: 1.0
+offset: 0.0
+min: 0.04
+max: 0.120
+max_velocity: 1.0

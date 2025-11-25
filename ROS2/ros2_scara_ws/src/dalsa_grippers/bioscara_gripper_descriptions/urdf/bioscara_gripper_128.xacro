@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot name="bioscara_gripper_128" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="load_gripper" params="
+    parent
+    prefix
+    *origin
+    use_mock_hardware">
+
+    <xacro:property name="config_file" value="$(find bioscara_gripper_descriptions)/config/bioscara_gripper_128_parameters.yaml" />
+    <xacro:property name="params" value="${xacro.load_yaml(config_file)}"/>
+
+    <xacro:include filename="$(find bioscara_gripper_descriptions)/urdf/bioscara_gripper_128.urdf.xacro" />
+    <xacro:include filename="$(find bioscara_gripper_descriptions)/urdf/bioscara_gripper_128.ros2_control.xacro" />
+    
+    <xacro:bioscara_gripper_128_ros2_control
+      prefix="${prefix}"
+      parameters="${params}" 
+      use_mock_hardware="${use_mock_hardware}"/>
+
+    <xacro:bioscara_gripper_128
+      parent="${parent}" 
+      prefix="${prefix}" 
+      parameters="${params}">
+      <xacro:insert_block name="origin" />
+    </xacro:bioscara_gripper_128>
+  </xacro:macro>
+</robot>

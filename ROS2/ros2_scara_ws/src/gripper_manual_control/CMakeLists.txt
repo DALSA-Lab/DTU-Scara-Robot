@@ -7,11 +7,14 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(bioscara_hardware_driver REQUIRED)
+find_package(bioscara_gripper_hardware_driver REQUIRED)
 
 add_executable(manual_control src/manual_control.cpp)
-ament_target_dependencies(manual_control bioscara_hardware_driver)
+ament_target_dependencies(manual_control bioscara_gripper_hardware_driver)
 install(TARGETS manual_control
         DESTINATION lib/${PROJECT_NAME})
 
+ament_export_dependencies(
+  bioscara_gripper_hardware_driver
+)
 ament_package()
