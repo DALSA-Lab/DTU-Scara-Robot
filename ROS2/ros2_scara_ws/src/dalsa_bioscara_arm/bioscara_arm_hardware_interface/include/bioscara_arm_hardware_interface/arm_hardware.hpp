@@ -21,6 +21,7 @@
 #include <set>
 #include <unordered_map>
 #include <memory>
+#include <mutex>
 
 #include "bioscara_arm_hardware_driver/mJoint.h"
 #include "bioscara_arm_hardware_driver/mMockJoint.h"
@@ -198,14 +199,14 @@ namespace bioscara_hardware_interfaces
             const rclcpp::Duration &period) override;
 
         /**
-         * @brief Performs checks and book keeping of the active control mode when changing controllers.
+         * @brief Performs checks and book keeping of the active control mode when changing controllers in non-realtime context.
          *
          * For safe operation only one controller may interact with the hardware at the time.
          * For example if the velocity JTC is active and has claimed the velocity command interfaces it is technically possible to
          * activate the position JTC (or a homing controller, or others) that claim a different command interface (position in this case).
          * However if both controllers are active they start writing to the hardware simultaneously which is to be avoided.
          * For this reason a book keeping mechanism has been implemented which stores the currently active command interfaces for each joint in the
-         * _joint_command_modes member. Each joint has a set of active command interfaces. When a controller switch is performed the interfaces that should be stopped are removed from
+         * #_joint_command_modes member. Each joint has a set of active command interfaces. When a controller switch is performed the interfaces that should be stopped are removed from
          * each joint set, then the one that should be started are added, if they are already present an error is thrown. Lastly
          * a validation is performed. Currently the validation is simple since each joint may only have one command interface. The validation can be expanded for furture use cases that require
          * a combination of active command interfaces per joint for example. \n
@@ -221,6 +222,11 @@ namespace bioscara_hardware_interfaces
          *  - [ERROR] Activating a second command interface for a joint.
          *  - [ERROR] Activating 'position' or 'velocity' command interface if the joint is not homed (Joint::isHomed() == false).
          * .
+         * 
+         * Since this method operates in non-realtime context it must not access critical members (#_joint_command_modes and #_joints)
+         * to avoid priority inversion. Therefore the new command modes are first saved to a cache #_new_joint_command_modes.
+         * This will then be applied to #_joint_command_modes in the perform_command_mode_switch() which is executed in RT context.
+         * 
          * @param start_interfaces command interfaces that should be started in the form "joint/interface"
          * @param stop_interfaces command interfaces that should be stopped in the form "joint/interface"
          * @return hardware_interface::return_type
@@ -230,19 +236,20 @@ namespace bioscara_hardware_interfaces
             const std::vector<std::string> &stop_interfaces) override;
 
         /**
-         * @brief Perform the mode-switching for the new command interface combination.
+         * @brief Perform the mode-switching for the new command interface combination in realtime context.
          * 
          * Performs the following actions:
+         * - acquires the #mtx lock to protect the critical members.
+         * - Copies the cached #_new_joint_command_modes to the #_joint_command_modes
          * - <b>On activation</b>:
          *  - <b>home</b> interface:
          *   - Reset command to 0.0. This clears any remaining commands that have been written to the 
          * command interface while the hardware was unable to act on it. For example if it was inactive or the homing command
          * was not the active command mode. 
          *
-         * \note This is part of the realtime update loop, and should be fast.
-         * \param[in] start_interfaces vector of string identifiers for the command interfaces starting.
-         * \param[in] stop_interfaces vector of string identifiers for the command interfaces stopping.
-         * \return return_type::OK if the new command interface combination can be switched to (or) if the
+         * @param start_interfaces vector of string identifiers for the command interfaces starting.
+         * @param stop_interfaces vector of string identifiers for the command interfaces stopping.
+         * @return return_type::OK if the new command interface combination can be switched to (or) if the
          * interface key is not relevant to this system. Returns return_type::ERROR otherwise.
          */
          hardware_interface::return_type perform_command_mode_switch(
@@ -349,6 +356,30 @@ namespace bioscara_hardware_interfaces
          *
          */
         std::unordered_map<std::string, std::set<std::string>> _joint_command_modes;
+
+        /**
+         * @brief Temporary cache of new joint_command_modes when switching controllers.
+         * 
+         * Since the prepare_command_mode_switch() is executed in a non-RT context we save the new joint command modes to this
+         * cache first to avoid needing to lock the #_joint_command_modes.
+         * 
+         */
+        std::unordered_map<std::string, std::set<std::string>> _new_joint_command_modes;
+
+        /**
+         * @brief A mutex that is used to prevent concurrent access to hardware and #_joint_command_modes
+         * 
+         * The mutex prevents two things:
+         * 1) Modifying the #_joint_command_modes from
+         * 2) Concurrent access to the hardware via the #_joints map. The Joint harwdare is not thread safe.
+         * In particular the read()/write() methods are executed in one RT thread while the perform_command_mode_switch()
+         * is called from another RT thread. The latter also tries to modify the Joint object via activate_joint() and deactivate_joint()
+         * which must not happen concurrently with a read() or write() call.
+         * 
+         * All methods that need to acquire this lock need to be performed in RT context to avoid being preempted by 
+         * other lower priority threads potentially blocking the other RT threads from continuing.
+         */
+        std::mutex mtx;
 
         /**
          * @brief wrapper method to start homing.
