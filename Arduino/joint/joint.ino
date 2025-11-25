@@ -79,8 +79,7 @@ void set_flags_for_blocking_handler(uint8_t reg);
 void receiveEvent(int n) {
   // Serial.print("receive: \t");
   reg = Wire.read();
-  Serial.printf("Register: 0x%02x\n", reg);
-  // Serial.println(reg);
+  // Serial.printf("Register: 0x%02x\n", reg);
   int i = 0;
   while (Wire.available()) {
     rx_buf[i] = Wire.read();
@@ -90,8 +89,8 @@ void receiveEvent(int n) {
   tx_length = 0;
 
   if (i) {
-    Serial.print("rx_buf: ");
-    DUMP_BUFFER(rx_buf, rx_length);
+    // Serial.print("rx_buf: ");
+    // DUMP_BUFFER(rx_buf, rx_length);
   }
 }
 
@@ -315,7 +314,6 @@ void non_blocking_handler(uint8_t reg) {
         readValue<uint8_t>(v, rx_buf, rx_length);
         stepper.setCurrent(v);
         if (v == 0) {
-          Serial.print("Set notEnabled [SETCURRENT]\n");
           notEnabled = 1;
         }
         break;
@@ -327,9 +325,7 @@ void non_blocking_handler(uint8_t reg) {
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
         stepper.setHoldCurrent(v);
-        Serial.printf("hold current: %d\n", v);
         if (v == 0) {
-          Serial.print("Set notEnabled [SETHOLDCURRENT]\n");
           notEnabled = 1;
         }
         break;
@@ -408,7 +404,6 @@ void non_blocking_handler(uint8_t reg) {
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
         stepper.disableClosedLoop();
-        Serial.print("Set notEnabled [DISABLECLOSEDLOOP] \n");
         notEnabled = 1;
         break;
       }
@@ -588,7 +583,6 @@ void loop(void) {
   if (diff > 50 && !notEnabled && qd_set) {
     Serial.println("Deadman switch triggered");
     stepper.setRPM(0);
-    Serial.print("Set notEnabled [WATCHDOG]\n");
     notEnabled = 1;
   }
 
