@@ -266,7 +266,9 @@ namespace bioscara_hardware_interfaces
       double v = 0.0;
       if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
-        /* Workaround: since the gripper position is unkown until the first command arrived we return 0.0.
+        /* Workaround: since the gripper position is unkown until the first command arrived we return -0.01.
+        The write method only writes to the gripper if not NaN and not negative.
+        A small negative number is chosen to not disturb the visual representation.
         It would be possible to return NaN but that floods the
         TF2 log with errors that the gripper position can not be calculated. */
         if (!isnan(_last_pos))
@@ -275,7 +277,7 @@ namespace bioscara_hardware_interfaces
         }
         else
         {
-          v = 0.0;
+          v = -0.01;
         }
       }
       else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
@@ -309,10 +311,14 @@ namespace bioscara_hardware_interfaces
         float pos_set = get_command(name);
 
         /* Only set the position if it is not NaN */
-        if (!isnan(pos_set))
+        if (!isnan(pos_set) && pos_set >= -0.00001)
         {
           rc = _gripper->setPosition(pos_set);
-        }else{
+          pos_set = pos_set < _gripper_cfg.min ? _gripper_cfg.min : pos_set;
+          pos_set = pos_set > _gripper_cfg.max ? _gripper_cfg.max : pos_set;
+        }
+        else
+        {
           /* set rc to OK to not trigger an error */
           rc = bioscara_hardware_drivers::err_type_t::OK;
         }
