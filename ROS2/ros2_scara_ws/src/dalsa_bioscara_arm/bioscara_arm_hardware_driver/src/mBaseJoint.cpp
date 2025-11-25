@@ -36,6 +36,8 @@ namespace bioscara_hardware_drivers
 
         RETURN_ON_ERROR(this->setHoldCurrent(0));
 
+        RETURN_ON_ERROR(this->setDriveCurrent(0));
+
         RETURN_ON_ERROR(this->setBrakeMode(0));
         return err_type_t::OK;
     }
