@@ -7,10 +7,10 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(bioscara_hardware_driver REQUIRED)
+find_package(bioscara_arm_hardware_driver REQUIRED)
 
 add_executable(main src/main.cpp)
-ament_target_dependencies(main bioscara_hardware_driver)
+ament_target_dependencies(main bioscara_arm_hardware_driver)
 install(TARGETS main
         DESTINATION lib/${PROJECT_NAME})
 
