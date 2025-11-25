@@ -17,8 +17,8 @@
 #if defined(J1)
 /** Test C documentation. */
 #define ADR 0x11
-#define MAXACCEL 0
-#define MAXVEL 0
+#define MAXACCEL 100
+#define MAXVEL 10
 #define STALL_WINDOW_B1 12
 #define STALL_WINDOW_B2 450
 #define STALL_WINDOW_OFFSET 90.0
@@ -26,8 +26,8 @@
 
 #elif defined(J2)
 #define ADR 0x12
-#define MAXACCEL 0
-#define MAXVEL 0
+#define MAXACCEL 100
+#define MAXVEL 10
 #define STALL_WINDOW_B1 12
 #define STALL_WINDOW_B2 450
 #define STALL_WINDOW_OFFSET 90.0
@@ -35,8 +35,8 @@
 
 #elif defined(J3)
 #define ADR 0x13
-#define MAXACCEL 0
-#define MAXVEL 0
+#define MAXACCEL 100
+#define MAXVEL 10
 #define STALL_WINDOW_B1 12
 #define STALL_WINDOW_B2 450
 #define STALL_WINDOW_OFFSET 90.0
@@ -44,8 +44,8 @@
 
 #elif defined(J4)
 #define ADR 0x14
-#define MAXACCEL 0
-#define MAXVEL 0
+#define MAXACCEL 100
+#define MAXVEL 10
 #define STALL_WINDOW_B1 12
 #define STALL_WINDOW_B2 450
 #define STALL_WINDOW_OFFSET 90.0
@@ -62,13 +62,13 @@
  * @brief Maximum acceleration in steps/s^2. Can be set for each joint depending on inertia. 
  * If set to high stalls might trigger since PID error grows too large.
  */
-#define MAXACCEL 10000
+#define MAXACCEL 1010000
 
 /**
  * @brief Maximum velocity in steps/s. Can be set for each joint.
  * If set to high stalls might trigger since PID error grows too large.
  */
-#define MAXVEL 800
+#define MAXVEL 1800
 #error "No Joint has been defined. Define one of 'JX' where X 1,2,3,4"
 #endif
 

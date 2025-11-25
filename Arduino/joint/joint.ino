@@ -17,7 +17,7 @@
  * 
  * Define either J1, J2, J3 or J4 and subsequently include configuration.h 
  */
-#define J3
+#define J4
 #include "configuration.h"
 
 #include <UstepperS32.h>
@@ -37,12 +37,13 @@ static uint8_t notEnabled = 1;
 static bool stepperSetup = 0;
 static uint8_t isStallguardEnabled = 0;
 static int stallguardThreshold = 0;
-static float q_set, q, qd_set, qd;
+static float q_set, q, qd_set = 0.0, qd;
 static float maxAccel = MAXACCEL;
 static float maxVel = MAXVEL;
 static float homingOffset = 0;
 
-uint8_t reg = 0;
+uint8_t reg = 0, blk_reg = 0;
+;
 uint8_t rx_buf[MAX_BUFFER] = { 0 };
 uint8_t tx_buf[MAX_BUFFER + RFLAGS_SIZE] = { 0 };
 bool rx_data_ready = 0;
@@ -55,6 +56,7 @@ static uint32_t deadman = 0;
 
 void blocking_handler(uint8_t reg);
 void non_blocking_handler(uint8_t reg);
+void set_flags_for_blocking_handler(uint8_t reg);
 
 /**
  * @brief I2C receive event Handler.
@@ -77,8 +79,7 @@ void non_blocking_handler(uint8_t reg);
 void receiveEvent(int n) {
   // Serial.print("receive: \t");
   reg = Wire.read();
-  // Serial.print("Register: ");
-  // Serial.println(reg);
+  // Serial.printf("Register: 0x%02x\n", reg);
   int i = 0;
   while (Wire.available()) {
     rx_buf[i] = Wire.read();
@@ -115,7 +116,7 @@ void requestEvent() {
   state |= (notEnabled << 3);
   // Serial.print("state: \t");
   // Serial.print(state, HEX);
-  // Serial.print("\t");
+  // Serial.print("\n");
   tx_buf[tx_length++] = state;
   // Serial.print("tx_buf: \t");
   // DUMP_BUFFER(tx_buf, tx_length);
@@ -135,35 +136,6 @@ void blocking_handler(uint8_t reg) {
   // Serial.print("Receive Handler: \t Register: ");
   // Serial.println(reg);
   switch (reg) {
-    case SETUP:
-      {
-        // Serial.print("Executing SETUP\n");
-        memcpy(&driveCurrent, rx_buf, 1);
-        memcpy(&holdCurrent, rx_buf + 1, 1);
-        if (!stepperSetup) {
-          stepper.setup(CLOSEDLOOP, 200);
-          stepper.enableClosedLoop();  // necessary to be able to use PID error
-          stepperSetup = 1;
-          notHomed = 1;
-        }
-
-        stepper.setMaxAcceleration(maxAccel);
-        stepper.setMaxDeceleration(maxAccel);
-        stepper.setMaxVelocity(maxVel);
-        stepper.setControlThreshold(15);
-        stepper.setCurrent(driveCurrent);
-        stepper.setHoldCurrent(holdCurrent);
-        stepper.moveToAngle(stepper.angleMoved());
-        // stepper.driver.setPosition(stepper.driver.getPosition());
-        stepper.stop();
-
-        isStallguardEnabled = 0;
-        notEnabled = 0;
-        isStalled = 0;
-        qd_set = 0;  //reset here so that no matter how long it takes after the enable call for the next command to arrive, we dont trigger the watchdog
-        break;
-      }
-
     case CHECKORIENTATION:
       {
         // Serial.print("Executing CHECKORIENTATION\n");
@@ -184,7 +156,7 @@ void blocking_handler(uint8_t reg) {
         memcpy(&speed, rx_buf + 1, 1);
         memcpy(&sensitivity, rx_buf + 2, 1);
         memcpy(&current, rx_buf + 3, 1);
-        
+
         stepper.stop(SOFT);
 
         /* Set the maximum velocity to homing speed to
@@ -194,7 +166,7 @@ void blocking_handler(uint8_t reg) {
 
         stepper.setRPM(dir ? speed : -speed);
         stepper.setCurrent(current);
-          
+
         while (isBusy) {
           float err = stepper.getPidError();
           // Serial.print(abs(err));
@@ -228,7 +200,7 @@ void blocking_handler(uint8_t reg) {
       }
 
     default:
-      // Serial.println("UNKOWN REGISTER");
+      Serial.println("UNKOWN REGISTER");
       break;
   }
 }
@@ -251,6 +223,35 @@ void non_blocking_handler(uint8_t reg) {
         break;
       }
 
+    case SETUP:
+      {
+        // Serial.print("Executing SETUP\n");
+        memcpy(&driveCurrent, rx_buf, 1);
+        memcpy(&holdCurrent, rx_buf + 1, 1);
+        if (!stepperSetup) {
+          stepper.setup(CLOSEDLOOP, 200);
+          stepper.enableClosedLoop();  // necessary to be able to use PID error
+          stepperSetup = 1;
+          notHomed = 1;
+        }
+
+        stepper.setMaxAcceleration(maxAccel);
+        stepper.setMaxDeceleration(maxAccel);
+        stepper.setMaxVelocity(maxVel);
+        stepper.setControlThreshold(15);
+        stepper.setCurrent(driveCurrent);
+        stepper.setHoldCurrent(holdCurrent);
+        stepper.moveToAngle(stepper.angleMoved());
+        // stepper.driver.setPosition(stepper.driver.getPosition());
+        // stepper.stop();
+
+        isStallguardEnabled = 0;
+        notEnabled = 0;
+        isStalled = 0;
+        qd_set = 0;  //reset here so that no matter how long it takes after the enable call for the next command to arrive, we dont trigger the watchdog
+        break;
+      }
+      
     case GETDRIVERRPM:
       // Serial.print("Executing GETDRIVERRPM\n");
       break;
@@ -439,21 +440,33 @@ void non_blocking_handler(uint8_t reg) {
         This is neccessary since if homing command is received but the blocking_handler has not handled the command yet
         a following read request might read isBusy and notHomed to be 0 leading to the false assumption homing has completed. */
         notHomed = 1;
-        isBusy = 1;
+        set_flags_for_blocking_handler(reg);
 
-        // dont break, continue to 'default' to start the blocking_handler
+        break;
       }
 
     default:
-      // Serial.println("No data to write, sending flags");
-      // If the received register is not a Write register (handled in this handler), it must be a Read register, hence set
-      // rx_data_ready flag to signal mainloop to handle it.
-      rx_data_ready = 1;
-      // Set the tx_length to 0 to only send return flags
-      tx_length = 0;
+      set_flags_for_blocking_handler(reg);
       break;
   }
 }
+
+/**
+ * @brief prepare flags to initiate the blocking handling of the received comman.
+ *
+ * Sets the blk_reg to reg, this makes sure that even if a new command is received the blocking hanlder access the latest blocking command.
+ * Sets the isBusy flag, to indicate immediatly that the blocking has not been finished. This is if a status request follows immidiatly the command,
+ * before the context back to the main loop has happened.
+ * Sets the rx_data_ready flag to indicate to the main loop that there is data to read in the blocking handler.
+ * Sets the tx_length to 0 because blocking commands can not return a payload.
+ */
+void set_flags_for_blocking_handler(uint8_t reg) {
+  blk_reg = reg;
+  isBusy = 1;
+  rx_data_ready = 1;
+  tx_length = 0;
+}
+
 
 /**
  * @brief Setup Peripherals
@@ -506,7 +519,7 @@ void loop(void) {
     // Serial.print("\t");
 
     /* data3: raw SG_RESULT */
-    // SG_err = stepper.driver.getStallValue(); 
+    // SG_err = stepper.driver.getStallValue();
     // Serial.print(SG_err);
     // Serial.print("\t");
     // if (SG_err - last_SG_err > 200) {
@@ -534,7 +547,7 @@ void loop(void) {
     // Serial.print("\t");
 
     /* data9: threshold */
-    float threshold = stall_threshold(qd/9.549296596425384, stallguardThreshold);
+    float threshold = stall_threshold(qd / 9.549296596425384, stallguardThreshold);
     // Serial.print(threshold);
     // Serial.print("\t");
 
@@ -559,14 +572,14 @@ void loop(void) {
   if (rx_data_ready) {
     rx_data_ready = 0;
     isBusy = 1;  // set is busy flag
-    blocking_handler(reg);
+    blocking_handler(blk_reg);
     isBusy = 0;  // reset is busy flag
   }
 
   uint32_t now = millis();
   /* Take potential overflow of millis() into account (50 days) and calculate the difference according to this */
   uint32_t diff = (now >= deadman) ? (now - deadman) : (std::numeric_limits<uint32_t>::max() + 1 - (deadman - now));
-  // Serial.println(diff);
+  // Serial.printf("diff: %lu; qd: %.4f\n",diff,qd_set);
   if (diff > 50 && !notEnabled && qd_set) {
     Serial.println("Deadman switch triggered");
     stepper.setRPM(0);
