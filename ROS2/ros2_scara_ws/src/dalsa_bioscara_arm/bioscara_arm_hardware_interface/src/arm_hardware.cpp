@@ -746,7 +746,7 @@ namespace bioscara_hardware_interfaces
     RETURN_ON_ERROR(_joints.at(name)->setMaxAcceleration(cfg.max_acceleration));
     RETURN_ON_ERROR(_joints.at(name)->setMaxVelocity(cfg.max_velocity));
     RETURN_ON_ERROR(_joints.at(name)->stop());
-    RETURN_ON_ERROR(_joints.at(name)->postHoming());
+    _joints.at(name)->postHoming();
     RETURN_ON_ERROR(deactivate_joint(name));
 
     RCLCPP_INFO(get_logger(), "Finished homing joint '%s'", name.c_str());
