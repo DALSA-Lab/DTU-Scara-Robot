@@ -106,6 +106,7 @@ namespace bioscara_hardware_interfaces
         /**
          * @brief Reads from the hardware and populates the state interfaces.
          * 
+         * TODO
          *  
          * @param time 
          * @param period 
@@ -117,6 +118,8 @@ namespace bioscara_hardware_interfaces
 
         /**
          * @brief Writes commands to the hardware from the command interfaces.
+         * 
+         * TODO
          * 
          * @param time 
          * @param period 
@@ -181,8 +184,8 @@ namespace bioscara_hardware_interfaces
          */
         gripper_config_t _gripper_cfg;
 
-        float last_pos = std::numeric_limits<double>::quiet_NaN();
-        float vel = std::numeric_limits<double>::quiet_NaN();
+        float _last_pos = std::numeric_limits<double>::quiet_NaN();
+        float _vel = std::numeric_limits<double>::quiet_NaN();
 
     };
 

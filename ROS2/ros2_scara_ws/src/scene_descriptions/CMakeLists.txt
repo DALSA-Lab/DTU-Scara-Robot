@@ -10,9 +10,9 @@ find_package(ament_cmake REQUIRED)
 
 install(
   DIRECTORY
-    config
+    # config
     launch
-    meshes
+    # meshes
     rviz
     urdf
   DESTINATION

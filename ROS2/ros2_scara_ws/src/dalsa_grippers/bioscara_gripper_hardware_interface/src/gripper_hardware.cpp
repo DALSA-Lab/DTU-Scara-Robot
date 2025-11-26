@@ -120,9 +120,9 @@ namespace bioscara_hardware_interfaces
     else
     {
       _gripper = std::make_unique<bioscara_hardware_drivers::Gripper>(_gripper_cfg.reduction,
-                                                                     _gripper_cfg.offset,
-                                                                     _gripper_cfg.min,
-                                                                     _gripper_cfg.max);
+                                                                      _gripper_cfg.offset,
+                                                                      _gripper_cfg.min,
+                                                                      _gripper_cfg.max);
     }
 
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -220,12 +220,10 @@ namespace bioscara_hardware_interfaces
 
     for (const auto &[name, descr] : joint_command_interfaces_)
     {
-      /* Check if position or velocity. Current position is unknown, setting to 0.0 because setting to NaN 
-      causes constant errors in TF transform and velocity to 0.0 */
       if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
         RCLCPP_INFO(get_logger(), "Set %s, to NaN", name.c_str());
-        set_command(name, 0.0);
+        set_command(name, std::numeric_limits<double>::quiet_NaN());
       }
       else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
       {
@@ -268,12 +266,23 @@ namespace bioscara_hardware_interfaces
       double v = 0.0;
       if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
-        /* Multiply by 2 again to get full width */
-        v = this->last_pos*2;
+        /* Workaround: since the gripper position is unkown until the first command arrived we return -0.01.
+        The write method only writes to the gripper if not NaN and not negative.
+        A small negative number is chosen to not disturb the visual representation.
+        It would be possible to return NaN but that floods the
+        TF2 log with errors that the gripper position can not be calculated. */
+        if (!isnan(_last_pos))
+        {
+          v = _last_pos;
+        }
+        else
+        {
+          v = -0.01;
+        }
       }
       else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
       {
-        v = this->vel;
+        v = _vel;
       }
       try
       {
@@ -292,24 +301,38 @@ namespace bioscara_hardware_interfaces
   }
 
   hardware_interface::return_type BioscaraGripperHardwareInterface::write(
-      const rclcpp::Time & /*time*/, const rclcpp::Duration & period)
+      const rclcpp::Time & /*time*/, const rclcpp::Duration &period)
   {
     for (const auto &[name, descr] : joint_command_interfaces_)
     {
       bioscara_hardware_drivers::err_type_t rc = static_cast<bioscara_hardware_drivers::err_type_t>(1);
       if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
-        /* Divide by two since mimic joint mirrors the command and hence doubles the opening width */
-        float pos_set = get_command(name)/2;
-        rc = _gripper->setPosition(pos_set);
+        float pos_set = get_command(name);
 
-        if (this->last_pos != std::numeric_limits<double>::quiet_NaN())
+        /* Only set the position if it is not NaN */
+        if (!isnan(pos_set) && pos_set >= -0.00001)
         {
-          this->vel = (pos_set - this->last_pos)/period.seconds();
-        }else{
-          this->vel = 0.0;
+          rc = _gripper->setPosition(pos_set);
+          pos_set = pos_set < _gripper_cfg.min ? _gripper_cfg.min : pos_set;
+          pos_set = pos_set > _gripper_cfg.max ? _gripper_cfg.max : pos_set;
         }
-        this->last_pos = pos_set;
+        else
+        {
+          /* set rc to OK to not trigger an error */
+          rc = bioscara_hardware_drivers::err_type_t::OK;
+        }
+
+        if (!isnan(_last_pos))
+        {
+          _vel = (pos_set - _last_pos) / period.seconds();
+        }
+        else
+        {
+          _vel = 0.0;
+        }
+
+        _last_pos = pos_set;
       }
 
       // use != 0 here since 1 for no compatible interface type

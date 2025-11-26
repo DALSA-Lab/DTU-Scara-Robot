@@ -60,7 +60,6 @@ namespace bioscara_hardware_drivers
         std::cout << "[INFO] enabling " << this->name << std::endl;
 
         RETURN_ON_NEGATIVE(this->write(SETUP, buf, this->flags), err_type_t::COMM_ERROR);
-        this->wait_while_busy(10.0);
 
         RETURN_ON_FALSE(this->isEnabled(), err_type_t::NOT_ENABLED);
         return err_type_t::OK;
