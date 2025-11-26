@@ -17,7 +17,7 @@
  * 
  * Define either J1, J2, J3 or J4 and subsequently include configuration.h 
  */
-#define J4
+#define J3
 #include "configuration.h"
 
 #include <UstepperS32.h>
@@ -34,16 +34,15 @@ static uint8_t notHomed = 1;
 static uint8_t isStalled = 0;
 static uint8_t isBusy = 0;
 static uint8_t notEnabled = 1;
-static bool stepperSetup = 0;
 static uint8_t isStallguardEnabled = 0;
 static int stallguardThreshold = 0;
-static float q_set, q, qd_set = 0.0, qd;
+static float q_set = 0.0, q = 0.0, qd_set = 0.0, qd = 0.0;
 static float maxAccel = MAXACCEL;
 static float maxVel = MAXVEL;
 static float homingOffset = 0;
 
 uint8_t reg = 0, blk_reg = 0;
-;
+
 uint8_t rx_buf[MAX_BUFFER] = { 0 };
 uint8_t tx_buf[MAX_BUFFER + RFLAGS_SIZE] = { 0 };
 bool rx_data_ready = 0;
@@ -162,11 +161,7 @@ void blocking_handler(uint8_t reg) {
         delay(500);
         Serial.print("[HOME] Stopped Stepper\n");
 
-        /* Set the maximum velocity to homing speed to
-         ensure it is not 0.0 for succesfull checkOrientation */
-        Serial.print("[HOME] Check Orientation\n");
-        stepper.setMaxVelocity(speed);
-        stepper.checkOrientation(1.0);
+
 
         Serial.print("[HOME] Set Speed and Current \n");
         stepper.setRPM(dir ? speed : -speed);
@@ -197,12 +192,6 @@ void blocking_handler(uint8_t reg) {
         Serial.print("[HOME] stopping stepper \n");
         stepper.stop();  // Stop motor !
         Serial.print("[HOME] Stopped Stepper\n");
-
-
-
-        /* reset MaxVelocity and driveCurrent to system value */
-        Serial.printf("[HOME] reset MaxVel %u \n", maxVel);
-        stepper.setMaxVelocity(maxVel);
 
         Serial.printf("[HOME] reset driveCurrent %u \n", driveCurrent);
         stepper.setCurrent(driveCurrent);
@@ -240,22 +229,10 @@ void non_blocking_handler(uint8_t reg) {
         Serial.print("Executing SETUP\n");
         memcpy(&driveCurrent, rx_buf, 1);
         memcpy(&holdCurrent, rx_buf + 1, 1);
-        if (!stepperSetup) {
-          stepper.setup(CLOSEDLOOP, 200);
-          stepper.enableClosedLoop();  // necessary to be able to use PID error
-          stepperSetup = 1;
-          notHomed = 1;
-        }
 
-        stepper.setMaxAcceleration(maxAccel);
-        stepper.setMaxDeceleration(maxAccel);
-        stepper.setMaxVelocity(maxVel);
-        stepper.setControlThreshold(15);
         stepper.setCurrent(driveCurrent);
         stepper.setHoldCurrent(holdCurrent);
-        stepper.moveToAngle(stepper.angleMoved());
-        // stepper.driver.setPosition(stepper.driver.getPosition());
-        // stepper.stop();
+        stepper.moveSteps(0);
 
         isStallguardEnabled = 0;
         notEnabled = 0;
@@ -480,13 +457,27 @@ void set_flags_for_blocking_handler(uint8_t reg) {
 
 /**
  * @brief Setup Peripherals
-
-//  * Setup I2C with the address ADR, and begin Serial for debugging with baudrate 9600.
+ *
+ * Setup I2C with the address ADR, and begin Serial for debugging with baudrate 9600.
+ * Setup the stepper, perform orientation check to check wiring and disable again.
  */
 void setup(void) {
   // Join I2C bus as follower
   Wire.begin(ADR);
   Serial.begin(9600);
+
+  stepper.setup(CLOSEDLOOP, 200);
+  stepper.enableClosedLoop();  // necessary to be able to use PID error
+  stepper.setMaxAcceleration(maxAccel);
+  stepper.setMaxDeceleration(maxAccel);
+  stepper.setMaxVelocity(maxVel);
+  stepper.setControlThreshold(15);
+  stepper.checkOrientation(1);
+  stepper.stop();
+  stepper.setCurrent(0);      // Not technically necessary, freewheeling also without
+  stepper.setHoldCurrent(0);  // Not technically necessary, freewheeling also without
+  stepper.setBrakeMode(0);
+  notHomed = 1;
 
   Wire.onReceive(receiveEvent);
   Wire.onRequest(requestEvent);
@@ -514,20 +505,20 @@ void loop(void) {
     pid_err = abs(stepper.getPidError());
 
     /* data0: raw abs(pid-error) */
-    // Serial.print(pid_err);
-    // Serial.print("\t");
+    Serial.print(pid_err);
+    Serial.print("\t");
     if (pid_err - last_pid_err > 500) {
       pid_err = last_pid_err;
     }
 
     /* data1: abs(pid-error) spikes removed */
-    // Serial.print(pid_err);
-    // Serial.print("\t");
+    Serial.print(pid_err);
+    Serial.print("\t");
 
     /* data2: abs(pid-error) spikes removed LP filtered */
     pid_err_fil = lp.updateState(pid_err);
-    // Serial.print(pid_err_fil);
-    // Serial.print("\t");
+    Serial.print(pid_err_fil);
+    Serial.print("\t");
 
     /* data3: raw SG_RESULT */
     // SG_err = stepper.driver.getStallValue();
@@ -550,21 +541,21 @@ void loop(void) {
     // Serial.print("\t");
 
     /* data7: qd */
-    // Serial.print(qd/9.549296596425384);
-    // Serial.print("\t");
+    Serial.print(qd / 9.549296596425384);
+    Serial.print("\t");
 
     /* data8: qd_set */
-    // Serial.print(qd_set/9.549296596425384);
-    // Serial.print("\t");
+    Serial.print(qd_set / 9.549296596425384);
+    Serial.print("\t");
 
     /* data9: threshold */
     float threshold = stall_threshold(qd / 9.549296596425384, stallguardThreshold);
-    // Serial.print(threshold);
-    // Serial.print("\t");
+    Serial.print(threshold);
+    Serial.print("\t");
 
     /* data10: stall */
     if (pid_err_fil > threshold) {
-      // Serial.println(1);
+      Serial.println(1);
       isStalled = 1;
       stepper.stop(HARD);
 
@@ -574,7 +565,7 @@ void loop(void) {
       pid_err_fil = 0;
       // last_SG_err = 0;
     } else {
-      // Serial.println(0);
+      Serial.println(0);
       last_pid_err = pid_err;
       // last_SG_err = SG_err;
     }
@@ -596,6 +587,6 @@ void loop(void) {
     stepper.setRPM(0);
     notEnabled = 1;
   }
-
+  // Serial.printf("Set: %d, Is: %d, encoder: %d\n", stepper.driver.readRegister(XTARGET), stepper.driver.readRegister(XACTUAL), stepper.encoder.getAngleMovedRaw());
   delay(10);
 }
