@@ -17,7 +17,7 @@
  * 
  * Define either J1, J2, J3 or J4 and subsequently include configuration.h 
  */
-#define J3
+#define J4
 #include "configuration.h"
 
 #include <UstepperS32.h>
@@ -27,7 +27,7 @@
 #include "stall.h"
 
 UstepperS32 stepper;
-static Lowpass lp(1, 0.01, 0.05);
+static Lowpass lp(1, 0.01, 0.1);
 
 static uint8_t driveCurrent, holdCurrent;
 static uint8_t notHomed = 1;
@@ -266,7 +266,7 @@ void non_blocking_handler(uint8_t reg) {
 
     case SETRPM:
       {
-        Serial.print("Executing SETRPM\n");
+        // Serial.print("Executing SETRPM\n");
         readValue<float>(qd_set, rx_buf, rx_length);
         if (!isStalled) {
           stepper.setRPM(qd_set);
@@ -507,7 +507,7 @@ void loop(void) {
     /* data0: raw abs(pid-error) */
     Serial.print(pid_err);
     Serial.print("\t");
-    if (pid_err - last_pid_err > 500) {
+    if (pid_err - last_pid_err > 100) {
       pid_err = last_pid_err;
     }
 
