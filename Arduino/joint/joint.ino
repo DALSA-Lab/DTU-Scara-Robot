@@ -27,23 +27,22 @@
 #include "stall.h"
 
 UstepperS32 stepper;
-static Lowpass lp(1, 0.01, 0.05);
+static Lowpass lp(1, 0.01, 0.1);
 
 static uint8_t driveCurrent, holdCurrent;
 static uint8_t notHomed = 1;
 static uint8_t isStalled = 0;
 static uint8_t isBusy = 0;
 static uint8_t notEnabled = 1;
-static bool stepperSetup = 0;
 static uint8_t isStallguardEnabled = 0;
 static int stallguardThreshold = 0;
-static float q_set, q, qd_set = 0.0, qd;
+static float q_set = 0.0, q = 0.0, qd_set = 0.0, qd = 0.0;
 static float maxAccel = MAXACCEL;
 static float maxVel = MAXVEL;
 static float homingOffset = 0;
 
 uint8_t reg = 0, blk_reg = 0;
-;
+
 uint8_t rx_buf[MAX_BUFFER] = { 0 };
 uint8_t tx_buf[MAX_BUFFER + RFLAGS_SIZE] = { 0 };
 bool rx_data_ready = 0;
@@ -138,7 +137,7 @@ void blocking_handler(uint8_t reg) {
   switch (reg) {
     case CHECKORIENTATION:
       {
-        // Serial.print("Executing CHECKORIENTATION\n");
+        Serial.print("Executing CHECKORIENTATION\n");
         float v;
         readValue<float>(v, rx_buf, rx_length);
         stepper.checkOrientation(v);
@@ -147,7 +146,7 @@ void blocking_handler(uint8_t reg) {
 
     case HOME:
       {
-        // Serial.print("Executing HOME\n");
+        Serial.print("Executing HOME\n");
         uint8_t dir;
         uint8_t speed;
         uint8_t sensitivity;
@@ -157,45 +156,47 @@ void blocking_handler(uint8_t reg) {
         memcpy(&sensitivity, rx_buf + 2, 1);
         memcpy(&current, rx_buf + 3, 1);
 
-        stepper.stop(SOFT);
+        Serial.print("[HOME] Stopping Stepper\n");
+        stepper.stop(HARD);
+        delay(500);
+        Serial.print("[HOME] Stopped Stepper\n");
 
-        /* Set the maximum velocity to homing speed to
-         ensure it is not 0.0 for succesfull checkOrientation */
-        stepper.setMaxVelocity(speed);
-        stepper.checkOrientation(1.0);
 
+
+        Serial.print("[HOME] Set Speed and Current \n");
         stepper.setRPM(dir ? speed : -speed);
         stepper.setCurrent(current);
 
         while (isBusy) {
           float err = stepper.getPidError();
           // Serial.print(abs(err));
-          // Serial.print("\t");
-          // Serial.print(sensitivity);
-          // Serial.print("\n");
+          // Serial.printf("\t %u\n", sensitivity);
           if (abs(err) > sensitivity) {
             break;
           }
           delay(1);
         }
 
-        /* reset MaxVelocity to system value */
-        stepper.setMaxVelocity(maxVel);
-
         /* Homing has been cancled from ISR (f.x. STOP) */
         if (!isBusy) {
-          break;
+          Serial.print("[HOME] aborted \n");
+          notHomed = 1;
+        } else {
+          stepper.encoder.setHome();
+          stepper.driver.setHome();
+          notHomed = 0;
+          isStalled = 0;
+          Serial.print("[HOME] stalled \n");
         }
 
-
-        stepper.encoder.setHome();
-        stepper.driver.setHome();
+        Serial.print("[HOME] stopping stepper \n");
         stepper.stop();  // Stop motor !
+        Serial.print("[HOME] Stopped Stepper\n");
 
+        Serial.printf("[HOME] reset driveCurrent %u \n", driveCurrent);
         stepper.setCurrent(driveCurrent);
 
-        notHomed = 0;
-        isStalled = 0;
+        Serial.println("[HOME] Done Homing");
         break;
       }
 
@@ -218,32 +219,20 @@ void non_blocking_handler(uint8_t reg) {
   switch (reg) {
     case PING:
       {
-        // Serial.print("Executing PING\n");
+        Serial.print("Executing PING\n");
         writeValue<char>(ACK, tx_buf, tx_length);
         break;
       }
 
     case SETUP:
       {
-        // Serial.print("Executing SETUP\n");
+        Serial.print("Executing SETUP\n");
         memcpy(&driveCurrent, rx_buf, 1);
         memcpy(&holdCurrent, rx_buf + 1, 1);
-        if (!stepperSetup) {
-          stepper.setup(CLOSEDLOOP, 200);
-          stepper.enableClosedLoop();  // necessary to be able to use PID error
-          stepperSetup = 1;
-          notHomed = 1;
-        }
 
-        stepper.setMaxAcceleration(maxAccel);
-        stepper.setMaxDeceleration(maxAccel);
-        stepper.setMaxVelocity(maxVel);
-        stepper.setControlThreshold(15);
         stepper.setCurrent(driveCurrent);
         stepper.setHoldCurrent(holdCurrent);
-        stepper.moveToAngle(stepper.angleMoved());
-        // stepper.driver.setPosition(stepper.driver.getPosition());
-        // stepper.stop();
+        stepper.moveSteps(0);
 
         isStallguardEnabled = 0;
         notEnabled = 0;
@@ -251,7 +240,7 @@ void non_blocking_handler(uint8_t reg) {
         qd_set = 0;  //reset here so that no matter how long it takes after the enable call for the next command to arrive, we dont trigger the watchdog
         break;
       }
-      
+
     case GETDRIVERRPM:
       // Serial.print("Executing GETDRIVERRPM\n");
       break;
@@ -288,7 +277,7 @@ void non_blocking_handler(uint8_t reg) {
 
     case MOVESTEPS:
       {
-        // Serial.print("Executing MOVESTEPS\n");
+        Serial.print("Executing MOVESTEPS\n");
         int32_t v;
         readValue<int32_t>(v, rx_buf, rx_length);
         stepper.moveSteps(v);
@@ -297,7 +286,7 @@ void non_blocking_handler(uint8_t reg) {
 
     case MOVETOANGLE:
       {
-        // Serial.print("Executing MOVETOANGLE\n");
+        Serial.print("Executing MOVETOANGLE\n");
         readValue<float>(q_set, rx_buf, rx_length);
         if (!isStalled) {
           stepper.moveToAngle(q_set);
@@ -309,11 +298,10 @@ void non_blocking_handler(uint8_t reg) {
 
     case SETCURRENT:
       {
-        // Serial.print("Executing SETCURRENT\n");
-        uint8_t v;
-        readValue<uint8_t>(v, rx_buf, rx_length);
-        stepper.setCurrent(v);
-        if (v == 0) {
+        Serial.print("Executing SETCURRENT\n");
+        readValue<uint8_t>(driveCurrent, rx_buf, rx_length);
+        stepper.setCurrent(driveCurrent);
+        if (driveCurrent == 0) {
           notEnabled = 1;
         }
         break;
@@ -321,11 +309,10 @@ void non_blocking_handler(uint8_t reg) {
 
     case SETHOLDCURRENT:
       {
-        // Serial.print("Executing SETHOLDCURRENT\n");
-        uint8_t v;
-        readValue<uint8_t>(v, rx_buf, rx_length);
-        stepper.setHoldCurrent(v);
-        if (v == 0) {
+        Serial.print("Executing SETHOLDCURRENT\n");
+        readValue<uint8_t>(holdCurrent, rx_buf, rx_length);
+        stepper.setHoldCurrent(holdCurrent);
+        if (holdCurrent == 0) {
           notEnabled = 1;
         }
         break;
@@ -333,7 +320,7 @@ void non_blocking_handler(uint8_t reg) {
 
     case SETMAXACCELERATION:
       {
-        // Serial.print("Executing SETMAXACCELERATION\n");
+        Serial.print("Executing SETMAXACCELERATION\n");
         readValue<float>(maxAccel, rx_buf, rx_length);
         maxAccel *= 200 / 360.0;  // conversion from degrees/s^2 to steps/s^2
         stepper.setMaxAcceleration(maxAccel);
@@ -347,7 +334,7 @@ void non_blocking_handler(uint8_t reg) {
 
     case SETMAXVELOCITY:
       {
-        // Serial.print("Executing SETMAXVELOCITY\n");
+        Serial.print("Executing SETMAXVELOCITY\n");
         readValue<float>(maxVel, rx_buf, rx_length);
         maxVel *= 200 / 360.0;  // conversion from degrees/s to steps/s
         stepper.setMaxVelocity(maxVel);
@@ -356,7 +343,7 @@ void non_blocking_handler(uint8_t reg) {
 
     case ENABLESTALLGUARD:
       {
-        // Serial.print("Executing ENABLESTALLGUARD\n");
+        Serial.print("Executing ENABLESTALLGUARD\n");
 
         // Very simple workaround for stall detection, since the built-in encoder stall-detection is tricky to work with in particular in combination with homing since it can not be reset.
         uint8_t sensitivity;
@@ -382,7 +369,7 @@ void non_blocking_handler(uint8_t reg) {
 
     case SETBRAKEMODE:
       {
-        // Serial.print("Executing SETBRAKEMODE\n");
+        Serial.print("Executing SETBRAKEMODE\n");
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
         stepper.setBrakeMode(v);
@@ -400,7 +387,7 @@ void non_blocking_handler(uint8_t reg) {
 
     case DISABLECLOSEDLOOP:
       {
-        // Serial.print("Executing DISABLECLOSEDLOOP\n");
+        Serial.print("Executing DISABLECLOSEDLOOP\n");
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
         stepper.disableClosedLoop();
@@ -410,7 +397,7 @@ void non_blocking_handler(uint8_t reg) {
 
     case STOP:
       {
-        // Serial.print("Executing STOP\n");
+        Serial.print("Executing STOP\n");
         uint8_t v;
         readValue<uint8_t>(v, rx_buf, rx_length);
         stepper.setRPM(0);
@@ -425,7 +412,7 @@ void non_blocking_handler(uint8_t reg) {
 
     case HOMEOFFSET:
       {
-        // Serial.print("Executing HOMEOFFSET\n");
+        Serial.print("Executing HOMEOFFSET\n");
         if (rx_length) {
           readValue<float>(homingOffset, rx_buf, rx_length);
         } else {
@@ -470,13 +457,27 @@ void set_flags_for_blocking_handler(uint8_t reg) {
 
 /**
  * @brief Setup Peripherals
-
-//  * Setup I2C with the address ADR, and begin Serial for debugging with baudrate 9600.
+ *
+ * Setup I2C with the address ADR, and begin Serial for debugging with baudrate 9600.
+ * Setup the stepper, perform orientation check to check wiring and disable again.
  */
 void setup(void) {
   // Join I2C bus as follower
   Wire.begin(ADR);
   Serial.begin(9600);
+
+  stepper.setup(CLOSEDLOOP, 200);
+  stepper.enableClosedLoop();  // necessary to be able to use PID error
+  stepper.setMaxAcceleration(maxAccel);
+  stepper.setMaxDeceleration(maxAccel);
+  stepper.setMaxVelocity(maxVel);
+  stepper.setControlThreshold(15);
+  stepper.checkOrientation(1);
+  stepper.stop();
+  stepper.setCurrent(0);      // Not technically necessary, freewheeling also without
+  stepper.setHoldCurrent(0);  // Not technically necessary, freewheeling also without
+  stepper.setBrakeMode(0);
+  notHomed = 1;
 
   Wire.onReceive(receiveEvent);
   Wire.onRequest(requestEvent);
@@ -498,25 +499,26 @@ static float pid_err = 0, pid_err_fil = 0;
  * Clear isBusy flag to indicate device is no longer busy \n 
  */
 void loop(void) {
+
   if (isStallguardEnabled && !isStalled) {
     float qd = stepper.encoder.getRPM();
     pid_err = abs(stepper.getPidError());
 
     /* data0: raw abs(pid-error) */
-    // Serial.print(pid_err);
-    // Serial.print("\t");
-    if (pid_err - last_pid_err > 500) {
+    Serial.print(pid_err);
+    Serial.print("\t");
+    if (pid_err - last_pid_err > 100) {
       pid_err = last_pid_err;
     }
 
     /* data1: abs(pid-error) spikes removed */
-    // Serial.print(pid_err);
-    // Serial.print("\t");
+    Serial.print(pid_err);
+    Serial.print("\t");
 
     /* data2: abs(pid-error) spikes removed LP filtered */
     pid_err_fil = lp.updateState(pid_err);
-    // Serial.print(pid_err_fil);
-    // Serial.print("\t");
+    Serial.print(pid_err_fil);
+    Serial.print("\t");
 
     /* data3: raw SG_RESULT */
     // SG_err = stepper.driver.getStallValue();
@@ -539,21 +541,21 @@ void loop(void) {
     // Serial.print("\t");
 
     /* data7: qd */
-    // Serial.print(qd/9.549296596425384);
-    // Serial.print("\t");
+    Serial.print(qd / 9.549296596425384);
+    Serial.print("\t");
 
     /* data8: qd_set */
-    // Serial.print(qd_set/9.549296596425384);
-    // Serial.print("\t");
+    Serial.print(qd_set / 9.549296596425384);
+    Serial.print("\t");
 
     /* data9: threshold */
     float threshold = stall_threshold(qd / 9.549296596425384, stallguardThreshold);
-    // Serial.print(threshold);
-    // Serial.print("\t");
+    Serial.print(threshold);
+    Serial.print("\t");
 
     /* data10: stall */
     if (pid_err_fil > threshold) {
-      // Serial.println(1);
+      Serial.println(1);
       isStalled = 1;
       stepper.stop(HARD);
 
@@ -563,7 +565,7 @@ void loop(void) {
       pid_err_fil = 0;
       // last_SG_err = 0;
     } else {
-      // Serial.println(0);
+      Serial.println(0);
       last_pid_err = pid_err;
       // last_SG_err = SG_err;
     }
@@ -585,6 +587,6 @@ void loop(void) {
     stepper.setRPM(0);
     notEnabled = 1;
   }
-
+  // Serial.printf("Set: %d, Is: %d, encoder: %d\n", stepper.driver.readRegister(XTARGET), stepper.driver.readRegister(XACTUAL), stepper.encoder.getAngleMovedRaw());
   delay(10);
 }
