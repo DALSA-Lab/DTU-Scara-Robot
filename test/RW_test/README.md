@@ -51,6 +51,7 @@ For the transmissions (get/set Position/Velocity) in questions float values of 4
 | ---- | ----: | ----: | ----: |  ----: | 
 |`setPosition()`/`setVelocity()`| target [float]  4   | flags [uint8_t]  1   | 5 | 75 |
 |`getPosition()`/`getVelocity()`|   0   |  value [float] + flags [uint8_t] 4 + 1   | 5 | 75 |
+
 **Table 2:** Number of bytes and bits transmitted per function.
 
 At the '*Standard Mode*' speed of 100 kbit/s the transmission of 75 bits takes then: **$t_{trans}$ = 750 μs** <br>
@@ -103,7 +104,7 @@ The results are summarized in Table 3 below:
 ||`setPosition()`| 1216.62|1471.37|
 ||`getVelocity()`| 854.44 | 2964.86|
 ||`setVelocity()`| 905.04|2964.86|
-|
+|  |  |  |  |
 |400|               `getPosition()`| 270.70 | 1677.46|
 ||            `setPosition()`   | 624.66|1681.89|
 ||            `getVelocity()`   | 266.84 | 634.83|
@@ -115,11 +116,10 @@ There is an interesting feature: The `setPosition()` method takes significantly 
 
 ### Execution Time on Firmware
 The test was conducted at 400 kHz, however this has no effect since the test only times the execution time between transmission parts.
-<table>
-  <tr>
-    <td><img src="baseline_joint_400kHz.png" ><center><strong>Figure 2:</strong> Histogram of the execution time of the position set and get method on the firmware.</td>
-  </tr>
-</table>
+
+![](baseline_joint_400kHz.png)
+
+**Figure 2:** Histogram of the execution time of the position set and get method on the firmware.
 
 This test clearly shows the reason for the much longer $t_{total}$ for `setPosition()`: The corresponding function on the joint firmware itself takes on average $t_{exec}$ = 351.13 μs, while the corresponding function to `getPosition()` only takes  $t_{exec}$ = 5.21 μs on average. exactly the difference previously described. The execution on the joint takes hence 345.92 μs longer on the joint, very close the discrepancy in $t_{total}$.
 
@@ -134,7 +134,7 @@ $$
 |---|---|---:|
 |100|`getPosition()`|105|
 ||`setPosition()`|113|
-|
+||||
 |400|`getPosition()`|84|
 ||`setPosition()`|78|
 **Table 4:** Noise and overhead calculation results.
@@ -180,6 +180,7 @@ The controller needs to:
 |`getPosition()`        | 860  | 625  |
 | per joint *subtotal*        | 2,618  |1,211  |
 | 4 joint **total** | 10,472 | 4,844  |
+
 **Table 5:** Expected total times for the velocity based controller.
 
 
@@ -198,6 +199,7 @@ The controller needs to:
 |`getPosition()`        | 860  | 271  |
 | per joint *subtotal*        |2,077|896|
 | 4 joint **total** |8,308|3,584|
+
 **Table 6:** Expected total times for the position based controller.
 
 ### Scheduler Priority
