@@ -1,6 +1,6 @@
 /**
  * @file mJoint.hpp
- * @author Sebastian Storz
+ * @author sbstorz
  * @brief Templated functions for the Joint class.
  * @version 0.1
  * @date 2025-05-29

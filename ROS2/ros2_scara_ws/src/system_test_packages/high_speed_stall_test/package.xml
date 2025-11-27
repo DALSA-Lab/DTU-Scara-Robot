@@ -4,7 +4,7 @@
   <name>high_speed_stall_test</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="s.storz01@gmail.com">Sebastian Storz</maintainer>
+  <maintainer email="s.storz01@gmail.com">sbstorz</maintainer>
   <license>TODO: License declaration</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

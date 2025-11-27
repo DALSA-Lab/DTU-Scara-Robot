@@ -1,6 +1,6 @@
 /**
  * @file err.h
- * @author Sebastian Storz
+ * @author sbstorz
  * @brief Defining common return types
  * @version 0.1
  * @date 2025-11-05

@@ -1,6 +1,6 @@
 /**
  * @file mJoint.h
- * @author Sebastian Storz
+ * @author sbstorz
  * @brief File including the Joint class
  * @version 0.1
  * @date 2025-05-29

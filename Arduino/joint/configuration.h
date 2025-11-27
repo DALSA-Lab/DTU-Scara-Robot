@@ -1,6 +1,6 @@
 /**
  * @file configuration.h
- * @author Sebastian Storz
+ * @author sbstorz
  * @brief Configuration definitions for Joint 1 to Joint 4
  * @version 0.1
  * @date 2025-05-27

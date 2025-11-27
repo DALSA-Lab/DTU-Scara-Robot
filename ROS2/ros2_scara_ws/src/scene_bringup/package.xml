@@ -4,7 +4,7 @@
   <name>scene_bringup</name>
   <version>0.0.0</version>
   <description>scene_bringup package</description>
-  <maintainer email="s.storz01@gmail.com">Sebastian Storz</maintainer>
+  <maintainer email="s.storz01@gmail.com">sbstorz</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

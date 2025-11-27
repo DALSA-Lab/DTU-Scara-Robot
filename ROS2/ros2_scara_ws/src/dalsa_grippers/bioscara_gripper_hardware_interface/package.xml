@@ -4,7 +4,7 @@
   <name>bioscara_gripper_hardware_interface</name>
   <version>0.0.0</version>
   <description>Hardware Interface package for the bioscara robot for ros2_control</description>
-  <maintainer email="s.storz01@gmail.com">Sebastian Storz</maintainer>
+  <maintainer email="s.storz01@gmail.com">sbstorz</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

@@ -4,7 +4,7 @@
   <version>0.0.0</version>
   <description>Metapackage containing all packages concerning trajectory generation. </description>
 
-  <maintainer email="s.storz01@gmail.com">Sebastian Storz</maintainer>
+  <maintainer email="s.storz01@gmail.com">sbstorz</maintainer>
 
   <license>Apache-2.0</license>
 

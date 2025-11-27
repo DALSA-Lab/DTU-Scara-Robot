@@ -1,6 +1,6 @@
 /**
  * @file mMockJoint.h
- * @author Sebastian Storz
+ * @author sbstorz
  * @brief File including the MockJoint class
  * @version 0.1
  * @date 2025-05-29

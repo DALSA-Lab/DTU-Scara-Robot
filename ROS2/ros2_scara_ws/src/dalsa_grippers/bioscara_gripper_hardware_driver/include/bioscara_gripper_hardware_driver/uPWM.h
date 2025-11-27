@@ -1,6 +1,6 @@
 /**
  * @file uPWM.h
- * @author Sebastian Storz and Bernd Porr, bernd.porr@glasgow.ac.uk
+ * @author sbstorz and Bernd Porr, bernd.porr@glasgow.ac.uk
  * @brief Includes source code for Hardware PWM generation on Raspberry Pi 4
  * @version 0.1
  * @date 2025-05-27

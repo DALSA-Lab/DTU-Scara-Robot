@@ -1,6 +1,6 @@
 /**
  * @file uI2C.h
- * @author Sebastian Storz
+ * @author sbstorz
  * @brief Low level utility for I2C communication on Raspberry Pi using lgpio library
  * @version 0.1
  * @date 2025-05-28

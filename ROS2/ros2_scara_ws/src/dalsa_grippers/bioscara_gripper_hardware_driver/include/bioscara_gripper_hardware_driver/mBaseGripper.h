@@ -1,6 +1,6 @@
 /**
  * @file mBaseGripper.h
- * @author Sebastian Storz
+ * @author sbstorz
  * @brief File containing the BaseGripper class
  * @version 0.1
  * @date 2025-05-27

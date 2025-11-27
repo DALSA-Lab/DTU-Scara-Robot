@@ -1,6 +1,6 @@
 /**
  * @file stall.h
- * @author Sebastian Storz
+ * @author sbstorz
  * @brief Helper functions for improved stall detection
  * @version 0.1
  * @date 2025-05-27

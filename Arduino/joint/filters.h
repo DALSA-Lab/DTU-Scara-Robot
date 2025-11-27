@@ -1,6 +1,6 @@
 /**
  * @file filters.h
- * @author Sebastian Storz
+ * @author sbstorz
  * @brief Helper classes for FIR and IIR filters
  * @version 0.1
  * @date 2025-05-27

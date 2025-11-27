@@ -1,6 +1,6 @@
 /**
  * @file common.h
- * @author Sebastian Storz
+ * @author sbstorz
  * @brief A file containing utility macros and functions
  * @version 0.1
  * @date 2025-05-27

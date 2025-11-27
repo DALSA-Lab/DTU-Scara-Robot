@@ -1,6 +1,6 @@
 /**
  * @file joint.ino
- * @author Sebastian Storz
+ * @author sbstorz
  * @brief joint firmware
  * @version 0.1
  * @date 2025-05-27
