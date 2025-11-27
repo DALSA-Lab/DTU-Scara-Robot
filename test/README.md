@@ -15,6 +15,6 @@ pip install -r ../requirements.txt
 
 ### Latex
 To be able to use pure latex in matplot install:
-``bash
+```bash
 sudo apt-get install texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended dvipng cm-super
 ```

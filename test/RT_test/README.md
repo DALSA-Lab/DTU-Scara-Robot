@@ -108,7 +108,7 @@ Then execute the test:
 - Position control, RT prio 50, FIFO Scheduler (default ROS2 control values)
 
 
-# Observation
+## Observation
 Priority has no effect on execution time. 
 Time spans much longer than what is caused through normal system latency.
 Instead execution time linearly scales with the number of joints. 
@@ -133,7 +133,8 @@ W: avg 2615 us
 R: avg 2697 us
 W: avg 3815 us
 
-# Evaluation
+## Evaluation
 - [ ] Make Histogram of execution times
 - [ ] Min/Max statistics
+- [ ] Compare Max execution time between priorities
 
