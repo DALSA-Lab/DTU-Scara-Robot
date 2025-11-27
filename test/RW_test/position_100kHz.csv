@@ -1,4 +1,4 @@
-time [ms], iteration [-], joint [-], read [us], write[us]
+time [ms], iteration [-], joint [-], read [us], write [us]
 2.108939, 1, j4, 869.528000, 1235.264000
 4.212879, 1, j3, 859.305000, 1214.894000
 6.334559, 1, j2, 860.472000, 1236.912000
