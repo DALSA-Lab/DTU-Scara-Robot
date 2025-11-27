@@ -6,6 +6,7 @@
 #include <chrono>
 
 using namespace std;
+using namespace bioscara_hardware_drivers;
 
 void INT_handler(int s)
 {
@@ -21,30 +22,17 @@ int main(int argc, char **argv)
   (void)argv;
 
   std::unordered_map<std::string, Joint> _joints;
-  _joints.insert({"j1", Joint("j1", 0x11, 1, 0)});
-  _joints.insert({"j2", Joint("j2", 0x12, 1, 0)});
-  _joints.insert({"j3", Joint("j3", 0x13, 1, 0)});
-  _joints.insert({"j4", Joint("j4", 0x14, 1, 0)});
+  _joints.insert({"j1", Joint("j1", 0x11, 35, -3.04647, 3.04647)});
+  _joints.insert({"j2", Joint("j2", 0x12, -2 * M_PI / 0.004, 0.338, 0.0)});
+  _joints.insert({"j3", Joint("j3", 0x13, 24, -2.62672, 2.62672)});
+  _joints.insert({"j4", Joint("j4", 0x14, 12, -3.01069, 3.01069)});
 
   for (auto &[name, joint] : _joints)
   {
-    int rc = joint.init();
-    if(rc < 0){
-      std::cerr << "Failed to init:" << rc << std::endl;
-      return -1;
-    }
-    rc = joint.enable(20, 20);
-    if(rc < 0){
-      std::cerr << "Failed to enable:" << rc << std::endl;
-      return -1;
-    }
-    rc = joint.enableStallguard(5);
-    if(rc < 0){
-      std::cerr << "Failed to enableStallguard:" << rc << std::endl;
-      return -1;
-    }
+    RETURN_ON_NEGATIVE((int)joint.init(),-1);
+    RETURN_ON_NEGATIVE((int)joint.enable(20, 20),-1);
+    RETURN_ON_NEGATIVE((int)joint.enableStallguard(6), -1);
   }
-
 
   FILE *fp = std::fopen("/home/scara/bioscara/test/RW_test/temp_100kHz.csv", "w"); // Open file for writing
   fprintf(fp, "time [ms], iteration [-], joint [-], read [us], write[us]\n");
@@ -75,7 +63,6 @@ int main(int argc, char **argv)
       fprintf(fp, "%f, %ld, %s, %f, %f\n", t.count(), i, name.c_str(), t_read.count(), t_write.count());
     }
   }
-
 
   fclose(fp);
   return 0;
