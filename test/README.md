@@ -8,6 +8,11 @@ cd ~/bioscara/test/<test_dir>
 source ../.venv/bin/activate
 ```
 
+If not done already install the requirements from the *requirements.txt* file.
+```bash
+pip install -r ../requirements.txt
+```
+
 ### Latex
 To be able to use pure latex in matplot install:
 ``bash
