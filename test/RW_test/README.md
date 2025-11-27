@@ -109,6 +109,7 @@ The results are summarized in Table 3 below:
 ||            `setPosition()`   | 624.66|1681.89|
 ||            `getVelocity()`   | 266.84 | 634.83|
 ||            `setVelocity()`   | 318.47|2811.72|
+
 **Table 3:** Mean and Max total time $t_{total}$ at different transmission speeds and for velocity and position
 
 There is an interesting feature: The `setPosition()` method takes significantly longer than all other functions at a given speed. Furthermore the difference between mean total time for `setPosition()` and `getPosition()` at 100 kHz and 400 kHz is 357 μs and 354 μs respectively, basically identical regardless of the transmission speed. All other functions are somewhat equally fast at their repective transmission speed.
@@ -137,6 +138,7 @@ $$
 ||||
 |400|`getPosition()`|84|
 ||`setPosition()`|78|
+
 **Table 4:** Noise and overhead calculation results.
 
 Table 4 shows that the calculated noise and overhead are only to little degree dependent on transmission speed, and remain somewhat constant. This is expected for the software overhead.
