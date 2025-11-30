@@ -154,7 +154,7 @@ The oscilloscope screen captures show that the waveform at 400 kHz already looks
     <td><img src="osci/100kHz.SVG" ><center><strong>Figure 3(a):</strong> Waveform of SCL (blue) and SDA (yellow) of the I2C bus 100 kHz</td>
   </tr>
    <tr>
-    <td><img src="osci/400kHz.SVG" ><center><strong>Figure 3(c):</strong> Waveform of SCL (blue) and SDA (yellow) of the I2C bus 400 kHz</td>
+    <td><img src="osci/400kHz.SVG" ><center><strong>Figure 3(b):</strong> Waveform of SCL (blue) and SDA (yellow) of the I2C bus 400 kHz</td>
   </tr>
 </table>
 
