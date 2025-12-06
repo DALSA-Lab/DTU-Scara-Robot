@@ -42,11 +42,12 @@ namespace bioscara_hardware_interfaces
       _gripper_cfg.offset = std::stof(info_.hardware_parameters["offset"]);
       _gripper_cfg.min = std::stof(info_.hardware_parameters["min"]);
       _gripper_cfg.max = std::stof(info_.hardware_parameters["max"]);
+      _gripper_cfg.init_pos = std::stof(info_.hardware_parameters["init_pos"]);
     }
     catch (...)
     {
       RCLCPP_FATAL(
-          get_logger(), "Gripper '%s' is missing one of the following parameters: reduction, offset, min, max",
+          get_logger(), "Gripper '%s' is missing one of the following parameters: reduction, offset, min, max, init_pos",
           info_.name.c_str());
       return hardware_interface::CallbackReturn::ERROR;
     }
@@ -266,9 +267,11 @@ namespace bioscara_hardware_interfaces
       double v = 0.0;
       if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
-        /* Workaround: since the gripper position is unkown until the first command arrived we return -0.01.
-        The write method only writes to the gripper if not NaN and not negative.
-        A small negative number is chosen to not disturb the visual representation.
+        /* Workaround: since the gripper position is unkown until the first command arrived we return
+         the initial position as read from the configuration.
+         TODO: implement that gripper saves last command on shutdown and loads that value again on configure. 
+         this should reduce unwanted gripper motion on startup.
+        The write method only writes to the gripper if not NaN.
         It would be possible to return NaN but that floods the
         TF2 log with errors that the gripper position can not be calculated. */
         if (!isnan(_last_pos))
@@ -277,7 +280,7 @@ namespace bioscara_hardware_interfaces
         }
         else
         {
-          v = -0.01;
+          v = _gripper_cfg.init_pos;
         }
       }
       else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
@@ -311,7 +314,7 @@ namespace bioscara_hardware_interfaces
         float pos_set = get_command(name);
 
         /* Only set the position if it is not NaN */
-        if (!isnan(pos_set) && pos_set >= -0.00001)
+        if (!isnan(pos_set))
         {
           rc = _gripper->setPosition(pos_set);
           pos_set = pos_set < _gripper_cfg.min ? _gripper_cfg.min : pos_set;
