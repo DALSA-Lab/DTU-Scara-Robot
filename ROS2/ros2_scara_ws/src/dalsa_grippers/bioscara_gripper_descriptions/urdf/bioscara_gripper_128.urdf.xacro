@@ -71,7 +71,7 @@
             <parent link="${prefix}grp_base_link"/>
             <child link="${prefix}left_jaw_link"/>
             <axis xyz="1 0 0" />
-            <limit upper="${parameters['max']}" lower="${parameters['min']}" effort="100" velocity="${parameters['max_velocity']}"/>
+            <limit upper="100" lower="-100" effort="100" velocity="100"/>
             <mimic joint="${prefix}gripper" multiplier="0.5" />
         </joint>
 
@@ -79,7 +79,7 @@
             <parent link="${prefix}grp_base_link"/>
             <child link="${prefix}right_jaw_link"/>
             <axis xyz="1 0 0" />
-            <limit upper="${parameters['max']}" lower="${parameters['min']}" effort="100" velocity="${parameters['max_velocity']}"/>
+            <limit upper="100" lower="-100" effort="100" velocity="100"/>
             <mimic joint="${prefix}gripper" multiplier="-0.5" />
         </joint>
 
