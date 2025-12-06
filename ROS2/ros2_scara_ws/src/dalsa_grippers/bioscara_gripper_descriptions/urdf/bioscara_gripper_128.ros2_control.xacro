@@ -15,6 +15,7 @@
                 <param name="offset">${parameters['offset']}</param>
                 <param name="min">${parameters['min']}</param>
                 <param name="max">${parameters['max']}</param>
+                <param name="init_pos">${parameters['init_pos']}</param>
             </hardware>
 
             <!-- Joint interfaces -->

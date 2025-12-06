@@ -168,6 +168,7 @@ namespace bioscara_hardware_interfaces
             float offset = 0;
             float min;
             float max;
+            float init_pos;
         };
 
         /**
