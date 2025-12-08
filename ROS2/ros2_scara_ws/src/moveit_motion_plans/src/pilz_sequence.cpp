@@ -40,9 +40,8 @@ class TrajectorySequence
 {
 private:
   std::string planning_group_;
-  rclcpp::Client<GetPositionIK>::SharedPtr ik_service_client_;
-  rclcpp::Client<GetMotionSequence>::SharedPtr seq_service_client_;
-  rclcpp_action::Client<MoveGroupSequence>::SharedPtr seq_action_client_;
+  // rclcpp::Client<GetMotionSequence>::SharedPtr seq_service_client_;
+  // rclcpp_action::Client<MoveGroupSequence>::SharedPtr seq_action_client_;
 
   rclcpp::Node::SharedPtr node_;
 
@@ -58,6 +57,11 @@ private:
   }
 
 public:
+  // TEMP
+  rclcpp::Client<GetMotionSequence>::SharedPtr seq_service_client_;
+  rclcpp_action::Client<MoveGroupSequence>::SharedPtr seq_action_client_;
+
+
   TrajectorySequence(std::string planning_group)
   {
     planning_group_ = planning_group;
@@ -83,17 +87,8 @@ public:
 
     mgi_ = std::make_shared<MoveGroupInterface>(node_, planning_group_);
 
-
     // [-------------------- Create Service and Action Clients --------------------]
-    // MoveGroupPlan service client
-    ik_service_client_ = node_->create_client<GetPositionIK>("/compute_ik");
-
-    // Verify that the action server is up and running
-    while (!ik_service_client_->wait_for_service(std::chrono::seconds(10)))
-    {
-      RCLCPP_WARN(node_->get_logger(), "Waiting for service /compute_ik to be available...");
-    }
-
+   
     // MoveGroupSequence service client
     seq_service_client_ = node_->create_client<GetMotionSequence>("/plan_sequence_path");
 
@@ -145,8 +140,8 @@ public:
 
     segment.req.pipeline_id = "ompl";
     segment.req.allowed_planning_time = 5.0;
-    segment.req.max_velocity_scaling_factor = 1.0*speed_scaling;
-    segment.req.max_acceleration_scaling_factor = 1.0*speed_scaling;
+    segment.req.max_velocity_scaling_factor = 1.0 * speed_scaling;
+    segment.req.max_acceleration_scaling_factor = 1.0 * speed_scaling;
 
     moveit_msgs::msg::Constraints goal_constraint;
     goal_constraint.joint_constraints = joint_values;
@@ -178,6 +173,7 @@ int main(int argc, char **argv)
 
   // Planning group
   static const std::string PLANNING_GROUP = "arm";
+  static const std::string PLANNING_FRAME = "tool";
 
   // Create the MoveIt MoveGroup Interface
   // In this case, this is just necessary for the visual interface
@@ -190,10 +186,6 @@ int main(int argc, char **argv)
   moveit_visual_tools.deleteAllMarkers();
   moveit_visual_tools.loadRemoteControl();
   moveit_visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
-
-  rclcpp::shutdown();
-  return 0;
-  /*
 
   // [ --------------------------------------------------------------- ]
   // [ ----------------------- Motion Sequence ----------------------- ]
@@ -234,8 +226,8 @@ int main(int argc, char **argv)
     return msg;
   }();
 
-  // item1.req.goal_constraints.push_back(
-  //     kinematic_constraints::constructGoalConstraints("tool", pos_target_pose_item1, 0.1, 360.0));
+  item1.req.goal_constraints.push_back(
+      kinematic_constraints::constructGoalConstraints(PLANNING_FRAME, pos_target_pose_item1));
 
   std::vector<moveit_msgs::msg::JointConstraint> joint_constraints_item1;
 
@@ -254,8 +246,8 @@ int main(int argc, char **argv)
   // item2.req.pipeline_id = "ompl";
   item2.req.pipeline_id = "pilz_industrial_motion_planner";
   item2.req.allowed_planning_time = 5.0;
-  item2.req.max_velocity_scaling_factor = 0.05;
-  item2.req.max_acceleration_scaling_factor = 0.05;
+  item2.req.max_velocity_scaling_factor = 0.5;
+  item2.req.max_acceleration_scaling_factor = 0.5;
 
   // Set a constraint pose
   auto target_pose_item2 = []
@@ -272,73 +264,8 @@ int main(int argc, char **argv)
     return msg;
   }();
   item2.req.goal_constraints.push_back(
-      kinematic_constraints::constructGoalConstraints("tool", target_pose_item2, 0.1, 1.0));
+      kinematic_constraints::constructGoalConstraints(PLANNING_FRAME, target_pose_item2, 0.1, 1.0));
 
-  // [ --------------------------------------------------------------- ]
-  // [ ------------------ GetPositionIK Service ------------------ ]
-  // [ --------------------------------------------------------------- ]
-
-  // Create request
-  auto ik_service_request = std::make_shared<GetPositionIK::Request>();
-  moveit_msgs::msg::PositionIKRequest req;
-  req.group_name = PLANNING_GROUP;
-  // req.robot_state =
-  req.avoid_collisions = true;
-  req.ik_link_name = "tool";
-  req.pose_stamped = pos_target_pose_item1;
-
-  ik_service_request->ik_request = req;
-  // Call the service and process the result
-  auto ik_service_future = ik_service_client_->async_send_request(ik_service_request);
-
-  // Wait for the result
-  std::future_status service_status;
-  do
-  {
-    switch (service_status = ik_service_future.wait_for(std::chrono::seconds(1)); service_status)
-    {
-    case std::future_status::deferred:
-      RCLCPP_ERROR(LOGGER, "Deferred");
-      break;
-    case std::future_status::timeout:
-      RCLCPP_INFO(LOGGER, "Waiting for trajectory plan...");
-      break;
-    case std::future_status::ready:
-      RCLCPP_INFO(LOGGER, "Service ready!");
-      break;
-    }
-  } while (service_status != std::future_status::ready);
-
-  auto ik_service_response = ik_service_future.get();
-  if (ik_service_response->error_code.val == moveit_msgs::msg::MoveItErrorCodes::SUCCESS)
-  {
-    RCLCPP_INFO(LOGGER, "Planning successful");
-
-    // Only first four joints (j1 -> j4 not great workaround)
-    for (size_t i = 0; i < 4; i++)
-    {
-      std::string name = ik_service_response->solution.joint_state.name[i];
-      float pos = ik_service_response->solution.joint_state.position[i];
-
-      RCLCPP_INFO(LOGGER, "%s: %f", name.c_str(), pos);
-      moveit_msgs::msg::JointConstraint c;
-      c.joint_name = name;
-      c.position = pos;
-
-      joint_constraints_item1.push_back(c);
-    }
-  }
-  else
-  {
-    RCLCPP_ERROR(LOGGER, "IK Planning failed with error code: %d", ik_service_response->error_code.val);
-
-    rclcpp::shutdown();
-    return 0;
-  }
-
-  // append joint constraints as goal constrains
-  constraints_item1.joint_constraints = joint_constraints_item1;
-  item1.req.goal_constraints.push_back(constraints_item1);
 
   // [ --------------------------------------------------------------- ]
   // [ ------------------ MoveGroupSequence Service ------------------ ]
@@ -351,21 +278,21 @@ int main(int argc, char **argv)
   seq_service_request->request.items.push_back(item2);
 
   // Call the service and process the result
-  auto seq_service_future = seq_service_client_->async_send_request(seq_service_request);
+  auto seq_service_future = SeqPlanner.seq_service_client_->async_send_request(seq_service_request); // TODO use getter
 
   // Function to draw the trajectory
   auto const draw_trajectory_tool_path =
       [&moveit_visual_tools,
-       jmg = move_group_interface.getRobotModel()->getJointModelGroup(PLANNING_GROUP)](auto const &trajectories)
-  {
-    for (const auto &trajectory : trajectories)
-    {
-      moveit_visual_tools.publishTrajectoryLine(trajectory, jmg);
-    }
-  };
+       robot = SeqPlanner.getMoveGroupInterface()->getRobotModel()](auto const& trajectories) {
+        auto jmg = robot->getJointModelGroup(PLANNING_GROUP);
+        for (const auto& trajectory : trajectories)
+        {
+          moveit_visual_tools.publishTrajectoryLine(trajectory, robot->getLinkModel(PLANNING_FRAME), jmg);
+        }
+      };
 
   // Wait for the result
-  // std::future_status service_status;
+  std::future_status service_status;
   do
   {
     switch (service_status = seq_service_future.wait_for(std::chrono::seconds(1)); service_status)
@@ -389,8 +316,10 @@ int main(int argc, char **argv)
 
     // Access the planned trajectory
     auto trajectory = seq_service_response->response.planned_trajectories;
+  
+    // Publish blended trajectory
     rclcpp::Publisher<moveit_msgs::msg::DisplayTrajectory>::SharedPtr display_publisher =
-        node_->create_publisher<moveit_msgs::msg::DisplayTrajectory>("/display_planned_path_full", 1);
+        SeqPlanner.getNode()->create_publisher<moveit_msgs::msg::DisplayTrajectory>("/display_planned_path", 10);
     moveit_msgs::msg::DisplayTrajectory display_trajectory;
     display_trajectory.trajectory_start = seq_service_response->response.sequence_start;
     display_trajectory.trajectory = trajectory;
@@ -408,14 +337,13 @@ int main(int argc, char **argv)
   }
 
 
+
       moveit_visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
 
       // [ --------------------------------------------------------------- ]
       // [ ------------------ MoveGroupSequence Action ------------------- ]
       // [ --------------------------------------------------------------- ]
       // Plans and executes the trajectory
-
-      // MoveGroupSequence action client
 
 
       // Create a MotionSequenceRequest
@@ -475,10 +403,10 @@ int main(int argc, char **argv)
       };
 
       // Send the action goal
-      auto goal_handle_future = seq_action_client_->async_send_goal(goal_msg, send_goal_options);
+      auto goal_handle_future = SeqPlanner.seq_action_client_->async_send_goal(goal_msg, send_goal_options);
 
       // Get result
-      auto action_result_future = seq_action_client_->async_get_result(goal_handle_future.get());
+      auto action_result_future = SeqPlanner.seq_action_client_->async_get_result(goal_handle_future.get());
 
       // Wait for the result
       std::future_status action_status;
@@ -507,6 +435,10 @@ int main(int argc, char **argv)
       {
         RCLCPP_ERROR(LOGGER, "Action couldn't be completed.");
       }
+
+        rclcpp::shutdown();
+  return 0;
+  /*
 
       moveit_visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
 
