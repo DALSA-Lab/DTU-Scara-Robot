@@ -1,0 +1,14 @@
+controller_manager:
+  ros__parameters:
+    # joint_state_broadcaster is treated as a 'controller', needs to be provided.
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+    
+    update_rate: 50
+
+    # hardware_components_initial_state:
+    #   inactive:
+    #     - "bioscara"
+    
+    defaults:
+      allow_controller_activation_with_inactive_hardware: false

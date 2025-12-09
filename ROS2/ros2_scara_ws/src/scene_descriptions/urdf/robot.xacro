@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<robot name="robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="load_robot" params="
+    parent
+    *origin
+    use_mock_hardware
+    prefix
+    arm_description_package
+    arm_macro
+    gripper_description_package
+    gripper_macro">
+
+    <!-- Include and load arm macro files -->
+    <xacro:include filename="$(find ${arm_description_package})/urdf/${arm_macro}"/>
+
+    <xacro:load_arm 
+      parent="${parent}" 
+      prefix="${prefix}" 
+      use_mock_hardware="${use_mock_hardware}">
+      <xacro:insert_block name="origin" />
+    </xacro:load_arm>
+
+    <!-- If no gripper, define tool frame here. The last arm link must be "tool_flange" -->
+    <xacro:if value="${not gripper_description_package}">
+      <link name="${prefix}tool"/>
+      <joint name="${prefix}tool_joint" type="fixed">
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <parent link="${prefix}tool_flange" />
+        <child link="${prefix}tool" />
+        <axis xyz="0 0 0" />
+      </joint>
+    </xacro:if>
+
+    <!-- Include and load the gripper if defined -->
+    <xacro:unless value="${not gripper_description_package}">
+      <xacro:include filename="$(find ${gripper_description_package})/urdf/${gripper_macro}"/>
+      <xacro:load_gripper
+        parent="${prefix}tool_flange"
+        prefix="${prefix}"
+        use_mock_hardware="${use_mock_hardware}">
+        <origin xyz="0 0 0" rpy="${pi} 0 ${-pi/2}" />
+       </xacro:load_gripper>  
+    </xacro:unless>
+
+  </xacro:macro>
+</robot>

@@ -205,6 +205,7 @@ cd ROS2/ros2_scara_ws
 ```
 Install all packages that can be resolved through `rosdep` (all packages that have been released to the ROS2 package ecosystem and some debian packages):
 ```bash
+sudo apt update
 rosdep install --from-paths src --ignore-src -y --rosdistro $ROS_DISTRO
 ```
 This command will recursively scan every package in the workspace for the `<depend/>` key and install missing packages.
@@ -212,7 +213,7 @@ This command will recursively scan every package in the workspace for the `<depe
 ### vcstool
 *vcstool* is common in many ROS2 packages to import dependencies that are not in a ROS or debian repository. from a repository file. 
 
-*vcstool* is specified as a dependency in the *dalsa_bioscara* package and hence should be installed after running *rosdep*
+*vcstool* is specified as a dependency in the *dalsa_bioscara_arm* package and hence should be installed after running *rosdep*
 
 To install, use
 ```bash

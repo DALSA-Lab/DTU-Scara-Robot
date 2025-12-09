@@ -1,5 +1,9 @@
 repositories:
-  dalsa_bioscara/bioscara_controllers/single_trigger_controller:
+  dalsa_controllers/single_trigger_controller:
     type: git
     url: https://github.com/DALSA-Lab/ros2_control-single_trigger_controller.git
+    version: main
+  dalsa_moveit_planners/pilz_industrial_motion_planner:
+    type: git
+    url: https://github.com/DALSA-Lab/pilz_industrial_motion_planner.git
     version: main

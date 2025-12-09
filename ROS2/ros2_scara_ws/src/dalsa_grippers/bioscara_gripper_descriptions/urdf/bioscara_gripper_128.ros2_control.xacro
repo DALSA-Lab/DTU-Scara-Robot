@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="bioscara_gripper_128_ros2_control" params="
+        prefix
+        use_mock_hardware
+        parameters">
+
+        <ros2_control name="bioscara_gripper_128" type="system">
+            <!-- Plugins -->
+            <hardware>
+                <plugin>bioscara_hardware_interfaces/BioscaraGripperHardwareInterface</plugin>
+                <param name="use_mock_hardware">${use_mock_hardware}</param>
+                <param name="reduction">${parameters['reduction']}</param>
+                <param name="offset">${parameters['offset']}</param>
+                <param name="min">${parameters['min']}</param>
+                <param name="max">${parameters['max']}</param>
+                <param name="init_pos">${parameters['init_pos']}</param>
+            </hardware>
+
+            <!-- Joint interfaces -->
+            <joint name="${prefix}gripper">
+                <command_interface name="position" />
+                <state_interface name="position"/>
+                <!-- Does not actually have a sensor, is emulated as derivative of position.
+                Is needed for GripperActionController. -->
+                <state_interface name="velocity"/>
+            </joint>
+        </ros2_control>
+    </xacro:macro>
+
+</robot>

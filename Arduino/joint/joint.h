@@ -1,6 +1,6 @@
 /**
  * @file joint.h
- * @author Sebastian Storz
+ * @author sbstorz
  * @brief joint firmware header
  * @version 0.1
  * @date 2025-05-27

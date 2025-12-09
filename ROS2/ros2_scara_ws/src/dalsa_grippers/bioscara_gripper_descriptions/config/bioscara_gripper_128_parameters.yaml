@@ -1,0 +1,6 @@
+reduction: 3333.3
+offset: 0.058
+min: 0.04
+max: 0.120
+max_velocity: 1.0
+init_pos: 0.08

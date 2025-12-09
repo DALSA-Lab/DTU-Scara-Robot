@@ -9,7 +9,7 @@ First build the package with Colcon, then you can run it after it is sourced.
 ### Building
 ```bash
 cd ~/bioscara/ROS2/ros2_scara_ws
-colcon build --packages-select gripper_manual_control
+colcon build --packages-select gripper_manual_control bioscara_gripper_hardware_driver
 ```
 ### Running
 In a new terminal:

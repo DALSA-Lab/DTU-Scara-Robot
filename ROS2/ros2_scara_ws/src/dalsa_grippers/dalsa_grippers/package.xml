@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>dalsa_bioscara_grippers</name>
+  <version>0.0.0</version>
+  <description>Metapackage for the DALSA gripper packages</description>
+
+  <author email="s.storz01@gmail.com">sbstorz</author>
+  <maintainer email="s.storz01@gmail.com">sbstorz</maintainer>
+
+
+
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!-- Specify all bioscara_gripper packages -->
+  <exec_depend>bioscara_gripper_bringup</exec_depend>
+  <exec_depend>bioscara_gripper_descriptions</exec_depend>
+  <exec_depend>bioscara_gripper_hardware_driver</exec_depend>
+  <exec_depend>bioscara_gripper_hardware_interface</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
