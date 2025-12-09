@@ -11,14 +11,18 @@ find_package(pluginlib REQUIRED)
 find_package(rviz_common REQUIRED)
 find_package(controller_manager_msgs REQUIRED)
 find_package(control_msgs REQUIRED)
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
 
 set(CMAKE_AUTOMOC ON)
 qt5_wrap_cpp(MOC_FILES
   include/bioscara_rviz_plugin/bioscara_panel.hpp
 )
+qt5_wrap_ui(UIC_FILES src/ui/bioscara_rviz_plugin_frame.ui)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_library(bioscara_panel src/bioscara_panel.cpp ${MOC_FILES})
+
+add_library(bioscara_panel src/bioscara_panel.cpp ${MOC_FILES} ${UIC_FILES})
 target_include_directories(bioscara_panel PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
@@ -43,6 +47,9 @@ install(FILES rviz_common_plugins.xml
 )
 install(FILES icons/classes/BioscaraPanel.png
         DESTINATION share/${PROJECT_NAME}/icons/classes
+)
+install(DIRECTORY launch/
+        DESTINATION share/${PROJECT_NAME}
 )
 ament_export_include_directories(include)
 ament_export_targets(export_bioscara_rviz_plugin)

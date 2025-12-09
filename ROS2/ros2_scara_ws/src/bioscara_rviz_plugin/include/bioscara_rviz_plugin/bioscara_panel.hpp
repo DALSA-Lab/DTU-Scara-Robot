@@ -34,51 +34,125 @@
 
 /* Author: sbstorz */
 
-#ifndef RVIZ_PANEL_TUTORIAL__DEMO_PANEL_HPP_
-#define RVIZ_PANEL_TUTORIAL__DEMO_PANEL_HPP_
+#ifndef BIOSCARA_RVIZ_PANEL_HPP_
+#define BIOSCARA_RVIZ_PANEL_HPP_
 
 #include <QLabel>
-#include <QPushButton>
 #include <QTimer>
+#include <unordered_map>
+#include <vector>
+
 #include <rviz_common/panel.hpp>
 #include <rviz_common/ros_integration/ros_node_abstraction_iface.hpp>
 #include <std_msgs/msg/string.hpp>
 #include "controller_manager_msgs/msg/controller_manager_activity.hpp"
 #include "controller_manager_msgs/msg/named_lifecycle_state.hpp"
 #include "controller_manager_msgs/srv/list_controllers.hpp"
+#include "controller_manager_msgs/srv/set_hardware_component_state.hpp"
+#include "controller_manager_msgs/srv/switch_controller.hpp"
+
 #include "control_msgs/msg/dynamic_interface_group_values.hpp"
 #include "control_msgs/msg/interface_value.hpp"
 
+namespace Ui
+{
+  class BioscaraUI;
+}
+
 namespace bioscara_rviz_plugin
 {
-class BioscaraPanel : public rviz_common::Panel
-{
-  Q_OBJECT
-public:
-  explicit BioscaraPanel(QWidget * parent = 0);
-  ~BioscaraPanel() override;
+  using namespace controller_manager_msgs::msg;
+  using namespace controller_manager_msgs::srv;
 
-  void onInitialize() override;
+  class BioscaraPanel : public rviz_common::Panel
+  {
+    Q_OBJECT
+  public:
+    explicit BioscaraPanel(QWidget *parent = 0);
+    ~BioscaraPanel() override;
 
-protected:
-  std::shared_ptr<rviz_common::ros_integration::RosNodeAbstractionIface> node_ptr_;
-  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
-  rclcpp::Subscription<controller_manager_msgs::msg::ControllerManagerActivity>::SharedPtr subscription_;
-  rclcpp::Client<controller_manager_msgs::srv::ListControllers>::SharedPtr _list_controllers_client;
+    void onInitialize() override;
 
-  void topicCallback(const controller_manager_msgs::msg::ControllerManagerActivity& msg);
+  protected:
+    std::shared_ptr<rviz_common::ros_integration::RosNodeAbstractionIface> node_ptr_;
+    rclcpp::Node::SharedPtr _node;
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+    rclcpp::Subscription<ControllerManagerActivity>::SharedPtr cm_state_subsription_;
+    rclcpp::Client<SwitchController>::SharedPtr switch_controller_client_;
+    rclcpp::Client<SetHardwareComponentState>::SharedPtr hardware_state_client_;
 
-  QLabel * label_;
-  QPushButton * button_;
-  QTimer *_timer;
+    void cm_state_callback(const ControllerManagerActivity &msg);
 
-  rclcpp::Node::SharedPtr _node;
+    /**
+     * @brief Map correlating hardware component name to its lifecycle_msgs/State
+     *
+     */
+    std::unordered_map<std::string, lifecycle_msgs::msg::State> hardware_states_;
 
-private Q_SLOTS:
-  void buttonActivated();
-  void timer_callback();
-};
+    /**
+     * @brief Map correlating controller name to its lifecycle_msgs/State
+     *
+     */
+    std::unordered_map<std::string, lifecycle_msgs::msg::State> controller_states_;
 
-}  // namespace bioscara_rviz_plugin
+    // QT elements
+    Ui::BioscaraUI *ui_;
+    QTimer *_timer;
 
-#endif  // RVIZ_PANEL_TUTORIAL__DEMO_PANEL_HPP_
+    void named_lcs_msg_to_map(const std::vector<NamedLifecycleState> &named_lcs_in, std::unordered_map<std::string, lifecycle_msgs::msg::State> &map_out);
+
+    void print_cm_map(const std::string prefix,
+                      const std::unordered_map<std::string, lifecycle_msgs::msg::State> &map_in);
+
+    /**
+     * @brief Update all hardware and controller state lables.
+     *
+     */
+    void update_state_labels(void);
+
+    void update_state_label(
+        const std::unordered_map<std::string, lifecycle_msgs::msg::State> &state_map,
+        QLabel *label,
+        const std::string &state_key);
+
+    void set_state_label(QLabel *label, const lifecycle_msgs::msg::State &state);
+    
+  private Q_SLOTS:
+
+    /**
+     * @brief Tries to set the bioscara_arm hardware component
+     *  to the `active` state and tries to enable the velocity_joint_trajectory_controller.
+     *
+     */
+    void arm_en_btn_cb(void);
+
+    /**
+     * @brief Tries to set the bioscara_gripper_128 hardware component
+     *  to the `active` state and tries to enable the gripper_controller.
+     *
+     */
+    void gripper_en_btn_cb(void);
+
+    /**
+     * @brief Tries to set the velocity_joint_trajectory_controller state to `active`.
+     *
+     */
+    void vjtc_ctrl_en_btn_cb(void);
+
+    /**
+     * @brief Tries to set the homing_controller state to `active`.
+     *
+     */
+    void homing_ctrl_en_btn_cb(void);
+
+    /**
+     * @brief Tries to set the gripper_controller state to `active`.
+     *
+     */
+    void gripper_ctrl_en_btn_cb(void);
+    void timer_callback();
+  };
+
+} // namespace bioscara_rviz_plugin
+
+#endif // BIOSCARA_RVIZ_PANEL_HPP_
