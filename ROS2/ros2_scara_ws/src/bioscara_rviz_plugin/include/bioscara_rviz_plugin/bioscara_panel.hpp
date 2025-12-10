@@ -38,18 +38,19 @@
 #define BIOSCARA_RVIZ_PANEL_HPP_
 
 #include <QLabel>
+#include <QPushButton>
 #include <QTimer>
 #include <unordered_map>
 #include <vector>
 
 #include <rviz_common/panel.hpp>
 #include <rviz_common/ros_integration/ros_node_abstraction_iface.hpp>
-#include <std_msgs/msg/string.hpp>
 #include "controller_manager_msgs/msg/controller_manager_activity.hpp"
 #include "controller_manager_msgs/msg/named_lifecycle_state.hpp"
 #include "controller_manager_msgs/srv/list_controllers.hpp"
 #include "controller_manager_msgs/srv/set_hardware_component_state.hpp"
 #include "controller_manager_msgs/srv/switch_controller.hpp"
+#include "controller_manager_msgs/srv/configure_controller.hpp"
 
 #include "control_msgs/msg/dynamic_interface_group_values.hpp"
 #include "control_msgs/msg/interface_value.hpp"
@@ -75,48 +76,95 @@ namespace bioscara_rviz_plugin
 
   protected:
     std::shared_ptr<rviz_common::ros_integration::RosNodeAbstractionIface> node_ptr_;
-    rclcpp::Node::SharedPtr _node;
-    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
+    rclcpp::Node::SharedPtr node_;
     rclcpp::Subscription<ControllerManagerActivity>::SharedPtr cm_state_subsription_;
     rclcpp::Client<SwitchController>::SharedPtr switch_controller_client_;
+    rclcpp::Client<ConfigureController>::SharedPtr configure_controller_client_;
     rclcpp::Client<SetHardwareComponentState>::SharedPtr hardware_state_client_;
-
-    void cm_state_callback(const ControllerManagerActivity &msg);
 
     /**
      * @brief Map correlating hardware component name to its lifecycle_msgs/State
      *
+     * Stored as NamedLifecycleState to also simply access component name from map value.
+     *
      */
-    std::unordered_map<std::string, lifecycle_msgs::msg::State> hardware_states_;
+    std::unordered_map<std::string, NamedLifecycleState> hardware_states_;
 
     /**
      * @brief Map correlating controller name to its lifecycle_msgs/State
      *
+     * Stored as NamedLifecycleState to also simply access controller name from map value.
      */
-    std::unordered_map<std::string, lifecycle_msgs::msg::State> controller_states_;
+    std::unordered_map<std::string, NamedLifecycleState> controller_states_;
 
     // QT elements
     Ui::BioscaraUI *ui_;
     QTimer *_timer;
 
-    void named_lcs_msg_to_map(const std::vector<NamedLifecycleState> &named_lcs_in, std::unordered_map<std::string, lifecycle_msgs::msg::State> &map_out);
+    void cm_state_callback(const ControllerManagerActivity &msg);
+
+    bool set_hardware_component_state(const std::string component, const lifecycle_msgs::msg::State target_state);
+
+    bool configure_controller(const std::string controller);
+
+    bool switch_controllers(const std::vector<std::string> &activate_controllers,
+                            const std::vector<std::string> &deactivate_controllers,
+                            const int32_t = SwitchController::Request::BEST_EFFORT,
+                            const bool activate_asap = false,
+                            const builtin_interfaces::msg::Duration timeout = builtin_interfaces::msg::Duration());
+
+    bool set_controller_state(const std::string controller,
+                              const lifecycle_msgs::msg::State target_state);
+
+    void named_lcs_msg_to_map(const std::vector<NamedLifecycleState> &named_lcs_in,
+                              std::unordered_map<std::string, NamedLifecycleState> &map_out);
 
     void print_cm_map(const std::string prefix,
-                      const std::unordered_map<std::string, lifecycle_msgs::msg::State> &map_in);
+                      const std::unordered_map<std::string, NamedLifecycleState> &map_in);
 
+    /**
+     * @brief Checks if the specified "must-have" keys are present in the state map.
+     * If not a key is created with an empty State.
+     *
+     * This is done to avoid having to check for the existence of key when
+     * accessing the map. Keys could be missing if an expected controller or
+     * hardware component has not been loaded or has a different name.
+     *
+     * @param state_map
+     * @param augment_vec
+     */
+    void augment_state_map(std::unordered_map<std::string, NamedLifecycleState> &state_map,
+                           std::vector<std::string> augment_vec);
     /**
      * @brief Update all hardware and controller state lables.
      *
      */
-    void update_state_labels(void);
+    void update_labels_and_btns(void);
 
-    void update_state_label(
-        const std::unordered_map<std::string, lifecycle_msgs::msg::State> &state_map,
-        QLabel *label,
+    void update_label_and_btn(
+        const std::unordered_map<std::string, NamedLifecycleState> &state_map,
+        QLabel *state_label,
+        QPushButton *en_button,
         const std::string &state_key);
 
-    void set_state_label(QLabel *label, const lifecycle_msgs::msg::State &state);
-    
+    void set_state_label(QLabel *label, const NamedLifecycleState &state);
+
+    void set_en_btn(QPushButton *button, const NamedLifecycleState &state);
+
+    /**
+     * @brief Check under which conditions a component is allowed to be activated.
+     *
+     * Some controllers will only activate under certain conditions.
+     * This functions disables the activation button if the coditions are met.
+     *
+     * @param component_key
+     * @return true
+     * @return false
+     */
+    bool check_activation_conditions(const std::string component_key);
+
+    lifecycle_msgs::msg::State target_state_from_current(lifecycle_msgs::msg::State current_state);
+
   private Q_SLOTS:
 
     /**

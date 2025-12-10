@@ -67,11 +67,8 @@
             </item>
           <item row="0" column="2">
            <widget class="QPushButton" name="arm_en_btn">
-            <property name="styleSheet">
-             <string notr="true">color:green</string>
-            </property>
-            <property name="text">
-             <string>Enable</string>
+            <property name="enabled">
+             <bool>false</bool>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -109,11 +106,8 @@
             </item>
           <item row="1" column="2">
            <widget class="QPushButton" name="gripper_en_btn">
-            <property name="styleSheet">
-             <string notr="true">color:green</string>
-            </property>
-            <property name="text">
-             <string>Enable</string>
+            <property name="enabled">
+             <bool>false</bool>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -166,11 +160,8 @@
             </item>
           <item row="0" column="2">
            <widget class="QPushButton" name="vjtc_ctrl_en_btn">
-            <property name="styleSheet">
-             <string notr="true">color:green</string>
-            </property>
-            <property name="text">
-             <string>Enable</string>
+            <property name="enabled">
+             <bool>false</bool>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -208,11 +199,8 @@
             </item>
           <item row="1" column="2">
            <widget class="QPushButton" name="homing_ctrl_en_btn">
-            <property name="styleSheet">
-             <string notr="true">color:green</string>
-            </property>
-            <property name="text">
-             <string>Enable</string>
+            <property name="enabled">
+             <bool>false</bool>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -250,11 +238,8 @@
             </item>
           <item row="2" column="2">
            <widget class="QPushButton" name="gripper_ctrl_en_btn">
-            <property name="styleSheet">
-             <string notr="true">color:green</string>
-            </property>
-            <property name="text">
-             <string>Enable</string>
+            <property name="enabled">
+             <bool>false</bool>
             </property>
             <property name="checkable">
              <bool>false</bool>
