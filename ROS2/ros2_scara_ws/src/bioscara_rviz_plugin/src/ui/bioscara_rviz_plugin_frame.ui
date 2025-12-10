@@ -32,7 +32,7 @@
       <attribute name="title">
        <string>State</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout">
        <item>
         <widget class="QGroupBox">
          <property name="title">
@@ -53,18 +53,12 @@
            </widget>
           </item>
           <item row="0" column="1">
-             <widget class="QLabel" name="arm_hardware_state_label">
-              <!-- <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property> -->
-              <property name="text">
-               <string>-</string>
-              </property>
-             </widget>
-            </item>
+           <widget class="QLabel" name="arm_hardware_state_label">
+            <property name="text">
+             <string>-</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="2">
            <widget class="QPushButton" name="arm_en_btn">
             <property name="enabled">
@@ -92,18 +86,12 @@
            </widget>
           </item>
           <item row="1" column="1">
-             <widget class="QLabel" name="gripper_hardware_state_label">
-              <!-- <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property> -->
-              <property name="text">
-               <string>-</string>
-              </property>
-             </widget>
-            </item>
+           <widget class="QLabel" name="gripper_hardware_state_label">
+            <property name="text">
+             <string>-</string>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="2">
            <widget class="QPushButton" name="gripper_en_btn">
             <property name="enabled">
@@ -146,18 +134,12 @@
            </widget>
           </item>
           <item row="0" column="1">
-             <widget class="QLabel" name="vjtc_ctrl_state_label">
-              <!-- <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property> -->
-              <property name="text">
-               <string>-</string>
-              </property>
-             </widget>
-            </item>
+           <widget class="QLabel" name="vjtc_ctrl_state_label">
+            <property name="text">
+             <string>-</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="2">
            <widget class="QPushButton" name="vjtc_ctrl_en_btn">
             <property name="enabled">
@@ -185,18 +167,12 @@
            </widget>
           </item>
           <item row="1" column="1">
-             <widget class="QLabel" name="homing_ctrl_state_label">
-              <!-- <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property> -->
-              <property name="text">
-               <string>-</string>
-              </property>
-             </widget>
-            </item>
+           <widget class="QLabel" name="homing_ctrl_state_label">
+            <property name="text">
+             <string>-</string>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="2">
            <widget class="QPushButton" name="homing_ctrl_en_btn">
             <property name="enabled">
@@ -224,18 +200,12 @@
            </widget>
           </item>
           <item row="2" column="1">
-             <widget class="QLabel" name="gripper_ctrl_state_label">
-              <!-- <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property> -->
-              <property name="text">
-               <string>-</string>
-              </property>
-             </widget>
-            </item>
+           <widget class="QLabel" name="gripper_ctrl_state_label">
+            <property name="text">
+             <string>-</string>
+            </property>
+           </widget>
+          </item>
           <item row="2" column="2">
            <widget class="QPushButton" name="gripper_ctrl_en_btn">
             <property name="enabled">
@@ -259,672 +229,361 @@
         </widget>
        </item>
        <item>
-         <spacer name="verticalSpacer">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>32</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>32</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
       </layout>
      </widget>
-     <!-- <widget class="QWidget" name="homing">
+     <widget class="QWidget" name="homing">
       <attribute name="title">
        <string>Homing</string>
       </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_9">
+      <layout class="QVBoxLayout">
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_11">
-         <property name="spacing">
-          <number>0</number>
+        <widget class="QGroupBox" name="homing_grp">
+         <property name="title">
+          <string>Control</string>
          </property>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QGroupBox" name="groupBox_9">
-             <property name="title">
-              <string>Commands</string>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_9">
-              <property name="spacing">
-               <number>4</number>
-              </property>
-              <property name="leftMargin">
-               <number>6</number>
-              </property>
-              <property name="rightMargin">
-               <number>6</number>
-              </property>
-              <property name="bottomMargin">
-               <number>6</number>
-              </property>
-              <item>
-               <widget class="QPushButton" name="plan_button">
-                <property name="text">
-                 <string>&amp;Plan</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="execute_button">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="text">
-                 <string>&amp;Execute</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="plan_and_execute_button">
-                <property name="text">
-                 <string>Plan &amp;&amp; E&amp;xecute</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="stop_button">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="toolTip">
-                 <string>Stop execution by sending a stop command to the move_group.</string>
-                </property>
-                <property name="text">
-                 <string>&amp;Stop</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="result_label">
-                <property name="layoutDirection">
-                 <enum>Qt::LeftToRight</enum>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-                <property name="wordWrap">
-                 <bool>false</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="clear_octomap_button">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="text">
-                 <string>Clear octomap</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QGroupBox" name="groupBox_11">
-             <property name="title">
-              <string>Query</string>
-             </property>
-             <layout class="QVBoxLayout" name="verticalLayout_6">
-              <property name="leftMargin">
-               <number>6</number>
-              </property>
-              <property name="rightMargin">
-               <number>6</number>
-              </property>
-              <property name="bottomMargin">
-               <number>6</number>
-              </property>
-              <item>
-               <layout class="QVBoxLayout" name="verticalLayout_planning_group">
-                <item>
-                 <widget class="QLabel" name="label_planning_group">
-                  <property name="text">
-                   <string>Planning Group:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QComboBox" name="planning_group_combo_box"/>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QVBoxLayout" name="verticalLayout_start_state">
-                <item>
-                 <widget class="QLabel" name="label_start_state">
-                  <property name="text">
-                   <string>Start State:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QComboBox" name="start_state_combo_box"/>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QVBoxLayout" name="verticalLayout_goal_state">
-                <item>
-                 <widget class="QLabel" name="label_goal_state">
-                  <property name="text">
-                   <string>Goal State:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QComboBox" name="goal_state_combo_box"/>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Expanding</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>32</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="groupBox_12">
-           <property name="title">
-            <string>Path Constraints</string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_15">
-            <property name="leftMargin">
-             <number>6</number>
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <layout class="QGridLayout">
+          <property name="topMargin">
+           <number>4</number>
+          </property>
+          <property name="bottomMargin">
+           <number>1</number>
+          </property>
+          <!-- Joint 1 -->
+          <item row="0" column="0">
+           <widget class="QLabel">
+            <property name="text">
+             <string>Joint 1:</string>
             </property>
-            <property name="topMargin">
-             <number>4</number>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="j1_hm_state_label">
+            <property name="text">
+             <string></string>
             </property>
-            <property name="rightMargin">
-             <number>6</number>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QPushButton" name="j1_hm_neg_btn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
-            <property name="bottomMargin">
-             <number>6</number>
+            <property name="maximumSize">
+             <size>
+              <width>24</width>
+              <height>16777215</height>
+             </size>
             </property>
-            <item>
-             <widget class="QComboBox" name="path_constraints_combo_box">
-              <property name="toolTip">
-               <string>Select path constraints from the database. </string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
+            <property name="text">
+             <string>↻</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <widget class="QPushButton" name="j1_hm_stp_btn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>24</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>○</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QPushButton" name="j1_hm_pos_btn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>24</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>↺</string>
+            </property>
+           </widget>
+          </item>
+          <!-- Joint 2 -->
+          <item row="1" column="0">
+           <widget class="QLabel">
+            <property name="text">
+             <string>Joint 2:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="j2_hm_state_label">
+            <property name="text">
+             <string></string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="j2_hm_neg_btn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>24</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>↓</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QPushButton" name="j2_hm_stp_btn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>24</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>○</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="4">
+           <widget class="QPushButton" name="j2_hm_pos_btn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>24</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>↑</string>
+            </property>
+           </widget>
+          </item>
+          <!-- Joint 3 -->
+          <item row="2" column="0">
+           <widget class="QLabel">
+            <property name="text">
+             <string>Joint 3:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="j3_hm_state_label">
+            <property name="text">
+             <string></string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QPushButton" name="j3_hm_neg_btn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>24</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>↻</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QPushButton" name="j3_hm_stp_btn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>24</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>○</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="4">
+           <widget class="QPushButton" name="j3_hm_pos_btn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>24</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>↺</string>
+            </property>
+           </widget>
+          </item>
+          <!-- Joint 4 -->
+          <item row="3" column="0">
+           <widget class="QLabel">
+            <property name="text">
+             <string>Joint 4:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="j4_hm_state_label">
+            <property name="text">
+             <string></string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QPushButton" name="j4_hm_neg_btn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>24</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>↻</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QPushButton" name="j4_hm_stp_btn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>24</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>○</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="4">
+           <widget class="QPushButton" name="j4_hm_pos_btn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>24</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>↺</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_18">
-         <property name="spacing">
-          <number>0</number>
+        <widget class="QLabel" name="homing_state_hint">
+         <property name="text">
+          <string>Enable the homing controller to start homing. </string>
          </property>
-         <item>
-          <widget class="QGroupBox" name="groupBox_10">
-           <property name="title">
-            <string>Options</string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_10">
-            <property name="spacing">
-             <number>1</number>
-            </property>
-            <property name="bottomMargin">
-             <number>4</number>
-            </property>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_3">
-              <property name="spacing">
-               <number>1</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="label_9">
-                <property name="toolTip">
-                 <string>Total time allowed for planning.  Planning stops if time or number of attempts is exceeded, or goal is reached.</string>
-                </property>
-                <property name="text">
-                 <string>Planning Time (s):</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QDoubleSpinBox" name="planning_time">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>40</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="toolTip">
-                 <string>Total time allowed for planning.  Planning stops if time or number of attempts is exceeded, or goal is reached.</string>
-                </property>
-                <property name="decimals">
-                 <number>1</number>
-                </property>
-                <property name="maximum">
-                 <double>300.000000000000000</double>
-                </property>
-                <property name="value">
-                 <double>5.000000000000000</double>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_15">
-              <property name="spacing">
-               <number>1</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="label_10">
-                <property name="toolTip">
-                 <string>Allowed number of planning attempts. Planning stops if time or number of attempts is exceeded, or goal is reached.</string>
-                </property>
-                <property name="text">
-                 <string>Planning Attempts:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QSpinBox" name="planning_attempts">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>40</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="toolTip">
-                 <string>Allowed number of planning attempts. Planning stops if time or number of attempts is exceeded, or goal is reached.</string>
-                </property>
-                <property name="maximum">
-                 <number>1000</number>
-                </property>
-                <property name="value">
-                 <number>10</number>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_10">
-              <property name="spacing">
-               <number>1</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="label_11">
-                <property name="toolTip">
-                 <string>Factor (between 0 and 1) to scale down maximum joint velocities</string>
-                </property>
-                <property name="text">
-                 <string>Velocity Scaling:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QDoubleSpinBox" name="velocity_scaling_factor">
-                <property name="minimumSize">
-                 <size>
-                  <width>40</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="toolTip">
-                 <string>Factor (between 0 and 1) to scale down maximum joint velocities</string>
-                </property>
-                <property name="maximum">
-                 <double>1.000000000000000</double>
-                </property>
-                <property name="singleStep">
-                 <double>0.100000000000000</double>
-                </property>
-                <property name="value">
-                 <double>1.000000000000000</double>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_20">
-              <property name="spacing">
-               <number>1</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="label_20">
-                <property name="toolTip">
-                 <string>Factor (between 0 and 1) to scale down maximum joint accelerations</string>
-                </property>
-                <property name="text">
-                 <string>Accel. Scaling:</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QDoubleSpinBox" name="acceleration_scaling_factor">
-                <property name="minimumSize">
-                 <size>
-                  <width>40</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="toolTip">
-                 <string>Factor (between 0 and 1) to scale down maximum joint accelerations</string>
-                </property>
-                <property name="maximum">
-                 <double>1.000000000000000</double>
-                </property>
-                <property name="singleStep">
-                 <double>0.100000000000000</double>
-                </property>
-                <property name="value">
-                 <double>1.000000000000000</double>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <spacer name="verticalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="use_cartesian_path">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>30</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Check</string>
-              </property>
-              <property name="text">
-               <string>Use Cartesian Path</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="collision_aware_ik">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>30</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>I.</string>
-              </property>
-              <property name="text">
-               <string>Collision-aware IK</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="approximate_ik">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>30</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Allow approximate IK solutions, which deviate from the target pose. Useful when an exact solution cannot be found, e.g. for underactuated arms or when trying to reach an unreachable target.</string>
-              </property>
-              <property name="text">
-               <string>Approx IK Solutions</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="allow_external_program">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>30</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>Allow other nodes to control start and end poses as well as planning and execution, using ROS topics (/rviz/moveit/ ).</string>
-              </property>
-              <property name="text">
-               <string>External Comm.</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="allow_replanning">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>30</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>EXPERIMENTAL: Trigger replanning if new collisions are detected during plan execution. Only works for the &quot;Plan &amp; Execute&quot; button. </string>
-              </property>
-              <property name="autoFillBackground">
-               <bool>false</bool>
-              </property>
-              <property name="text">
-               <string>Replanning</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="allow_looking">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="minimumSize">
-               <size>
-                <width>30</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="toolTip">
-               <string>EXPERIMENTAL: Allows the robot to reposition its sensor to look around to resolve apparent collisions. A sensor needs to be set up and the new measurements have to affect the collision scene, otherwise it has no effect. See tutorial.</string>
-              </property>
-              <property name="text">
-               <string>Sensor Positioning</string>
-              </property>
-              <property name="checked">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer>
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>32</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
-     </widget> -->
+     </widget>
     </widget>
    </item>
   </layout>
  </widget>
- <!-- <customwidgets>
-  <customwidget>
-   <class>moveit_rviz_plugin::MotionPlanningParamWidget</class>
-   <extends>QTreeView</extends>
-   <header location="global">moveit/motion_planning_rviz_plugin/motion_planning_param_widget.hpp</header>
-  </customwidget>
- </customwidgets>
- <tabstops>
-  <tabstop>planning_algorithm_combo_box</tabstop>
-  <tabstop>planner_param_treeview</tabstop>
-  <tabstop>database_host</tabstop>
-  <tabstop>database_port</tabstop>
-  <tabstop>reset_db_button</tabstop>
-  <tabstop>database_connect_button</tabstop>
-  <tabstop>wcenter_x</tabstop>
-  <tabstop>wcenter_y</tabstop>
-  <tabstop>wcenter_z</tabstop>
-  <tabstop>wsize_x</tabstop>
-  <tabstop>wsize_y</tabstop>
-  <tabstop>wsize_z</tabstop>
-  <tabstop>plan_button</tabstop>
-  <tabstop>execute_button</tabstop>
-  <tabstop>plan_and_execute_button</tabstop>
-  <tabstop>stop_button</tabstop>
-  <tabstop>clear_octomap_button</tabstop>
-  <tabstop>planning_group_combo_box</tabstop>
-  <tabstop>start_state_combo_box</tabstop>
-  <tabstop>goal_state_combo_box</tabstop>
-  <tabstop>path_constraints_combo_box</tabstop>
-  <tabstop>planning_time</tabstop>
-  <tabstop>planning_attempts</tabstop>
-  <tabstop>velocity_scaling_factor</tabstop>
-  <tabstop>acceleration_scaling_factor</tabstop>
-  <tabstop>use_cartesian_path</tabstop>
-  <tabstop>collision_aware_ik</tabstop>
-  <tabstop>approximate_ik</tabstop>
-  <tabstop>allow_external_program</tabstop>
-  <tabstop>allow_replanning</tabstop>
-  <tabstop>allow_looking</tabstop>
-  <tabstop>detected_objects_list</tabstop>
-  <tabstop>detect_objects_button</tabstop>
-  <tabstop>support_surfaces_list</tabstop>
-  <tabstop>pick_button</tabstop>
-  <tabstop>place_button</tabstop>
-  <tabstop>roi_center_x</tabstop>
-  <tabstop>roi_center_y</tabstop>
-  <tabstop>roi_center_z</tabstop>
-  <tabstop>roi_size_x</tabstop>
-  <tabstop>roi_size_y</tabstop>
-  <tabstop>roi_size_z</tabstop>
-  <tabstop>collision_objects_list</tabstop>
-  <tabstop>shape_size_x_spin_box</tabstop>
-  <tabstop>shape_size_z_spin_box</tabstop>
-  <tabstop>shape_size_y_spin_box</tabstop>
-  <tabstop>shapes_combo_box</tabstop>
-  <tabstop>add_object_button</tabstop>
-  <tabstop>remove_object_button</tabstop>
-  <tabstop>clear_scene_button</tabstop>
-  <tabstop>object_x</tabstop>
-  <tabstop>object_y</tabstop>
-  <tabstop>object_z</tabstop>
-  <tabstop>object_rx</tabstop>
-  <tabstop>object_ry</tabstop>
-  <tabstop>object_rz</tabstop>
-  <tabstop>scene_scale</tabstop>
-  <tabstop>publish_current_scene_button</tabstop>
-  <tabstop>export_scene_geometry_text_button</tabstop>
-  <tabstop>import_scene_geometry_text_button</tabstop>
-  <tabstop>planning_scene_tree</tabstop>
-  <tabstop>load_scene_button</tabstop>
-  <tabstop>load_query_button</tabstop>
-  <tabstop>delete_scene_button</tabstop>
-  <tabstop>delete_query_button</tabstop>
-  <tabstop>save_query_button</tabstop>
-  <tabstop>save_scene_button</tabstop>
-  <tabstop>list_states</tabstop>
-  <tabstop>load_state_button</tabstop>
-  <tabstop>clear_states_button</tabstop>
-  <tabstop>set_as_start_state_button</tabstop>
-  <tabstop>set_as_goal_state_button</tabstop>
-  <tabstop>remove_state_button</tabstop>
-  <tabstop>save_start_state_button</tabstop>
-  <tabstop>save_goal_state_button</tabstop>
-  <tabstop>status_text</tabstop>
-  <tabstop>tabWidget</tabstop>
- </tabstops>
- <resources/>
- <connections/> -->
 </ui>
