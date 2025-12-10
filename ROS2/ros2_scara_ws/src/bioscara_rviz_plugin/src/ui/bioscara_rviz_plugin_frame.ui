@@ -560,7 +560,7 @@
        <item>
         <widget class="QLabel" name="homing_state_hint">
          <property name="text">
-          <string>Enable the homing controller to start homing. </string>
+          <string>Enable the homing controller to start homing.</string>
          </property>
         </widget>
        </item>

@@ -12,31 +12,58 @@ namespace bioscara_rviz_plugin
     ui_ = new Ui::BioscaraUI();
     ui_->setupUi(this);
 
-    // Connect the event of when the button is released to our callback,
-    // so pressing the button results in the callback being called.
+    // TODO: since controller and hardware cb's are very similar, call lambda function with argument
+    // As for the homing buttons
     connect(ui_->arm_en_btn, SIGNAL(clicked()), this, SLOT(arm_en_btn_cb()));
     connect(ui_->gripper_en_btn, SIGNAL(clicked()), this, SLOT(gripper_en_btn_cb()));
     connect(ui_->vjtc_ctrl_en_btn, SIGNAL(clicked()), this, SLOT(vjtc_ctrl_en_btn_cb()));
     connect(ui_->homing_ctrl_en_btn, SIGNAL(clicked()), this, SLOT(homing_ctrl_en_btn_cb()));
     connect(ui_->gripper_ctrl_en_btn, SIGNAL(clicked()), this, SLOT(gripper_ctrl_en_btn_cb()));
+
+    connect(ui_->j1_hm_neg_btn, &QPushButton::clicked, this, [this]
+            { homing_cmd("j1", -1); });
+    connect(ui_->j1_hm_stp_btn, &QPushButton::clicked, this, [this]
+            { homing_cmd("j1", 0); });
+    connect(ui_->j1_hm_pos_btn, &QPushButton::clicked, this, [this]
+            { homing_cmd("j1", 1); });
+    connect(ui_->j2_hm_neg_btn, &QPushButton::clicked, this, [this]
+            { homing_cmd("j2", -1); });
+    connect(ui_->j2_hm_stp_btn, &QPushButton::clicked, this, [this]
+            { homing_cmd("j2", 0); });
+    connect(ui_->j2_hm_pos_btn, &QPushButton::clicked, this, [this]
+            { homing_cmd("j2", 1); });
+    connect(ui_->j3_hm_neg_btn, &QPushButton::clicked, this, [this]
+            { homing_cmd("j3", -1); });
+    connect(ui_->j3_hm_stp_btn, &QPushButton::clicked, this, [this]
+            { homing_cmd("j3", 0); });
+    connect(ui_->j3_hm_pos_btn, &QPushButton::clicked, this, [this]
+            { homing_cmd("j3", 1); });
+    connect(ui_->j4_hm_neg_btn, &QPushButton::clicked, this, [this]
+            { homing_cmd("j4", -1); });
+    connect(ui_->j4_hm_stp_btn, &QPushButton::clicked, this, [this]
+            { homing_cmd("j4", 0); });
+    connect(ui_->j4_hm_pos_btn, &QPushButton::clicked, this, [this]
+            { homing_cmd("j4", 1); });
   }
 
   BioscaraPanel::~BioscaraPanel() = default;
 
   void BioscaraPanel::onInitialize()
   {
+
+    /*
+    TOOD:
+    This would be the preferred of simply using the rviz node and not having to create my own node which
+    needs to be spun manually.
+     However in the blocking service calls instead of spin_until_future_complete() a simple
+     (result_future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) would be sufficient.
+     But the wait function never returned, locking Rviz completely. Instead the workaround with the QTimer is used.
+    */
+
     // Access the abstract ROS Node and
     // in the process lock it for exclusive use until the method is done.
     // node_ptr_ = getDisplayContext()->getRosNodeAbstraction().lock();
-
-    // TODO: Check this, might not need the qt timer then
-    //     auto ros_node_abstraction = context_->getRosNodeAbstraction().lock();
-    // if (!ros_node_abstraction)
-    // {
-    //   RCLCPP_INFO(logger_, "Unable to lock weak_ptr from DisplayContext in MotionPlanningFrame constructor");
-    //   return;
-    // }
-    // node_ = ros_node_abstraction->get_raw_node();
+    // node_ = node_ptr_->get_raw_node();
 
     node_ = std::make_shared<rclcpp::Node>("bioscara_rviz_panel");
 
@@ -44,6 +71,21 @@ namespace bioscara_rviz_plugin
         node_->create_subscription<ControllerManagerActivity>(
             "/controller_manager/activity", rclcpp::QoS(10).transient_local().reliable(),
             std::bind(&BioscaraPanel::cm_state_callback, this, std::placeholders::_1));
+
+    prepopulate_state_map(controller_states_, {"velocity_joint_trajectory_controller",
+                                               "gripper_controller",
+                                               "homing_controller"});
+    prepopulate_state_map(hardware_states_, {"bioscara_arm",
+                                             "bioscara_gripper_128"});
+
+    joint_state_subsription_ =
+        node_->create_subscription<DynamicJointState>(
+            "/dynamic_joint_states", rclcpp::QoS(10).transient_local().best_effort(),
+            std::bind(&BioscaraPanel::joint_state_callback, this, std::placeholders::_1));
+
+    prepopulate_joint_state_map(joint_states_, {"j1", "j2", "j3", "j4", "gripper"});
+
+    homing_publisher_ = node_->create_publisher<DynamicInterfaceGroupValues>("/homing_controller/commands", 10);
 
     hardware_state_client_ = node_->create_client<SetHardwareComponentState>(
         "/controller_manager/set_hardware_component_state");
@@ -72,16 +114,19 @@ namespace bioscara_rviz_plugin
   {
     named_lcs_msg_to_map(msg.controllers, controller_states_);
     named_lcs_msg_to_map(msg.hardware_components, hardware_states_);
-    augment_state_map(controller_states_, {"velocity_joint_trajectory_controller",
-                                           "gripper_controller",
-                                           "homing_controller"});
-    augment_state_map(hardware_states_, {"bioscara_arm",
-                                         "bioscara_gripper_128"});
 
     print_cm_map("New controller states:", controller_states_);
     print_cm_map("New hardware states:", hardware_states_);
 
-    update_labels_and_btns();
+    update_state_labels_and_btns();
+    update_homing_grp_state();
+  }
+
+  void BioscaraPanel::joint_state_callback(const DynamicJointState &msg)
+  {
+    dynamic_joint_state_msg_to_map(msg, joint_states_);
+
+    update_homing_state_labels();
   }
 
   bool BioscaraPanel::set_hardware_component_state(const std::string component, const lifecycle_msgs::msg::State target_state)
@@ -264,6 +309,22 @@ namespace bioscara_rviz_plugin
     return target_state;
   }
 
+  void BioscaraPanel::homing_cmd(const std::string joint, const int cmd)
+  {
+    // TODO, disable other buttons
+
+    RCLCPP_INFO(node_->get_logger(), "Homing %s, %d", joint.c_str(), cmd);
+
+    DynamicInterfaceGroupValues msg;
+    InterfaceValue value;
+    value.interface_names = {"home"};
+    value.values = {cmd*1.0};
+    msg.interface_groups = {joint};
+    msg.interface_values = {value};
+    
+    homing_publisher_->publish(msg);
+  }
+
   void BioscaraPanel::arm_en_btn_cb(void)
   {
     std::string component = "bioscara_arm";
@@ -334,13 +395,21 @@ namespace bioscara_rviz_plugin
     }
   }
 
+  void BioscaraPanel::dynamic_joint_state_msg_to_map(const DynamicJointState &dynamic_joint_state_in,
+                                                     std::unordered_map<std::string, InterfaceValue> &map_out)
+  {
+    for (size_t i = 0; i < dynamic_joint_state_in.joint_names.size(); i++)
+    {
+      map_out[dynamic_joint_state_in.joint_names[i]] = dynamic_joint_state_in.interface_values[i];
+    }
+  }
+
   void BioscaraPanel::named_lcs_msg_to_map(const std::vector<NamedLifecycleState> &named_lcs_in,
                                            std::unordered_map<std::string, NamedLifecycleState> &map_out)
   {
-    map_out.clear();
     for (const auto &lcs : named_lcs_in)
     {
-      map_out.insert({lcs.name, lcs});
+      map_out[lcs.name] = lcs;
     }
   }
 
@@ -356,40 +425,99 @@ namespace bioscara_rviz_plugin
                  "%s\n%s", prefix.c_str(), states.c_str());
   }
 
-  void BioscaraPanel::augment_state_map(std::unordered_map<std::string, NamedLifecycleState> &state_map,
-                                        std::vector<std::string> augment_vec)
+  void BioscaraPanel::prepopulate_joint_state_map(std::unordered_map<std::string, InterfaceValue> &state_map,
+                                                  std::vector<std::string> augment_vec)
   {
     for (auto &key : augment_vec)
     {
-      auto it = state_map.find(key);
-      if (it == state_map.end())
-      {
-        NamedLifecycleState state;
-        state.name = key;
-        state_map.insert({key, state});
-      }
+      InterfaceValue dummy;
+      dummy.interface_names = {"home", "velocity", "position"};
+      dummy.values = {0.0, 0.0, 0.0};
+      state_map[key] = dummy;
     }
   }
 
-  void BioscaraPanel::update_labels_and_btns(void)
+  void BioscaraPanel::prepopulate_state_map(std::unordered_map<std::string, NamedLifecycleState> &state_map,
+                                            std::vector<std::string> augment_vec)
   {
-    update_label_and_btn(controller_states_, ui_->vjtc_ctrl_state_label,
-                         ui_->vjtc_ctrl_en_btn, "velocity_joint_trajectory_controller");
-
-    update_label_and_btn(controller_states_, ui_->homing_ctrl_state_label,
-                         ui_->homing_ctrl_en_btn, "homing_controller");
-
-    update_label_and_btn(controller_states_, ui_->gripper_ctrl_state_label,
-                         ui_->gripper_ctrl_en_btn, "gripper_controller");
-
-    update_label_and_btn(hardware_states_, ui_->arm_hardware_state_label,
-                         ui_->arm_en_btn, "bioscara_arm");
-
-    update_label_and_btn(hardware_states_, ui_->gripper_hardware_state_label,
-                         ui_->gripper_en_btn, "bioscara_gripper_128");
+    for (auto &key : augment_vec)
+    {
+      NamedLifecycleState state;
+      state.name = key;
+      state_map[key] = state;
+    }
   }
 
-  void BioscaraPanel::update_label_and_btn(
+  void BioscaraPanel::update_homing_grp_state(void)
+  {
+    bool enable = false;
+    std::string hint = "Enable the homing controller to start homing.";
+    switch (controller_states_.at("homing_controller").state.id)
+    {
+    case lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE:
+      enable = true;
+      hint = "";
+      break;
+
+    default:
+      break;
+    }
+    ui_->homing_grp->setEnabled(enable);
+    ui_->homing_state_hint->setText(QString(hint.c_str()));
+  }
+
+  void BioscaraPanel::update_homing_state_labels(void)
+  {
+    set_homing_state_label(ui_->j1_hm_state_label, joint_states_.at("j1"));
+    set_homing_state_label(ui_->j2_hm_state_label, joint_states_.at("j2"));
+    set_homing_state_label(ui_->j3_hm_state_label, joint_states_.at("j3"));
+    set_homing_state_label(ui_->j4_hm_state_label, joint_states_.at("j4"));
+  }
+
+  void BioscaraPanel::set_homing_state_label(QLabel *label, const InterfaceValue &state)
+  {
+    bool homed = false;
+
+    // TODO: this is not very efficient to find the state interface. But works for the small number.
+    for (size_t i = 0; i < state.interface_names.size(); i++)
+    {
+      if (state.interface_names[i] == "home")
+      {
+        homed = state.values[i] > 0.0;
+        break;
+      }
+    }
+    if (homed)
+    {
+      label->setText(QString("Ready"));
+      label->setStyleSheet("QLabel { color : green; font: bold }");
+    }
+    else
+    {
+      label->setText(QString("Not Homed"));
+      label->setStyleSheet("QLabel { color : red; font: bold }");
+    }
+  }
+
+  void BioscaraPanel::update_state_labels_and_btns(void)
+  {
+    update_state_label_and_btn(controller_states_, ui_->vjtc_ctrl_state_label,
+                               ui_->vjtc_ctrl_en_btn, "velocity_joint_trajectory_controller");
+
+    update_state_label_and_btn(controller_states_, ui_->homing_ctrl_state_label,
+                               ui_->homing_ctrl_en_btn, "homing_controller");
+
+    update_state_label_and_btn(controller_states_, ui_->gripper_ctrl_state_label,
+                               ui_->gripper_ctrl_en_btn, "gripper_controller");
+
+    update_state_label_and_btn(hardware_states_, ui_->arm_hardware_state_label,
+                               ui_->arm_en_btn, "bioscara_arm");
+
+    update_state_label_and_btn(hardware_states_, ui_->gripper_hardware_state_label,
+                               ui_->gripper_en_btn, "bioscara_gripper_128");
+  }
+
+  void BioscaraPanel::update_state_label_and_btn(
       const std::unordered_map<std::string, NamedLifecycleState> &state_map,
       QLabel *state_label,
       QPushButton *en_button,
@@ -494,28 +622,6 @@ namespace bioscara_rviz_plugin
     }
     return true;
   }
-
-  // When the widget's button is pressed, this callback is triggered,
-  // and then we publish a new message on our topic.
-  // void BioscaraPanel::buttonActivated()
-  // {
-  // RCLCPP_INFO(node_->get_logger(), "Clicked");
-  // auto message = std_msgs::msg::String();
-  // message.data = "Button clicked!";
-  // publisher_->publish(message);
-
-  // auto request = std::make_shared<ListControllers::Request>();
-
-  // auto result_future = _list_controllers_client->async_send_request(request);
-  // if (rclcpp::spin_until_future_complete(node_, result_future) !=
-  //     rclcpp::FutureReturnCode::SUCCESS)
-  // {
-  //   RCLCPP_ERROR(node_->get_logger(), "service call failed :(");
-  //   _list_controllers_client->remove_pending_request(result_future);
-  // }
-  // auto result = result_future.get();
-  // RCLCPP_INFO(node_->get_logger(), "result of %s", result->controller[0].name.c_str());
-  // }
 
   void BioscaraPanel::timer_callback()
   {
