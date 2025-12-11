@@ -157,7 +157,7 @@ def generate_launch_description():
     rqt_joint_trajectory_controller_node = Node(
         package="rqt_joint_trajectory_controller",
         executable="rqt_joint_trajectory_controller",
-        # name="rviz2",
+        name="rqt_joint_trajectory_controller_node",
         output="log",
     )
 

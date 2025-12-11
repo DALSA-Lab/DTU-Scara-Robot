@@ -1,0 +1,5 @@
+<library path="bioscara_panel">
+  <class type="bioscara_rviz_plugin::BioscaraPanel" base_class_type="rviz_common::Panel">
+    <description>A panel to control the Bioscara robot state</description>
+  </class>
+</library>

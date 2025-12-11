@@ -4,7 +4,7 @@
 <!-- TODO: find out how to "macro-fy the joints, lots of repitition there" -->
   <xacro:macro name="bioscara_ros2_control" params="prefix parameters use_mock_hardware">
 
-    <ros2_control name="bioscara" type="system">
+    <ros2_control name="bioscara_arm" type="system">
 
       <hardware>
         <plugin>bioscara_hardware_interfaces/BioscaraArmHardwareInterface</plugin>
