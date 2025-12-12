@@ -5,7 +5,6 @@
 
 #include <QLabel>
 #include <QPushButton>
-#include <QTimer>
 #include <unordered_map>
 #include <vector>
 
@@ -41,7 +40,7 @@ namespace bioscara_rviz_plugin
     void onInitialize() override;
 
   protected:
-    // std::shared_ptr<rviz_common::ros_integration::RosNodeAbstractionIface> node_ptr_;
+    std::shared_ptr<rviz_common::ros_integration::RosNodeAbstractionIface> node_ptr_;
     rclcpp::Node::SharedPtr node_;
     rclcpp::Subscription<ControllerManagerActivity>::SharedPtr cm_state_subsription_;
     rclcpp::Subscription<DynamicJointState>::SharedPtr joint_state_subsription_;
@@ -49,6 +48,8 @@ namespace bioscara_rviz_plugin
     rclcpp::Client<SwitchController>::SharedPtr switch_controller_client_;
     rclcpp::Client<ConfigureController>::SharedPtr configure_controller_client_;
     rclcpp::Client<SetHardwareComponentState>::SharedPtr hardware_state_client_;
+
+    rclcpp::TimerBase::SharedPtr prune_timer_;
 
     /**
      * @brief Map storing all joint state interface values by each joint.
@@ -73,7 +74,6 @@ namespace bioscara_rviz_plugin
 
     // QT elements
     Ui::BioscaraUI *ui_;
-    QTimer *_timer;
 
     void cm_state_callback(const ControllerManagerActivity &msg);
 
@@ -210,7 +210,6 @@ namespace bioscara_rviz_plugin
 
     void gripper_ctrl_en_btn_cb(void);
 
-    void timer_callback();
   };
 
 } // namespace bioscara_rviz_plugin

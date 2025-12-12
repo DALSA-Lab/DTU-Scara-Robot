@@ -2,6 +2,7 @@
 
 #include <bioscara_rviz_plugin/bioscara_panel.hpp>
 #include <rviz_common/display_context.hpp>
+#include <chrono>
 
 #include "ui_bioscara_rviz_plugin_frame.h"
 
@@ -51,21 +52,28 @@ namespace bioscara_rviz_plugin
   void BioscaraPanel::onInitialize()
   {
 
-    /*
-    TOOD:
-    This would be the preferred of simply using the rviz node and not having to create my own node which
-    needs to be spun manually.
-     However in the blocking service calls instead of spin_until_future_complete() a simple
-     (result_future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) would be sufficient.
-     But the wait function never returned, locking Rviz completely. Instead the workaround with the QTimer is used.
-    */
+    node_ = getDisplayContext()->getRosNodeAbstraction().lock()->get_raw_node();
 
-    // Access the abstract ROS Node and
-    // in the process lock it for exclusive use until the method is done.
-    // node_ptr_ = getDisplayContext()->getRosNodeAbstraction().lock();
-    // node_ = node_ptr_->get_raw_node();
-
-    node_ = std::make_shared<rclcpp::Node>("bioscara_rviz_panel");
+    // Timer which cleans up all requests from the service clients which have not been answered.
+    using namespace std::chrono_literals;
+    prune_timer_ = node_->create_wall_timer(
+        5s,
+        [this]()
+        {
+          // Prune all requests older than 5s.
+          size_t n_pruned = switch_controller_client_->prune_requests_older_than(
+              std::chrono::system_clock::now() - 5s);
+          n_pruned += configure_controller_client_->prune_requests_older_than(
+              std::chrono::system_clock::now() - 5s);
+          n_pruned += hardware_state_client_->prune_requests_older_than(
+              std::chrono::system_clock::now() - 5s);
+          if (n_pruned)
+          {
+            RCLCPP_INFO(
+                node_->get_logger(),
+                "The server hasn't replied for more than 5s, %zu requests were discarded", n_pruned);
+          }
+        });
 
     cm_state_subsription_ =
         node_->create_subscription<ControllerManagerActivity>(
@@ -97,19 +105,6 @@ namespace bioscara_rviz_plugin
 
     configure_controller_client_ = node_->create_client<ConfigureController>(
         "/controller_manager/configure_controller");
-    // while (!_list_controllers_client->wait_for_service(std::chrono::seconds(1)))
-    // {
-    //   if (!rclcpp::ok())
-    //   {
-    //     RCLCPP_ERROR(node_->get_logger(), "client interrupted while waiting for service to appear.");
-    //     return;
-    //   }
-    //   RCLCPP_INFO(node_->get_logger(), "waiting for service to appear...");
-    // }
-
-    _timer = new QTimer(this);
-    connect(_timer, &QTimer::timeout, this, &BioscaraPanel::timer_callback);
-    _timer->start(100);
   }
 
   void BioscaraPanel::cm_state_callback(const ControllerManagerActivity &msg)
@@ -149,29 +144,16 @@ namespace bioscara_rviz_plugin
     req->name = component;
     req->target_state = target_state;
 
-    auto result_future = hardware_state_client_->async_send_request(req);
-    // Wait for the service response or timeout
-    if (rclcpp::spin_until_future_complete(node_, result_future, std::chrono::seconds(10)) ==
-        rclcpp::FutureReturnCode::SUCCESS)
+    using ServiceResponseFuture = rclcpp::Client<SetHardwareComponentState>::SharedFuture;
+    auto response_received_callback = [this](ServiceResponseFuture future)
     {
-      // Check if the response is valid
-      if (!result_future.valid())
-      {
-        RCLCPP_WARN(node_->get_logger(), "Service call succeeded, but the response is invalid.");
-        hardware_state_client_->remove_pending_request(result_future);
-        return false;
-      }
-    }
-    else
-    {
-      RCLCPP_ERROR(node_->get_logger(), "Service call failed to complete within the timeout.");
-      hardware_state_client_->remove_pending_request(result_future);
-      return false;
-    }
+      auto result = future.get();
+      RCLCPP_INFO(node_->get_logger(), "Called 'set_hardware_component_state': %s", result->ok ? "Success" : "Failure");
+    };
 
-    auto result = result_future.get();
-    RCLCPP_INFO(node_->get_logger(), "Called 'set_hardware_component_state': %s", result->ok ? "Success" : "Failure");
-    return result->ok;
+    auto result_future = hardware_state_client_->async_send_request(req, response_received_callback);
+    // TODO change return type to void
+    return true;
   }
 
   bool BioscaraPanel::configure_controller(const std::string controller)
@@ -179,29 +161,16 @@ namespace bioscara_rviz_plugin
     auto req = std::make_shared<ConfigureController::Request>();
     req->name = controller;
 
-    auto result_future = configure_controller_client_->async_send_request(req);
-    // Wait for the service response or timeout
-    if (rclcpp::spin_until_future_complete(node_, result_future, std::chrono::seconds(10)) ==
-        rclcpp::FutureReturnCode::SUCCESS)
+    using ServiceResponseFuture = rclcpp::Client<ConfigureController>::SharedFuture;
+    auto response_received_callback = [this](ServiceResponseFuture future)
     {
-      // Check if the response is valid
-      if (!result_future.valid())
-      {
-        RCLCPP_WARN(node_->get_logger(), "Service call succeeded, but the response is invalid.");
-        configure_controller_client_->remove_pending_request(result_future);
-        return false;
-      }
-    }
-    else
-    {
-      RCLCPP_ERROR(node_->get_logger(), "Service call failed to complete within the timeout.");
-      configure_controller_client_->remove_pending_request(result_future);
-      return false;
-    }
+      auto result = future.get();
+      RCLCPP_INFO(node_->get_logger(), "Called 'configure_controller': %s", result->ok ? "Success" : "Failure");
+    };
 
-    auto result = result_future.get();
-    RCLCPP_INFO(node_->get_logger(), "Called 'configure_controller': %s", result->ok ? "Success" : "Failure");
-    return result->ok;
+    auto result_future = configure_controller_client_->async_send_request(req, response_received_callback);
+    // TODO change return type to void
+    return true;
   }
 
   bool BioscaraPanel::switch_controllers(const std::vector<std::string> &activate_controllers,
@@ -217,29 +186,16 @@ namespace bioscara_rviz_plugin
     req->activate_asap = activate_asap;
     req->timeout = timeout;
 
-    auto result_future = switch_controller_client_->async_send_request(req);
-    // Wait for the service response or timeout
-    if (rclcpp::spin_until_future_complete(node_, result_future, std::chrono::seconds(10)) ==
-        rclcpp::FutureReturnCode::SUCCESS)
+    using ServiceResponseFuture = rclcpp::Client<SwitchController>::SharedFuture;
+    auto response_received_callback = [this](ServiceResponseFuture future)
     {
-      // Check if the response is valid
-      if (!result_future.valid())
-      {
-        RCLCPP_WARN(node_->get_logger(), "Service call succeeded, but the response is invalid.");
-        switch_controller_client_->remove_pending_request(result_future);
-        return false;
-      }
-    }
-    else
-    {
-      RCLCPP_ERROR(node_->get_logger(), "Service call failed to complete within the timeout.");
-      switch_controller_client_->remove_pending_request(result_future);
-      return false;
-    }
+      auto result = future.get();
+      RCLCPP_INFO(node_->get_logger(), "Called 'switch_controllers': %s: '%s'", result->ok ? "Success" : "Failure", result->message.c_str());
+    };
 
-    auto result = result_future.get();
-    RCLCPP_INFO(node_->get_logger(), "Called 'switch_controllers': %s: '%s'", result->ok ? "Success" : "Failure", result->message.c_str());
-    return result->ok;
+    auto result_future = switch_controller_client_->async_send_request(req, response_received_callback);
+    // TODO change return type to void
+    return true;
   }
 
   bool BioscaraPanel::set_controller_state(const std::string controller,
@@ -635,11 +591,6 @@ namespace bioscara_rviz_plugin
       }
     }
     return true;
-  }
-
-  void BioscaraPanel::timer_callback()
-  {
-    rclcpp::spin_some(node_);
   }
 
 } // namespace bioscara_rviz_plugin
