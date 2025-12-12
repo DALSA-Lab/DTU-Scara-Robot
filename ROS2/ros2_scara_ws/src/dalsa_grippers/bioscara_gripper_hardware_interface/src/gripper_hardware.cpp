@@ -164,7 +164,7 @@ namespace bioscara_hardware_interfaces
     if (rc != bioscara_hardware_drivers::err_type_t::OK)
     {
       std::string reason = bioscara_hardware_drivers::error_to_string(rc);
-      RCLCPP_FATAL(
+      RCLCPP_ERROR(
           get_logger(),
           "Failed to connect to gripper. Reason: %s", reason.c_str());
       return CallbackReturn::ERROR;
@@ -193,7 +193,7 @@ namespace bioscara_hardware_interfaces
     if (rc != bioscara_hardware_drivers::err_type_t::OK)
     {
       std::string reason = bioscara_hardware_drivers::error_to_string(rc);
-      RCLCPP_FATAL(
+      RCLCPP_ERROR(
           get_logger(),
           "Failed to disconnect from gripper. Reason: %s", reason.c_str());
       return CallbackReturn::ERROR;
@@ -213,7 +213,7 @@ namespace bioscara_hardware_interfaces
     if (rc != bioscara_hardware_drivers::err_type_t::OK)
     {
       std::string reason = bioscara_hardware_drivers::error_to_string(rc);
-      RCLCPP_FATAL(
+      RCLCPP_ERROR(
           get_logger(),
           "Failed to enable gripper. Reason: %s", reason.c_str());
       return CallbackReturn::ERROR;
@@ -247,7 +247,7 @@ namespace bioscara_hardware_interfaces
     if (rc != bioscara_hardware_drivers::err_type_t::OK)
     {
       std::string reason = bioscara_hardware_drivers::error_to_string(rc);
-      RCLCPP_FATAL(
+      RCLCPP_ERROR(
           get_logger(),
           "Failed to disable gripper. Reason: %s", reason.c_str());
       return CallbackReturn::ERROR;
@@ -293,7 +293,7 @@ namespace bioscara_hardware_interfaces
       }
       catch (const std::exception &e)
       {
-        RCLCPP_FATAL(
+        RCLCPP_ERROR(
             get_logger(),
             "Failed to read state '%s'. Reason: %s", name.c_str(), e.what());
         return hardware_interface::return_type::ERROR;
@@ -342,7 +342,7 @@ namespace bioscara_hardware_interfaces
       if (rc != bioscara_hardware_drivers::err_type_t::OK)
       {
         std::string reason = bioscara_hardware_drivers::error_to_string(rc);
-        RCLCPP_FATAL(
+        RCLCPP_ERROR(
             get_logger(),
             "Failed to set %s of gripper. Reason: %s", name.c_str(), reason.c_str());
         return hardware_interface::return_type::ERROR;
