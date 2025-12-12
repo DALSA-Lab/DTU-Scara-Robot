@@ -74,7 +74,9 @@ namespace bioscara_rviz_plugin
 
     prepopulate_state_map(controller_states_, {"velocity_joint_trajectory_controller",
                                                "gripper_controller",
-                                               "homing_controller"});
+                                               "homing_controller",
+                                               "joint_state_broadcaster"});
+
     prepopulate_state_map(hardware_states_, {"bioscara_arm",
                                              "bioscara_gripper_128"});
 
@@ -118,6 +120,8 @@ namespace bioscara_rviz_plugin
     print_cm_map("New controller states:", controller_states_);
     print_cm_map("New hardware states:", hardware_states_);
 
+    ensure_jsb_is_active();
+
     update_state_labels_and_btns();
     update_homing_grp_state();
   }
@@ -127,6 +131,16 @@ namespace bioscara_rviz_plugin
     dynamic_joint_state_msg_to_map(msg, joint_states_);
 
     update_homing_state_labels();
+  }
+
+  void BioscaraPanel::ensure_jsb_is_active(void)
+  {
+    if (controller_states_.at("joint_state_broadcaster").state.id !=
+        lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE)
+    {
+      set_controller_state("joint_state_broadcaster",
+                           lifecycle_msgs::msg::State().set__id(lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE));
+    }
   }
 
   bool BioscaraPanel::set_hardware_component_state(const std::string component, const lifecycle_msgs::msg::State target_state)
@@ -318,10 +332,10 @@ namespace bioscara_rviz_plugin
     DynamicInterfaceGroupValues msg;
     InterfaceValue value;
     value.interface_names = {"home"};
-    value.values = {cmd*1.0};
+    value.values = {cmd * 1.0};
     msg.interface_groups = {joint};
     msg.interface_values = {value};
-    
+
     homing_publisher_->publish(msg);
   }
 
