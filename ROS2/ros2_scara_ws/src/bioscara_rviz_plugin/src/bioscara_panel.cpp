@@ -138,7 +138,7 @@ namespace bioscara_rviz_plugin
     }
   }
 
-  bool BioscaraPanel::set_hardware_component_state(const std::string component, const lifecycle_msgs::msg::State target_state)
+  void BioscaraPanel::set_hardware_component_state(const std::string component, const lifecycle_msgs::msg::State target_state)
   {
     auto req = std::make_shared<SetHardwareComponentState::Request>();
     req->name = component;
@@ -152,11 +152,9 @@ namespace bioscara_rviz_plugin
     };
 
     auto result_future = hardware_state_client_->async_send_request(req, response_received_callback);
-    // TODO change return type to void
-    return true;
   }
 
-  bool BioscaraPanel::configure_controller(const std::string controller)
+  void BioscaraPanel::configure_controller(const std::string controller)
   {
     auto req = std::make_shared<ConfigureController::Request>();
     req->name = controller;
@@ -169,11 +167,9 @@ namespace bioscara_rviz_plugin
     };
 
     auto result_future = configure_controller_client_->async_send_request(req, response_received_callback);
-    // TODO change return type to void
-    return true;
   }
 
-  bool BioscaraPanel::switch_controllers(const std::vector<std::string> &activate_controllers,
+  void BioscaraPanel::switch_controllers(const std::vector<std::string> &activate_controllers,
                                          const std::vector<std::string> &deactivate_controllers,
                                          const int32_t strictness,
                                          const bool activate_asap,
@@ -194,11 +190,9 @@ namespace bioscara_rviz_plugin
     };
 
     auto result_future = switch_controller_client_->async_send_request(req, response_received_callback);
-    // TODO change return type to void
-    return true;
   }
 
-  bool BioscaraPanel::set_controller_state(const std::string controller,
+  void BioscaraPanel::set_controller_state(const std::string controller,
                                            const lifecycle_msgs::msg::State target_state)
   {
     lifecycle_msgs::msg::State current_state = controller_states_.at(controller).state;
@@ -208,8 +202,8 @@ namespace bioscara_rviz_plugin
       switch (target_state.id)
       {
       case lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE:
-        return switch_controllers({}, {controller});
-        break;
+        switch_controllers({}, {controller});
+        return;
 
       default:
         break;
@@ -220,8 +214,8 @@ namespace bioscara_rviz_plugin
       switch (target_state.id)
       {
       case lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE:
-        return switch_controllers({controller}, {});
-        break;
+        switch_controllers({controller}, {});
+        return;
 
       default:
         break;
@@ -232,16 +226,13 @@ namespace bioscara_rviz_plugin
       switch (target_state.id)
       {
       case lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE:
-        if (!configure_controller(controller))
-        {
-          return false;
-        }
-        return switch_controllers({controller}, {});
-        break;
+        configure_controller(controller);
+        switch_controllers({controller}, {});
+        return;
 
       case lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE:
-        return configure_controller(controller);
-        break;
+         configure_controller(controller);
+        return;
 
       default:
         break;
@@ -252,7 +243,6 @@ namespace bioscara_rviz_plugin
       RCLCPP_ERROR(node_->get_logger(), "Can not set controller state to target state, currently not supported.");
       break;
     }
-    return false;
   }
 
   lifecycle_msgs::msg::State BioscaraPanel::target_state_from_current(lifecycle_msgs::msg::State current_state)
@@ -301,15 +291,12 @@ namespace bioscara_rviz_plugin
     lifecycle_msgs::msg::State current_state = hardware_states_.at(component).state;
     lifecycle_msgs::msg::State target_state = target_state_from_current(current_state);
 
-    if (!set_hardware_component_state(component, target_state))
-    {
-      return;
-    }
+    set_hardware_component_state(component, target_state);
+
     // TODO: activate vjtc if all joints are homed and activation will succeed.
-    if (!set_controller_state("velocity_joint_trajectory_controller", target_state))
-    {
-      return;
-    }
+   set_controller_state("velocity_joint_trajectory_controller", target_state);
+    
+    
   }
 
   void BioscaraPanel::gripper_en_btn_cb(void)
@@ -318,15 +305,10 @@ namespace bioscara_rviz_plugin
     lifecycle_msgs::msg::State current_state = hardware_states_.at(component).state;
     lifecycle_msgs::msg::State target_state = target_state_from_current(current_state);
 
-    if (!set_hardware_component_state(component, target_state))
-    {
-      return;
-    }
+    set_hardware_component_state(component, target_state);
 
-    if (!set_controller_state("gripper_controller", target_state))
-    {
-      return;
-    }
+    set_controller_state("gripper_controller", target_state);
+
   }
 
   void BioscaraPanel::vjtc_ctrl_en_btn_cb(void)
@@ -335,10 +317,8 @@ namespace bioscara_rviz_plugin
     lifecycle_msgs::msg::State current_state = controller_states_.at(controller).state;
     lifecycle_msgs::msg::State target_state = target_state_from_current(current_state);
 
-    if (!set_controller_state(controller, target_state))
-    {
-      return;
-    }
+    set_controller_state(controller, target_state);
+
   }
 
   void BioscaraPanel::homing_ctrl_en_btn_cb(void)
@@ -347,10 +327,7 @@ namespace bioscara_rviz_plugin
     lifecycle_msgs::msg::State current_state = controller_states_.at(controller).state;
     lifecycle_msgs::msg::State target_state = target_state_from_current(current_state);
 
-    if (!set_controller_state(controller, target_state))
-    {
-      return;
-    }
+    set_controller_state(controller, target_state);
   }
 
   void BioscaraPanel::gripper_ctrl_en_btn_cb(void)
@@ -359,10 +336,7 @@ namespace bioscara_rviz_plugin
     lifecycle_msgs::msg::State current_state = controller_states_.at(controller).state;
     lifecycle_msgs::msg::State target_state = target_state_from_current(current_state);
 
-    if (!set_controller_state(controller, target_state))
-    {
-      return;
-    }
+    set_controller_state(controller, target_state);
   }
 
   void BioscaraPanel::dynamic_joint_state_msg_to_map(const DynamicJointState &dynamic_joint_state_in,

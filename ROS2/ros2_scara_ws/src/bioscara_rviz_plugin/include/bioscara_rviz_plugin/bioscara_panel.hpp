@@ -87,17 +87,17 @@ namespace bioscara_rviz_plugin
      */
     void ensure_jsb_is_active(void);
 
-    bool set_hardware_component_state(const std::string component, const lifecycle_msgs::msg::State target_state);
+    void set_hardware_component_state(const std::string component, const lifecycle_msgs::msg::State target_state);
 
-    bool configure_controller(const std::string controller);
+    void configure_controller(const std::string controller);
 
-    bool switch_controllers(const std::vector<std::string> &activate_controllers,
+    void switch_controllers(const std::vector<std::string> &activate_controllers,
                             const std::vector<std::string> &deactivate_controllers,
                             const int32_t = SwitchController::Request::BEST_EFFORT,
                             const bool activate_asap = false,
                             const builtin_interfaces::msg::Duration timeout = builtin_interfaces::msg::Duration());
 
-    bool set_controller_state(const std::string controller,
+    void set_controller_state(const std::string controller,
                               const lifecycle_msgs::msg::State target_state);
 
     void dynamic_joint_state_msg_to_map(const DynamicJointState &dynamic_joint_state_in,
