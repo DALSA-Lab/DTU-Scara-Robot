@@ -29,6 +29,7 @@ position_joint_trajectory_controller:
 
     allow_partial_joints_goal: false
     interpolate_from_desired_state: false
+    allow_nonzero_velocity_at_trajectory_end: true
     
 velocity_joint_trajectory_controller:
   ros__parameters:
@@ -49,6 +50,7 @@ velocity_joint_trajectory_controller:
 
     allow_partial_joints_goal: false
     interpolate_from_desired_state: false
+    allow_nonzero_velocity_at_trajectory_end: true
 
     gains:
       j1:
