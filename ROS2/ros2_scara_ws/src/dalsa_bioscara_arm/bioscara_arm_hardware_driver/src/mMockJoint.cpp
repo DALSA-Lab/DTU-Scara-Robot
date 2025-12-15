@@ -33,7 +33,9 @@ namespace bioscara_hardware_drivers
             break;
         case MOVETOANGLE:
             pos = this->q;
+            break;
         default:
+            pos = 0.0;
             break;
         }
         return err_type_t::OK;
