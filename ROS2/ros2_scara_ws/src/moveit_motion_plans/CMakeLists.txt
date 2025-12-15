@@ -38,6 +38,17 @@ install(
     lib/${PROJECT_NAME}
 )
 
+# TODO: find a way to not add every script to the cmakelist
+install(PROGRAMS
+        scripts/IAmNotARobot.py
+        DESTINATION lib/${PROJECT_NAME})
+
+install(DIRECTORY 
+        launch
+        #config
+        DESTINATION share/${PROJECT_NAME}
+)
+
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

@@ -3,11 +3,26 @@ repositories:
     type: git
     url: https://github.com/DALSA-Lab/ros2_control-single_trigger_controller.git
     version: main
-  dalsa_moveit_planners/pilz_industrial_motion_planner:
-    type: git
-    url: https://github.com/DALSA-Lab/pilz_industrial_motion_planner.git
-    version: main
   moveit_task_constructor:
     type: git
     url: https://github.com/moveit/moveit_task_constructor.git
-    version: jazzy
+    version: ros2
+  moveit2:
+    type: git
+    url: https://github.com/DALSA-Lab/moveit2-dalsa.git
+    version: main
+
+  # Build moveit visual tools from source as well, since the 'moveit_motion_plans' package depends on it.
+  # Rosdep would install it, but the binary depends on a lot of moveit packages which would automatically be installed as well.
+  # We could remove them before building with `sudo apt remove ros-$ROS_DISTRO-moveit*` but that would remove the visual tools again well. 
+  moveit_visual_tools:
+    type: git
+    url: https://github.com/moveit/moveit_visual_tools.git
+    version: ros2
+
+  # The same for pick_ik. This has moveit-core as a dependency so when `sudo apt remove ros-$ROS_DISTRO-moveit*` is called pick-ik is also removed
+  # to avoid leaving it broken. Include it from source. TODO: remove this when pick_ik is not used (IKFast?)
+  pick_ik:
+    type: git
+    url: https://github.com/PickNikRobotics/pick_ik.git
+    version: main

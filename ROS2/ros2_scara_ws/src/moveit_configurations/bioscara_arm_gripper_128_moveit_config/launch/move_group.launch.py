@@ -11,12 +11,16 @@ def generate_launch_description():
                     .to_moveit_configs()
     )
 
+    # Load  ExecuteTaskSolutionCapability so we can execute found solutions in simulation
+    move_group_capabilities = {"capabilities": "move_group/ExecuteTaskSolutionCapability"}
+
     run_move_group_node = Node(
         package="moveit_ros_move_group",
         executable="move_group",
         output="screen",
         parameters=[
             moveit_config.to_dict(),
+            move_group_capabilities
             # {"publish_planning_scene": True},
             # {"publish_geometry_updates": True},
             # {"publish_state_updates": True},
