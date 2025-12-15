@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script has been created by AI
+
 # Define the config file and the udev rules file
 CONFIG_FILE="/boot/firmware/config.txt"
 UDEV_RULES_FILE="/etc/udev/rules.d/99-pwm.rules"
