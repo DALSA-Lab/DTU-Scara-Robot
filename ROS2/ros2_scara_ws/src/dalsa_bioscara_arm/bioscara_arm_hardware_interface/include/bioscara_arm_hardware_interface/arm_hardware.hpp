@@ -366,6 +366,24 @@ namespace bioscara_hardware_interfaces
          */
         std::unordered_map<std::string, std::set<std::string>> _new_joint_command_modes;
 
+
+        /**
+         * @brief A vector of a pair of interface name and pointer of the hardwares state interface which is ordered by joint
+         * and state interface type.
+         * 
+         * A vector is chosen since it guarantees the correct order by insertion.
+         * The vector holds pointers to the actual interface structs stored in the parents
+         * HardwareComponentInterface::joint_state_interfaces_ but in the desired order.
+         * The order is:
+         * 1) position
+         * 2) velocity
+         * 3) home
+         * 
+         * This order guarantees that when reading the state interfaces in read() that the 'home'
+         * interface is read last and has the latest state flags from the joint.
+         */
+        std::vector<std::pair<std::string, hardware_interface::InterfaceDescription*>> _ordered_joint_state_interfaces_ptr;
+
         /**
          * @brief A mutex that is used to prevent concurrent access to hardware and #_joint_command_modes
          * 

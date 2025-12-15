@@ -37,6 +37,8 @@ namespace bioscara_hardware_interfaces
 
     std::string use_mock_hardware = info_.hardware_parameters["use_mock_hardware"];
 
+    _ordered_joint_state_interfaces_ptr.clear();
+
     /**
      * Loop over all joints decribed in the hardware description file, check if they have the position and velocity command
      * and state interface defined and finally add them to the internal _joints list
@@ -107,6 +109,16 @@ namespace bioscara_hardware_interfaces
             hardware_interface::HW_IF_VELOCITY,
             bioscara_hardware_interfaces::HW_IF_HOME);
         return hardware_interface::CallbackReturn::ERROR;
+      }
+
+      /* We now know that the joint has a position, velocity and homing state interface.
+      Now populate the vector to point to the corresponding interfaces in the correct order.
+      */
+      for (auto &interface_name : {joint.name + "/" + hardware_interface::HW_IF_POSITION,
+                                   joint.name + "/" + hardware_interface::HW_IF_VELOCITY,
+                                   joint.name + "/" + bioscara_hardware_interfaces::HW_IF_HOME})
+      {
+        _ordered_joint_state_interfaces_ptr.push_back({interface_name,&joint_state_interfaces_.at(interface_name)});
       }
 
       // add joint one by one reading parameters from urdf
@@ -343,35 +355,35 @@ namespace bioscara_hardware_interfaces
     // lock access to _joints and _joint_command_modes
     const std::lock_guard<std::mutex> lock(mtx);
 
-    for (const auto &[name, descr] : joint_state_interfaces_)
+    for (const auto &[name, descr_ptr] : _ordered_joint_state_interfaces_ptr)
     {
       float v;
       bioscara_hardware_drivers::err_type_t rc = static_cast<bioscara_hardware_drivers::err_type_t>(1);
-      if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
+      if (descr_ptr->interface_info.name == hardware_interface::HW_IF_POSITION)
       {
-        rc = _joints.at(descr.prefix_name)->getPosition(v);
+        rc = _joints.at(descr_ptr->prefix_name)->getPosition(v);
       }
-      else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
+      else if (descr_ptr->interface_info.name == hardware_interface::HW_IF_VELOCITY)
       {
-        rc = _joints.at(descr.prefix_name)->getVelocity(v);
+        rc = _joints.at(descr_ptr->prefix_name)->getVelocity(v);
       }
-      else if (descr.interface_info.name == bioscara_hardware_interfaces::HW_IF_HOME)
+      else if (descr_ptr->interface_info.name == bioscara_hardware_interfaces::HW_IF_HOME)
       {
         /* Reset the return code. All following functions do not return an error code */
         rc = bioscara_hardware_drivers::err_type_t::OK;
 
-        /* We can assume that the previous calls to read the joint state interfaces
-        gave us the latest flags. Hence we can simply retrieve the HOMED flag by calling isHomed().
+        /* As we are reading the joint interfaces in order we are guaranteed to have received tha latest flags.
+         Hence we can simply retrieve the HOMED flag by calling isHomed().
         This does not generate additional communication trafic.  */
-        v = _joints.at(descr.prefix_name)->isHomed() * 1.0;
+        v = _joints.at(descr_ptr->prefix_name)->isHomed() * 1.0;
 
         /* If the homing has been activated (through the command interface) the device signals BUSY
         as long as it is still homing. If the BUSY flag is reset while the current command is still HOME
         we can assume the homing has finished. Then stop the homing. */
-        if (_joints.at(descr.prefix_name)->getCurrentBCmd() == bioscara_hardware_drivers::Joint::HOME &&
-            !_joints.at(descr.prefix_name)->isBusy())
+        if (_joints.at(descr_ptr->prefix_name)->getCurrentBCmd() == bioscara_hardware_drivers::Joint::HOME &&
+            !_joints.at(descr_ptr->prefix_name)->isBusy())
         {
-          stop_homing(descr.prefix_name);
+          stop_homing(descr_ptr->prefix_name);
           /* reset the command to not immediatly start a new homing.
           Only possible with a controller which updates the command only once (SingleTriggerController) */
           set_command(name, 0.0);
@@ -383,7 +395,7 @@ namespace bioscara_hardware_interfaces
         std::string reason = bioscara_hardware_drivers::error_to_string(rc);
         RCLCPP_ERROR(
             get_logger(),
-            "Failed to read %s of joint '%s'. Reason: %s", descr.interface_info.name.c_str(), name.c_str(), reason.c_str());
+            "Failed to read %s of joint '%s'. Reason: %s", descr_ptr->interface_info.name.c_str(), name.c_str(), reason.c_str());
         return hardware_interface::return_type::DEACTIVATE;
       }
       set_state(name, (double)v);
