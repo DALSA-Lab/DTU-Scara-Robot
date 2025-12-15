@@ -2,6 +2,7 @@
 
 #include <bioscara_rviz_plugin/bioscara_panel.hpp>
 #include <rviz_common/display_context.hpp>
+#include <chrono>
 
 #include "ui_bioscara_rviz_plugin_frame.h"
 
@@ -51,21 +52,28 @@ namespace bioscara_rviz_plugin
   void BioscaraPanel::onInitialize()
   {
 
-    /*
-    TOOD:
-    This would be the preferred of simply using the rviz node and not having to create my own node which
-    needs to be spun manually.
-     However in the blocking service calls instead of spin_until_future_complete() a simple
-     (result_future.wait_for(std::chrono::seconds(0)) != std::future_status::ready) would be sufficient.
-     But the wait function never returned, locking Rviz completely. Instead the workaround with the QTimer is used.
-    */
+    node_ = getDisplayContext()->getRosNodeAbstraction().lock()->get_raw_node();
 
-    // Access the abstract ROS Node and
-    // in the process lock it for exclusive use until the method is done.
-    // node_ptr_ = getDisplayContext()->getRosNodeAbstraction().lock();
-    // node_ = node_ptr_->get_raw_node();
-
-    node_ = std::make_shared<rclcpp::Node>("bioscara_rviz_panel");
+    // Timer which cleans up all requests from the service clients which have not been answered.
+    using namespace std::chrono_literals;
+    prune_timer_ = node_->create_wall_timer(
+        5s,
+        [this]()
+        {
+          // Prune all requests older than 5s.
+          size_t n_pruned = switch_controller_client_->prune_requests_older_than(
+              std::chrono::system_clock::now() - 5s);
+          n_pruned += configure_controller_client_->prune_requests_older_than(
+              std::chrono::system_clock::now() - 5s);
+          n_pruned += hardware_state_client_->prune_requests_older_than(
+              std::chrono::system_clock::now() - 5s);
+          if (n_pruned)
+          {
+            RCLCPP_INFO(
+                node_->get_logger(),
+                "The server hasn't replied for more than 5s, %zu requests were discarded", n_pruned);
+          }
+        });
 
     cm_state_subsription_ =
         node_->create_subscription<ControllerManagerActivity>(
@@ -74,7 +82,9 @@ namespace bioscara_rviz_plugin
 
     prepopulate_state_map(controller_states_, {"velocity_joint_trajectory_controller",
                                                "gripper_controller",
-                                               "homing_controller"});
+                                               "homing_controller",
+                                               "joint_state_broadcaster"});
+
     prepopulate_state_map(hardware_states_, {"bioscara_arm",
                                              "bioscara_gripper_128"});
 
@@ -95,19 +105,6 @@ namespace bioscara_rviz_plugin
 
     configure_controller_client_ = node_->create_client<ConfigureController>(
         "/controller_manager/configure_controller");
-    // while (!_list_controllers_client->wait_for_service(std::chrono::seconds(1)))
-    // {
-    //   if (!rclcpp::ok())
-    //   {
-    //     RCLCPP_ERROR(node_->get_logger(), "client interrupted while waiting for service to appear.");
-    //     return;
-    //   }
-    //   RCLCPP_INFO(node_->get_logger(), "waiting for service to appear...");
-    // }
-
-    _timer = new QTimer(this);
-    connect(_timer, &QTimer::timeout, this, &BioscaraPanel::timer_callback);
-    _timer->start(100);
   }
 
   void BioscaraPanel::cm_state_callback(const ControllerManagerActivity &msg)
@@ -117,6 +114,8 @@ namespace bioscara_rviz_plugin
 
     print_cm_map("New controller states:", controller_states_);
     print_cm_map("New hardware states:", hardware_states_);
+
+    ensure_jsb_is_active();
 
     update_state_labels_and_btns();
     update_homing_grp_state();
@@ -129,68 +128,48 @@ namespace bioscara_rviz_plugin
     update_homing_state_labels();
   }
 
-  bool BioscaraPanel::set_hardware_component_state(const std::string component, const lifecycle_msgs::msg::State target_state)
+  void BioscaraPanel::ensure_jsb_is_active(void)
+  {
+    if (controller_states_.at("joint_state_broadcaster").state.id !=
+        lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE)
+    {
+      set_controller_state("joint_state_broadcaster",
+                           lifecycle_msgs::msg::State().set__id(lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE));
+    }
+  }
+
+  void BioscaraPanel::set_hardware_component_state(const std::string component, const lifecycle_msgs::msg::State target_state)
   {
     auto req = std::make_shared<SetHardwareComponentState::Request>();
     req->name = component;
     req->target_state = target_state;
 
-    auto result_future = hardware_state_client_->async_send_request(req);
-    // Wait for the service response or timeout
-    if (rclcpp::spin_until_future_complete(node_, result_future, std::chrono::seconds(10)) ==
-        rclcpp::FutureReturnCode::SUCCESS)
+    using ServiceResponseFuture = rclcpp::Client<SetHardwareComponentState>::SharedFuture;
+    auto response_received_callback = [this](ServiceResponseFuture future)
     {
-      // Check if the response is valid
-      if (!result_future.valid())
-      {
-        RCLCPP_WARN(node_->get_logger(), "Service call succeeded, but the response is invalid.");
-        hardware_state_client_->remove_pending_request(result_future);
-        return false;
-      }
-    }
-    else
-    {
-      RCLCPP_ERROR(node_->get_logger(), "Service call failed to complete within the timeout.");
-      hardware_state_client_->remove_pending_request(result_future);
-      return false;
-    }
+      auto result = future.get();
+      RCLCPP_INFO(node_->get_logger(), "Called 'set_hardware_component_state': %s", result->ok ? "Success" : "Failure");
+    };
 
-    auto result = result_future.get();
-    RCLCPP_INFO(node_->get_logger(), "Called 'set_hardware_component_state': %s", result->ok ? "Success" : "Failure");
-    return result->ok;
+    auto result_future = hardware_state_client_->async_send_request(req, response_received_callback);
   }
 
-  bool BioscaraPanel::configure_controller(const std::string controller)
+  void BioscaraPanel::configure_controller(const std::string controller)
   {
     auto req = std::make_shared<ConfigureController::Request>();
     req->name = controller;
 
-    auto result_future = configure_controller_client_->async_send_request(req);
-    // Wait for the service response or timeout
-    if (rclcpp::spin_until_future_complete(node_, result_future, std::chrono::seconds(10)) ==
-        rclcpp::FutureReturnCode::SUCCESS)
+    using ServiceResponseFuture = rclcpp::Client<ConfigureController>::SharedFuture;
+    auto response_received_callback = [this](ServiceResponseFuture future)
     {
-      // Check if the response is valid
-      if (!result_future.valid())
-      {
-        RCLCPP_WARN(node_->get_logger(), "Service call succeeded, but the response is invalid.");
-        configure_controller_client_->remove_pending_request(result_future);
-        return false;
-      }
-    }
-    else
-    {
-      RCLCPP_ERROR(node_->get_logger(), "Service call failed to complete within the timeout.");
-      configure_controller_client_->remove_pending_request(result_future);
-      return false;
-    }
+      auto result = future.get();
+      RCLCPP_INFO(node_->get_logger(), "Called 'configure_controller': %s", result->ok ? "Success" : "Failure");
+    };
 
-    auto result = result_future.get();
-    RCLCPP_INFO(node_->get_logger(), "Called 'configure_controller': %s", result->ok ? "Success" : "Failure");
-    return result->ok;
+    auto result_future = configure_controller_client_->async_send_request(req, response_received_callback);
   }
 
-  bool BioscaraPanel::switch_controllers(const std::vector<std::string> &activate_controllers,
+  void BioscaraPanel::switch_controllers(const std::vector<std::string> &activate_controllers,
                                          const std::vector<std::string> &deactivate_controllers,
                                          const int32_t strictness,
                                          const bool activate_asap,
@@ -203,32 +182,17 @@ namespace bioscara_rviz_plugin
     req->activate_asap = activate_asap;
     req->timeout = timeout;
 
-    auto result_future = switch_controller_client_->async_send_request(req);
-    // Wait for the service response or timeout
-    if (rclcpp::spin_until_future_complete(node_, result_future, std::chrono::seconds(10)) ==
-        rclcpp::FutureReturnCode::SUCCESS)
+    using ServiceResponseFuture = rclcpp::Client<SwitchController>::SharedFuture;
+    auto response_received_callback = [this](ServiceResponseFuture future)
     {
-      // Check if the response is valid
-      if (!result_future.valid())
-      {
-        RCLCPP_WARN(node_->get_logger(), "Service call succeeded, but the response is invalid.");
-        switch_controller_client_->remove_pending_request(result_future);
-        return false;
-      }
-    }
-    else
-    {
-      RCLCPP_ERROR(node_->get_logger(), "Service call failed to complete within the timeout.");
-      switch_controller_client_->remove_pending_request(result_future);
-      return false;
-    }
+      auto result = future.get();
+      RCLCPP_INFO(node_->get_logger(), "Called 'switch_controllers': %s: '%s'", result->ok ? "Success" : "Failure", result->message.c_str());
+    };
 
-    auto result = result_future.get();
-    RCLCPP_INFO(node_->get_logger(), "Called 'switch_controllers': %s: '%s'", result->ok ? "Success" : "Failure", result->message.c_str());
-    return result->ok;
+    auto result_future = switch_controller_client_->async_send_request(req, response_received_callback);
   }
 
-  bool BioscaraPanel::set_controller_state(const std::string controller,
+  void BioscaraPanel::set_controller_state(const std::string controller,
                                            const lifecycle_msgs::msg::State target_state)
   {
     lifecycle_msgs::msg::State current_state = controller_states_.at(controller).state;
@@ -238,8 +202,8 @@ namespace bioscara_rviz_plugin
       switch (target_state.id)
       {
       case lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE:
-        return switch_controllers({}, {controller});
-        break;
+        switch_controllers({}, {controller});
+        return;
 
       default:
         break;
@@ -250,8 +214,8 @@ namespace bioscara_rviz_plugin
       switch (target_state.id)
       {
       case lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE:
-        return switch_controllers({controller}, {});
-        break;
+        switch_controllers({controller}, {});
+        return;
 
       default:
         break;
@@ -262,16 +226,13 @@ namespace bioscara_rviz_plugin
       switch (target_state.id)
       {
       case lifecycle_msgs::msg::State::PRIMARY_STATE_ACTIVE:
-        if (!configure_controller(controller))
-        {
-          return false;
-        }
-        return switch_controllers({controller}, {});
-        break;
+        configure_controller(controller);
+        switch_controllers({controller}, {});
+        return;
 
       case lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE:
-        return configure_controller(controller);
-        break;
+         configure_controller(controller);
+        return;
 
       default:
         break;
@@ -282,7 +243,6 @@ namespace bioscara_rviz_plugin
       RCLCPP_ERROR(node_->get_logger(), "Can not set controller state to target state, currently not supported.");
       break;
     }
-    return false;
   }
 
   lifecycle_msgs::msg::State BioscaraPanel::target_state_from_current(lifecycle_msgs::msg::State current_state)
@@ -318,10 +278,10 @@ namespace bioscara_rviz_plugin
     DynamicInterfaceGroupValues msg;
     InterfaceValue value;
     value.interface_names = {"home"};
-    value.values = {cmd*1.0};
+    value.values = {cmd * 1.0};
     msg.interface_groups = {joint};
     msg.interface_values = {value};
-    
+
     homing_publisher_->publish(msg);
   }
 
@@ -331,15 +291,12 @@ namespace bioscara_rviz_plugin
     lifecycle_msgs::msg::State current_state = hardware_states_.at(component).state;
     lifecycle_msgs::msg::State target_state = target_state_from_current(current_state);
 
-    if (!set_hardware_component_state(component, target_state))
-    {
-      return;
-    }
+    set_hardware_component_state(component, target_state);
+
     // TODO: activate vjtc if all joints are homed and activation will succeed.
-    if (!set_controller_state("velocity_joint_trajectory_controller", target_state))
-    {
-      return;
-    }
+   set_controller_state("velocity_joint_trajectory_controller", target_state);
+    
+    
   }
 
   void BioscaraPanel::gripper_en_btn_cb(void)
@@ -348,15 +305,10 @@ namespace bioscara_rviz_plugin
     lifecycle_msgs::msg::State current_state = hardware_states_.at(component).state;
     lifecycle_msgs::msg::State target_state = target_state_from_current(current_state);
 
-    if (!set_hardware_component_state(component, target_state))
-    {
-      return;
-    }
+    set_hardware_component_state(component, target_state);
 
-    if (!set_controller_state("gripper_controller", target_state))
-    {
-      return;
-    }
+    set_controller_state("gripper_controller", target_state);
+
   }
 
   void BioscaraPanel::vjtc_ctrl_en_btn_cb(void)
@@ -365,10 +317,8 @@ namespace bioscara_rviz_plugin
     lifecycle_msgs::msg::State current_state = controller_states_.at(controller).state;
     lifecycle_msgs::msg::State target_state = target_state_from_current(current_state);
 
-    if (!set_controller_state(controller, target_state))
-    {
-      return;
-    }
+    set_controller_state(controller, target_state);
+
   }
 
   void BioscaraPanel::homing_ctrl_en_btn_cb(void)
@@ -377,10 +327,7 @@ namespace bioscara_rviz_plugin
     lifecycle_msgs::msg::State current_state = controller_states_.at(controller).state;
     lifecycle_msgs::msg::State target_state = target_state_from_current(current_state);
 
-    if (!set_controller_state(controller, target_state))
-    {
-      return;
-    }
+    set_controller_state(controller, target_state);
   }
 
   void BioscaraPanel::gripper_ctrl_en_btn_cb(void)
@@ -389,10 +336,7 @@ namespace bioscara_rviz_plugin
     lifecycle_msgs::msg::State current_state = controller_states_.at(controller).state;
     lifecycle_msgs::msg::State target_state = target_state_from_current(current_state);
 
-    if (!set_controller_state(controller, target_state))
-    {
-      return;
-    }
+    set_controller_state(controller, target_state);
   }
 
   void BioscaraPanel::dynamic_joint_state_msg_to_map(const DynamicJointState &dynamic_joint_state_in,
@@ -621,11 +565,6 @@ namespace bioscara_rviz_plugin
       }
     }
     return true;
-  }
-
-  void BioscaraPanel::timer_callback()
-  {
-    rclcpp::spin_some(node_);
   }
 
 } // namespace bioscara_rviz_plugin

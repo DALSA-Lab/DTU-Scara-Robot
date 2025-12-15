@@ -203,6 +203,28 @@ To install ROS2 package dependencies navigate to the workspace:
 ```bash
 cd ROS2/ros2_scara_ws
 ```
+
+**First:**
+Fetch all dependecies that are not available as binaries using the *vcstool*.
+From the workspace execute:
+```bash
+vcs import --recursive src < req.repos
+```
+This will pull the repositories specified in *req.repos* into the directories also specified in the file.
+
+> [!NOTE]
+>
+> *vcstool* is found in many ROS2 packages to import dependencies that are not in a ROS or debian repository from a repository file. 
+>
+> **Installation**:
+>
+> ```bash
+> sudo apt install python3-vcstool
+> ```
+
+
+**Second:**
+
 Install all packages that can be resolved through `rosdep` (all packages that have been released to the ROS2 package ecosystem and some debian packages):
 ```bash
 sudo apt update
@@ -210,26 +232,11 @@ rosdep install --from-paths src --ignore-src -y --rosdistro $ROS_DISTRO
 ```
 This command will recursively scan every package in the workspace for the `<depend/>` key and install missing packages.
 
-### vcstool
-*vcstool* is common in many ROS2 packages to import dependencies that are not in a ROS or debian repository. from a repository file. 
-
-*vcstool* is specified as a dependency in the *dalsa_bioscara_arm* package and hence should be installed after running *rosdep*
-
-To install, use
-```bash
-sudo apt install python3-vcstool
-```
-
-then to import the dependencies execute:
-```bash
-cd ROS2/ros2_scara_ws
-vcs import --recursive src < req.repos
-```
-This will pull the repositories specified in *req.repos* into the directories also specified in the file.
-
 Then dont forget to build the workspace:
 ```bash
-colcon build --symlink-install
+sudo apt remove ros-$ROS_DISTRO-moveit*
+rm -rf build/ install/ log/
+MAKEFLAGS="-j1 -l1" colcon build --mixin release --executor sequential --symlink-install > log.out &
 ```
 
 ## Development Purposes:

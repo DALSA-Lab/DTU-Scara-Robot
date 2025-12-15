@@ -384,7 +384,7 @@ namespace bioscara_hardware_interfaces
         RCLCPP_ERROR(
             get_logger(),
             "Failed to read %s of joint '%s'. Reason: %s", descr.interface_info.name.c_str(), name.c_str(), reason.c_str());
-        return hardware_interface::return_type::ERROR;
+        return hardware_interface::return_type::DEACTIVATE;
       }
       set_state(name, (double)v);
     }
@@ -513,7 +513,7 @@ namespace bioscara_hardware_interfaces
           RCLCPP_ERROR(
               get_logger(),
               "Failed to set %s of joint '%s'. Reason: %s", CIF_name.c_str(), name.c_str(), reason.c_str());
-          return hardware_interface::return_type::ERROR;
+          return hardware_interface::return_type::DEACTIVATE;
         }
       }
     }

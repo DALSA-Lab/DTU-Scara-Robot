@@ -1,37 +1,3 @@
-/*********************************************************************
- * Software License Agreement (BSD License)
- *
- *  Copyright (c) 2024, Metro Robots
- *  All rights reserved.
- *
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions
- *  are met:
- *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *   * Redistributions in binary form must reproduce the above
- *     copyright notice, this list of conditions and the following
- *     disclaimer in the documentation and/or other materials provided
- *     with the distribution.
- *   * Neither the name of Metro Robots nor the names of its
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- *  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- *  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- *********************************************************************/
-
 /* Author: sbstorz */
 
 #ifndef BIOSCARA_RVIZ_PANEL_HPP_
@@ -39,7 +5,6 @@
 
 #include <QLabel>
 #include <QPushButton>
-#include <QTimer>
 #include <unordered_map>
 #include <vector>
 
@@ -75,7 +40,7 @@ namespace bioscara_rviz_plugin
     void onInitialize() override;
 
   protected:
-    // std::shared_ptr<rviz_common::ros_integration::RosNodeAbstractionIface> node_ptr_;
+    std::shared_ptr<rviz_common::ros_integration::RosNodeAbstractionIface> node_ptr_;
     rclcpp::Node::SharedPtr node_;
     rclcpp::Subscription<ControllerManagerActivity>::SharedPtr cm_state_subsription_;
     rclcpp::Subscription<DynamicJointState>::SharedPtr joint_state_subsription_;
@@ -83,6 +48,8 @@ namespace bioscara_rviz_plugin
     rclcpp::Client<SwitchController>::SharedPtr switch_controller_client_;
     rclcpp::Client<ConfigureController>::SharedPtr configure_controller_client_;
     rclcpp::Client<SetHardwareComponentState>::SharedPtr hardware_state_client_;
+
+    rclcpp::TimerBase::SharedPtr prune_timer_;
 
     /**
      * @brief Map storing all joint state interface values by each joint.
@@ -107,23 +74,30 @@ namespace bioscara_rviz_plugin
 
     // QT elements
     Ui::BioscaraUI *ui_;
-    QTimer *_timer;
 
     void cm_state_callback(const ControllerManagerActivity &msg);
 
     void joint_state_callback(const DynamicJointState &msg);
 
-    bool set_hardware_component_state(const std::string component, const lifecycle_msgs::msg::State target_state);
+    /**
+     * @brief Ensure the joint state broadcaster is active.
+     * 
+     * The JSB can become inactive, ensure that it comes active again.
+     * 
+     */
+    void ensure_jsb_is_active(void);
 
-    bool configure_controller(const std::string controller);
+    void set_hardware_component_state(const std::string component, const lifecycle_msgs::msg::State target_state);
 
-    bool switch_controllers(const std::vector<std::string> &activate_controllers,
+    void configure_controller(const std::string controller);
+
+    void switch_controllers(const std::vector<std::string> &activate_controllers,
                             const std::vector<std::string> &deactivate_controllers,
                             const int32_t = SwitchController::Request::BEST_EFFORT,
                             const bool activate_asap = false,
                             const builtin_interfaces::msg::Duration timeout = builtin_interfaces::msg::Duration());
 
-    bool set_controller_state(const std::string controller,
+    void set_controller_state(const std::string controller,
                               const lifecycle_msgs::msg::State target_state);
 
     void dynamic_joint_state_msg_to_map(const DynamicJointState &dynamic_joint_state_in,
@@ -236,7 +210,6 @@ namespace bioscara_rviz_plugin
 
     void gripper_ctrl_en_btn_cb(void);
 
-    void timer_callback();
   };
 
 } // namespace bioscara_rviz_plugin
