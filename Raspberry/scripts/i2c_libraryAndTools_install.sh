@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script has been created by AI
+
 # Function to display help
 function show_help {
     echo "Usage: install_script.sh [options]"

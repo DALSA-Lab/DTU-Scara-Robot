@@ -1,31 +1,15 @@
 #!/bin/bash
 
+# Parts of this script have been created by AI
+
 # Function to display usage information
 usage() {
     echo "Usage: $0 --domain-id <ROS_DOMAIN_ID> --version <ros-base|ros-desktop>"
     exit 1
 }
 
-# Parse command-line arguments
-while [[ "$#" -gt 0 ]]; do
-    case $1 in
-        --domain-id) p_ROS_DOMAIN_ID="$2"; shift ;;
-        --version) p_ROS_VERSION="$2"; shift ;;
-        *) usage ;;
-    esac
-    shift
-done
-
-# Check if both arguments are provided
-if [ -z "$p_ROS_DOMAIN_ID" ] || [ -z "$p_ROS_VERSION" ]; then
-    usage
-fi
-
-# Validate ROS version argument
-if [[ "$p_ROS_VERSION" != "ros-base" && "$p_ROS_VERSION" != "ros-desktop" ]]; then
-    echo "Invalid ROS version. Use 'ros-base' or 'ros-desktop'."
-    exit 1
-fi
+p_ROS_DOMAIN_ID=41
+p_ROS_VERSION=ros-desktop
 
 # Install necessary packages
 sudo apt install software-properties-common -y
