@@ -13,6 +13,7 @@
   <exec_depend>max_accel_test</exec_depend>
   <exec_depend>high_speed_stall_test</exec_depend>
   <exec_depend>comm_speed_test</exec_depend>
+  <exec_depend>gripper_manual_control</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

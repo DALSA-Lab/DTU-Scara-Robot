@@ -1,6 +1,6 @@
 # Tutorial for controlling the gripper through the robot from a Windows machine
 
-This tutorial is a compilatio of the README files in this repository and specific to just controlling the gripper from a Windows machine.
+This tutorial is a compilation of the README files in this repository and specific to just controlling the gripper from a Windows machine.
 
 ## Network
 After turning on the robot, the Raspberry Pi will search for a WIFI network with the the following credentials:  
@@ -20,19 +20,4 @@ ssh scara@<ip-adress>
 Type the password **dtubio** when prompted and hit enter.
 
 ## Executing the gripper control example program
-navigate to the ROS workspace:
-```bash
-cd bioscara/ROS2/ros2_scara_ws
-```
-Source the ROS executables:
-> [!NOTE]
->
-> The following step needs only to be done once after opening a new terminal session or when the 'Package 'gripper_manual_control' not found' error is shown.
-```bash
-source install/local_setup.sh
-```
-
-And finally execute the gripper example program:
-```bash
-ros2 run gripper_manual_control manual_control
-```
+When connected to the robot controller via SSH follow the instructions in the README to execute the manual control program.

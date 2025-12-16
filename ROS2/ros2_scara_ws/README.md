@@ -9,3 +9,5 @@ This package contains the core-API for interacting with the joint controllers vi
 
 ### gripper_example
 This package showcases a basic interactive control of the robot gripper.
+
+<!-- TODO. Write build instructions. And make TOC. Link to important packages -->
