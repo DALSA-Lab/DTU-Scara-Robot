@@ -54,14 +54,14 @@ PROJECT_NUMBER         =
 # for a project that appears at the top of each page and should give viewer a
 # quick idea about the purpose of the project. Keep the description short.
 
-PROJECT_BRIEF          = "DALSAs DIY SCARA robot arm."
+PROJECT_BRIEF          = "DALSA's DIY SCARA Robot Arm."
 
 # With the PROJECT_LOGO tag one can specify a logo or an icon that is included
 # in the documentation. The maximum height of the logo should not exceed 55
 # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
 # the logo to the output directory.
 
-PROJECT_LOGO           = dtu_logo.png
+PROJECT_LOGO           = BioscaraPanel.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
@@ -390,7 +390,7 @@ AUTOLINK_SUPPORT       = YES
 # diagrams that involve STL classes more complete and accurate.
 # The default value is: NO.
 
-BUILTIN_STL_SUPPORT    = NO
+BUILTIN_STL_SUPPORT    = NO # TODO: check this
 
 # If you use Microsoft's C++/CLI language, you should set this option to YES to
 # enable parsing support.
@@ -943,8 +943,19 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  =../Arduino \
-                        ../ROS2/ros2_scara_ws/src/dalsa_bioscara \ 
+# Exclude Moveit and other external packages
+
+INPUT                  =../lib/joint_firmware/joint \
+                        ../lib/ros2_ws/src/bioscara \ 
+                        ../lib/ros2_ws/src/bioscara_rviz_plugin/ \
+                        ../lib/ros2_ws/src/dalsa_bioscara_arm/ \
+                        ../lib/ros2_ws/src/dalsa_bioscara_grippers/ \
+                        ../lib/ros2_ws/src/dalsa_controllers/ \
+                        ../lib/ros2_ws/src/moveit_configurations/ \
+                        ../lib/ros2_ws/src/moveit_motion_plans/ \
+                        ../lib/ros2_ws/src/scene_bringup/ \
+                        ../lib/ros2_ws/src/scene_descriptions/ \
+                        ../lib/ros2_ws/src/system_test_packages/ \
                         DOCS_README.md
 
 
