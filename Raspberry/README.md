@@ -201,7 +201,7 @@ The order of managing dependenices is according to [this](https://ros2-quality-a
 ### ROS2 dependencies
 To install ROS2 package dependencies navigate to the workspace:
 ```bash
-cd ROS2/ros2_scara_ws
+cd lib/ros2_ws
 ```
 
 **First:**

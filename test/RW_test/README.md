@@ -13,12 +13,12 @@ This test is to identify the bottleneck that causes the long execution times and
 The test consists of two units:
 ### Joint Firmware
 <!-- TODO: describe and link how to flash firmware  -->
-A firmware variant ([profiling_test.ino](../../Arduino/profiling_test/profiling_test.ino)) is flashed on the joint controller. This firmware times the execution of the `non_blocking_handler()` which handles the incoming commands and prints the results to the serial port in CSV format. The development machine stays connected to the joint via USB to capture the serial port output and save it to a file. The [Realterm](https://sourceforge.net/projects/realterm/) software was used to cpature and save the serial output. 
+A firmware variant ([profiling_test.ino](../../lib/joint_firmware/profiling_test/profiling_test.ino)) is flashed on the joint controller. This firmware times the execution of the `non_blocking_handler()` which handles the incoming commands and prints the results to the serial port in CSV format. The development machine stays connected to the joint via USB to capture the serial port output and save it to a file. The [Realterm](https://sourceforge.net/projects/realterm/) software was used to cpature and save the serial output. 
 ### Controller
 <!-- TODO: describe and link how to build and source workspace  -->
 The controller executes the system_test_packages/comm_speed_test program
 ```bash
-cd ~/bioscara/ROS2/ros2_scara_ws
+cd ~/bioscara/lib/ros2_ws
 ros2 run comm_speed_test main
 ```
 
