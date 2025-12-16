@@ -948,7 +948,6 @@ WARN_LOGFILE           =
 # Exclude Moveit and other external packages
 
 INPUT                  =../lib/joint_firmware/joint \
-                        ../lib/ros2_ws/src/bioscara \ 
                         ../lib/ros2_ws/src/bioscara_rviz_plugin/ \
                         ../lib/ros2_ws/src/dalsa_bioscara_arm/ \
                         ../lib/ros2_ws/src/dalsa_bioscara_grippers/ \
