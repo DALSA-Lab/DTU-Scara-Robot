@@ -1,8 +1,0 @@
-<map id="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/mBaseGripper.h" name="ROS2/ros2_scara_ws/src/dalsa_bioscara/bioscara_hardware_driver/include/bioscara_hardware_driver/mBaseGripper.h">
-<area shape="rect" id="Node000001" title="File containing the BaseGripper class." alt="" coords="5,5,205,89"/>
-<area shape="poly" id="edge1_Node000001_Node000001" title=" " alt="" coords="207,26,225,34,232,47,229,57,220,64,217,59,224,54,227,48,221,38,205,31"/>
-<area shape="rect" id="Node000002" href="$uErr_8h.html" title=" " alt="" coords="10,137,201,177"/>
-<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="108,90,108,124,103,124,103,90"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="76,225,135,251"/>
-<area shape="poly" id="edge3_Node000002_Node000003" title=" " alt="" coords="108,178,108,211,103,211,103,178"/>
-</map>

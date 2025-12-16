@@ -29,7 +29,7 @@ jobs:
       - name: Install Doxygen
         run: sudo apt-get update && sudo apt-get install -y doxygen
       - name: Generate Doxygen XML
-        run: cd docs && doxygen
+        run: cd docs/doxygen && doxygen
       - name: Build Sphinx HTML
         run: sphinx-build -b html docs build/html
       - name: Deploy to GitHub Pages

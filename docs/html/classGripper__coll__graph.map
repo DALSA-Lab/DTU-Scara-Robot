@@ -1,5 +1,0 @@
-<map id="Gripper" name="Gripper">
-<area shape="rect" id="Node000001" title="Gripper object to interact with the robot gripper." alt="" coords="11,93,82,119"/>
-<area shape="rect" id="Node000002" href="$classRPI__PWM.html" title="PWM class for the Raspberry PI 4 and 5." alt="" coords="5,5,88,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="49,45,49,93,44,93,44,45"/>
-</map>

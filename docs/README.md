@@ -1,6 +1,7 @@
 # Documentation
 To make the documentation run: 
 ```bash
+cd ~bioscara/docs/doxygen
 doxygen
 ```
 

@@ -1,7 +1,0 @@
-<map id="bioscara_hardware_driver::Gripper" name="bioscara_hardware_driver::Gripper">
-<area shape="rect" id="Node000001" title=" " alt="" coords="85,108,276,148"/>
-<area shape="rect" id="Node000002" href="$classbioscara__hardware__driver_1_1BaseGripper.html" title=" " alt="" coords="5,5,196,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="126,55,168,106,164,110,122,58"/>
-<area shape="rect" id="Node000003" href="$classRPI__PWM.html" title="PWM class for the Raspberry PI 4 and 5." alt="" coords="221,13,303,38"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="246,50,198,110,194,106,242,47"/>
-</map>
