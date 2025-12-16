@@ -12,9 +12,19 @@ namespace bioscara_hardware_drivers
     {
         // Call parent enable to try to retrieve last position setpoint.
         BaseGripper::enable();
-        RETURN_ON_NEGATIVE(_pwm.start(0, _freq, 0, 0), err_type_t::COMM_ERROR);
-        RETURN_ON_ERROR(setPosition(_pos));
-        return err_type_t::OK;
+
+        // Try 3 times to enable PWM
+        for (size_t i = 0; i < 3; i++)
+        {
+            if (_pwm.start(0, _freq, 0, 0) >= 0)
+            {
+                // ignore failure on setPosition
+                setPosition(_pos);
+                return err_type_t::OK;
+            }
+            usleep(10000);
+        }
+        return err_type_t::COMM_ERROR;
     }
 
     err_type_t Gripper::disable(void)
