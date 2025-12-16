@@ -23,7 +23,7 @@ namespace bioscara_hardware_drivers
     class MockGripper : public BaseGripper
     {
     public:
-        MockGripper(void);
+        MockGripper(float reduction, float offset, float min, float max, float backup_init_pos);
 
     protected:
     private:

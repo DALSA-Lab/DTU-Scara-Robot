@@ -60,7 +60,9 @@ namespace bioscara_hardware_drivers
     class BaseGripper
     {
     public:
-        BaseGripper(void);
+        BaseGripper(float reduction, float offset, float min, float max, float backup_init_pos);
+
+        ~BaseGripper(void);
 
         /**
          * @brief Placeholder, does nothing
@@ -99,6 +101,13 @@ namespace bioscara_hardware_drivers
         virtual err_type_t setPosition(float width);
 
         /**
+         * @brief Gets the gripper as by the last command.
+         *
+         * @param width width in m.
+         */
+        virtual err_type_t getPosition(float &width);
+
+        /**
          * @brief Sets the servo position of the gripper actuator in degrees.
          *
          * @param angle in degrees.
@@ -118,6 +127,29 @@ namespace bioscara_hardware_drivers
         virtual void setOffset(float offset);
 
     protected:
+        /**
+         * @brief Stores the latest position to the buffer file.
+         *
+         * @param pos
+         * @return err_type_t
+         */
+        err_type_t save_last_position(float pos);
+
+        /**
+         * @brief Retrieves the stored position from the buffer file.
+         *
+         * @param pos
+         * @return err_type_t
+         */
+        err_type_t retrieve_last_position(float &pos);
+
+        float _reduction = 1;          ///< Joint to actuator reduction ratio
+        float _offset = 0;             ///< Joint position offset
+        float _min = 0;                ///< Joint lower limit
+        float _max = 0;                ///< Joint upper limit
+        float _backup_init_pos = 0.0;  ///< Initial position used if none can be retrieved from the buffer file
+        float _pos = _backup_init_pos; ///< Last received command or stored position
+
     private:
     };
 }

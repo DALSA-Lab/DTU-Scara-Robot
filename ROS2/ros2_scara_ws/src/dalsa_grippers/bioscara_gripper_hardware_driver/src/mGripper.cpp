@@ -4,42 +4,53 @@
 namespace bioscara_hardware_drivers
 {
 
-    Gripper::Gripper(float reduction, float offset, float min, float max) : BaseGripper()
+    Gripper::Gripper(float reduction, float offset, float min, float max, float backup_init_pos) : BaseGripper(reduction, offset, min, max, backup_init_pos)
     {
-        this->reduction = reduction;
-        this->offset = offset;
-        this->min = min;
-        this->max = max;
     }
 
     err_type_t Gripper::enable(void)
     {
-        RETURN_ON_NEGATIVE(this->pwm.start(0, this->freq, 0, 0), err_type_t::COMM_ERROR);
-        return err_type_t::OK;
+        // Call parent enable to try to retrieve last position setpoint.
+        BaseGripper::enable();
+
+        // Try 3 times to enable PWM
+        for (size_t i = 0; i < 3; i++)
+        {
+            if (_pwm.start(0, _freq, 0, 0) >= 0)
+            {
+                // ignore failure on setPosition
+                setPosition(_pos);
+                return err_type_t::OK;
+            }
+            usleep(10000);
+        }
+        return err_type_t::COMM_ERROR;
     }
 
     err_type_t Gripper::disable(void)
     {
-        this->pwm.stop();
+        // Call parent disable to save last position.
+        BaseGripper::disable();
+        _pwm.stop();
         return err_type_t::OK;
     }
 
     err_type_t Gripper::setPosition(float width)
     {
-        width = width < this->min ? this->min : width;
-        width = width > this->max ? this->max : width;
+        // Call parent to saturate input and save _pos
+        BaseGripper::setPosition(width);
 
-        float angle = JOINT2ACTUATOR(width, this->reduction, this->offset);
-        return this->setServoPosition(angle);
+        float angle = JOINT2ACTUATOR(_pos, _reduction, _offset);
+        return setServoPosition(angle);
     }
 
     err_type_t Gripper::setServoPosition(float angle)
     {
         float ton_us = angle / 90.0 * 500.0 + 1500.0;         // Ontime [us]
-        float dc = ton_us / (1000 * 1000) * this->freq * 100; // dutycycle [%] = ontime [s] /period [s] * 100 %
+        float dc = ton_us / (1000 * 1000) * _freq * 100; // dutycycle [%] = ontime [s] /period [s] * 100 %
         for (size_t i = 0; i < 3; i++)
         {
-            if (this->pwm.setDutyCycle(dc) >= 0)
+            if (_pwm.setDutyCycle(dc) >= 0)
             {
                 return err_type_t::OK;
             }
@@ -50,11 +61,11 @@ namespace bioscara_hardware_drivers
 
     void Gripper::setReduction(float reduction)
     {
-        this->reduction = reduction;
+        _reduction = reduction;
     }
 
     void Gripper::setOffset(float offset)
     {
-        this->offset = offset;
+        _offset = offset;
     }
 }
