@@ -21,11 +21,15 @@ Here you will find a full description of the project's architecture and core con
 This guide is designed to help you understand the structure and functionality of the project, making it easier to get started and make effective use of its features.
 
 
-TODO
-.. .. toctree::
-..    :maxdepth: 2
-..    :caption: Contents:
+TODO:
 
-.. ..    architecture/index.rst
-.. ..    code/index.rst
-.. ..    usage/examples/index.rst
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   code/index.rst
+
+..
+   architecture/index.rst
+   usage/examples/index.rst
+   

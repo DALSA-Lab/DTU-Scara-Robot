@@ -8,7 +8,7 @@
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "lib/py_pkg/src"))
+# sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "lib/py_pkg/src")) TODO: is this required? And for what?
 
 project = 'Bioscara'
 copyright = '2025, Alan Mansour, DALSA; 2025, Sebastian Storz, DALSA'
@@ -31,7 +31,7 @@ templates_path = ['_templates']
 exclude_patterns = []
 
 breathe_projects = {
-    "cpp_pkg": "doxygen/xml/",
+    "cpp_proj": "doxygen/xml/",
 }
 
 # -- Options for HTML output -------------------------------------------------
