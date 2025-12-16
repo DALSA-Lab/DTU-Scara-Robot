@@ -8,7 +8,7 @@
 using namespace std;
 using namespace bioscara_hardware_drivers;
 
-Gripper _Gripper(1, 0, 0, 100);
+Gripper _Gripper(1, 0, 0, 100,0.08);
 
 void INT_handler(int s)
 {
