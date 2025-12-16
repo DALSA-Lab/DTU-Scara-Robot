@@ -275,7 +275,7 @@ namespace bioscara_hardware_interfaces
     /* Simply mirror commands to states */
     for (const auto &[name, descr] : joint_state_interfaces_)
     {
-      double v = 0.0;
+      float v = 0.0;
       if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
         _gripper->getPosition(v);
@@ -286,7 +286,7 @@ namespace bioscara_hardware_interfaces
       }
       try
       {
-        set_state(name, v);
+        set_state(name, (double)v);
       }
       catch (const std::exception &e)
       {
@@ -310,29 +310,9 @@ namespace bioscara_hardware_interfaces
       {
         float pos_set = get_command(name);
 
-        /* Only set the position if it is not NaN */
-        if (!isnan(pos_set))
-        {
-          rc = _gripper->setPosition(pos_set);
-          pos_set = pos_set < _gripper_cfg.min ? _gripper_cfg.min : pos_set;
-          pos_set = pos_set > _gripper_cfg.max ? _gripper_cfg.max : pos_set;
-        }
-        else
-        {
-          /* set rc to OK to not trigger an error */
-          rc = bioscara_hardware_drivers::err_type_t::OK;
-        }
-
-        if (!isnan(_last_pos))
-        {
-          _vel = (pos_set - _last_pos) / period.seconds();
-        }
-        else
-        {
-          _vel = 0.0;
-        }
-
-        _last_pos = pos_set;
+        _gripper->getPosition(_last_pos);
+        rc = _gripper->setPosition(pos_set);
+        _vel = (pos_set - _last_pos) / period.seconds();
       }
 
       // use != 0 here since 1 for no compatible interface type
