@@ -31,7 +31,7 @@ templates_path = ['_templates']
 exclude_patterns = []
 
 breathe_projects = {
-    "cpp_pkg": "doxygen/xml/",
+    "cpp_pkg": "xml/",
 }
 
 # -- Options for HTML output -------------------------------------------------
