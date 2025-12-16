@@ -116,14 +116,19 @@ namespace bioscara_hardware_interfaces
 
     if (use_mock_hardware == "true" || use_mock_hardware == "True")
     {
-      _gripper = std::make_unique<bioscara_hardware_drivers::MockGripper>();
+      _gripper = std::make_unique<bioscara_hardware_drivers::MockGripper>(_gripper_cfg.reduction,
+                                                                          _gripper_cfg.offset,
+                                                                          _gripper_cfg.min,
+                                                                          _gripper_cfg.max,
+                                                                          _gripper_cfg.init_pos);
     }
     else
     {
       _gripper = std::make_unique<bioscara_hardware_drivers::Gripper>(_gripper_cfg.reduction,
                                                                       _gripper_cfg.offset,
                                                                       _gripper_cfg.min,
-                                                                      _gripper_cfg.max);
+                                                                      _gripper_cfg.max,
+                                                                      _gripper_cfg.init_pos);
     }
 
     return hardware_interface::CallbackReturn::SUCCESS;
@@ -219,12 +224,18 @@ namespace bioscara_hardware_interfaces
       return CallbackReturn::ERROR;
     }
 
+    // Read all state interfaces
+    if (read(rclcpp::Time(0), rclcpp::Duration(0, 0)) != hardware_interface::return_type::OK)
+    {
+      return hardware_interface::CallbackReturn::ERROR;
+    }
+
     for (const auto &[name, descr] : joint_command_interfaces_)
     {
       if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
-        RCLCPP_INFO(get_logger(), "Set %s, to NaN", name.c_str());
-        set_command(name, std::numeric_limits<double>::quiet_NaN());
+        RCLCPP_INFO(get_logger(), "Set %s, to %f", name.c_str(), get_state(name));
+        set_command(name, get_state(name));
       }
       else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
       {
@@ -267,21 +278,7 @@ namespace bioscara_hardware_interfaces
       double v = 0.0;
       if (descr.interface_info.name == hardware_interface::HW_IF_POSITION)
       {
-        /* Workaround: since the gripper position is unkown until the first command arrived we return
-         the initial position as read from the configuration.
-         TODO: implement that gripper saves last command on shutdown and loads that value again on configure. 
-         this should reduce unwanted gripper motion on startup.
-        The write method only writes to the gripper if not NaN.
-        It would be possible to return NaN but that floods the
-        TF2 log with errors that the gripper position can not be calculated. */
-        if (!isnan(_last_pos))
-        {
-          v = _last_pos;
-        }
-        else
-        {
-          v = _gripper_cfg.init_pos;
-        }
+        _gripper->getPosition(v);
       }
       else if (descr.interface_info.name == hardware_interface::HW_IF_VELOCITY)
       {

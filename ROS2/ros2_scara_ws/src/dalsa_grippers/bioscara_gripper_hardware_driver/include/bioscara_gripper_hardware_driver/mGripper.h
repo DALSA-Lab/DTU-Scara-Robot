@@ -36,8 +36,10 @@ namespace bioscara_hardware_drivers
          * @param offset
          * @param min minimum width in m.
          * @param max maxmimum width in m.
+         * @param backup_init_pos initial position the gripper assumes
+         *  if it can not be read from the buffer file.
          */
-        Gripper(float reduction, float offset, float min, float max);
+        Gripper(float reduction, float offset, float min, float max, float backup_init_pos);
 
         /**
          * @brief Prepares the servo for use.
@@ -75,13 +77,10 @@ namespace bioscara_hardware_drivers
         void setOffset(float offset);
 
     protected:
-        float reduction = 1; ///< Joint to actuator reduction ratio
-        float offset = 0;    ///< Joint position offset
-        float min = 0;       ///< Joint lower limit
-        float max = 0;       ///< Joint upper limit
+       
     private:
-        RPI_PWM pwm;
-        int freq = 50;
+        RPI_PWM _pwm;
+        int _freq = 50;
     };
 }
 #endif // MGRIPPER_H

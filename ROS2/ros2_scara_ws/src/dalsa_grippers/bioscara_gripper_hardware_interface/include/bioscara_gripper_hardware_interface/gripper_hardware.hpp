@@ -23,7 +23,6 @@
 #include <memory>
 #include <limits>
 
-
 #include "bioscara_gripper_hardware_driver/mGripper.h"
 #include "bioscara_gripper_hardware_driver/mMockGripper.h"
 
@@ -37,10 +36,10 @@
 
 namespace bioscara_hardware_interfaces
 {
-   
+
     /**
      * @brief The bioscara gripper hardware interface class.
-     * 
+     *
      * System interface has been chosen to allow future modifications for grippers that provide feedback.
      * refer to the BioscaraArmHardwareInterface class for a more detailed description of the hardware life-cycle.
      */
@@ -56,7 +55,7 @@ namespace bioscara_hardware_interfaces
          * @brief Called on the transistion from the `inactive`, `unconfigured` and `active` to the `finalized` state.
          *
          * When transitioning directly from `active` to `finalized` on_deactivate() is automatically called before [Source Code](https://github.com/ros-controls/ros2_control/blob/d0836b7f12b89acb89bde83d4ba4308513b03204/hardware_interface/src/resource_manager.cpp#L616)
-         * If the previous state is either `inactive` or `active` the on_cleanup() method is called first. 
+         * If the previous state is either `inactive` or `active` the on_cleanup() method is called first.
          * @param previous_state
          * @return hardware_interface::CallbackReturn
          */
@@ -94,7 +93,7 @@ namespace bioscara_hardware_interfaces
 
         /**
          * @brief Called on the transistion from the `active` to the `inactive` state.
-         * 
+         *
          * Disables PWM generation.
          *
          * @param previous_state
@@ -105,12 +104,12 @@ namespace bioscara_hardware_interfaces
 
         /**
          * @brief Reads from the hardware and populates the state interfaces.
-         * 
+         *
          * TODO
-         *  
-         * @param time 
-         * @param period 
-         * @return hardware_interface::return_type 
+         *
+         * @param time
+         * @param period
+         * @return hardware_interface::return_type
          */
         hardware_interface::return_type read(
             const rclcpp::Time &time,
@@ -118,12 +117,12 @@ namespace bioscara_hardware_interfaces
 
         /**
          * @brief Writes commands to the hardware from the command interfaces.
-         * 
+         *
          * TODO
-         * 
-         * @param time 
-         * @param period 
-         * @return hardware_interface::return_type 
+         *
+         * @param time
+         * @param period
+         * @return hardware_interface::return_type
          */
         hardware_interface::return_type write(
             const rclcpp::Time &time,
@@ -155,7 +154,6 @@ namespace bioscara_hardware_interfaces
             const rclcpp_lifecycle::State &previous_state) override;
 
     private:
-
         /**
          * @brief configuration structure holding the passed paramters from the ros2_control urdf
          *
@@ -173,12 +171,12 @@ namespace bioscara_hardware_interfaces
 
         /**
          * @brief Smart pointer to the local BaseGripper
-         * 
+         *
          * This will be used to either interact with the hardware or mock hardware.
          * A smart pointer is used to guarantee destruction when the pointer is destructed. A unique pointer is used to prevent copying of the object.
          */
         std::unique_ptr<bioscara_hardware_drivers::BaseGripper> _gripper;
-       
+
         /**
          * @brief configuration struct of the gripper.
          *
@@ -187,7 +185,6 @@ namespace bioscara_hardware_interfaces
 
         float _last_pos = std::numeric_limits<double>::quiet_NaN();
         float _vel = std::numeric_limits<double>::quiet_NaN();
-
     };
 
 } // namespace bioscara_hardware_interfaces

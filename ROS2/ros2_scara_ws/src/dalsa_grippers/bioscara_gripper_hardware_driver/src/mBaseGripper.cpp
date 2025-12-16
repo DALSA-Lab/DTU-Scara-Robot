@@ -1,8 +1,22 @@
 #include "bioscara_gripper_hardware_driver/mBaseGripper.h"
+#include <fstream>
+#include <iostream>
+
 namespace bioscara_hardware_drivers
 {
-    BaseGripper::BaseGripper(void)
+    BaseGripper::BaseGripper(float reduction, float offset, float min, float max, float backup_init_pos)
     {
+        _reduction = reduction;
+        _offset = offset;
+        _min = min;
+        _max = max;
+        _backup_init_pos = backup_init_pos;
+    }
+
+    BaseGripper::~BaseGripper(void)
+    {
+        disable();
+        deinit();
     }
 
     err_type_t BaseGripper::init(void)
@@ -17,16 +31,37 @@ namespace bioscara_hardware_drivers
 
     err_type_t BaseGripper::enable(void)
     {
+        // try to retrieve the last recorded position
+        float t;
+        if (retrieve_last_position(t) != err_type_t::OK)
+        {
+            _pos = _backup_init_pos;
+        }
+        else
+        {
+            _pos = t;
+        }
         return err_type_t::OK;
     }
 
     err_type_t BaseGripper::disable(void)
     {
+        save_last_position(_pos);
         return err_type_t::OK;
     }
 
-    err_type_t BaseGripper::setPosition(float /*width*/)
+    err_type_t BaseGripper::setPosition(float width)
     {
+
+        width = width < _min ? _min : width;
+        width = width > _max ? _max : width;
+        _pos = width;
+        return err_type_t::OK;  
+    }
+
+    err_type_t BaseGripper::getPosition(float &width)
+    {
+        width = _pos;
         return err_type_t::OK;
     }
 
@@ -35,11 +70,52 @@ namespace bioscara_hardware_drivers
         return err_type_t::OK;
     }
 
-    void BaseGripper::setReduction(float /*reduction*/)
+    void BaseGripper::setReduction(float reduction)
     {
+        std::cout << "Set reduction to: " << reduction << std::endl;
     }
 
-    void BaseGripper::setOffset(float /*offset*/)
+    void BaseGripper::setOffset(float offset)
     {
+        std::cout << "Set offset to: " << offset << std::endl;
+    }
+
+    err_type_t BaseGripper::save_last_position(float pos)
+    {
+        try
+        {
+            std::ofstream fout("last_pos.b", std::ios::binary);
+            fout.write(reinterpret_cast<char *>(&pos), sizeof pos);
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << e.what() << '\n';
+            std::cout << "Error writing buffer file. Last position might not be saved.\n";
+            return err_type_t::ERROR;
+        }
+        return err_type_t::OK;
+    }
+
+    err_type_t BaseGripper::retrieve_last_position(float &pos)
+    {
+        float d;
+        try
+        {
+            std::ifstream istrm("last_pos.b", std::ios::binary);
+            istrm.read(reinterpret_cast<char *>(&d), sizeof d);
+            if (!istrm.is_open())
+            {
+                std::cout << "Failed to open buffer file. Using backup initial position.\n";
+                return err_type_t::ERROR;
+            }
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << e.what() << '\n';
+            std::cout << "Error reading buffer file. Using backup initial position.\n";
+            return err_type_t::ERROR;
+        }
+        pos = d;
+        return err_type_t::OK;
     }
 }
