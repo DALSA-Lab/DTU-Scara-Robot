@@ -76,5 +76,4 @@ qtcreator-*
 
 # Catkin custom files
 CATKIN_IGNORE
-lib/ros2_ws/src/ros2_controllers/ros2_controllers_test_nodes/resource/ros2_controllers_test_nodes
 lib/ros2_ws/log.out
