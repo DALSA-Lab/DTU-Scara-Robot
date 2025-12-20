@@ -12,7 +12,6 @@
  */
 #ifndef MBASEGRIPPER_H
 #define MBASEGRIPPER_H
-#include "bioscara_gripper_hardware_driver/mBaseGripper.h"
 #include "bioscara_arm_hardware_driver/uErr.h"
 
 /**
