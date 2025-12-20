@@ -30,7 +30,19 @@ allowCollision.allowCollisions([object_name],["table"],True)
 task.add(allowCollision)
 
 # start from current robot state
-task.add(stages.CurrentState("current state"))
+startState = stages.CurrentState("start state")
+task.add(startState)
+
+moveToStandby = stages.MoveTo("Move to Standby",pipeline)
+moveToStandby.ik_frame = PoseStamped(header=Header(frame_id="tool"))
+moveToStandby.group = arm
+standbyPose = PoseStamped(header=Header(frame_id="world"))
+standbyPose.pose.position.y = 0.4
+standbyPose.pose.position.z = 0.2
+standbyPose.pose.orientation.z = 1.0
+standbyPose.pose.orientation.w = 1.0
+moveToStandby.setGoal(standbyPose)
+task.add(moveToStandby)
 
 # Connect start state to approach point.
 task.add(stages.Connect("Go to Approach", [(arm, pipeline),(eef,jointspace)]))
@@ -42,7 +54,7 @@ grasp_generator.pregrasp = "open"
 grasp_generator.grasp = "close_80"
 # grasp_generator.setPreGraspPose({"gripper":0.12}) TODO: This can be supported with some changes in MTC
 # grasp_generator.setGraspPose({"gripper":0.09})
-grasp_generator.setMonitoredStage(task["current state"])  # Generate solutions for all initial states
+grasp_generator.setMonitoredStage(task["start state"])  # Generate solutions for all initial states
 
 
 # The simpleGrasp stage combines ik calculation with motion plan generation 
@@ -86,9 +98,9 @@ task.add(con)
 # Define the pose that the object should have after placing
 placePose = PoseStamped()
 placePose.header = Header(frame_id="world")
-placePose.pose.position.x = 0.4
-placePose.pose.position.y = -0.1
-placePose.pose.position.z = 0.02
+placePose.pose.position.x = -0.2
+placePose.pose.position.y = 0.4
+placePose.pose.position.z = 0.011
 
 # Generate Cartesian place poses for the object
 place_generator = stages.GeneratePlacePose("Generate Place Pose")
@@ -119,6 +131,12 @@ place.setPlaceMotion(placeMotion, 0.03, 0.1)
 
 # Add the place pipeline to the task's hierarchy
 task.add(place)
+
+moveToStandby = stages.MoveTo("Move to Standby",pipeline)
+moveToStandby.ik_frame = PoseStamped(header=Header(frame_id="tool"))
+moveToStandby.group = arm
+moveToStandby.setGoal(standbyPose)
+task.add(moveToStandby)
 
 if task.plan():
     task.publish(task.solutions[0])
