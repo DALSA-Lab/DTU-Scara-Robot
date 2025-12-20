@@ -37,8 +37,11 @@
 
     <!-- TODO: just a workaround until it is possible to set grasp poses in MTC GenerateGraspPose 
     by something other than by name.-->
-    <group_state name="close_80" group="gripper">
-        <joint name="gripper" value="0.08"/>
+    <group_state name="close_75" group="gripper">
+        <joint name="gripper" value="0.075"/>
+    </group_state>
+    <group_state name="close_40" group="gripper">
+        <joint name="gripper" value="0.04"/>
     </group_state>
 
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->

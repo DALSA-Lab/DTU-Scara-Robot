@@ -42,7 +42,7 @@ standbyPose.pose.position.z = 0.2
 standbyPose.pose.orientation.z = 1.0
 standbyPose.pose.orientation.w = 1.0
 moveToStandby.setGoal(standbyPose)
-task.add(moveToStandby)
+# task.add(moveToStandby)
 
 # Connect start state to approach point.
 task.add(stages.Connect("Go to Approach", [(arm, pipeline),(eef,jointspace)]))
@@ -51,7 +51,7 @@ task.add(stages.Connect("Go to Approach", [(arm, pipeline),(eef,jointspace)]))
 grasp_generator = stages.GenerateGraspPose("Generate Grasp Pose")
 grasp_generator.angle_delta = math.pi / 2
 grasp_generator.pregrasp = "open"
-grasp_generator.grasp = "close_80"
+grasp_generator.grasp = "close_75"
 # grasp_generator.setPreGraspPose({"gripper":0.12}) TODO: This can be supported with some changes in MTC
 # grasp_generator.setGraspPose({"gripper":0.09})
 grasp_generator.setMonitoredStage(task["start state"])  # Generate solutions for all initial states
