@@ -64,6 +64,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N25bioscara_hardware_drivers11BaseGripper4_maxE"><code class="docutils literal notranslate"><span class="pre">_max</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N25bioscara_hardware_drivers11BaseGripper16_backup_init_posE"><code class="docutils literal notranslate"><span class="pre">_backup_init_pos</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#_CPPv4N25bioscara_hardware_drivers11BaseGripper4_posE"><code class="docutils literal notranslate"><span class="pre">_pos</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N25bioscara_hardware_drivers11BaseGripper8_pos_getE"><code class="docutils literal notranslate"><span class="pre">_pos_get</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#_CPPv4N25bioscara_hardware_drivers11BaseGripper12new_cmd_timeE"><code class="docutils literal notranslate"><span class="pre">new_cmd_time</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#_CPPv4N25bioscara_hardware_drivers9BaseJointE"><code class="docutils literal notranslate"><span class="pre">bioscara_hardware_drivers::BaseJoint</span></code></a><ul>
@@ -448,6 +450,134 @@
 <li class="toctree-l3"><a class="reference internal" href="#moveit_rviz.generate_launch_description"><code class="docutils literal notranslate"><span class="pre">generate_launch_description()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#PickPlace"><code class="docutils literal notranslate"><span class="pre">PickPlace</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.node"><code class="docutils literal notranslate"><span class="pre">node</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.arm"><code class="docutils literal notranslate"><span class="pre">arm</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.eef"><code class="docutils literal notranslate"><span class="pre">eef</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.object_name"><code class="docutils literal notranslate"><span class="pre">object_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.cartesian"><code class="docutils literal notranslate"><span class="pre">cartesian</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.jointspace"><code class="docutils literal notranslate"><span class="pre">jointspace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.pipeline"><code class="docutils literal notranslate"><span class="pre">pipeline</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.task"><code class="docutils literal notranslate"><span class="pre">task</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.name"><code class="docutils literal notranslate"><span class="pre">name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.allowCollision"><code class="docutils literal notranslate"><span class="pre">allowCollision</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.startState"><code class="docutils literal notranslate"><span class="pre">startState</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.moveToStandby"><code class="docutils literal notranslate"><span class="pre">moveToStandby</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.ik_frame"><code class="docutils literal notranslate"><span class="pre">ik_frame</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.header"><code class="docutils literal notranslate"><span class="pre">header</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.group"><code class="docutils literal notranslate"><span class="pre">group</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.standbyPose"><code class="docutils literal notranslate"><span class="pre">standbyPose</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.y"><code class="docutils literal notranslate"><span class="pre">y</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.z"><code class="docutils literal notranslate"><span class="pre">z</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.w"><code class="docutils literal notranslate"><span class="pre">w</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.grasp_generator"><code class="docutils literal notranslate"><span class="pre">grasp_generator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.angle_delta"><code class="docutils literal notranslate"><span class="pre">angle_delta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.pregrasp"><code class="docutils literal notranslate"><span class="pre">pregrasp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.grasp"><code class="docutils literal notranslate"><span class="pre">grasp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.simpleGrasp"><code class="docutils literal notranslate"><span class="pre">simpleGrasp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.frame_id"><code class="docutils literal notranslate"><span class="pre">frame_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.pick"><code class="docutils literal notranslate"><span class="pre">pick</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.object"><code class="docutils literal notranslate"><span class="pre">object</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.approach"><code class="docutils literal notranslate"><span class="pre">approach</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.lift"><code class="docutils literal notranslate"><span class="pre">lift</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.con"><code class="docutils literal notranslate"><span class="pre">con</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.placePose"><code class="docutils literal notranslate"><span class="pre">placePose</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.x"><code class="docutils literal notranslate"><span class="pre">x</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.place_generator"><code class="docutils literal notranslate"><span class="pre">place_generator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.pose"><code class="docutils literal notranslate"><span class="pre">pose</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.simpleUnGrasp"><code class="docutils literal notranslate"><span class="pre">simpleUnGrasp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.place"><code class="docutils literal notranslate"><span class="pre">place</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.eef_frame"><code class="docutils literal notranslate"><span class="pre">eef_frame</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.retract"><code class="docutils literal notranslate"><span class="pre">retract</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace.placeMotion"><code class="docutils literal notranslate"><span class="pre">placeMotion</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#PickPlace_continous"><code class="docutils literal notranslate"><span class="pre">PickPlace_continous</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.node"><code class="docutils literal notranslate"><span class="pre">node</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.arm"><code class="docutils literal notranslate"><span class="pre">arm</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.eef"><code class="docutils literal notranslate"><span class="pre">eef</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.object_name"><code class="docutils literal notranslate"><span class="pre">object_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.cartesian"><code class="docutils literal notranslate"><span class="pre">cartesian</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.jointspace"><code class="docutils literal notranslate"><span class="pre">jointspace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.pipeline"><code class="docutils literal notranslate"><span class="pre">pipeline</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.preTask"><code class="docutils literal notranslate"><span class="pre">preTask</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.name"><code class="docutils literal notranslate"><span class="pre">name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.startState"><code class="docutils literal notranslate"><span class="pre">startState</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.moveToStandby"><code class="docutils literal notranslate"><span class="pre">moveToStandby</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.group"><code class="docutils literal notranslate"><span class="pre">group</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.standbyPose"><code class="docutils literal notranslate"><span class="pre">standbyPose</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.task"><code class="docutils literal notranslate"><span class="pre">task</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.allowCollision"><code class="docutils literal notranslate"><span class="pre">allowCollision</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.grasp_generator"><code class="docutils literal notranslate"><span class="pre">grasp_generator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.angle_delta"><code class="docutils literal notranslate"><span class="pre">angle_delta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.pregrasp"><code class="docutils literal notranslate"><span class="pre">pregrasp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.grasp"><code class="docutils literal notranslate"><span class="pre">grasp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.simpleGrasp"><code class="docutils literal notranslate"><span class="pre">simpleGrasp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.ik_frame"><code class="docutils literal notranslate"><span class="pre">ik_frame</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.frame_id"><code class="docutils literal notranslate"><span class="pre">frame_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.z"><code class="docutils literal notranslate"><span class="pre">z</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.pick"><code class="docutils literal notranslate"><span class="pre">pick</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.object"><code class="docutils literal notranslate"><span class="pre">object</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.approach"><code class="docutils literal notranslate"><span class="pre">approach</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.lift"><code class="docutils literal notranslate"><span class="pre">lift</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.con"><code class="docutils literal notranslate"><span class="pre">con</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.placePose"><code class="docutils literal notranslate"><span class="pre">placePose</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.header"><code class="docutils literal notranslate"><span class="pre">header</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.x"><code class="docutils literal notranslate"><span class="pre">x</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.y"><code class="docutils literal notranslate"><span class="pre">y</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.place_generator"><code class="docutils literal notranslate"><span class="pre">place_generator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.pose"><code class="docutils literal notranslate"><span class="pre">pose</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.simpleUnGrasp"><code class="docutils literal notranslate"><span class="pre">simpleUnGrasp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.place"><code class="docutils literal notranslate"><span class="pre">place</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.eef_frame"><code class="docutils literal notranslate"><span class="pre">eef_frame</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.retract"><code class="docutils literal notranslate"><span class="pre">retract</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.placeMotion"><code class="docutils literal notranslate"><span class="pre">placeMotion</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_continous.w"><code class="docutils literal notranslate"><span class="pre">w</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#PickPlace_markers"><code class="docutils literal notranslate"><span class="pre">PickPlace_markers</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.node"><code class="docutils literal notranslate"><span class="pre">node</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.arm"><code class="docutils literal notranslate"><span class="pre">arm</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.eef"><code class="docutils literal notranslate"><span class="pre">eef</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.object_name"><code class="docutils literal notranslate"><span class="pre">object_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.cartesian"><code class="docutils literal notranslate"><span class="pre">cartesian</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.jointspace"><code class="docutils literal notranslate"><span class="pre">jointspace</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.pipeline"><code class="docutils literal notranslate"><span class="pre">pipeline</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.preTask"><code class="docutils literal notranslate"><span class="pre">preTask</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.name"><code class="docutils literal notranslate"><span class="pre">name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.startState"><code class="docutils literal notranslate"><span class="pre">startState</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.moveToStandby"><code class="docutils literal notranslate"><span class="pre">moveToStandby</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.group"><code class="docutils literal notranslate"><span class="pre">group</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.standbyPose"><code class="docutils literal notranslate"><span class="pre">standbyPose</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.task"><code class="docutils literal notranslate"><span class="pre">task</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.allowCollision"><code class="docutils literal notranslate"><span class="pre">allowCollision</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.grasp_generator"><code class="docutils literal notranslate"><span class="pre">grasp_generator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.angle_delta"><code class="docutils literal notranslate"><span class="pre">angle_delta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.pregrasp"><code class="docutils literal notranslate"><span class="pre">pregrasp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.grasp"><code class="docutils literal notranslate"><span class="pre">grasp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.simpleGrasp"><code class="docutils literal notranslate"><span class="pre">simpleGrasp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.ik_frame"><code class="docutils literal notranslate"><span class="pre">ik_frame</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.frame_id"><code class="docutils literal notranslate"><span class="pre">frame_id</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.z"><code class="docutils literal notranslate"><span class="pre">z</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.pick"><code class="docutils literal notranslate"><span class="pre">pick</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.object"><code class="docutils literal notranslate"><span class="pre">object</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.approach"><code class="docutils literal notranslate"><span class="pre">approach</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.lift"><code class="docutils literal notranslate"><span class="pre">lift</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.con"><code class="docutils literal notranslate"><span class="pre">con</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.placePose"><code class="docutils literal notranslate"><span class="pre">placePose</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.header"><code class="docutils literal notranslate"><span class="pre">header</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.x"><code class="docutils literal notranslate"><span class="pre">x</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.y"><code class="docutils literal notranslate"><span class="pre">y</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.place_generator"><code class="docutils literal notranslate"><span class="pre">place_generator</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.pose"><code class="docutils literal notranslate"><span class="pre">pose</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.simpleUnGrasp"><code class="docutils literal notranslate"><span class="pre">simpleUnGrasp</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.place"><code class="docutils literal notranslate"><span class="pre">place</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.eef_frame"><code class="docutils literal notranslate"><span class="pre">eef_frame</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.retract"><code class="docutils literal notranslate"><span class="pre">retract</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.placeMotion"><code class="docutils literal notranslate"><span class="pre">placeMotion</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#PickPlace_markers.w"><code class="docutils literal notranslate"><span class="pre">w</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#run"><code class="docutils literal notranslate"><span class="pre">run</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#run.generate_launch_description"><code class="docutils literal notranslate"><span class="pre">generate_launch_description()</span></code></a></li>
 </ul>
@@ -797,8 +927,22 @@
 <dl class="cpp var">
 <dt class="sig sig-object cpp" id="_CPPv4N25bioscara_hardware_drivers11BaseGripper4_posE">
 <span id="_CPPv3N25bioscara_hardware_drivers11BaseGripper4_posE"></span><span id="_CPPv2N25bioscara_hardware_drivers11BaseGripper4_posE"></span><span id="bioscara_hardware_drivers::BaseGripper::_pos__float"></span><span class="target" id="classbioscara__hardware__drivers_1_1BaseGripper_1ae10e0604a51b81e5da405152c74e9e9e"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_pos</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N25bioscara_hardware_drivers11BaseGripper16_backup_init_posE" title="bioscara_hardware_drivers::BaseGripper::_backup_init_pos"><span class="n"><span class="pre">_backup_init_pos</span></span></a><a class="headerlink" href="#_CPPv4N25bioscara_hardware_drivers11BaseGripper4_posE" title="Link to this definition"></a><br /></dt>
-<dd><p>Last received command or stored position. </p>
+<dd><p>stored position </p>
 </dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25bioscara_hardware_drivers11BaseGripper8_pos_getE">
+<span id="_CPPv3N25bioscara_hardware_drivers11BaseGripper8_pos_getE"></span><span id="_CPPv2N25bioscara_hardware_drivers11BaseGripper8_pos_getE"></span><span id="bioscara_hardware_drivers::BaseGripper::_pos_get__float"></span><span class="target" id="classbioscara__hardware__drivers_1_1BaseGripper_1a44c99d057bf270f3af1c47c37d77c49a"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_pos_get</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N25bioscara_hardware_drivers11BaseGripper4_posE" title="bioscara_hardware_drivers::BaseGripper::_pos"><span class="n"><span class="pre">_pos</span></span></a><a class="headerlink" href="#_CPPv4N25bioscara_hardware_drivers11BaseGripper8_pos_getE" title="Link to this definition"></a><br /></dt>
+<dd><p>reported position </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N25bioscara_hardware_drivers11BaseGripper12new_cmd_timeE">
+<span id="_CPPv3N25bioscara_hardware_drivers11BaseGripper12new_cmd_timeE"></span><span id="_CPPv2N25bioscara_hardware_drivers11BaseGripper12new_cmd_timeE"></span><span id="bioscara_hardware_drivers::BaseGripper::new_cmd_time__std::chrono::_V2::system_clock::time_point"></span><span class="target" id="classbioscara__hardware__drivers_1_1BaseGripper_1acc95627063c1af765b571553a5fafbb4"></span><a class="reference internal" href="#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">chrono</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">_V2</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">system_clock</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">time_point</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">new_cmd_time</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">chrono</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">high_resolution_clock</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">now</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><a class="headerlink" href="#_CPPv4N25bioscara_hardware_drivers11BaseGripper12new_cmd_timeE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
 
 </div>
 </dd></dl>
@@ -3910,6 +4054,631 @@ J4: 3.01069 </p></li>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="PickPlace">
+<span class="target" id="namespacePickPlace"></span><em class="property"><span class="pre">module</span> </em><span class="sig-name descname"><span class="pre">PickPlace</span></span><a class="headerlink" href="#PickPlace" title="Link to this definition"></a></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.node">
+<span class="target" id="namespacePickPlace_1a6cba91bb26cc17a272f07c5bd8def16b"></span><span class="sig-name descname"><span class="pre">node</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">rclcpp.Node(&quot;PickPlace&quot;)</span></em><a class="headerlink" href="#PickPlace.node" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.arm">
+<span class="target" id="namespacePickPlace_1a5b6450a1b1cf421a3a3a52b5539fe7e7"></span><span class="sig-name descname"><span class="pre">arm</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;arm&quot;</span></em><a class="headerlink" href="#PickPlace.arm" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.eef">
+<span class="target" id="namespacePickPlace_1acac13cfde292d5111365675ed5cc7497"></span><span class="sig-name descname"><span class="pre">eef</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;gripper&quot;</span></em><a class="headerlink" href="#PickPlace.eef" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.object_name">
+<span class="target" id="namespacePickPlace_1ab0beb9d056d82783f7e4b4a6a7aab5f9"></span><span class="sig-name descname"><span class="pre">object_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;plate&quot;</span></em><a class="headerlink" href="#PickPlace.object_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.cartesian">
+<span class="target" id="namespacePickPlace_1a6f9a98b073df59c3e9051bfae6a80828"></span><span class="sig-name descname"><span class="pre">cartesian</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">core.CartesianPath()</span></em><a class="headerlink" href="#PickPlace.cartesian" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.jointspace">
+<span class="target" id="namespacePickPlace_1adc44fbd83067b63504311efd51760ef6"></span><span class="sig-name descname"><span class="pre">jointspace</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">core.JointInterpolationPlanner()</span></em><a class="headerlink" href="#PickPlace.jointspace" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.pipeline">
+<span class="target" id="namespacePickPlace_1ab2a66b82a7400db83a50f112d8056195"></span><span class="sig-name descname"><span class="pre">pipeline</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">core.PipelinePlanner(node,</span> <span class="pre">&quot;ompl&quot;,</span> <span class="pre">&quot;RRTConnectkConfigDefault&quot;)</span></em><a class="headerlink" href="#PickPlace.pipeline" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.task">
+<span class="target" id="namespacePickPlace_1ab2f7e1c9e54024cf061d0953af264b2b"></span><span class="sig-name descname"><span class="pre">task</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">core.Task()</span></em><a class="headerlink" href="#PickPlace.task" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.name">
+<span class="target" id="namespacePickPlace_1a816f1f6e22ba6236d80772722ebec85f"></span><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#PickPlace.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.allowCollision">
+<span class="target" id="namespacePickPlace_1a45c59c59b185239ee11ce85b49b4bbce"></span><span class="sig-name descname"><span class="pre">allowCollision</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.ModifyPlanningScene(&quot;Allow</span> <span class="pre">Collision</span> <span class="pre">(Plate,</span> <span class="pre">Table)&quot;)</span></em><a class="headerlink" href="#PickPlace.allowCollision" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.startState">
+<span class="target" id="namespacePickPlace_1a28d6f88c2b0f579c2f61e02e2b97885b"></span><span class="sig-name descname"><span class="pre">startState</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.CurrentState(&quot;start</span> <span class="pre">state&quot;)</span></em><a class="headerlink" href="#PickPlace.startState" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.moveToStandby">
+<span class="target" id="namespacePickPlace_1a97be879864607c9643b1bb4debd45570"></span><span class="sig-name descname"><span class="pre">moveToStandby</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.MoveTo(&quot;Move</span> <span class="pre">to</span> <span class="pre">Standby&quot;,pipeline)</span></em><a class="headerlink" href="#PickPlace.moveToStandby" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.ik_frame">
+<span class="target" id="namespacePickPlace_1a2a1fd240a692e5ee8b68dc31486f3ccc"></span><span class="sig-name descname"><span class="pre">ik_frame</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PoseStamped()</span></em><a class="headerlink" href="#PickPlace.ik_frame" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.header">
+<span class="target" id="namespacePickPlace_1a8dbafd246bebfef084322e858c730fbe"></span><span class="sig-name descname"><span class="pre">header</span></span><a class="headerlink" href="#PickPlace.header" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.group">
+<span class="target" id="namespacePickPlace_1a3fbe691499c55bf7caba9a7433588921"></span><span class="sig-name descname"><span class="pre">group</span></span><a class="headerlink" href="#PickPlace.group" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.standbyPose">
+<span class="target" id="namespacePickPlace_1a6a053861333ba508798b2da6fad50b59"></span><span class="sig-name descname"><span class="pre">standbyPose</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PoseStamped(header=Header(frame_id=&quot;world&quot;))</span></em><a class="headerlink" href="#PickPlace.standbyPose" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.y">
+<span class="target" id="namespacePickPlace_1a31462274081a180fd53551bd1f21a2bd"></span><span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#PickPlace.y" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.z">
+<span class="target" id="namespacePickPlace_1a40c8c815000f5f48d29a92c6c2841c75"></span><span class="sig-name descname"><span class="pre">z</span></span><a class="headerlink" href="#PickPlace.z" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.w">
+<span class="target" id="namespacePickPlace_1aec4c2f23b52ab616436455f56f939023"></span><span class="sig-name descname"><span class="pre">w</span></span><a class="headerlink" href="#PickPlace.w" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.grasp_generator">
+<span class="target" id="namespacePickPlace_1af67ad0c776c99532754d200e007fc61e"></span><span class="sig-name descname"><span class="pre">grasp_generator</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.GenerateGraspPose(&quot;Generate</span> <span class="pre">Grasp</span> <span class="pre">Pose&quot;)</span></em><a class="headerlink" href="#PickPlace.grasp_generator" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.angle_delta">
+<span class="target" id="namespacePickPlace_1a02491cac44bc3a6094599390b7236d4e"></span><span class="sig-name descname"><span class="pre">angle_delta</span></span><a class="headerlink" href="#PickPlace.angle_delta" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.pregrasp">
+<span class="target" id="namespacePickPlace_1a1c07e73881c6364764f7be6c7fbc7440"></span><span class="sig-name descname"><span class="pre">pregrasp</span></span><a class="headerlink" href="#PickPlace.pregrasp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.grasp">
+<span class="target" id="namespacePickPlace_1ae1e72440c991c4f0ee36c8e7a100c16a"></span><span class="sig-name descname"><span class="pre">grasp</span></span><a class="headerlink" href="#PickPlace.grasp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.simpleGrasp">
+<span class="target" id="namespacePickPlace_1ad5d9b5b1b9adb9d943a09462c5a991f8"></span><span class="sig-name descname"><span class="pre">simpleGrasp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.SimpleGrasp(grasp_generator,</span> <span class="pre">&quot;Grasp&quot;)</span></em><a class="headerlink" href="#PickPlace.simpleGrasp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.frame_id">
+<span class="target" id="namespacePickPlace_1a4c8b745fb5a69ce2123817d7d8287c80"></span><span class="sig-name descname"><span class="pre">frame_id</span></span><a class="headerlink" href="#PickPlace.frame_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.pick">
+<span class="target" id="namespacePickPlace_1a40df3001a94cc49724eb22700d3893a9"></span><span class="sig-name descname"><span class="pre">pick</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.Pick(simpleGrasp,</span> <span class="pre">&quot;Pick&quot;)</span></em><a class="headerlink" href="#PickPlace.pick" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.object">
+<span class="target" id="namespacePickPlace_1a8fbd50f8d7a6277acd43eaebbf3634c7"></span><span class="sig-name descname"><span class="pre">object</span></span><a class="headerlink" href="#PickPlace.object" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.approach">
+<span class="target" id="namespacePickPlace_1a0e417deb653eaa503688afdd3b45d96d"></span><span class="sig-name descname"><span class="pre">approach</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">TwistStamped()</span></em><a class="headerlink" href="#PickPlace.approach" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.lift">
+<span class="target" id="namespacePickPlace_1a3f6a1d4a736ee15e4f2a3f25a2794ca4"></span><span class="sig-name descname"><span class="pre">lift</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">TwistStamped()</span></em><a class="headerlink" href="#PickPlace.lift" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.con">
+<span class="target" id="namespacePickPlace_1a4e9b01fa00a8f289cd644dd552c5d419"></span><span class="sig-name descname"><span class="pre">con</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.Connect(&quot;Transfer&quot;,</span> <span class="pre">[(arm,</span> <span class="pre">pipeline),(eef,jointspace)])</span></em><a class="headerlink" href="#PickPlace.con" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.placePose">
+<span class="target" id="namespacePickPlace_1af8712dfb38778195a44359b9a14877e6"></span><span class="sig-name descname"><span class="pre">placePose</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PoseStamped()</span></em><a class="headerlink" href="#PickPlace.placePose" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.x">
+<span class="target" id="namespacePickPlace_1a1332c674578a93ab9f4699c9cfdd72c4"></span><span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#PickPlace.x" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.place_generator">
+<span class="target" id="namespacePickPlace_1a56773f483c5bd584223083eedbf79328"></span><span class="sig-name descname"><span class="pre">place_generator</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.GeneratePlacePose(&quot;Generate</span> <span class="pre">Place</span> <span class="pre">Pose&quot;)</span></em><a class="headerlink" href="#PickPlace.place_generator" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.pose">
+<span class="target" id="namespacePickPlace_1a557a9a6896d20ecc54ff2c1120011fad"></span><span class="sig-name descname"><span class="pre">pose</span></span><a class="headerlink" href="#PickPlace.pose" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.simpleUnGrasp">
+<span class="target" id="namespacePickPlace_1a2165b3237e9c88702b6db5964de10597"></span><span class="sig-name descname"><span class="pre">simpleUnGrasp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.SimpleUnGrasp(place_generator,</span> <span class="pre">&quot;UnGrasp&quot;)</span></em><a class="headerlink" href="#PickPlace.simpleUnGrasp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.place">
+<span class="target" id="namespacePickPlace_1a287d1e59789754783791bd6dd0ebff8d"></span><span class="sig-name descname"><span class="pre">place</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.Place(simpleUnGrasp,</span> <span class="pre">&quot;Place&quot;)</span></em><a class="headerlink" href="#PickPlace.place" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.eef_frame">
+<span class="target" id="namespacePickPlace_1a451ab1dca19d49df2d173cee2bd70cb8"></span><span class="sig-name descname"><span class="pre">eef_frame</span></span><a class="headerlink" href="#PickPlace.eef_frame" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.retract">
+<span class="target" id="namespacePickPlace_1ad23facc846fe36173011dec820969459"></span><span class="sig-name descname"><span class="pre">retract</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">TwistStamped()</span></em><a class="headerlink" href="#PickPlace.retract" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace.placeMotion">
+<span class="target" id="namespacePickPlace_1a13e7ee8e5ba3bc0cbc4c1efbd1c21266"></span><span class="sig-name descname"><span class="pre">placeMotion</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">TwistStamped()</span></em><a class="headerlink" href="#PickPlace.placeMotion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PickPlace_continous">
+<span class="target" id="namespacePickPlace__continous"></span><em class="property"><span class="pre">module</span> </em><span class="sig-name descname"><span class="pre">PickPlace_continous</span></span><a class="headerlink" href="#PickPlace_continous" title="Link to this definition"></a></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.node">
+<span class="target" id="namespacePickPlace__continous_1a7258fcf0f803dc10d000d7f540ca6782"></span><span class="sig-name descname"><span class="pre">node</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">rclcpp.Node(&quot;PickPlace&quot;)</span></em><a class="headerlink" href="#PickPlace_continous.node" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.arm">
+<span class="target" id="namespacePickPlace__continous_1a4463e2c8af7509f06969a35cbdf5410a"></span><span class="sig-name descname"><span class="pre">arm</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;arm&quot;</span></em><a class="headerlink" href="#PickPlace_continous.arm" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.eef">
+<span class="target" id="namespacePickPlace__continous_1aa6fd5169614c4b20175f8cd4b901266c"></span><span class="sig-name descname"><span class="pre">eef</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;gripper&quot;</span></em><a class="headerlink" href="#PickPlace_continous.eef" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.object_name">
+<span class="target" id="namespacePickPlace__continous_1a45b1f50d794abad32542ea515211d8a6"></span><span class="sig-name descname"><span class="pre">object_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;plate&quot;</span></em><a class="headerlink" href="#PickPlace_continous.object_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.cartesian">
+<span class="target" id="namespacePickPlace__continous_1a7ee4af914115ea93252bd5e60b2a7a70"></span><span class="sig-name descname"><span class="pre">cartesian</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">core.CartesianPath()</span></em><a class="headerlink" href="#PickPlace_continous.cartesian" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.jointspace">
+<span class="target" id="namespacePickPlace__continous_1a8fcf204860cbda7aee6eda49dff50b81"></span><span class="sig-name descname"><span class="pre">jointspace</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">core.JointInterpolationPlanner()</span></em><a class="headerlink" href="#PickPlace_continous.jointspace" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.pipeline">
+<span class="target" id="namespacePickPlace__continous_1ae5754dabbb687a9b7e15c68242ebae0c"></span><span class="sig-name descname"><span class="pre">pipeline</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">core.PipelinePlanner(node,</span> <span class="pre">&quot;ompl&quot;,</span> <span class="pre">&quot;RRTConnectkConfigDefault&quot;)</span></em><a class="headerlink" href="#PickPlace_continous.pipeline" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.preTask">
+<span class="target" id="namespacePickPlace__continous_1a4d418c390133ffc9f71c5500979bd6c3"></span><span class="sig-name descname"><span class="pre">preTask</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">core.Task()</span></em><a class="headerlink" href="#PickPlace_continous.preTask" title="Link to this definition"></a></dt>
+<dd><p>PreTask - bringing robot to start state ############### Necessary for sequential execution of all soltutions otherwise the solutions have discontinous start states. </p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.name">
+<span class="target" id="namespacePickPlace__continous_1ad7d01cfd41cefce1814e9d51eef705ef"></span><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#PickPlace_continous.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.startState">
+<span class="target" id="namespacePickPlace__continous_1a78adf78740d0d04636412b3870acdac7"></span><span class="sig-name descname"><span class="pre">startState</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.CurrentState(&quot;start</span> <span class="pre">state&quot;)</span></em><a class="headerlink" href="#PickPlace_continous.startState" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.moveToStandby">
+<span class="target" id="namespacePickPlace__continous_1a4979aa17c795030e30379d4a0016d445"></span><span class="sig-name descname"><span class="pre">moveToStandby</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.MoveTo(&quot;Move</span> <span class="pre">to</span> <span class="pre">Standby&quot;,core.PipelinePlanner(node,</span> <span class="pre">&quot;ompl&quot;,</span> <span class="pre">&quot;RRTConnectkConfigDefault&quot;))</span></em><a class="headerlink" href="#PickPlace_continous.moveToStandby" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.group">
+<span class="target" id="namespacePickPlace__continous_1a87c4d4f26cd9f18a2689266ab146951b"></span><span class="sig-name descname"><span class="pre">group</span></span><a class="headerlink" href="#PickPlace_continous.group" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.standbyPose">
+<span class="target" id="namespacePickPlace__continous_1a28e288d773ca82106aca2d7e73a6f5f1"></span><span class="sig-name descname"><span class="pre">standbyPose</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&quot;gripper&quot;:0.1,&quot;j1&quot;:0.58611,&quot;j2&quot;:0.051,&quot;j3&quot;:2.4804084,&quot;j4&quot;:-1.910026}</span></em><a class="headerlink" href="#PickPlace_continous.standbyPose" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.task">
+<span class="target" id="namespacePickPlace__continous_1a37d19a2e56398cee180228ebc3e9132b"></span><span class="sig-name descname"><span class="pre">task</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">core.Task()</span></em><a class="headerlink" href="#PickPlace_continous.task" title="Link to this definition"></a></dt>
+<dd><p>Main Task ###############. </p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.allowCollision">
+<span class="target" id="namespacePickPlace__continous_1aeb5312ba05256277da3cab35139c4022"></span><span class="sig-name descname"><span class="pre">allowCollision</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.ModifyPlanningScene(&quot;Allow</span> <span class="pre">Collision</span> <span class="pre">(Plate,</span> <span class="pre">Table)&quot;)</span></em><a class="headerlink" href="#PickPlace_continous.allowCollision" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.grasp_generator">
+<span class="target" id="namespacePickPlace__continous_1ad7f83bd176b36826c0c73475f56c19fc"></span><span class="sig-name descname"><span class="pre">grasp_generator</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.GenerateGraspPose(&quot;Generate</span> <span class="pre">Grasp</span> <span class="pre">Pose&quot;)</span></em><a class="headerlink" href="#PickPlace_continous.grasp_generator" title="Link to this definition"></a></dt>
+<dd><p>Second Pick + Place ###############. </p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.angle_delta">
+<span class="target" id="namespacePickPlace__continous_1a9c69d3f1a2241945fe7614f5ed51b92f"></span><span class="sig-name descname"><span class="pre">angle_delta</span></span><a class="headerlink" href="#PickPlace_continous.angle_delta" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.pregrasp">
+<span class="target" id="namespacePickPlace__continous_1a62f38a4e9f0123032c0c54e8e2a84728"></span><span class="sig-name descname"><span class="pre">pregrasp</span></span><a class="headerlink" href="#PickPlace_continous.pregrasp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.grasp">
+<span class="target" id="namespacePickPlace__continous_1adbcb836585109242cc1b54bb1e7af3b8"></span><span class="sig-name descname"><span class="pre">grasp</span></span><a class="headerlink" href="#PickPlace_continous.grasp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.simpleGrasp">
+<span class="target" id="namespacePickPlace__continous_1ae181c59ffa4dc902426406aab41b71d1"></span><span class="sig-name descname"><span class="pre">simpleGrasp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.SimpleGrasp(grasp_generator,</span> <span class="pre">&quot;Grasp&quot;)</span></em><a class="headerlink" href="#PickPlace_continous.simpleGrasp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.ik_frame">
+<span class="target" id="namespacePickPlace__continous_1ab52a00f41284c2985d6b0e2dbdc31dda"></span><span class="sig-name descname"><span class="pre">ik_frame</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PoseStamped()</span></em><a class="headerlink" href="#PickPlace_continous.ik_frame" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.frame_id">
+<span class="target" id="namespacePickPlace__continous_1a39c04f9f22f48b20f59fb27bd0190edc"></span><span class="sig-name descname"><span class="pre">frame_id</span></span><a class="headerlink" href="#PickPlace_continous.frame_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.z">
+<span class="target" id="namespacePickPlace__continous_1a16d505645139787677d1d8699667161e"></span><span class="sig-name descname"><span class="pre">z</span></span><a class="headerlink" href="#PickPlace_continous.z" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.pick">
+<span class="target" id="namespacePickPlace__continous_1ae128a453394e99e2aa0d4b2593255ac7"></span><span class="sig-name descname"><span class="pre">pick</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.Pick(simpleGrasp,</span> <span class="pre">&quot;Pick&quot;)</span></em><a class="headerlink" href="#PickPlace_continous.pick" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.object">
+<span class="target" id="namespacePickPlace__continous_1a5da418996fb02a30046f5d62b3a7ff0c"></span><span class="sig-name descname"><span class="pre">object</span></span><a class="headerlink" href="#PickPlace_continous.object" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.approach">
+<span class="target" id="namespacePickPlace__continous_1a37a642005e581f785957507f4d6674ad"></span><span class="sig-name descname"><span class="pre">approach</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">TwistStamped()</span></em><a class="headerlink" href="#PickPlace_continous.approach" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.lift">
+<span class="target" id="namespacePickPlace__continous_1a01161ee01be1b124c4e911fdc3556b87"></span><span class="sig-name descname"><span class="pre">lift</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">TwistStamped()</span></em><a class="headerlink" href="#PickPlace_continous.lift" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.con">
+<span class="target" id="namespacePickPlace__continous_1a93932a69af8aacfcd6a603c5e4f8cd0c"></span><span class="sig-name descname"><span class="pre">con</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.Connect(&quot;Transfer&quot;,</span> <span class="pre">[(arm,</span> <span class="pre">pipeline),(eef,jointspace)])</span></em><a class="headerlink" href="#PickPlace_continous.con" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.placePose">
+<span class="target" id="namespacePickPlace__continous_1a11d9e529ab44e18879ee7e985e6c6053"></span><span class="sig-name descname"><span class="pre">placePose</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PoseStamped()</span></em><a class="headerlink" href="#PickPlace_continous.placePose" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.header">
+<span class="target" id="namespacePickPlace__continous_1addf3aa1fd637019e6003013764c26998"></span><span class="sig-name descname"><span class="pre">header</span></span><a class="headerlink" href="#PickPlace_continous.header" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.x">
+<span class="target" id="namespacePickPlace__continous_1aa6cce16d30f5da8b5f5f3a92efc29e2c"></span><span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#PickPlace_continous.x" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.y">
+<span class="target" id="namespacePickPlace__continous_1a320b27473a592879fbc2606213fe5a41"></span><span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#PickPlace_continous.y" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.place_generator">
+<span class="target" id="namespacePickPlace__continous_1ac9d21239d6b08c7e254841a0914e8d85"></span><span class="sig-name descname"><span class="pre">place_generator</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.GeneratePlacePose(&quot;Generate</span> <span class="pre">Place</span> <span class="pre">Pose&quot;)</span></em><a class="headerlink" href="#PickPlace_continous.place_generator" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.pose">
+<span class="target" id="namespacePickPlace__continous_1ac8cc776034cc85074bc1b51764aba8d2"></span><span class="sig-name descname"><span class="pre">pose</span></span><a class="headerlink" href="#PickPlace_continous.pose" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.simpleUnGrasp">
+<span class="target" id="namespacePickPlace__continous_1acf6ec322422f1686ceef06dd0a47c466"></span><span class="sig-name descname"><span class="pre">simpleUnGrasp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.SimpleUnGrasp(place_generator,</span> <span class="pre">&quot;UnGrasp&quot;)</span></em><a class="headerlink" href="#PickPlace_continous.simpleUnGrasp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.place">
+<span class="target" id="namespacePickPlace__continous_1a3d19b1ae60510f9b24c9789bd906919a"></span><span class="sig-name descname"><span class="pre">place</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.Place(simpleUnGrasp,</span> <span class="pre">&quot;Place&quot;)</span></em><a class="headerlink" href="#PickPlace_continous.place" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.eef_frame">
+<span class="target" id="namespacePickPlace__continous_1a9c7689c131f2e1fd05725a0690b6beac"></span><span class="sig-name descname"><span class="pre">eef_frame</span></span><a class="headerlink" href="#PickPlace_continous.eef_frame" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.retract">
+<span class="target" id="namespacePickPlace__continous_1a843aa680f8b355e12dee502d350ff532"></span><span class="sig-name descname"><span class="pre">retract</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">TwistStamped()</span></em><a class="headerlink" href="#PickPlace_continous.retract" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.placeMotion">
+<span class="target" id="namespacePickPlace__continous_1a5a2f6595a95d28bb04bc94c78c77d570"></span><span class="sig-name descname"><span class="pre">placeMotion</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">TwistStamped()</span></em><a class="headerlink" href="#PickPlace_continous.placeMotion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_continous.w">
+<span class="target" id="namespacePickPlace__continous_1a0aa62d6c8898bfcbb8aa8edcd2accdc3"></span><span class="sig-name descname"><span class="pre">w</span></span><a class="headerlink" href="#PickPlace_continous.w" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PickPlace_markers">
+<span class="target" id="namespacePickPlace__markers"></span><em class="property"><span class="pre">module</span> </em><span class="sig-name descname"><span class="pre">PickPlace_markers</span></span><a class="headerlink" href="#PickPlace_markers" title="Link to this definition"></a></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-variables">Variables</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.node">
+<span class="target" id="namespacePickPlace__markers_1a0b117c256021f961bdf632397181d1cc"></span><span class="sig-name descname"><span class="pre">node</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">rclcpp.Node(&quot;PickPlace&quot;)</span></em><a class="headerlink" href="#PickPlace_markers.node" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.arm">
+<span class="target" id="namespacePickPlace__markers_1acb512a7403f72c14378d7bba7832c17f"></span><span class="sig-name descname"><span class="pre">arm</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;arm&quot;</span></em><a class="headerlink" href="#PickPlace_markers.arm" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.eef">
+<span class="target" id="namespacePickPlace__markers_1a3086db0174df80f6edd37f066bf20112"></span><span class="sig-name descname"><span class="pre">eef</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;gripper&quot;</span></em><a class="headerlink" href="#PickPlace_markers.eef" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.object_name">
+<span class="target" id="namespacePickPlace__markers_1a790972a5e8cd3dc13421af99f7787d29"></span><span class="sig-name descname"><span class="pre">object_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&quot;plate&quot;</span></em><a class="headerlink" href="#PickPlace_markers.object_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.cartesian">
+<span class="target" id="namespacePickPlace__markers_1a7eca70e802e836f05e3c41557dcc8ecb"></span><span class="sig-name descname"><span class="pre">cartesian</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">core.CartesianPath()</span></em><a class="headerlink" href="#PickPlace_markers.cartesian" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.jointspace">
+<span class="target" id="namespacePickPlace__markers_1a12a8635f982a03a4dcc334296e6f7f8c"></span><span class="sig-name descname"><span class="pre">jointspace</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">core.JointInterpolationPlanner()</span></em><a class="headerlink" href="#PickPlace_markers.jointspace" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.pipeline">
+<span class="target" id="namespacePickPlace__markers_1ac8dc7f3ba50da66310c8afa5f995f1fa"></span><span class="sig-name descname"><span class="pre">pipeline</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">core.PipelinePlanner(node,</span> <span class="pre">&quot;ompl&quot;,</span> <span class="pre">&quot;RRTConnectkConfigDefault&quot;)</span></em><a class="headerlink" href="#PickPlace_markers.pipeline" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.preTask">
+<span class="target" id="namespacePickPlace__markers_1af3cc949196367aacc3787f238030b754"></span><span class="sig-name descname"><span class="pre">preTask</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">core.Task()</span></em><a class="headerlink" href="#PickPlace_markers.preTask" title="Link to this definition"></a></dt>
+<dd><p>PreTask - bringing robot to start state ############### Necessary for sequential execution of all soltutions otherwise the solutions have discontinous start states. </p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.name">
+<span class="target" id="namespacePickPlace__markers_1a6ca240e3a250a862f8feacf30d324156"></span><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#PickPlace_markers.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.startState">
+<span class="target" id="namespacePickPlace__markers_1a52b8415b26316d9d925278303734f662"></span><span class="sig-name descname"><span class="pre">startState</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.CurrentState(&quot;start</span> <span class="pre">state&quot;)</span></em><a class="headerlink" href="#PickPlace_markers.startState" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.moveToStandby">
+<span class="target" id="namespacePickPlace__markers_1a48ec10c7f665496671f5b3fea68d05c5"></span><span class="sig-name descname"><span class="pre">moveToStandby</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.MoveTo(&quot;Move</span> <span class="pre">to</span> <span class="pre">Standby&quot;,core.PipelinePlanner(node,</span> <span class="pre">&quot;ompl&quot;,</span> <span class="pre">&quot;RRTConnectkConfigDefault&quot;))</span></em><a class="headerlink" href="#PickPlace_markers.moveToStandby" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.group">
+<span class="target" id="namespacePickPlace__markers_1a0aa5e43021b7b03fcdd85ef9fc6b376b"></span><span class="sig-name descname"><span class="pre">group</span></span><a class="headerlink" href="#PickPlace_markers.group" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.standbyPose">
+<span class="target" id="namespacePickPlace__markers_1a4f455592912d77cb0de92dc3e8d53dc7"></span><span class="sig-name descname"><span class="pre">standbyPose</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{&quot;gripper&quot;:0.04,&quot;j1&quot;:0.58611,&quot;j2&quot;:0.051,&quot;j3&quot;:2.4804084,&quot;j4&quot;:-1.910026}</span></em><a class="headerlink" href="#PickPlace_markers.standbyPose" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.task">
+<span class="target" id="namespacePickPlace__markers_1a354d2b56f7422e8b07877bf3a17bf085"></span><span class="sig-name descname"><span class="pre">task</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">core.Task()</span></em><a class="headerlink" href="#PickPlace_markers.task" title="Link to this definition"></a></dt>
+<dd><p>Main Task ###############. </p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.allowCollision">
+<span class="target" id="namespacePickPlace__markers_1a8382e0a3906b423e18957a07f593e630"></span><span class="sig-name descname"><span class="pre">allowCollision</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.ModifyPlanningScene(&quot;Allow</span> <span class="pre">Collision</span> <span class="pre">(Plate,</span> <span class="pre">Table)&quot;)</span></em><a class="headerlink" href="#PickPlace_markers.allowCollision" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.grasp_generator">
+<span class="target" id="namespacePickPlace__markers_1a5e9c3c03c288701af3f4d1807a3ee3a4"></span><span class="sig-name descname"><span class="pre">grasp_generator</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.GenerateGraspPose(&quot;Generate</span> <span class="pre">Grasp</span> <span class="pre">Pose&quot;)</span></em><a class="headerlink" href="#PickPlace_markers.grasp_generator" title="Link to this definition"></a></dt>
+<dd><p>Second Pick + Place ###############. </p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.angle_delta">
+<span class="target" id="namespacePickPlace__markers_1acb50ba9132c35d900b817c981e6b45f0"></span><span class="sig-name descname"><span class="pre">angle_delta</span></span><a class="headerlink" href="#PickPlace_markers.angle_delta" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.pregrasp">
+<span class="target" id="namespacePickPlace__markers_1a0e221f4b1a7986741257c490adedadb1"></span><span class="sig-name descname"><span class="pre">pregrasp</span></span><a class="headerlink" href="#PickPlace_markers.pregrasp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.grasp">
+<span class="target" id="namespacePickPlace__markers_1adfc7477304d82a57ac59cdacd3ffc042"></span><span class="sig-name descname"><span class="pre">grasp</span></span><a class="headerlink" href="#PickPlace_markers.grasp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.simpleGrasp">
+<span class="target" id="namespacePickPlace__markers_1a6c4ddf6cd6b95cf48b44116d4e642d24"></span><span class="sig-name descname"><span class="pre">simpleGrasp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.SimpleGrasp(grasp_generator,</span> <span class="pre">&quot;Grasp&quot;)</span></em><a class="headerlink" href="#PickPlace_markers.simpleGrasp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.ik_frame">
+<span class="target" id="namespacePickPlace__markers_1ab9452ac908d40784c05e132960aa16c7"></span><span class="sig-name descname"><span class="pre">ik_frame</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PoseStamped()</span></em><a class="headerlink" href="#PickPlace_markers.ik_frame" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.frame_id">
+<span class="target" id="namespacePickPlace__markers_1a57c4f6adbe433fa574a8236b9605b9b4"></span><span class="sig-name descname"><span class="pre">frame_id</span></span><a class="headerlink" href="#PickPlace_markers.frame_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.z">
+<span class="target" id="namespacePickPlace__markers_1adfe1fcef8cda7bbc25340b66607c7455"></span><span class="sig-name descname"><span class="pre">z</span></span><a class="headerlink" href="#PickPlace_markers.z" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.pick">
+<span class="target" id="namespacePickPlace__markers_1a516d064e0c4323e2e701ab5452bb4349"></span><span class="sig-name descname"><span class="pre">pick</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.Pick(simpleGrasp,</span> <span class="pre">&quot;Pick&quot;)</span></em><a class="headerlink" href="#PickPlace_markers.pick" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.object">
+<span class="target" id="namespacePickPlace__markers_1ab2e679256a75ec863d49de786e371380"></span><span class="sig-name descname"><span class="pre">object</span></span><a class="headerlink" href="#PickPlace_markers.object" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.approach">
+<span class="target" id="namespacePickPlace__markers_1a6b1dda186a575e68aa9ff6ef2cb8bad8"></span><span class="sig-name descname"><span class="pre">approach</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">TwistStamped()</span></em><a class="headerlink" href="#PickPlace_markers.approach" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.lift">
+<span class="target" id="namespacePickPlace__markers_1aabee09b0fcf2869914d47fd9f0cc7f59"></span><span class="sig-name descname"><span class="pre">lift</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">TwistStamped()</span></em><a class="headerlink" href="#PickPlace_markers.lift" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.con">
+<span class="target" id="namespacePickPlace__markers_1ad63856525791537cd491d8e1fa138893"></span><span class="sig-name descname"><span class="pre">con</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.Connect(&quot;Transfer&quot;,</span> <span class="pre">[(arm,</span> <span class="pre">pipeline),(eef,jointspace)])</span></em><a class="headerlink" href="#PickPlace_markers.con" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.placePose">
+<span class="target" id="namespacePickPlace__markers_1a2f750b52cfac8320265f5d8eefd0a907"></span><span class="sig-name descname"><span class="pre">placePose</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">PoseStamped()</span></em><a class="headerlink" href="#PickPlace_markers.placePose" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.header">
+<span class="target" id="namespacePickPlace__markers_1a65c9190c6606caeec83c79cd49180b72"></span><span class="sig-name descname"><span class="pre">header</span></span><a class="headerlink" href="#PickPlace_markers.header" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.x">
+<span class="target" id="namespacePickPlace__markers_1a52b4a4de242b186a21e6c236215222c2"></span><span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#PickPlace_markers.x" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.y">
+<span class="target" id="namespacePickPlace__markers_1a2c018b34e376c69cd72df19b158398ab"></span><span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#PickPlace_markers.y" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.place_generator">
+<span class="target" id="namespacePickPlace__markers_1a7209c174538f3b6fb931eeece9f62fcd"></span><span class="sig-name descname"><span class="pre">place_generator</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.GeneratePlacePose(&quot;Generate</span> <span class="pre">Place</span> <span class="pre">Pose&quot;)</span></em><a class="headerlink" href="#PickPlace_markers.place_generator" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.pose">
+<span class="target" id="namespacePickPlace__markers_1a531d3f3091a48d6b336def2602db7040"></span><span class="sig-name descname"><span class="pre">pose</span></span><a class="headerlink" href="#PickPlace_markers.pose" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.simpleUnGrasp">
+<span class="target" id="namespacePickPlace__markers_1aaaa1240954ed60f1fa3679c71aba1a1a"></span><span class="sig-name descname"><span class="pre">simpleUnGrasp</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.SimpleUnGrasp(place_generator,</span> <span class="pre">&quot;UnGrasp&quot;)</span></em><a class="headerlink" href="#PickPlace_markers.simpleUnGrasp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.place">
+<span class="target" id="namespacePickPlace__markers_1a2844a221aa99ab3cb83be687d8893b9c"></span><span class="sig-name descname"><span class="pre">place</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">stages.Place(simpleUnGrasp,</span> <span class="pre">&quot;Place&quot;)</span></em><a class="headerlink" href="#PickPlace_markers.place" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.eef_frame">
+<span class="target" id="namespacePickPlace__markers_1a3b42c8b7a095324d473b5940811fc03c"></span><span class="sig-name descname"><span class="pre">eef_frame</span></span><a class="headerlink" href="#PickPlace_markers.eef_frame" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.retract">
+<span class="target" id="namespacePickPlace__markers_1a2bea1eed34f18596f2164be60bbd273c"></span><span class="sig-name descname"><span class="pre">retract</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">TwistStamped()</span></em><a class="headerlink" href="#PickPlace_markers.retract" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.placeMotion">
+<span class="target" id="namespacePickPlace__markers_1a8309030af45c229cac95fce933cc4afe"></span><span class="sig-name descname"><span class="pre">placeMotion</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">TwistStamped()</span></em><a class="headerlink" href="#PickPlace_markers.placeMotion" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PickPlace_markers.w">
+<span class="target" id="namespacePickPlace__markers_1aff7be4817f2a0c9a6dbc0e8dc8eefb56"></span><span class="sig-name descname"><span class="pre">w</span></span><a class="headerlink" href="#PickPlace_markers.w" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="run">
 <span class="target" id="namespacerun"></span><em class="property"><span class="pre">module</span> </em><span class="sig-name descname"><span class="pre">run</span></span><a class="headerlink" href="#run" title="Link to this definition"></a></dt>
 <dd><div class="breathe-sectiondef docutils container">
@@ -5423,9 +6192,9 @@ For effort/torque use 1/reduction and NO offset </p>
 <dt class="sig sig-object cpp">
 <span class="target" id="mBaseGripper_8h"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">mBaseGripper.h</span></span></dt>
 <dd><div class="docutils container">
-<em>#include “<a class="reference internal" href="#mBaseGripper_8h"><span class="std std-ref">bioscara_gripper_hardware_driver/mBaseGripper.h</span></a>”</em></div>
-<div class="docutils container">
 <em>#include “<a class="reference internal" href="#uErr_8h"><span class="std std-ref">bioscara_arm_hardware_driver/uErr.h</span></a>”</em></div>
+<div class="docutils container">
+<em>#include &lt;chrono&gt;</em></div>
 <p>File containing the BaseGripper class. </p>
 <p>
 Dont include this file directly, instead use one of the derived classes. <dl class="simple">
@@ -5532,6 +6301,8 @@ I copied this from: <a class="reference external" href="https://github.com/bernd
 <em>#include &lt;fstream&gt;</em></div>
 <div class="docutils container">
 <em>#include &lt;iostream&gt;</em></div>
+<div class="docutils container">
+<em>#include &lt;cmath&gt;</em></div>
 </dd></dl>
 
 <dl>
@@ -5629,6 +6400,21 @@ I copied this from: <a class="reference external" href="https://github.com/bernd
 <dl>
 <dt class="sig sig-object py">
 <span class="target" id="IAmNotARobot_8py"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">IAmNotARobot.py</span></span></dt>
+<dd></dd></dl>
+
+<dl>
+<dt class="sig sig-object py">
+<span class="target" id="PickPlace_8py"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">PickPlace.py</span></span></dt>
+<dd></dd></dl>
+
+<dl>
+<dt class="sig sig-object py">
+<span class="target" id="PickPlace__continous_8py"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">PickPlace_continous.py</span></span></dt>
+<dd></dd></dl>
+
+<dl>
+<dt class="sig sig-object py">
+<span class="target" id="PickPlace__markers_8py"></span><em><span class="pre">file</span></em> <span class="sig-name descname"><span class="pre">PickPlace_markers.py</span></span></dt>
 <dd></dd></dl>
 
 <dl>

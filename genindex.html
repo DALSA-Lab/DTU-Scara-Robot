@@ -458,6 +458,8 @@ window.addEventListener("load", load);
  | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
  | <a href="#W"><strong>W</strong></a>
+ | <a href="#X"><strong>X</strong></a>
+ | <a href="#Y"><strong>Y</strong></a>
  | <a href="#Z"><strong>Z</strong></a>
  
 </div>
@@ -466,12 +468,44 @@ window.addEventListener("load", load);
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#c.ACK">ACK (C macro)</a>, <a href="code/index.html#c.ACK">[1]</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#c.ACTUATOR2JOINT">ACTUATOR2JOINT (C macro)</a>
 </li>
       <li><a href="code/index.html#c.ADR">ADR (C macro)</a>
 </li>
+      <li><a href="code/index.html#PickPlace.allowCollision">allowCollision (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.allowCollision">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.allowCollision">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="code/index.html#PickPlace.angle_delta">angle_delta (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.angle_delta">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.angle_delta">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/index.html#PickPlace.approach">approach (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.approach">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.approach">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="code/index.html#PickPlace.arm">arm (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.arm">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.arm">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -519,6 +553,8 @@ window.addEventListener("load", load);
 </li>
       <li><a href="code/index.html#_CPPv4N25bioscara_hardware_drivers11BaseGripper4_posE">bioscara_hardware_drivers::BaseGripper::_pos (C++ member)</a>
 </li>
+      <li><a href="code/index.html#_CPPv4N25bioscara_hardware_drivers11BaseGripper8_pos_getE">bioscara_hardware_drivers::BaseGripper::_pos_get (C++ member)</a>
+</li>
       <li><a href="code/index.html#_CPPv4N25bioscara_hardware_drivers11BaseGripper10_reductionE">bioscara_hardware_drivers::BaseGripper::_reduction (C++ member)</a>
 </li>
       <li><a href="code/index.html#_CPPv4N25bioscara_hardware_drivers11BaseGripper11BaseGripperEfffff">bioscara_hardware_drivers::BaseGripper::BaseGripper (C++ function)</a>
@@ -532,6 +568,8 @@ window.addEventListener("load", load);
       <li><a href="code/index.html#_CPPv4N25bioscara_hardware_drivers11BaseGripper11getPositionERf">bioscara_hardware_drivers::BaseGripper::getPosition (C++ function)</a>
 </li>
       <li><a href="code/index.html#_CPPv4N25bioscara_hardware_drivers11BaseGripper4initEv">bioscara_hardware_drivers::BaseGripper::init (C++ function)</a>
+</li>
+      <li><a href="code/index.html#_CPPv4N25bioscara_hardware_drivers11BaseGripper12new_cmd_timeE">bioscara_hardware_drivers::BaseGripper::new_cmd_time (C++ member)</a>
 </li>
       <li><a href="code/index.html#_CPPv4N25bioscara_hardware_drivers11BaseGripper22retrieve_last_positionERf">bioscara_hardware_drivers::BaseGripper::retrieve_last_position (C++ function)</a>
 </li>
@@ -777,10 +815,10 @@ window.addEventListener("load", load);
 </li>
       <li><a href="code/index.html#_CPPv4N25bioscara_hardware_drivers5Joint14setHoldCurrentE8u_int8_t">bioscara_hardware_drivers::Joint::setHoldCurrent (C++ function)</a>
 </li>
-      <li><a href="code/index.html#_CPPv4N25bioscara_hardware_drivers5Joint15setHomingOffsetEKf">bioscara_hardware_drivers::Joint::setHomingOffset (C++ function)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/index.html#_CPPv4N25bioscara_hardware_drivers5Joint15setHomingOffsetEKf">bioscara_hardware_drivers::Joint::setHomingOffset (C++ function)</a>
+</li>
       <li><a href="code/index.html#_CPPv4N25bioscara_hardware_drivers5Joint18setMaxAccelerationEf">bioscara_hardware_drivers::Joint::setMaxAcceleration (C++ function)</a>
 </li>
       <li><a href="code/index.html#_CPPv4N25bioscara_hardware_drivers5Joint14setMaxVelocityEf">bioscara_hardware_drivers::Joint::setMaxVelocity (C++ function)</a>
@@ -1085,15 +1123,31 @@ window.addEventListener("load", load);
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#IAmNotARobot.cartesian">cartesian (IAmNotARobot attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace.cartesian">(PickPlace attribute)</a>
 </li>
+        <li><a href="code/index.html#PickPlace_continous.cartesian">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.cartesian">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
       <li><a href="code/index.html#_CPPv417closeI2CDevHandleRi">closeI2CDevHandle (C++ function)</a>, <a href="code/index.html#_CPPv417closeI2CDevHandleRi">[1]</a>
 </li>
       <li><a href="code/index.html#IAmNotARobot.computeIK">computeIK (IAmNotARobot attribute)</a>
 </li>
-      <li><a href="code/index.html#IAmNotARobot.connect">connect (IAmNotARobot attribute)</a>
+      <li><a href="code/index.html#PickPlace.con">con (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.con">(PickPlace_continous attribute)</a>
 </li>
+        <li><a href="code/index.html#PickPlace_markers.con">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/index.html#IAmNotARobot.connect">connect (IAmNotARobot attribute)</a>
+</li>
       <li><a href="code/index.html#_CPPv4N12control_msgs3msgE">control_msgs::msg (C++ type)</a>
 </li>
       <li><a href="code/index.html#_CPPv4N23controller_manager_msgs3msgE">controller_manager_msgs::msg (C++ type)</a>
@@ -1128,6 +1182,24 @@ window.addEventListener("load", load);
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/index.html#PickPlace.eef">eef (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.eef">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.eef">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/index.html#PickPlace.eef_frame">eef_frame (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.eef_frame">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.eef_frame">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
       <li><a href="code/index.html#setup.entry_points">entry_points (setup attribute)</a>
 </li>
   </ul></td>
@@ -1137,7 +1209,15 @@ window.addEventListener("load", load);
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#IAmNotARobot.frame_id">frame_id (IAmNotARobot attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace.frame_id">(PickPlace attribute)</a>
 </li>
+        <li><a href="code/index.html#PickPlace_continous.frame_id">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.frame_id">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -1148,12 +1228,36 @@ window.addEventListener("load", load);
 </li>
       <li><a href="code/index.html#_CPPv417GetMotionSequence">GetMotionSequence (C++ type)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#_CPPv427GoalHandleMoveGroupSequence">GoalHandleMoveGroupSequence (C++ type)</a>
 </li>
-      <li><a href="code/index.html#IAmNotARobot.group">group (IAmNotARobot attribute)</a>
+      <li><a href="code/index.html#PickPlace.grasp">grasp (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.grasp">(PickPlace_continous attribute)</a>
 </li>
+        <li><a href="code/index.html#PickPlace_markers.grasp">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/index.html#PickPlace.grasp_generator">grasp_generator (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.grasp_generator">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.grasp_generator">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="code/index.html#IAmNotARobot.group">group (IAmNotARobot attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace.group">(PickPlace attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_continous.group">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.group">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -1163,7 +1267,15 @@ window.addEventListener("load", load);
       <li><a href="code/index.html#_CPPv418hardware_interface">hardware_interface (C++ type)</a>
 </li>
       <li><a href="code/index.html#IAmNotARobot.header">header (IAmNotARobot attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace.header">(PickPlace attribute)</a>
 </li>
+        <li><a href="code/index.html#PickPlace_continous.header">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.header">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#_CPPv411holdCurrent">holdCurrent (C++ member)</a>
@@ -1179,11 +1291,19 @@ window.addEventListener("load", load);
       <li><a href="code/index.html#IAmNotARobot">IAmNotARobot (built-in class)</a>
 </li>
       <li><a href="code/index.html#IAmNotARobot.ik_frame">ik_frame (IAmNotARobot attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace.ik_frame">(PickPlace attribute)</a>
 </li>
-      <li><a href="code/index.html#setup.install_requires">install_requires (setup attribute)</a>
+        <li><a href="code/index.html#PickPlace_continous.ik_frame">(PickPlace_continous attribute)</a>
 </li>
+        <li><a href="code/index.html#PickPlace_markers.ik_frame">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/index.html#setup.install_requires">install_requires (setup attribute)</a>
+</li>
       <li><a href="code/index.html#_CPPv411INT_handleri">INT_handler (C++ function)</a>, <a href="code/index.html#_CPPv411INT_handleri">[1]</a>, <a href="code/index.html#_CPPv411INT_handleri">[2]</a>, <a href="code/index.html#_CPPv411INT_handleri">[3]</a>, <a href="code/index.html#_CPPv411INT_handleri">[4]</a>
 </li>
       <li><a href="code/index.html#_CPPv46isBusy">isBusy (C++ member)</a>
@@ -1200,12 +1320,18 @@ window.addEventListener("load", load);
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#c.J4">J4 (C macro)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#c.JOINT2ACTUATOR">JOINT2ACTUATOR (C macro)</a>
 </li>
       <li><a href="code/index.html#IAmNotARobot.jointspace">jointspace (IAmNotARobot attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace.jointspace">(PickPlace attribute)</a>
 </li>
+        <li><a href="code/index.html#PickPlace_continous.jointspace">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.jointspace">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -1218,14 +1344,22 @@ window.addEventListener("load", load);
 </li>
       <li><a href="code/index.html#setup.license">license (setup attribute)</a>
 </li>
+      <li><a href="code/index.html#PickPlace.lift">lift (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.lift">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.lift">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
       <li><a href="code/index.html#_CPPv46LOGGER">LOGGER (C++ member)</a>
 </li>
       <li><a href="code/index.html#_CPPv44loopv">loop (C++ function)</a>
 </li>
-      <li><a href="code/index.html#_CPPv47Lowpass">Lowpass (C++ class)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/index.html#_CPPv47Lowpass">Lowpass (C++ class)</a>
+</li>
       <li><a href="code/index.html#_CPPv4N7Lowpass1KE">Lowpass::K (C++ member)</a>
 </li>
       <li><a href="code/index.html#_CPPv4N7Lowpass7LowpassEfff">Lowpass::Lowpass (C++ function)</a>
@@ -1270,8 +1404,6 @@ window.addEventListener("load", load);
 </li>
       <li><a href="code/index.html#move_group">move_group (built-in class)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     move_group.generate_launch_description()
 
@@ -1279,6 +1411,8 @@ window.addEventListener("load", load);
         <li><a href="code/index.html#move_group.generate_launch_description">built-in function</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#_CPPv417MoveGroupSequence">MoveGroupSequence (C++ type)</a>
 </li>
       <li><a href="code/index.html#moveit_rviz">moveit_rviz (built-in class)</a>
@@ -1288,6 +1422,14 @@ window.addEventListener("load", load);
 
       <ul>
         <li><a href="code/index.html#moveit_rviz.generate_launch_description">built-in function</a>
+</li>
+      </ul></li>
+      <li><a href="code/index.html#PickPlace.moveToStandby">moveToStandby (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.moveToStandby">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.moveToStandby">(PickPlace_markers attribute)</a>
 </li>
       </ul></li>
       <li><a href="code/index.html#_CPPv46MovMax">MovMax (C++ class)</a>
@@ -1315,13 +1457,27 @@ window.addEventListener("load", load);
       <li><a href="code/index.html#IAmNotARobot.name">name (IAmNotARobot attribute)</a>
 
       <ul>
+        <li><a href="code/index.html#PickPlace.name">(PickPlace attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_continous.name">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.name">(PickPlace_markers attribute)</a>
+</li>
         <li><a href="code/index.html#setup.name">(setup attribute)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#IAmNotARobot.node">node (IAmNotARobot attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace.node">(PickPlace attribute)</a>
 </li>
+        <li><a href="code/index.html#PickPlace_continous.node">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.node">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
       <li><a href="code/index.html#_CPPv420non_blocking_handler7uint8_t">non_blocking_handler (C++ function)</a>
 </li>
       <li><a href="code/index.html#_CPPv410notEnabled">notEnabled (C++ member)</a>
@@ -1334,6 +1490,24 @@ window.addEventListener("load", load);
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/index.html#PickPlace.object">object (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.object">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.object">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/index.html#PickPlace.object_name">object_name (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.object_name">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.object_name">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
       <li><a href="code/index.html#_CPPv416openI2CDevHandleKi">openI2CDevHandle (C++ function)</a>, <a href="code/index.html#_CPPv416openI2CDevHandleKi">[1]</a>
 </li>
   </ul></td>
@@ -1346,16 +1520,92 @@ window.addEventListener("load", load);
 </li>
       <li><a href="code/index.html#setup.packages">packages (setup attribute)</a>
 </li>
+      <li><a href="code/index.html#PickPlace.pick">pick (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.pick">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.pick">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="code/index.html#PickPlace">PickPlace (built-in class)</a>
+</li>
+      <li><a href="code/index.html#PickPlace_continous">PickPlace_continous (built-in class)</a>
+</li>
+      <li><a href="code/index.html#PickPlace_markers">PickPlace_markers (built-in class)</a>
+</li>
       <li><a href="code/index.html#_CPPv47pid_err">pid_err (C++ member)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#_CPPv411pid_err_fil">pid_err_fil (C++ member)</a>
 </li>
       <li><a href="code/index.html#IAmNotARobot.pipeline">pipeline (IAmNotARobot attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace.pipeline">(PickPlace attribute)</a>
 </li>
+        <li><a href="code/index.html#PickPlace_continous.pipeline">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.pipeline">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="code/index.html#PickPlace.place">place (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.place">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.place">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="code/index.html#PickPlace.place_generator">place_generator (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.place_generator">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.place_generator">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/index.html#PickPlace.placeMotion">placeMotion (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.placeMotion">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.placeMotion">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="code/index.html#PickPlace.placePose">placePose (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.placePose">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.placePose">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
       <li><a href="code/index.html#IAmNotARobot.pose">pose (IAmNotARobot attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace.pose">(PickPlace attribute)</a>
 </li>
+        <li><a href="code/index.html#PickPlace_continous.pose">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.pose">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="code/index.html#PickPlace.pregrasp">pregrasp (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.pregrasp">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.pregrasp">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="code/index.html#PickPlace_continous.preTask">preTask (PickPlace_continous attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_markers.preTask">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
       <li><a href="code/index.html#IAmNotARobot.props">props (IAmNotARobot attribute)</a>
 </li>
   </ul></td>
@@ -1400,6 +1650,14 @@ window.addEventListener("load", load);
 </li>
       <li><a href="code/index.html#_CPPv412requestEventv">requestEvent (C++ function)</a>
 </li>
+      <li><a href="code/index.html#PickPlace.retract">retract (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.retract">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.retract">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
       <li><a href="code/index.html#c.RETURN_ON_ERROR">RETURN_ON_ERROR (C macro)</a>
 </li>
       <li><a href="code/index.html#c.RETURN_ON_FALSE">RETURN_ON_FALSE (C macro)</a>
@@ -1410,12 +1668,12 @@ window.addEventListener("load", load);
 </li>
       <li><a href="code/index.html#_CPPv47RPI_PWM">RPI_PWM (C++ class)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#_CPPv4N7RPI_PWM8chippathE">RPI_PWM::chippath (C++ member)</a>
 </li>
       <li><a href="code/index.html#_CPPv4NK7RPI_PWM7disableEv">RPI_PWM::disable (C++ function)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#_CPPv4NK7RPI_PWM6enableEv">RPI_PWM::enable (C++ function)</a>
 </li>
       <li><a href="code/index.html#_CPPv4N7RPI_PWM3perE">RPI_PWM::per (C++ member)</a>
@@ -1476,10 +1734,42 @@ window.addEventListener("load", load);
         <li><a href="code/index.html#setup_assistant.generate_launch_description">built-in function</a>
 </li>
       </ul></li>
+      <li><a href="code/index.html#PickPlace.simpleGrasp">simpleGrasp (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.simpleGrasp">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.simpleGrasp">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="code/index.html#PickPlace.simpleUnGrasp">simpleUnGrasp (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.simpleUnGrasp">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.simpleUnGrasp">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
       <li><a href="code/index.html#_CPPv415stall_thresholdff">stall_threshold (C++ function)</a>
 </li>
       <li><a href="code/index.html#_CPPv419stallguardThreshold">stallguardThreshold (C++ member)</a>
 </li>
+      <li><a href="code/index.html#PickPlace.standbyPose">standbyPose (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.standbyPose">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.standbyPose">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="code/index.html#PickPlace.startState">startState (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.startState">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.startState">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
       <li><a href="code/index.html#_CPPv4St">std (C++ type)</a>
 </li>
       <li><a href="code/index.html#_CPPv47stepper">stepper (C++ member)</a>
@@ -1494,6 +1784,8 @@ window.addEventListener("load", load);
 </li>
       <li><a href="code/index.html#_CPPv4N9stp_reg_t17DISABLECLOSEDLOOPE">stp_reg_t::DISABLECLOSEDLOOP (C++ enumerator)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#_CPPv4N9stp_reg_t10DISABLEPIDE">stp_reg_t::DISABLEPID (C++ enumerator)</a>
 </li>
       <li><a href="code/index.html#_CPPv4N9stp_reg_t17DISABLESTALLGUARDE">stp_reg_t::DISABLESTALLGUARD (C++ enumerator)</a>
@@ -1506,8 +1798,6 @@ window.addEventListener("load", load);
 </li>
       <li><a href="code/index.html#_CPPv4N9stp_reg_t12GETDRIVERRPME">stp_reg_t::GETDRIVERRPM (C++ enumerator)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#_CPPv4N9stp_reg_t13GETENCODERRPME">stp_reg_t::GETENCODERRPM (C++ enumerator)</a>
 </li>
       <li><a href="code/index.html#_CPPv4N9stp_reg_t13GETMOTORSTATEE">stp_reg_t::GETMOTORSTATE (C++ enumerator)</a>
@@ -1557,7 +1847,15 @@ window.addEventListener("load", load);
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#IAmNotARobot.task">task (IAmNotARobot attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace.task">(PickPlace attribute)</a>
 </li>
+        <li><a href="code/index.html#PickPlace_continous.task">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.task">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
       <li><a href="code/index.html#test_joint_trajectory_controller">test_joint_trajectory_controller (built-in class)</a>
 </li>
       <li>
@@ -1579,12 +1877,12 @@ window.addEventListener("load", load);
 </li>
       <li><a href="code/index.html#_CPPv4N18TrajectorySequence21getMoveGroupInterfaceEv">TrajectorySequence::getMoveGroupInterface (C++ function)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#_CPPv4N18TrajectorySequence7getNodeEv">TrajectorySequence::getNode (C++ function)</a>
 </li>
       <li><a href="code/index.html#_CPPv4N18TrajectorySequence4initEv">TrajectorySequence::init (C++ function)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#_CPPv4N18TrajectorySequence6items_E">TrajectorySequence::items_ (C++ member)</a>
 </li>
       <li><a href="code/index.html#_CPPv4N18TrajectorySequence4mgi_E">TrajectorySequence::mgi_ (C++ member)</a>
@@ -1642,17 +1940,63 @@ window.addEventListener("load", load);
 <h2 id="W">W</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="code/index.html#_CPPv413writeToI2CDevKiKiPcKiPc">writeToI2CDev (C++ function)</a>, <a href="code/index.html#_CPPv413writeToI2CDevKiKiPcKiPc">[1]</a>
+      <li><a href="code/index.html#PickPlace.w">w (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.w">(PickPlace_continous attribute)</a>
 </li>
+        <li><a href="code/index.html#PickPlace_markers.w">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/index.html#_CPPv413writeToI2CDevKiKiPcKiPc">writeToI2CDev (C++ function)</a>, <a href="code/index.html#_CPPv413writeToI2CDevKiKiPcKiPc">[1]</a>
+</li>
       <li><a href="code/index.html#_CPPv4I0E10writeValueiK1TP7uint8_tR6size_t">writeValue (C++ function)</a>
 </li>
   </ul></td>
 </tr></table>
 
+<h2 id="X">X</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/index.html#PickPlace.x">x (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.x">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.x">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Y">Y</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/index.html#PickPlace.y">y (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.y">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.y">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
 <h2 id="Z">Z</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/index.html#PickPlace.z">z (PickPlace attribute)</a>
+
+      <ul>
+        <li><a href="code/index.html#PickPlace_continous.z">(PickPlace_continous attribute)</a>
+</li>
+        <li><a href="code/index.html#PickPlace_markers.z">(PickPlace_markers attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code/index.html#setup.zip_safe">zip_safe (setup attribute)</a>
 </li>
